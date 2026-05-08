@@ -8,6 +8,9 @@ on:
         type: boolean
         default: true
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 permissions:
   contents: write
   pull-requests: write
@@ -23,7 +26,14 @@ jobs:
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: pnpm }
+        with: { node-version-file: .nvmrc }
+      - uses: actions/cache@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
       - name: Install (frozen if lockfile committed, else generate)
         run: |
           if [ -f pnpm-lock.yaml ]; then

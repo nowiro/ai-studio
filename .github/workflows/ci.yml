@@ -10,13 +10,16 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 permissions:
   contents: read
   actions: read
   pull-requests: write
 
 jobs:
-  # ── validate-ai is pure Node — runs first, no install needed.
+  # ── validate-ai is pure Node — runs first, no install needed ──────────────
   validate-ai:
     name: Validate AI config
     runs-on: ubuntu-latest
@@ -27,32 +30,36 @@ jobs:
       - name: Validate .ai / .claude / .github parity
         run: node tools/scripts/validate-ai-config.mjs
 
-  # ── docs-audit also pure Node — no install needed.
+  # ── docs-audit also pure Node ─────────────────────────────────────────────
   docs-audit:
     name: Docs audit (non-blocking)
     runs-on: ubuntu-latest
-    continue-on-error: true # advisory in PRs, blocking in scheduled docs-audit.yml
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc }
       - run: node tools/scripts/doc-audit.mjs
 
-  # ── setup: install deps with lockfile fallback (first-push friendly).
+  # ── setup: install deps ────────────────────────────────────────────────────
   setup:
     name: Setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        with: { fetch-depth: 0 }
 
       - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
+        with: { node-version-file: .nvmrc }
+
+      - uses: actions/cache@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
         with:
-          node-version-file: .nvmrc
-          cache: pnpm
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
 
       - name: Install (frozen if lockfile committed, else generate)
         run: |
@@ -74,16 +81,20 @@ jobs:
         with: { fetch-depth: 0 }
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: pnpm }
+        with: { node-version-file: .nvmrc }
+      - uses: actions/cache@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
       - name: Install
         run: |
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
 
       - uses: nrwl/nx-set-shas@v4
-        with:
-          # Empty repo / first push has no successful workflow yet; don't fail the job for it.
-          error-on-no-successful-workflow: false
+        with: { error-on-no-successful-workflow: false }
 
       - name: Skip if empty workspace
         id: graph
@@ -107,7 +118,13 @@ jobs:
         with: { fetch-depth: 0 }
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: pnpm }
+        with: { node-version-file: .nvmrc }
+      - uses: actions/cache@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
       - name: Install
         run: |
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
@@ -137,7 +154,13 @@ jobs:
         with: { fetch-depth: 0 }
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: pnpm }
+        with: { node-version-file: .nvmrc }
+      - uses: actions/cache@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
       - name: Install
         run: |
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
@@ -173,7 +196,13 @@ jobs:
         with: { fetch-depth: 0 }
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: pnpm }
+        with: { node-version-file: .nvmrc }
+      - uses: actions/cache@v4
+        if: hashFiles('pnpm-lock.yaml') != ''
+        with:
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
       - name: Install
         run: |
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
