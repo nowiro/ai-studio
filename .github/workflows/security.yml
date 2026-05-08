@@ -12,51 +12,13 @@ env:
 
 permissions:
   contents: read
-  security-events: write
   actions: read
 
 jobs:
-  # ── CodeQL static analysis ────────────────────────────────────────────────
-  codeql:
-    name: CodeQL analysis
-    runs-on: ubuntu-latest
-    continue-on-error: true # requires "Code scanning" enabled in repo settings
-    strategy:
-      matrix:
-        language: [javascript-typescript]
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: ${{ matrix.language }}
-          queries: security-extended,security-and-quality
-
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc }
-      - uses: actions/cache@v4
-        if: hashFiles('pnpm-lock.yaml') != ''
-        with:
-          path: ~/.local/share/pnpm/store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-
-      - name: Install
-        run: |
-          if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
-          else pnpm install --no-frozen-lockfile; fi
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
-
-      - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v4
-        with:
-          category: '/language:${{ matrix.language }}'
-
   # ── Dependency vulnerability audit ───────────────────────────────────────
+  # NOTE: CodeQL requires "Code scanning" to be enabled in repo Settings →
+  # Security → Code scanning (available on GitHub Advanced Security / public repos).
+  # Use ESLint + sonarjs (already wired in eslint.config.*) for local static analysis.
   dependency-audit:
     name: Dependency audit
     runs-on: ubuntu-latest
@@ -75,13 +37,13 @@ jobs:
         run: |
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
-      - name: Audit (requires lockfile)
-        run: |
-          if [ ! -f pnpm-lock.yaml ]; then
-            echo "::warning::No pnpm-lock.yaml — audit skipped. Commit the lockfile to enable vulnerability scanning."
-            exit 0
-          fi
-          pnpm audit --audit-level=high
+      # hashFiles is evaluated BEFORE install, so this is safe to gate on committed lockfile
+      - name: Audit (high+ vulnerabilities)
+        if: hashFiles('pnpm-lock.yaml') != ''
+        run: pnpm audit --audit-level=high
+      - name: Audit skipped notice
+        if: hashFiles('pnpm-lock.yaml') == ''
+        run: echo "::warning::No committed pnpm-lock.yaml — audit skipped. Run pnpm install and commit the lockfile."
 
   # ── Secret scanning (full history) ───────────────────────────────────────
   secret-scan:
@@ -115,10 +77,9 @@ jobs:
         run: |
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
-      - name: Check outdated (requires lockfile)
-        run: |
-          if [ ! -f pnpm-lock.yaml ]; then
-            echo "::warning::No pnpm-lock.yaml — outdated check skipped."
-            exit 0
-          fi
-          pnpm outdated || true
+      - name: Check outdated
+        if: hashFiles('pnpm-lock.yaml') != ''
+        run: pnpm outdated || true
+      - name: Outdated skipped notice
+        if: hashFiles('pnpm-lock.yaml') == ''
+        run: echo "::warning::No committed pnpm-lock.yaml — outdated check skipped."
