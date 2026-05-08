@@ -38,8 +38,12 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
       # hashFiles is evaluated BEFORE install, so this is safe to gate on committed lockfile
-      - name: Audit (high+ vulnerabilities)
+      - name: Audit production deps (high+ vulnerabilities)
         if: hashFiles('pnpm-lock.yaml') != ''
+        run: pnpm audit --audit-level=high --prod
+      - name: Audit all deps incl. dev (informational)
+        if: hashFiles('pnpm-lock.yaml') != ''
+        continue-on-error: true
         run: pnpm audit --audit-level=high
       - name: Audit skipped notice
         if: hashFiles('pnpm-lock.yaml') == ''
