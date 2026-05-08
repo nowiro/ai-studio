@@ -24,7 +24,14 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
+      - name: Install (frozen if lockfile committed, else generate)
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "::warning::No pnpm-lock.yaml — installing without frozen lockfile."
+            pnpm install --no-frozen-lockfile
+          fi
 
       - name: Configure git
         run: |

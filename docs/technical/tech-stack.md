@@ -10,6 +10,7 @@ This is the human-facing, decision-rich version of [`.ai/context/tech-stack.md`]
 | Framework          | **Angular 21**                                                  | standalone (implicit), signals, native control flow, native SSR |
 | Component kit      | **Angular Material 3** + `@angular/cdk`                         | M3 only; no legacy / MDC-prefixed components |
 | Utility CSS        | **Tailwind CSS v4** (CSS-first, `@tailwindcss/postcss`)         | tokens map to Material design tokens         |
+| 2D games           | **Phaser 3** (`phaser`)                                         | default 2D game framework; see `.ai/rules/games.md` |
 | Server / AI        | **Genkit** (optional)                                           | for AI flows, Gemini default                 |
 | Package manager    | **pnpm 9**                                                       | workspace-aware, fast                        |
 | Node               | **20.19+ LTS**                                                  | locked via `.nvmrc`                          |

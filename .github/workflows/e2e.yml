@@ -27,17 +27,39 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
+
+      - name: Install (frozen if lockfile committed, else generate)
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "::warning::No pnpm-lock.yaml — installing without frozen lockfile."
+            pnpm install --no-frozen-lockfile
+          fi
+
       - uses: nrwl/nx-set-shas@v4
+        with: { error-on-no-successful-workflow: false }
+
+      - name: Detect e2e projects
+        id: graph
+        run: |
+          if [ -z "$(pnpm exec nx show projects --with-target=e2e 2>/dev/null)" ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::No projects with target 'e2e' yet — skipping Playwright."
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Install Playwright browsers
+        if: steps.graph.outputs.empty == 'false'
         run: pnpm exec playwright install --with-deps ${{ matrix.project }}
 
       - name: Run affected E2E
+        if: steps.graph.outputs.empty == 'false'
         run: pnpm exec nx affected -t e2e --parallel=1 --project=${{ matrix.project }}
 
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && steps.graph.outputs.empty == 'false'
         with:
           name: playwright-report-${{ matrix.project }}
           path: playwright-report/

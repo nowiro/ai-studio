@@ -16,11 +16,32 @@ permissions:
   pull-requests: write
 
 jobs:
+  # ── validate-ai is pure Node — runs first, no install needed.
+  validate-ai:
+    name: Validate AI config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version-file: .nvmrc }
+      - name: Validate .ai / .claude / .github parity
+        run: node tools/scripts/validate-ai-config.mjs
+
+  # ── docs-audit also pure Node — no install needed.
+  docs-audit:
+    name: Docs audit (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true # advisory in PRs, blocking in scheduled docs-audit.yml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version-file: .nvmrc }
+      - run: node tools/scripts/doc-audit.mjs
+
+  # ── setup: install deps with lockfile fallback (first-push friendly).
   setup:
     name: Setup
     runs-on: ubuntu-latest
-    outputs:
-      pnpm-store: ${{ steps.pnpm.outputs.store-path }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,25 +54,16 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
-      - name: Resolve pnpm store
-        id: pnpm
-        run: echo "store-path=$(pnpm store path)" >> "$GITHUB_OUTPUT"
-
-      - run: pnpm install --frozen-lockfile
-
-      - uses: nrwl/nx-set-shas@v4
-
-  validate-ai:
-    name: Validate AI config
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm ai:validate
+      - name: Install (frozen if lockfile committed, else generate)
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            echo "::group::Installing with --frozen-lockfile"
+            pnpm install --frozen-lockfile
+            echo "::endgroup::"
+          else
+            echo "::warning::No pnpm-lock.yaml found — installing without frozen lockfile. Commit the generated pnpm-lock.yaml after first install for reproducible builds."
+            pnpm install --no-frozen-lockfile
+          fi
 
   lint:
     name: Lint
@@ -63,9 +75,28 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
+      - name: Install
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
+          else pnpm install --no-frozen-lockfile; fi
+
       - uses: nrwl/nx-set-shas@v4
-      - run: pnpm exec nx affected -t lint --parallel=3
+        with:
+          # Empty repo / first push has no successful workflow yet; don't fail the job for it.
+          error-on-no-successful-workflow: false
+
+      - name: Skip if empty workspace
+        id: graph
+        run: |
+          if [ -z "$(pnpm exec nx show projects 2>/dev/null)" ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Nx workspace has no projects yet — skipping lint."
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Affected lint
+        if: steps.graph.outputs.empty == 'false'
+        run: pnpm exec nx affected -t lint --parallel=3
 
   typecheck:
     name: Typecheck
@@ -77,9 +108,25 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
+      - name: Install
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
+          else pnpm install --no-frozen-lockfile; fi
+
       - uses: nrwl/nx-set-shas@v4
-      - run: pnpm exec nx affected -t typecheck --parallel=3
+        with: { error-on-no-successful-workflow: false }
+
+      - name: Skip if empty workspace
+        id: graph
+        run: |
+          if [ -z "$(pnpm exec nx show projects 2>/dev/null)" ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Affected typecheck
+        if: steps.graph.outputs.empty == 'false'
+        run: pnpm exec nx affected -t typecheck --parallel=3
 
   test:
     name: Unit & integration tests
@@ -91,11 +138,28 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
+      - name: Install
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
+          else pnpm install --no-frozen-lockfile; fi
+
       - uses: nrwl/nx-set-shas@v4
-      - run: pnpm exec nx affected -t test --parallel=3 --coverage
+        with: { error-on-no-successful-workflow: false }
+
+      - name: Skip if empty workspace
+        id: graph
+        run: |
+          if [ -z "$(pnpm exec nx show projects 2>/dev/null)" ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Affected test
+        if: steps.graph.outputs.empty == 'false'
+        run: pnpm exec nx affected -t test --parallel=3 --coverage --passWithNoTests
+
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && steps.graph.outputs.empty == 'false'
         with:
           name: coverage
           path: coverage/
@@ -110,6 +174,22 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - run: pnpm install --frozen-lockfile
+      - name: Install
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
+          else pnpm install --no-frozen-lockfile; fi
+
       - uses: nrwl/nx-set-shas@v4
-      - run: pnpm exec nx affected -t build --parallel=3
+        with: { error-on-no-successful-workflow: false }
+
+      - name: Skip if empty workspace
+        id: graph
+        run: |
+          if [ -z "$(pnpm exec nx show projects 2>/dev/null)" ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Affected build
+        if: steps.graph.outputs.empty == 'false'
+        run: pnpm exec nx affected -t build --parallel=3

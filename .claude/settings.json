@@ -95,6 +95,34 @@
     "angular-cli": {
       "command": "npx",
       "args": ["-y", "@angular/cli-mcp@latest"]
+    },
+    "alm-jira": {
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-jira.js"]
+    },
+    "alm-confluence": {
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-confluence.js"]
+    },
+    "alm-figma": {
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-figma.js"]
+    },
+    "alm-sonar": {
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-sonar.js"]
+    },
+    "alm-github": {
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-github.js"]
+    },
+    "alm-gitlab": {
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-gitlab.js"]
+    },
+    "devtools": {
+      "command": "node",
+      "args": ["../ai-mcp-devtools/dist/server.js"]
     }
   },
   "env": {
