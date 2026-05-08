@@ -93,7 +93,7 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
 
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
         with: { error-on-no-successful-workflow: false }
 
       - name: Skip if empty workspace
@@ -130,7 +130,7 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
 
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
         with: { error-on-no-successful-workflow: false }
 
       - name: Skip if empty workspace
@@ -166,7 +166,7 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
 
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
         with: { error-on-no-successful-workflow: false }
 
       - name: Skip if empty workspace
@@ -208,7 +208,7 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile;
           else pnpm install --no-frozen-lockfile; fi
 
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
         with: { error-on-no-successful-workflow: false }
 
       - name: Skip if empty workspace

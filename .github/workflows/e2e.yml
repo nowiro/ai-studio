@@ -46,7 +46,7 @@ jobs:
             pnpm install --no-frozen-lockfile
           fi
 
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
         with: { error-on-no-successful-workflow: false }
 
       - name: Detect e2e projects
