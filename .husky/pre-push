@@ -4,5 +4,12 @@
 
 echo "▶ pre-push: typecheck + affected build (smoke E2E in CI only)"
 
+# Skip nx commands when the workspace has no projects yet (empty apps/, libs/).
+PROJECT_COUNT=$(find apps libs 2>/dev/null -name 'project.json' -type f 2>/dev/null | wc -l | tr -d ' ')
+if [ "${PROJECT_COUNT:-0}" -eq 0 ]; then
+  echo "  (no project.json files in apps/ or libs/ — skipping nx typecheck and build)"
+  exit 0
+fi
+
 pnpm exec nx run-many -t typecheck --parallel=3 || exit 1
 pnpm exec nx affected -t build --parallel=3 --base=origin/main --head=HEAD || exit 1

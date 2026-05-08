@@ -37,6 +37,8 @@ export default {
         'agent',
         'orchestrator',
         'mcp',
+        'trinity',
+        'security',
       ],
     ],
     'subject-case': [2, 'always', ['sentence-case', 'lower-case']],

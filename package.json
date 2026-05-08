@@ -35,7 +35,9 @@
     "docs:api": "node tools/scripts/scan-public-api.mjs",
     "docs:audit": "node tools/scripts/doc-audit.mjs",
     "test:scenarios": "node tools/scripts/scenarios-from-specs.mjs",
-    "trinity:check": "node tools/scripts/check-trinity.mjs"
+    "trinity:check": "node tools/scripts/check-trinity.mjs",
+    "docs:lint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#dist\" \"#coverage\" \"#.nx\"",
+    "docs:linkcheck": "lychee --config lychee.toml --no-progress \"./**/*.md\""
   },
   "dependencies": {
     "@angular/animations": "^21.0.0",
@@ -89,14 +91,15 @@
     "eslint-plugin-jsdoc": "^50.6.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-rxjs-x": "^0.7.0",
-    "eslint-plugin-sonarjs": "^3.0.0",
-    "eslint-plugin-tailwindcss": "^4.0.0",
+    "eslint-plugin-sonarjs": "^4.0.3",
+    "eslint-plugin-tailwindcss": "4.0.0-beta.0",
     "eslint-plugin-unicorn": "^56.0.0",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
     "jiti": "^2.4.0",
     "jsdom": "^25.0.0",
     "lint-staged": "^15.2.10",
+    "markdownlint-cli2": "^0.14.0",
     "nx": "^21.0.0",
     "postcss": "^8.4.0",
     "prettier": "^3.4.0",

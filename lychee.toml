@@ -1,0 +1,27 @@
+# Lychee link checker config
+# Run locally: pnpm dlx lychee --config lychee.toml '**/*.md'
+
+# Don't follow GitHub anchors that resolve at runtime (they always look broken to lychee).
+exclude = [
+  '^https?://localhost',
+  '^https?://127\.0\.0\.1',
+  '^file://',
+  '^https?://(www\.)?example\.(com|org|net)',
+  '^https?://your-domain\.atlassian\.net',
+]
+
+# Internal markdown anchors are case-insensitive in GitHub but checked literally by lychee.
+include_fragments = true
+
+# Cache successful checks to keep CI fast.
+cache = true
+max_cache_age = "7d"
+
+# Be polite.
+max_concurrency = 4
+timeout = 20
+retry_wait_time = 2
+max_retries = 2
+
+# Treat redirects as success (some upstreams use 301).
+accept = [200, 204, 301, 302, 308, 403, 429]

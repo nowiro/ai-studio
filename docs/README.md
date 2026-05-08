@@ -2,17 +2,23 @@
 
 > The single map of every doc in the repo. If you add a doc, link it here.
 
-## Audience matrix
+## Who is this for?
 
-| Audience               | Start here                                          |
-| ---------------------- | --------------------------------------------------- |
-| New contributor (human) | [README](../README.md) → [CONTRIBUTING](../CONTRIBUTING.md) → [programming/coding-standards](programming/coding-standards.md) |
-| AI agent (any IDE)     | [`.ai/README.md`](../.ai/README.md) → [`AGENTS.md`](../AGENTS.md)                                |
-| Claude Code agent      | [`CLAUDE.md`](../CLAUDE.md) → [`.claude/`](../.claude/)                                          |
-| GitHub Copilot agent   | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md) → [`.github/{instructions,prompts,chatmodes}/`](../.github/) |
-| Architect / reviewer    | [architecture](architecture/) + [adr](adr/)                                                     |
-| Product / Analyst      | [analytical](analytical/)                                                                       |
-| QA / Test Engineer     | [programming/testing-strategy](programming/testing-strategy.md)                                 |
+Pick your role; each entry points at the smallest set of docs that gets you productive.
+
+| Role                        | Start here                                                                                                                                                                                                                              |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **New contributor (human)** | [README](../README.md) → [CONTRIBUTING](../CONTRIBUTING.md) → [programming/coding-standards](programming/coding-standards.md)                                                                                                           |
+| **Analyst / Product**       | [analytical/business-requirements](analytical/business-requirements.md) → [analytical/personas](analytical/personas.md) → [analytical/use-cases](analytical/use-cases.md) → [adr](adr/)                                                 |
+| **Architect / Reviewer**    | [architecture/system](architecture/system.md) → [architecture/trinity](architecture/trinity.md) → [adr](adr/) → [architecture/dependencies](architecture/dependencies.md)                                                               |
+| **Developer**               | [programming/coding-standards](programming/coding-standards.md) → [programming/api-guidelines](programming/api-guidelines.md) → [technical/architecture](technical/architecture.md) → [`.ai/rules/angular.md`](../.ai/rules/angular.md) |
+| **Tester / QA**             | [programming/testing-strategy](programming/testing-strategy.md) → [analytical/specs](analytical/specs/) → [ai-workflow/multi-agent-flow](ai-workflow/multi-agent-flow.md) (test-engineer + test-scenario-author agents)                 |
+| **DevOps / SRE**            | [technical/runbook](technical/runbook.md) → [technical/system-design](technical/system-design.md) → [`SECURITY.md`](../SECURITY.md) → [architecture/post-mortems](architecture/post-mortems/)                                           |
+| **Admin / Integrator**      | [README — daily commands](../README.md) → [technical/runbook](technical/runbook.md) → [`SECURITY.md`](../SECURITY.md)                                                                                                                   |
+| **Security auditor**        | [`SECURITY.md`](../SECURITY.md) → [`.ai/rules/security.md`](../.ai/rules/security.md) → [adr](adr/) → [architecture/dependencies](architecture/dependencies.md)                                                                         |
+| **AI agent (any IDE)**      | [`.ai/README.md`](../.ai/README.md) → [`AGENTS.md`](../AGENTS.md)                                                                                                                                                                       |
+| **Claude Code agent**       | [`CLAUDE.md`](../CLAUDE.md) → [`.claude/`](../.claude/)                                                                                                                                                                                 |
+| **GitHub Copilot agent**    | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md) → [`.github/{instructions,prompts,chatmodes}/`](../.github/)                                                                                                    |
 
 ## Sections
 

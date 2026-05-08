@@ -6,8 +6,15 @@ echo "▶ pre-commit: lint-staged + nx affected (lint, test)"
 
 pnpm exec lint-staged --concurrent false || exit 1
 
-# Affected lint + test (skipped if no graph yet).
-if [ -f nx.json ]; then
+# Skip nx affected when the workspace has no projects yet.
+# `nx show projects` raises "Failed to process project graph" on an empty
+# workspace, so we check for project.json files directly instead.
+PROJECT_COUNT=$(find apps libs 2>/dev/null -name 'project.json' -type f 2>/dev/null | wc -l | tr -d ' ')
+if [ "${PROJECT_COUNT:-0}" -gt 0 ]; then
   pnpm exec nx affected -t lint --parallel=3 --base=HEAD~1 --head=HEAD || exit 1
   pnpm exec nx affected -t test --parallel=3 --base=HEAD~1 --head=HEAD --passWithNoTests || exit 1
+else
+  echo "  (no project.json files in apps/ or libs/ — skipping nx affected)"
 fi
+
+exit 0
