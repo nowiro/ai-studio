@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# AI Studio – commit-msg hook (Conventional Commits)
+pnpm exec commitlint --edit "$1"

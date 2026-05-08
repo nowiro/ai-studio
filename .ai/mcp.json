@@ -1,0 +1,52 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp-registry.json",
+  "description": "AI Studio – MCP server registry. Source of truth for every IDE/CLI MCP client.",
+  "version": "1.0.0",
+  "servers": {
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "description": "Live documentation for libraries (Angular, Nx, RxJS, Vitest, Playwright, ...). Always pull current docs before generating code that touches an external API.",
+      "purpose": "documentation-lookup",
+      "env": {}
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "description": "Headless browser automation. Use for E2E debugging, accessibility audits and visual checks.",
+      "purpose": "browser-automation",
+      "env": {}
+    },
+    "nx": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "nx-mcp@latest"],
+      "description": "Nx workspace introspection: project graph, generators, executors, affected. Required for the Orchestrator to plan monorepo changes.",
+      "purpose": "workspace-management",
+      "env": {
+        "NX_WORKSPACE_PATH": "${workspaceFolder}"
+      }
+    },
+    "angular-cli": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@angular/cli-mcp@latest"],
+      "description": "Angular CLI: ng generate, ng add, schematic catalog, AI-friendly scaffolding hints from angular.dev/ai.",
+      "purpose": "angular-scaffolding",
+      "env": {}
+    }
+  },
+  "policies": {
+    "discovery_order": ["context7", "nx", "angular-cli", "playwright"],
+    "fallback": "When an MCP server is unavailable, document the gap in the response and continue with built-in tools — never silently skip the call.",
+    "forbidden_actions_via_mcp": [
+      "git push",
+      "npm publish",
+      "pnpm release",
+      "rm -rf",
+      "git reset --hard"
+    ]
+  }
+}

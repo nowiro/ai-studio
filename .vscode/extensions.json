@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "Angular.ng-template",
+    "nrwl.angular-console",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-playwright.playwright",
+    "vitest.explorer",
+    "bradlc.vscode-tailwindcss",
+    "EditorConfig.EditorConfig",
+    "streetsidesoftware.code-spell-checker",
+    "yoavbls.pretty-ts-errors",
+    "wayou.vscode-todo-highlight",
+    "redhat.vscode-yaml",
+    "DavidAnson.vscode-markdownlint",
+    "github.vscode-github-actions"
+  ]
+}

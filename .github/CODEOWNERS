@@ -1,0 +1,28 @@
+# AI Studio — code owners
+# Last reviewer of these paths is auto-requested on every PR.
+
+# Default
+*                                @ai-studio/maintainers
+
+# AI configuration is high-trust — review by AI working group + maintainers
+/.ai/                            @ai-studio/maintainers @ai-studio/ai-wg
+/.claude/                        @ai-studio/maintainers @ai-studio/ai-wg
+/CLAUDE.md                       @ai-studio/maintainers @ai-studio/ai-wg
+/AGENTS.md                       @ai-studio/maintainers @ai-studio/ai-wg
+
+# Docs
+/docs/technical/                 @ai-studio/docs
+/docs/analytical/                @ai-studio/product @ai-studio/docs
+/docs/programming/               @ai-studio/maintainers @ai-studio/docs
+/docs/ai-workflow/               @ai-studio/ai-wg @ai-studio/docs
+/docs/adr/                       @ai-studio/maintainers @ai-studio/architects
+/docs/architecture/              @ai-studio/architects
+
+# Tooling
+/.husky/                         @ai-studio/maintainers
+/.github/                        @ai-studio/maintainers
+/eslint.config.mjs               @ai-studio/maintainers
+/.prettierrc                     @ai-studio/maintainers
+/nx.json                         @ai-studio/maintainers
+/tsconfig.base.json              @ai-studio/maintainers
+/package.json                    @ai-studio/maintainers

@@ -1,0 +1,104 @@
+/* ---------------------------------------------------------------------------
+ * AI Studio — Tailwind CSS v4 workspace base layer
+ *
+ * INTEGRATION (per app):
+ *   List this file as the FIRST entry in your project.json styles array:
+ *
+ *   "styles": [
+ *     "styles/tailwind.css",
+ *     "apps/<name>/src/styles.scss"
+ *   ]
+ *
+ *   Do NOT @import this file from styles.scss — Sass would emit a CSS runtime
+ *   import instead of inlining it, breaking PostCSS processing.
+ *
+ * Tailwind v4 is CSS-first: no tailwind.config.js. Tokens live under @theme
+ * below and map to Material 3 system tokens so utility classes and Material
+ * components share the same colour / radius / type scale.
+ * --------------------------------------------------------------------------- */
+
+@import "tailwindcss";
+
+/* Tell Tailwind v4 where to scan for utility classes in the monorepo.
+ * Paths are relative to this file (workspace root/styles/). */
+@source "../apps/**/*.{ts,html}";
+@source "../libs/**/*.{ts,html}";
+
+/* Material 3 reset compatibility:
+ * Tailwind preflight resets <button>/<input> styles; Material re-applies them.
+ * Keep preflight ON — Material component styles load after and win. */
+
+@theme {
+  /* ── Colour — bridge to Material 3 system tokens ───────────────────────
+   * CSS custom properties resolve at paint time, so these work even though
+   * Material's mat.theme() is defined in a separate styles.scss bundle.     */
+
+  /* Primary */
+  --color-primary: var(--mat-sys-primary);
+  --color-on-primary: var(--mat-sys-on-primary);
+  --color-primary-container: var(--mat-sys-primary-container);
+  --color-on-primary-container: var(--mat-sys-on-primary-container);
+
+  /* Secondary */
+  --color-secondary: var(--mat-sys-secondary);
+  --color-on-secondary: var(--mat-sys-on-secondary);
+  --color-secondary-container: var(--mat-sys-secondary-container);
+  --color-on-secondary-container: var(--mat-sys-on-secondary-container);
+
+  /* Tertiary */
+  --color-tertiary: var(--mat-sys-tertiary);
+  --color-on-tertiary: var(--mat-sys-on-tertiary);
+  --color-tertiary-container: var(--mat-sys-tertiary-container);
+  --color-on-tertiary-container: var(--mat-sys-on-tertiary-container);
+
+  /* Surface */
+  --color-surface: var(--mat-sys-surface);
+  --color-on-surface: var(--mat-sys-on-surface);
+  --color-surface-variant: var(--mat-sys-surface-variant);
+  --color-on-surface-variant: var(--mat-sys-on-surface-variant);
+  --color-surface-container: var(--mat-sys-surface-container);
+  --color-surface-container-low: var(--mat-sys-surface-container-low);
+  --color-surface-container-high: var(--mat-sys-surface-container-high);
+  --color-surface-container-highest: var(--mat-sys-surface-container-highest);
+
+  /* Error */
+  --color-error: var(--mat-sys-error);
+  --color-on-error: var(--mat-sys-on-error);
+  --color-error-container: var(--mat-sys-error-container);
+  --color-on-error-container: var(--mat-sys-on-error-container);
+
+  /* Outline */
+  --color-outline: var(--mat-sys-outline);
+  --color-outline-variant: var(--mat-sys-outline-variant);
+
+  /* Inverse */
+  --color-inverse-surface: var(--mat-sys-inverse-surface);
+  --color-inverse-on-surface: var(--mat-sys-inverse-on-surface);
+  --color-inverse-primary: var(--mat-sys-inverse-primary);
+
+  /* Utility */
+  --color-scrim: var(--mat-sys-scrim);
+  --color-shadow: var(--mat-sys-shadow);
+
+  /* ── Typography — Material 3 type scale ─────────────────────────────── */
+  --font-sans: var(--mat-sys-body-large-font, 'Roboto'), system-ui, sans-serif;
+  --font-display: var(--mat-sys-display-large-font, 'Roboto'), system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+
+  /* ── Radii — Material 3 corner roles ────────────────────────────────── */
+  --radius-xs: var(--mat-sys-corner-extra-small, 4px);
+  --radius-sm: var(--mat-sys-corner-small, 8px);
+  --radius-md: var(--mat-sys-corner-medium, 12px);
+  --radius-lg: var(--mat-sys-corner-large, 16px);
+  --radius-xl: var(--mat-sys-corner-extra-large, 28px);
+
+  /* ── Elevation — Material 3 shadow levels ───────────────────────────── */
+  --shadow-sm: var(--mat-sys-level1);
+  --shadow-md: var(--mat-sys-level2);
+  --shadow-lg: var(--mat-sys-level3);
+}
+
+@layer utilities {
+  /* Project-specific utility classes go here.
+   * Keep this empty until a pattern repeats 3+ times across templates. */
+}

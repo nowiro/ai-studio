@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels: [dependencies, type:chore]
+    groups:
+      angular:
+        patterns: ["@angular/*", "@angular-eslint/*", "angular-eslint"]
+      nx:
+        patterns: ["@nx/*", "nx", "nx-mcp"]
+      vitest:
+        patterns: ["vitest", "@vitest/*"]
+      playwright:
+        patterns: ["@playwright/*", "playwright"]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*", "prettier-plugin-tailwindcss", "eslint-plugin-tailwindcss"]
+      eslint:
+        patterns: ["eslint*", "@typescript-eslint/*", "typescript-eslint"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies, type:chore, ci]

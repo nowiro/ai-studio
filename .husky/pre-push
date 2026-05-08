@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# AI Studio – pre-push hook
+# Heavier validation before pushing: typecheck + affected build + e2e smoke.
+
+echo "▶ pre-push: typecheck + affected build (smoke E2E in CI only)"
+
+pnpm exec nx run-many -t typecheck --parallel=3 || exit 1
+pnpm exec nx affected -t build --parallel=3 --base=origin/main --head=HEAD || exit 1

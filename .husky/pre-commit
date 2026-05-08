@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# AI Studio – pre-commit hook
+# Runs only on staged files; falls back to nx affected for type/lint coverage.
+
+echo "▶ pre-commit: lint-staged + nx affected (lint, test)"
+
+pnpm exec lint-staged --concurrent false || exit 1
+
+# Affected lint + test (skipped if no graph yet).
+if [ -f nx.json ]; then
+  pnpm exec nx affected -t lint --parallel=3 --base=HEAD~1 --head=HEAD || exit 1
+  pnpm exec nx affected -t test --parallel=3 --base=HEAD~1 --head=HEAD --passWithNoTests || exit 1
+fi

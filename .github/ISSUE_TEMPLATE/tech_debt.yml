@@ -1,0 +1,41 @@
+name: 🧹 Tech debt
+description: A scoped, measurable cleanup. Goes through .ai/workflows/tech-debt.md.
+title: "chore(tech-debt): <one-line summary>"
+labels: ["type:tech-debt", "needs-triage"]
+body:
+  - type: textarea
+    id: cost_today
+    attributes:
+      label: What does this cost us today?
+      description: Concrete examples. Time lost / bugs caused / risk carried.
+    validations:
+      required: true
+
+  - type: textarea
+    id: fix
+    attributes:
+      label: Cheapest fix
+    validations:
+      required: true
+
+  - type: textarea
+    id: alt
+    attributes:
+      label: Cost of doing nothing
+      description: Sometimes letting it ride is the right call.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - 1 PR
+        - 2–3 PRs
+        - > 3 PRs (needs ADR)
+    validations:
+      required: true
+
+  - type: input
+    id: links
+    attributes:
+      label: Related runs / commits / files

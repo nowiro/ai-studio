@@ -1,0 +1,37 @@
+name: 📚 Documentation update
+description: Docs out of date / missing / wrong. Routed to the doc-writer agent.
+title: "docs: <one-line summary>"
+labels: ["type:docs", "needs-triage"]
+body:
+  - type: textarea
+    id: where
+    attributes:
+      label: Which doc(s)?
+      description: Link to file paths under `docs/`, `README.md`, `CONTRIBUTING.md`, …
+    validations:
+      required: true
+
+  - type: textarea
+    id: gap
+    attributes:
+      label: What's wrong / missing?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of update
+      options:
+        - missing topic
+        - drift from code
+        - example out of date
+        - wording / clarity
+        - link broken
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Proposed fix

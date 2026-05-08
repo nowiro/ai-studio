@@ -1,0 +1,49 @@
+name: 🏛️ Architecture Decision Record (ADR)
+description: Propose a design decision that lands in docs/adr/.
+title: "adr: <one-line summary>"
+labels: ["type:adr", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue seeds a new ADR. The **Architect** agent will turn it into a MADR 4.0 file under `docs/adr/`.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and problem statement
+    validations:
+      required: true
+
+  - type: textarea
+    id: drivers
+    attributes:
+      label: Decision drivers
+      placeholder: |
+        - Performance under load
+        - Operational complexity
+        - Migration cost
+    validations:
+      required: true
+
+  - type: textarea
+    id: options
+    attributes:
+      label: Considered options (≥ 2)
+      placeholder: |
+        1. Option A — …
+        2. Option B — …
+        3. Option C — …
+    validations:
+      required: true
+
+  - type: textarea
+    id: leaning
+    attributes:
+      label: Leaning towards
+      description: Optional. The Architect may overrule with reasoning.
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Decision deadline

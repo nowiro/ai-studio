@@ -1,0 +1,76 @@
+name: ✨ Feature request
+description: Propose a new capability. Goes through analyst → architect → dev (.ai/workflows/new-feature.md).
+title: "feat: <one-line summary>"
+labels: ["type:feature", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The **Analyst** will turn this into a spec under `docs/analytical/specs/`. Be precise about the user need.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Whose pain are we solving? How are they working around it today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should be true after we ship this?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: persona
+    attributes:
+      label: Primary persona
+      options:
+        - P-001 Engineering Lead
+        - P-002 Frontend Engineer
+        - P-003 QA / Test Engineer
+        - P-004 Product Analyst
+        - P-005 Tech Writer / Doc Owner
+        - P-006 Security Engineer
+        - other (explain below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria (Given/When/Then)
+      description: At least one positive and one negative path.
+      placeholder: |
+        Given a logged-in user
+        When they click "Run agent"
+        Then they see a streaming response within 2s
+    validations:
+      required: true
+
+  - type: dropdown
+    id: size
+    attributes:
+      label: Estimated size
+      options:
+        - XS (≤ 1d)
+        - S  (1–3d)
+        - M  (3–7d)
+        - L  (1–3w)
+        - XL (3w+)
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Why not buy/borrow/skip?
+
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope

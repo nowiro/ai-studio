@@ -1,0 +1,76 @@
+name: 🐛 Bug report
+description: A reproducible bug. Goes through the bug-fix workflow (.ai/workflows/bug-fix.md).
+title: "bug: <one-line summary>"
+labels: ["type:bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. The Orchestrator will reproduce, write a failing test, fix, and add a regression test before closing.
+
+  - type: input
+    id: app
+    attributes:
+      label: Affected app / library
+      description: e.g. `apps/studio`, `libs/feature/billing`
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Be exhaustive. Failing tests are written from this section verbatim.
+      placeholder: |
+        1. Open …
+        2. Click …
+        3. Observe …
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit SHA
+      placeholder: vX.Y.Z or first 7 chars of SHA
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - SEV-3 cosmetic
+        - SEV-2 degraded
+        - SEV-1 outage / data loss
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / screenshots / network traces
+      description: Attach Playwright trace if you have one.
+
+  - type: checkboxes
+    id: ack
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I searched existing issues
+          required: true
+        - label: I confirmed the bug on `main` (or latest release)
+          required: true

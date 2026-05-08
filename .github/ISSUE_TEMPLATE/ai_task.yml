@@ -1,0 +1,65 @@
+name: 🤖 AI task (multi-agent run)
+description: Hand a task to the Orchestrator and the specialist agents. Used for AI-driven changes.
+title: "ai: <one-line summary>"
+labels: ["type:ai-task", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template instructs the **Orchestrator** how to decompose the task. The output goes into a PR linked to this issue plus a run log under `docs/ai-workflow/runs/`.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: High-level goal
+      description: One paragraph. Don't pre-decide the implementation.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: workflow
+    attributes:
+      label: Suggested workflow
+      options:
+        - new-feature
+        - bug-fix
+        - refactor
+        - new-library
+        - tech-debt
+        - incident-response
+        - let the Orchestrator choose
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: agents
+    attributes:
+      label: Which specialists must run?
+      description: The Orchestrator may add more — these are minimums.
+      options:
+        - label: analyst
+        - label: architect
+        - label: frontend-developer
+        - label: backend-developer
+        - label: test-engineer
+        - label: code-reviewer
+        - label: security-auditor
+        - label: doc-writer
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints / non-negotiables
+      placeholder: e.g. must not change the public API, must ship before vX.Y.Z, must reuse `libs/data/billing`
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Pointers to existing context
+      description: Links to specs, ADRs, run logs the Orchestrator should read first.
+
+  - type: input
+    id: budget
+    attributes:
+      label: Time / risk budget
+      placeholder: e.g. ≤ 1 day, low risk

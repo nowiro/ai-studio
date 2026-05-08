@@ -1,0 +1,52 @@
+name: 🚨 Production incident
+description: Open during an active incident. Triggers .ai/workflows/incident-response.md.
+title: "incident: <one-line summary>"
+labels: ["type:incident", "sev:tbd"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Speed > polish.** Complete what you can quickly. The Incident Commander (Orchestrator) will fill the rest.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - SEV-1 outage / data loss
+        - SEV-2 degraded
+        - SEV-3 cosmetic
+    validations:
+      required: true
+
+  - type: input
+    id: scope
+    attributes:
+      label: Scope
+      placeholder: which apps / users / data are affected
+    validations:
+      required: true
+
+  - type: textarea
+    id: detection
+    attributes:
+      label: Detection
+      description: How was this discovered? Alert id, user report, audit, …
+
+  - type: input
+    id: started_at
+    attributes:
+      label: Symptom started at (UTC)
+      placeholder: YYYY-MM-DD HH:MM
+
+  - type: textarea
+    id: mitigation
+    attributes:
+      label: Mitigation in flight
+      description: Update as you go.
+
+  - type: input
+    id: ic
+    attributes:
+      label: Incident Commander
+      placeholder: @handle (or "Orchestrator" if AI-driven)

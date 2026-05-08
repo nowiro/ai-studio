@@ -1,0 +1,25 @@
+# Build outputs
+dist/
+out-tsc/
+.angular/
+.nx/
+coverage/
+test-results/
+playwright-report/
+storybook-static/
+
+# Generated
+*.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Vendored
+node_modules/
+
+# Other
+*.min.js
+*.min.css
+*.bundle.js
+.cache/
+tmp/

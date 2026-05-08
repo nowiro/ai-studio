@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm format:*)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm build)",
+      "Bash(pnpm e2e:*)",
+      "Bash(pnpm graph)",
+      "Bash(pnpm affected:*)",
+      "Bash(pnpm ai:*)",
+      "Bash(pnpm dlx nx *)",
+      "Bash(pnpm exec nx *)",
+      "Bash(pnpm exec ng *)",
+      "Bash(pnpm exec eslint *)",
+      "Bash(pnpm exec prettier *)",
+      "Bash(pnpm exec playwright *)",
+      "Bash(pnpm exec vitest *)",
+      "Bash(git status)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Read(./**)",
+      "Edit(./**)",
+      "Write(./apps/**)",
+      "Write(./libs/**)",
+      "Write(./docs/**)",
+      "Write(./.ai/**)",
+      "Write(./.claude/**)",
+      "Write(./.github/**)",
+      "Write(./styles/**)",
+      "Write(./tools/**)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf:*)",
+      "Bash(npm publish:*)",
+      "Bash(pnpm publish:*)",
+      "Write(./.env*)",
+      "Write(./node_modules/**)",
+      "Read(./.env.local)",
+      "Read(./.env.production)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/scripts/post-edit-hook.mjs",
+            "description": "Format & lint the touched file (best-effort, never blocks)"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/scripts/run-log.mjs",
+            "description": "Append a run-log entry under docs/ai-workflow/runs/"
+          }
+        ]
+      }
+    ]
+  },
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "nx": {
+      "command": "npx",
+      "args": ["-y", "nx-mcp@latest"]
+    },
+    "angular-cli": {
+      "command": "npx",
+      "args": ["-y", "@angular/cli-mcp@latest"]
+    }
+  },
+  "env": {
+    "NX_DAEMON": "true",
+    "NX_VERBOSE_LOGGING": "false"
+  },
+  "projectGuidance": {
+    "primaryDocs": [
+      "CLAUDE.md",
+      "AGENTS.md",
+      ".ai/README.md",
+      ".ai/rules/core.md",
+      ".ai/rules/principles.md",
+      ".ai/rules/angular.md",
+      ".ai/rules/styling.md",
+      ".ai/rules/nx.md",
+      ".ai/rules/testing.md",
+      ".ai/rules/security.md"
+    ]
+  }
+}
