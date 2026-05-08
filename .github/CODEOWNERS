@@ -26,3 +26,7 @@
 /nx.json                         @ai-studio/maintainers
 /tsconfig.base.json              @ai-studio/maintainers
 /package.json                    @ai-studio/maintainers
+
+# Security — always requires maintainer sign-off
+/SECURITY.md                     @ai-studio/maintainers
+/.github/workflows/security.yml  @ai-studio/maintainers

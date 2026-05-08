@@ -35,6 +35,31 @@ Out of scope:
 
 We follow [coordinated vulnerability disclosure](https://en.wikipedia.org/wiki/Coordinated_vulnerability_disclosure). After a fix lands, we publish a security advisory crediting the reporter (unless they prefer anonymity).
 
+## Supported Versions
+
+| Version | Supported |
+| ------- | --------- |
+| 0.x     | ✅        |
+
+## SDLC Security Controls
+
+The following controls run automatically on every commit and PR:
+
+| Control                      | When                          | Tool                        |
+| ---------------------------- | ----------------------------- | --------------------------- |
+| Secret scanning (diff)       | Every PR                      | Gitleaks                    |
+| Secret scanning (full repo)  | Push to main + weekly         | Gitleaks                    |
+| Dependency audit (high+)     | Every CI run + every PR       | `pnpm audit`                |
+| CodeQL static analysis       | Push to main + weekly         | GitHub CodeQL               |
+| Conventional Commits         | Every commit + every PR       | commitlint + husky           |
+| Token redaction in logs      | Runtime                       | `src/shared/log.ts` pattern  |
+| AI config parity             | Every CI run                  | `validate-ai-config.mjs`    |
+| Trinity baseline sync        | Every CI run                  | `check-trinity.mjs`         |
+
+## Responsible Disclosure
+
+90-day coordinated disclosure timeline. After 90 days from initial report (or earlier with reporter agreement), vulnerability details may be published with full credit.
+
 ## Hardening references
 
 - [`.ai/rules/security.md`](.ai/rules/security.md) — internal security rules every agent obeys.
