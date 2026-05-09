@@ -14,18 +14,18 @@ Distilled from **<https://angular.dev/ai>** and the official Angular style guide
 
 ## 1. Components
 
-| Do                                                              | Don't                                            |
-| --------------------------------------------------------------- | ------------------------------------------------ |
-| Standalone (default in v20+; `standalone: true` is implicit in v21) | `NgModule` for new code                      |
-| `changeDetection: ChangeDetectionStrategy.OnPush`               | Default change detection                         |
-| `inject(Service)` inside the class body                         | Constructor DI                                   |
-| `input()` / `output()` signal APIs                              | `@Input` / `@Output` decorators                  |
-| `host: { '[class.foo]': 'expr()' }` in the metadata             | `@HostBinding` / `@HostListener` decorators      |
-| `[class.foo]` / `[style.color]` direct bindings                 | `[ngClass]` / `[ngStyle]`                        |
-| `NgOptimizedImage` for static images                            | Bare `<img src>` for static assets               |
-| Reactive forms (`FormGroup`, `FormControl`, `signal()` helpers) | Template-driven forms                            |
-| File names: `feature-name.component.ts`                         | Class-only naming (lost in IDE search)           |
-| Selector prefix `ais-` (apps/components), `ais` (directives)    | Generic selectors that collide with HTML/library |
+| Do                                                                  | Don't                                            |
+| ------------------------------------------------------------------- | ------------------------------------------------ |
+| Standalone (default in v20+; `standalone: true` is implicit in v21) | `NgModule` for new code                          |
+| `changeDetection: ChangeDetectionStrategy.OnPush`                   | Default change detection                         |
+| `inject(Service)` inside the class body                             | Constructor DI                                   |
+| `input()` / `output()` signal APIs                                  | `@Input` / `@Output` decorators                  |
+| `host: { '[class.foo]': 'expr()' }` in the metadata                 | `@HostBinding` / `@HostListener` decorators      |
+| `[class.foo]` / `[style.color]` direct bindings                     | `[ngClass]` / `[ngStyle]`                        |
+| `NgOptimizedImage` for static images                                | Bare `<img src>` for static assets               |
+| Reactive forms (`FormGroup`, `FormControl`, `signal()` helpers)     | Template-driven forms                            |
+| File names: `feature-name.component.ts`                             | Class-only naming (lost in IDE search)           |
+| Selector prefix `ais-` (apps/components), `ais` (directives)        | Generic selectors that collide with HTML/library |
 
 ## 2. State
 
@@ -75,7 +75,7 @@ Styling, theming, utility classes, dark mode and `mat.theme(...)` are owned by [
 - Material 3 components for buttons, dialogs, forms, snackbars, tables.
 - Tailwind v4 utilities for layout (`flex`, `grid`, `gap`), spacing, sizing.
 - Tailwind utility colours map to Material 3 design tokens (`bg-primary`, `text-on-surface`, …) — no ad-hoc palette.
-- No `::ng-deep`. No `tailwind.config.js`. Theme tokens live in `styles/tailwind.css`.
+- No `::ng-deep`. No `tailwind.config.js`. Theme tokens live in `styles/tailwind.scss`.
 
 ## 8. Anti-patterns (auto-rejected in review)
 

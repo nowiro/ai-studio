@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * scan-docs.mjs — deterministic doc inventory.
  *
@@ -12,8 +13,8 @@
  *
  * Pure scan — no LLM, no network, no side effects on tracked files.
  */
-import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 import process from 'node:process';
 
@@ -21,7 +22,7 @@ const ROOT = process.cwd();
 const OUT = resolve(ROOT, 'tmp/docs-scan.json');
 
 const DOC_ROOTS = ['docs', '.ai'];
-const ROOT_FILES = ['README.md', 'CLAUDE.md', 'AGENTS.md', 'CONTRIBUTING.md', 'SECURITY.md'];
+const ROOT_FILES = ['README.md', 'CLAUDE.md', 'CONTRIBUTING.md', 'SECURITY.md'];
 const SKIP_DIRS = new Set(['node_modules', 'dist', '.angular', '.nx', 'tmp', 'coverage', 'test-results']);
 
 async function walkMd(dir, out = []) {

@@ -47,7 +47,7 @@ pnpm exec nx g @nx/angular:lib feature/welcome --tags=scope:feature,type:feature
 pnpm exec nx serve studio
 ```
 
-After step 4 the app's `src/styles.scss` should contain `@use '@angular/material' as mat;` + `mat.theme(...)` + `@import '../../../styles/tailwind.css';`. See [`.ai/rules/styling.md`](.ai/rules/styling.md) for the full pattern.
+After step 4 the app's `src/styles.scss` should contain `@use '@angular/material' as mat;` + `mat.theme(...)`. List `styles/tailwind.scss` as the first entry in `project.json` `styles` array (do **not** `@import` it from `styles.scss`). See [`.ai/rules/styling.md`](.ai/rules/styling.md) for the full pattern.
 
 ## Repository layout
 
@@ -78,7 +78,6 @@ ai-studio/
 │   ├── architecture/         # system, dependencies, tech-debt
 │   └── adr/                  # ADRs (MADR 4.0)
 ├── tools/scripts/            # build-ai-context, validate-ai-config, hooks
-├── AGENTS.md                 # universal agent guide
 ├── CLAUDE.md                 # Claude Code entry point
 ├── CONTRIBUTING.md
 ├── SECURITY.md
@@ -105,25 +104,25 @@ ai-studio/
                   Release Manager
 ```
 
-Read [`docs/ai-workflow/multi-agent-flow.md`](docs/ai-workflow/multi-agent-flow.md) for the full picture, [`AGENTS.md`](AGENTS.md) for an IDE-agnostic primer, and [`CLAUDE.md`](CLAUDE.md) for Claude Code specifics.
+Read [`docs/ai-workflow/multi-agent-flow.md`](docs/ai-workflow/multi-agent-flow.md) for the full picture, [`CLAUDE.md`](CLAUDE.md) for Claude Code specifics, and [`.github/copilot-instructions.md`](.github/copilot-instructions.md) for GitHub Copilot specifics.
 
 ## Tech stack
 
-| Layer            | Choice                                              |
-| ---------------- | --------------------------------------------------- |
-| Monorepo         | **Nx 21+**                                          |
-| Framework        | **Angular 21** (standalone, signals, native SSR)    |
-| Components       | **Angular Material 3** (`@angular/material` + `@angular/cdk`) |
-| Utility CSS      | **Tailwind CSS v4** (CSS-first, `@tailwindcss/postcss`) |
-| Unit / Component | **Vitest** via native `@angular/build:unit-test`    |
-| E2E              | **Playwright** (chromium, firefox, webkit, mobile)  |
-| Linting          | **ESLint 9** flat + `angular-eslint` + `tailwindcss`|
+| Layer            | Choice                                                            |
+| ---------------- | ----------------------------------------------------------------- |
+| Monorepo         | **Nx 21+**                                                        |
+| Framework        | **Angular 21** (standalone, signals, native SSR)                  |
+| Components       | **Angular Material 3** (`@angular/material` + `@angular/cdk`)     |
+| Utility CSS      | **Tailwind CSS v4** (CSS-first, `@tailwindcss/postcss`)           |
+| Unit / Component | **Vitest** via native `@angular/build:unit-test`                  |
+| E2E              | **Playwright** (chromium, firefox, webkit, mobile)                |
+| Linting          | **ESLint 9** flat + `angular-eslint` + `tailwindcss`              |
 | Formatting       | **Prettier 3** + sort-imports + organize-attributes + tailwindcss |
-| Hooks            | **Husky 9** + `lint-staged`                         |
-| Commits          | **Commitizen** + **Commitlint** (Conventional)      |
-| Package manager  | **pnpm 9**                                          |
-| Node             | **20.19+ LTS**                                      |
-| MCP servers      | context7, playwright, nx, angular-cli               |
+| Hooks            | **Husky 9** + `lint-staged`                                       |
+| Commits          | **Commitizen** + **Commitlint** (Conventional)                    |
+| Package manager  | **pnpm 9**                                                        |
+| Node             | **20.19+ LTS**                                                    |
+| MCP servers      | context7, playwright, nx, angular-cli                             |
 
 See [`docs/technical/tech-stack.md`](docs/technical/tech-stack.md) for the rationale.
 
@@ -156,29 +155,29 @@ pnpm test:scenarios         # extract Given/When/Then → tmp/scenarios/<spec>.{
 
 Both Claude Code (slash commands) and GitHub Copilot Chat (`/promptname`) expose the same workflows:
 
-| Workflow                                    | Claude command                  | Copilot prompt                              |
-| ------------------------------------------- | ------------------------------- | ------------------------------------------- |
-| Full multi-agent feature                    | `/new-feature <desc>`           | `/new-feature`                              |
-| Bug fix (failing test first)                | `/bug-fix <summary>`            | `/bug-fix`                                  |
-| New library scaffolding                     | `/new-library <name> <s> <t>`   | _(orchestrator chat mode)_                  |
-| PR review                                   | `/review-pr <pr or branch>`     | `/review-pr`                                |
-| Migrate legacy doc to canonical template    | `/migrate-doc <src> <tgt> <type>` | `/migrate-doc`                            |
-| Audit docs vs current code                  | `/audit-docs`                   | `/audit-docs`                               |
-| Regenerate docs from latest audit report    | `/regenerate-docs`              | `/regenerate-docs`                          |
-| Generate Playwright skeletons from specs    | `/generate-test-scenarios [slug]` | `/generate-test-scenarios`                |
-| Run E2E + debug failures via Playwright MCP | `/run-test-scenarios [grep]`    | `/run-test-scenarios`                       |
-| Cut a release                               | `/release [notes]`              | _(release-manager chat mode)_               |
+| Workflow                                    | Claude command                    | Copilot prompt                |
+| ------------------------------------------- | --------------------------------- | ----------------------------- |
+| Full multi-agent feature                    | `/new-feature <desc>`             | `/new-feature`                |
+| Bug fix (failing test first)                | `/bug-fix <summary>`              | `/bug-fix`                    |
+| New library scaffolding                     | `/new-library <name> <s> <t>`     | _(orchestrator chat mode)_    |
+| PR review                                   | `/review-pr <pr or branch>`       | `/review-pr`                  |
+| Migrate legacy doc to canonical template    | `/migrate-doc <src> <tgt> <type>` | `/migrate-doc`                |
+| Audit docs vs current code                  | `/audit-docs`                     | `/audit-docs`                 |
+| Regenerate docs from latest audit report    | `/regenerate-docs`                | `/regenerate-docs`            |
+| Generate Playwright skeletons from specs    | `/generate-test-scenarios [slug]` | `/generate-test-scenarios`    |
+| Run E2E + debug failures via Playwright MCP | `/run-test-scenarios [grep]`      | `/run-test-scenarios`         |
+| Cut a release                               | `/release [notes]`                | _(release-manager chat mode)_ |
 
 ## Documentation entry points
 
-| Audience              | Start here                                                                              |
-| --------------------- | --------------------------------------------------------------------------------------- |
-| New contributor       | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                    |
-| AI agent (any IDE)    | [`AGENTS.md`](AGENTS.md) + [`.ai/README.md`](.ai/README.md)                             |
-| Claude Code agent     | [`CLAUDE.md`](CLAUDE.md) + [`.claude/`](.claude/)                                       |
-| Architect / reviewer  | [`docs/architecture/system.md`](docs/architecture/system.md) + [`docs/adr/`](docs/adr/) |
-| Product / Analyst     | [`docs/analytical/`](docs/analytical/)                                                  |
-| QA / Test Engineer    | [`docs/programming/testing-strategy.md`](docs/programming/testing-strategy.md)          |
+| Audience             | Start here                                                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| New contributor      | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                                                           |
+| Claude Code agent    | [`CLAUDE.md`](CLAUDE.md) + [`.claude/`](.claude/)                                                                              |
+| GitHub Copilot agent | [`.github/copilot-instructions.md`](.github/copilot-instructions.md) + [`.github/{instructions,prompts,chatmodes}/`](.github/) |
+| Architect / reviewer | [`docs/architecture/system.md`](docs/architecture/system.md) + [`docs/adr/`](docs/adr/)                                        |
+| Product / Analyst    | [`docs/analytical/`](docs/analytical/)                                                                                         |
+| QA / Test Engineer   | [`docs/programming/testing-strategy.md`](docs/programming/testing-strategy.md)                                                 |
 
 ## License
 

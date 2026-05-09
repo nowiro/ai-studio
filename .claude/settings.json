@@ -132,7 +132,6 @@
   "projectGuidance": {
     "primaryDocs": [
       "CLAUDE.md",
-      "AGENTS.md",
       ".ai/README.md",
       ".ai/rules/core.md",
       ".ai/rules/principles.md",
@@ -142,5 +141,16 @@
       ".ai/rules/testing.md",
       ".ai/rules/security.md"
     ]
+  },
+  "extraKnownMarketplaces": {
+    "nx-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "nrwl/nx-ai-agents-config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "nx@nx-claude-plugins": true
   }
 }

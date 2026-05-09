@@ -16,9 +16,8 @@ Pick your role; each entry points at the smallest set of docs that gets you prod
 | **DevOps / SRE**            | [technical/runbook](technical/runbook.md) → [technical/system-design](technical/system-design.md) → [`SECURITY.md`](../SECURITY.md) → [architecture/post-mortems](architecture/post-mortems/)                                           |
 | **Admin / Integrator**      | [README — daily commands](../README.md) → [technical/runbook](technical/runbook.md) → [`SECURITY.md`](../SECURITY.md)                                                                                                                   |
 | **Security auditor**        | [`SECURITY.md`](../SECURITY.md) → [`.ai/rules/security.md`](../.ai/rules/security.md) → [adr](adr/) → [architecture/dependencies](architecture/dependencies.md)                                                                         |
-| **AI agent (any IDE)**      | [`.ai/README.md`](../.ai/README.md) → [`AGENTS.md`](../AGENTS.md)                                                                                                                                                                       |
-| **Claude Code agent**       | [`CLAUDE.md`](../CLAUDE.md) → [`.claude/`](../.claude/)                                                                                                                                                                                 |
-| **GitHub Copilot agent**    | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md) → [`.github/{instructions,prompts,chatmodes}/`](../.github/)                                                                                                    |
+| **Claude Code agent**       | [`CLAUDE.md`](../CLAUDE.md) → [`.claude/`](../.claude/) → [`.ai/README.md`](../.ai/README.md)                                                                                                                                           |
+| **GitHub Copilot agent**    | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md) → [`.github/{instructions,prompts,chatmodes}/`](../.github/) → [`.ai/README.md`](../.ai/README.md)                                                              |
 
 ## Sections
 

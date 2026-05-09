@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.{html,scss,css}"
+applyTo: '**/*.{html,scss,css}'
 description: Material 3 + Tailwind v4 styling rules
 ---
 
@@ -9,13 +9,13 @@ Full text: [`.ai/rules/styling.md`](../../.ai/rules/styling.md).
 
 ## Decision
 
-| Need                                            | Use                              |
-| ----------------------------------------------- | -------------------------------- |
-| Button, dialog, snackbar, table, form field    | **Angular Material 3**            |
-| Layout (flex/grid), spacing, sizing             | **Tailwind utilities**            |
-| One-off colour, shadow, border-radius           | **Tailwind utility** (mapped to Material tokens) |
-| Theming (palette, typography, density)          | `mat.theme(...)` in app `styles.scss` |
-| Custom presentational widget                    | Angular component + SCSS + Tailwind utilities |
+| Need                                        | Use                                              |
+| ------------------------------------------- | ------------------------------------------------ |
+| Button, dialog, snackbar, table, form field | **Angular Material 3**                           |
+| Layout (flex/grid), spacing, sizing         | **Tailwind utilities**                           |
+| One-off colour, shadow, border-radius       | **Tailwind utility** (mapped to Material tokens) |
+| Theming (palette, typography, density)      | `mat.theme(...)` in app `styles.scss`            |
+| Custom presentational widget                | Angular component + SCSS + Tailwind utilities    |
 
 When both could work, prefer the Material component.
 
@@ -26,15 +26,23 @@ When both could work, prefer the Material component.
 
 html {
   color-scheme: light dark;
-  @include mat.theme((color: (primary: mat.$azure-palette), typography: Roboto, density: 0));
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
-
-@import '../../../styles/tailwind.css';
 ```
+
+List `styles/tailwind.scss` as the first entry in `project.json` `styles` array — do **not** `@use` / `@import` it from another stylesheet.
 
 ## Tailwind v4
 
-- **No `tailwind.config.js`.** Tokens live in `styles/tailwind.css` under `@theme`.
+- **No `tailwind.config.js`.** Tokens live in `styles/tailwind.scss` under `@theme`.
 - Colour utilities map to Material design tokens — `bg-primary`, `text-on-surface`, `border-outline-variant`.
 - Class sort is automatic (Prettier plugin).
 
@@ -55,4 +63,4 @@ html {
 ## Linting
 
 - `eslint-plugin-tailwindcss` in [`eslint.config.mjs`](../../eslint.config.mjs) flags contradicting / unknown classes (allowlist: `ais-*`, `mat-*`, `mdc-*`).
-- `prettier-plugin-tailwindcss` sorts classes; reads tokens from `styles/tailwind.css`.
+- `prettier-plugin-tailwindcss` sorts classes; reads tokens from `styles/tailwind.scss`.

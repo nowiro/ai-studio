@@ -45,10 +45,10 @@ The Orchestrator delegates to specialists. Specialist agents are defined under [
 
 For anything that touches ≥ 2 files OR changes behaviour, the **orchestrator** writes a plan markdown BEFORE delegating:
 
-| Task type                                             | Plan file                                                |
-| ----------------------------------------------------- | -------------------------------------------------------- |
-| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`                   |
-| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md`          |
+| Task type                                             | Plan file                                       |
+| ----------------------------------------------------- | ----------------------------------------------- |
+| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`          |
+| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` |
 
 Use [`docs/ai-workflow/plans/_template.md`](docs/ai-workflow/plans/_template.md) for the orchestrator-owned form. Specialists (frontend-developer, backend-developer, test-engineer, test-scenario-author, doc-writer) refuse delegations whose `delegate:` block lacks `plan:` + `task_id:` fields.
 
@@ -69,7 +69,7 @@ Follow [`.ai/rules/styling.md`](.ai/rules/styling.md):
 
 - **Angular Material 3** components (`mat-button`, `mat-form-field`, `mat-card`, …).
 - **Tailwind v4 utilities** for layout / spacing / typography; colour utilities map to Material design tokens (`bg-primary`, `text-on-surface`, …).
-- No `tailwind.config.js` — config lives in `styles/tailwind.css` under `@theme`.
+- No `tailwind.config.js` — config lives in `styles/tailwind.scss` under `@theme`.
 - No `::ng-deep`, no `[ngClass]`, no `[ngStyle]`.
 
 ## Nx conventions
@@ -114,24 +114,24 @@ Pick one of [`.ai/workflows/`](.ai/workflows/) when the task fits its trigger:
 
 Defined under [`.claude/commands/`](.claude/commands/) (twins under [`.github/prompts/`](.github/prompts/) for Copilot):
 
-| Command                        | What it does                                                          |
-| ------------------------------ | --------------------------------------------------------------------- |
-| `/new-feature <desc>`          | full multi-agent new-feature flow                                     |
-| `/bug-fix <summary>`           | failing test → smallest fix → regression test                         |
-| `/new-library <name> <scope> <type>` | scaffold a new Nx lib via the workflow                          |
-| `/review-pr <pr or branch>`    | code-reviewer + (when relevant) security-auditor                      |
-| `/release [notes]`             | `nx release` end-to-end                                               |
-| `/sync-docs`                   | doc-writer pass against last release                                  |
-| `/migrate-doc <src> <tgt> <type>` | move one legacy doc to canonical template                          |
-| `/audit-docs`                  | run scanners → doc-auditor → open issues                              |
-| `/regenerate-docs`             | rewrite docs from latest audit report                                 |
-| `/generate-test-scenarios [spec-slug]` | extract Given/When/Then → Playwright skeletons               |
-| `/run-test-scenarios [grep]`   | run E2E; switch to Playwright MCP for live debugging on failure       |
-| `/specify <desc>`              | SDD phase 1 — analyst writes `spec.md` (no tech)                      |
-| `/clarify [slug]`              | SDD phase 1.5 — resolve `[?]` markers in `spec.md`                    |
-| `/plan [slug]`                 | SDD phase 2 — architect writes `plan.md` + (if needed) ADR            |
-| `/tasks [slug]`                | SDD phase 3 — orchestrator decomposes plan into `tasks.md` DAG         |
-| `/implement [slug] [task\|all]` | SDD phase 4 — orchestrator executes tasks + DoD gate                  |
+| Command                                | What it does                                                    |
+| -------------------------------------- | --------------------------------------------------------------- |
+| `/new-feature <desc>`                  | full multi-agent new-feature flow                               |
+| `/bug-fix <summary>`                   | failing test → smallest fix → regression test                   |
+| `/new-library <name> <scope> <type>`   | scaffold a new Nx lib via the workflow                          |
+| `/review-pr <pr or branch>`            | code-reviewer + (when relevant) security-auditor                |
+| `/release [notes]`                     | `nx release` end-to-end                                         |
+| `/sync-docs`                           | doc-writer pass against last release                            |
+| `/migrate-doc <src> <tgt> <type>`      | move one legacy doc to canonical template                       |
+| `/audit-docs`                          | run scanners → doc-auditor → open issues                        |
+| `/regenerate-docs`                     | rewrite docs from latest audit report                           |
+| `/generate-test-scenarios [spec-slug]` | extract Given/When/Then → Playwright skeletons                  |
+| `/run-test-scenarios [grep]`           | run E2E; switch to Playwright MCP for live debugging on failure |
+| `/specify <desc>`                      | SDD phase 1 — analyst writes `spec.md` (no tech)                |
+| `/clarify [slug]`                      | SDD phase 1.5 — resolve `[?]` markers in `spec.md`              |
+| `/plan [slug]`                         | SDD phase 2 — architect writes `plan.md` + (if needed) ADR      |
+| `/tasks [slug]`                        | SDD phase 3 — orchestrator decomposes plan into `tasks.md` DAG  |
+| `/implement [slug] [task\|all]`        | SDD phase 4 — orchestrator executes tasks + DoD gate            |
 
 ## Validation gate (before reporting Done)
 
@@ -163,3 +163,27 @@ blocked:
   needs:
     - <user decision | external service | missing input>
 ```
+
+<!-- nx configuration start-->
+<!-- Leave the start & end comments to automatically receive updates. -->
+
+## General Guidelines for working with Nx
+
+- For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects, targets, and dependencies
+- When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
+- Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
+- You have access to the Nx MCP server and its tools, use them to help the user
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
+
+## Scaffolding & Generators
+
+- For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
+
+## When to use nx_docs
+
+- USE for: advanced config options, unfamiliar flags, migration guides, plugin configuration, edge cases
+- DON'T USE for: basic generator syntax (`nx g @nx/react:app`), standard commands, things you already know
+- The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
+
+<!-- nx configuration end-->

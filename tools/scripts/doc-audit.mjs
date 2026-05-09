@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * doc-audit.mjs — combine docs scan + public-API scan into a markdown audit report.
  *
@@ -12,8 +13,8 @@
  * Pure: re-runs the scanners, then computes diffs. No LLM, no network.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, posix, relative, resolve } from 'node:path';
 import process from 'node:process';
 
@@ -133,7 +134,8 @@ async function main() {
   // ---- must-fix: broken internal links ----
   // GitHub renders `../../security/advisories/...`, `../../issues`, `../../pulls`, `../../actions`
   // and similar repo-relative magic paths even though they don't exist on disk. Allow them.
-  const githubMagicRe = /^\.\.\/\.\.\/(security|issues|pulls?|discussions|actions|releases|wiki|projects|labels|milestones|graphs|network|settings)/;
+  const githubMagicRe =
+    /^\.\.\/\.\.\/(security|issues|pulls?|discussions|actions|releases|wiki|projects|labels|milestones|graphs|network|settings)/;
   for (const d of docs.docs) {
     const base = dirname(d.path);
     for (const link of d.links) {
@@ -160,17 +162,40 @@ async function main() {
   // legitimately mention the old name. So are run logs (historical record).
   const driftPatterns = [
     { re: /standalone\s*:\s*true/g, why: 'standalone is implicit in Angular 21+ — drop the explicit flag.' },
-    { re: /@analogjs\/vitest-angular/g, why: 'Angular 21 has native Vitest via @angular/build:unit-test — Analog test bridge no longer needed.' },
-    { re: /tailwind\.config\.(js|cjs|mjs|ts)/g, why: 'Tailwind v4 is CSS-first — config lives in styles/tailwind.css under @theme, not in a JS config.' },
-    { re: /\*ngIf|\*ngFor|\*ngSwitch/g, why: 'Use native control flow (@if / @for / @switch) per .ai/rules/angular.md.' },
-    { re: /@HostBinding|@HostListener/g, why: 'Use the host metadata object instead of decorators per .ai/rules/angular.md.' },
-    { re: /constructor\s*\(\s*(?:private|public|protected|readonly)\s+\w/g, why: 'Use inject() instead of constructor DI per .ai/rules/angular.md.' },
-    { re: /@Input\s*\(\)|@Output\s*\(\)/g, why: 'Use input() / output() signal APIs instead of @Input/@Output decorators per .ai/rules/angular.md.' },
+    {
+      re: /@analogjs\/vitest-angular/g,
+      why: 'Angular 21 has native Vitest via @angular/build:unit-test — Analog test bridge no longer needed.',
+    },
+    {
+      re: /tailwind\.config\.(js|cjs|mjs|ts)/g,
+      why: 'Tailwind v4 is CSS-first — config lives in styles/tailwind.scss under @theme, not in a JS config.',
+    },
+    {
+      re: /\*ngIf|\*ngFor|\*ngSwitch/g,
+      why: 'Use native control flow (@if / @for / @switch) per .ai/rules/angular.md.',
+    },
+    {
+      re: /@HostBinding|@HostListener/g,
+      why: 'Use the host metadata object instead of decorators per .ai/rules/angular.md.',
+    },
+    {
+      re: /constructor\s*\(\s*(?:private|public|protected|readonly)\s+\w/g,
+      why: 'Use inject() instead of constructor DI per .ai/rules/angular.md.',
+    },
+    {
+      re: /@Input\s*\(\)|@Output\s*\(\)/g,
+      why: 'Use input() / output() signal APIs instead of @Input/@Output decorators per .ai/rules/angular.md.',
+    },
     { re: /@NgModule\s*\(/g, why: 'New code should be standalone — NgModule is legacy in Angular 21+.' },
-    { re: /new BrowserAnimationsModule|BrowserAnimationsModule/g, why: 'Use provideAnimationsAsync() instead of BrowserAnimationsModule.' },
+    {
+      re: /new BrowserAnimationsModule|BrowserAnimationsModule/g,
+      why: 'Use provideAnimationsAsync() instead of BrowserAnimationsModule.',
+    },
   ];
   const isHistoricalDoc = (path) =>
-    path.includes('docs/adr/') || path.includes('docs/ai-workflow/runs/') || path.includes('docs/architecture/post-mortems/');
+    path.includes('docs/adr/') ||
+    path.includes('docs/ai-workflow/runs/') ||
+    path.includes('docs/architecture/post-mortems/');
 
   for (const d of docs.docs) {
     if (isHistoricalDoc(d.path)) continue;
@@ -181,7 +206,7 @@ async function main() {
         findings.mustFix.push({
           id: nextId(),
           kind: 'stale-fact',
-          file: `${d.path}:${(txt.slice(0, matches[0].index).split('\n')).length}`,
+          file: `${d.path}:${txt.slice(0, matches[0].index).split('\n').length}`,
           problem: `Doc mentions \`${matches[0][0]}\` (${matches.length} occurrence${matches.length > 1 ? 's' : ''}). ${why}`,
           remediation: 'Verify against current code; rewrite or remove the stale claim.',
         });
@@ -232,7 +257,7 @@ async function main() {
         seen.add(ident);
         if (!/(Component|Service|Store|Api|Module|Pipe|Directive|Guard|Resolver|Repository)$/.test(ident)) continue;
         if (!allExportNames.has(ident)) {
-          const line = (txt.slice(0, m.index).split('\n')).length;
+          const line = txt.slice(0, m.index).split('\n').length;
           findings.shouldFix.push({
             id: nextId(),
             kind: 'dangling-reference',

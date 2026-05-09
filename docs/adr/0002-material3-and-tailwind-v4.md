@@ -32,7 +32,7 @@ We want both speed-of-shipping and visual coherence with Material design, on Ang
 
 Chosen **option 3**.
 
-Rationale: Material 3 in v21 ships theme tokens as **CSS custom properties** (`--mat-sys-*`). Tailwind v4 is **CSS-first** and reads tokens via `@theme` from a CSS file. We bridge the two in `styles/tailwind.css` so every Tailwind utility colour resolves to a Material design token. Components stay Material; layout / spacing stays Tailwind; theming changes once.
+Rationale: Material 3 in v21 ships theme tokens as **CSS custom properties** (`--mat-sys-*`). Tailwind v4 is **CSS-first** and reads tokens via `@theme` from a stylesheet. We bridge the two in `styles/tailwind.scss` (Tailwind v4 syntax is plain CSS; Sass passes it through to PostCSS) so every Tailwind utility colour resolves to a Material design token. Components stay Material; layout / spacing stays Tailwind; theming changes once.
 
 ### Consequences
 
@@ -68,7 +68,7 @@ Rationale: Material 3 in v21 ships theme tokens as **CSS custom properties** (`-
 - [x] Pin `@angular/material@^21` and `@angular/cdk@^21` in `package.json`.
 - [x] Pin `tailwindcss@^4` and `@tailwindcss/postcss@^4`.
 - [x] Add `postcss.config.mjs` with the Tailwind PostCSS plugin.
-- [x] Create `styles/tailwind.css` with `@theme` mapping Material design tokens.
+- [x] Create `styles/tailwind.scss` with `@theme` mapping Material design tokens.
 - [x] Add `.ai/rules/styling.md`.
 - [x] Add `eslint-plugin-tailwindcss` + `prettier-plugin-tailwindcss`.
 - [x] Update Frontend Developer agent example.

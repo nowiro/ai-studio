@@ -22,7 +22,7 @@
     "**/playwright-report": true,
     "**/test-results": true
   },
-  "tailwindCSS.experimental.configFile": "styles/tailwind.css",
+  "tailwindCSS.experimental.configFile": "styles/tailwind.scss",
   "tailwindCSS.classAttributes": ["class", "ngClass", "data-class"],
   "tailwindCSS.classFunctions": ["clsx", "cn", "tw"],
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,

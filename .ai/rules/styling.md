@@ -13,13 +13,13 @@ AI Studio uses **Angular Material 21** (Material 3) for components and **Tailwin
 
 ## 1. Decision matrix
 
-| Need                                            | Use                              |
-| ----------------------------------------------- | -------------------------------- |
-| Button, dialog, snackbar, table, form field    | **Angular Material**              |
-| Layout (flex/grid), spacing, sizing             | **Tailwind utilities**            |
-| One-off colour, shadow, border-radius           | **Tailwind utility** (mapped to Material tokens — see below) |
-| Theming (colour roles, typography, density)    | **`mat.theme(...)`** in app `styles.scss` |
-| Custom presentational widget owned by us        | Angular component + SCSS + Tailwind utilities in template |
+| Need                                        | Use                                                          |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| Button, dialog, snackbar, table, form field | **Angular Material**                                         |
+| Layout (flex/grid), spacing, sizing         | **Tailwind utilities**                                       |
+| One-off colour, shadow, border-radius       | **Tailwind utility** (mapped to Material tokens — see below) |
+| Theming (colour roles, typography, density) | **`mat.theme(...)`** in app `styles.scss`                    |
+| Custom presentational widget owned by us    | Angular component + SCSS + Tailwind utilities in template    |
 
 If both could work, prefer the Material component. We don't reinvent buttons, switches, dialogs.
 
@@ -31,12 +31,12 @@ List Tailwind **before** the app SCSS so the Material reset patch loads first:
 
 ```json
 "styles": [
-  "styles/tailwind.css",
+  "styles/tailwind.scss",
   "apps/<name>/src/styles.scss"
 ]
 ```
 
-Do **not** `@import` `tailwind.css` from inside `styles.scss`. Sass turns CSS `@import`s into runtime browser imports — PostCSS never sees them and Tailwind's utilities won't be generated.
+Do **not** `@use` / `@import` `tailwind.scss` from inside another stylesheet. The Angular bundler runs each entry independently — listing them separately is what lets PostCSS / Tailwind scan the `@source` globs.
 
 ### `src/styles.scss` — Material theming only
 
@@ -59,17 +59,17 @@ html {
 }
 ```
 
-Material's `mat.theme()` writes `--mat-sys-*` CSS custom properties onto `<html>`. Tailwind's `@theme` block in `styles/tailwind.css` maps those to Tailwind tokens via `var(--mat-sys-…)`. Because CSS variables are resolved at paint time, the two bundles don't need to be in the same file.
+Material's `mat.theme()` writes `--mat-sys-*` CSS custom properties onto `<html>`. Tailwind's `@theme` block in `styles/tailwind.scss` maps those to Tailwind tokens via `var(--mat-sys-…)`. Because CSS variables are resolved at paint time, the two bundles don't need to be in the same file.
 
 ## 3. Tailwind v4 — CSS-first config
 
-- **No `tailwind.config.js`.** All design tokens live in `styles/tailwind.css` under `@theme`.
+- **No `tailwind.config.js`.** All design tokens live in `styles/tailwind.scss` under `@theme`.
 - Tokens that exist in Material map to Material variables (`var(--mat-sys-primary)` etc.) so utility colours and Material components agree.
 - New tokens go through PR review — adding ad-hoc colours is forbidden.
 
 ## 4. Material — the "themable component" path
 
-- Use **Material 3** components only (`mat-button`, `mat-form-field`, etc., *not* `mat-legacy-*`).
+- Use **Material 3** components only (`mat-button`, `mat-form-field`, etc., _not_ `mat-legacy-*`).
 - Override component styles via `@include mat.<component>-overrides(...)` instead of deep selectors.
 - For dark mode: `color-scheme: light dark` on `<html>` + `mat.theme()` handles the rest.
 - Never reach into Material's internal DOM with `::ng-deep` — use the override mixins or design tokens.
@@ -78,15 +78,19 @@ Material's `mat.theme()` writes `--mat-sys-*` CSS custom properties onto `<html>
 
 ```html
 <button
+  class="w-full rounded-lg md:w-auto"
   mat-flat-button
-  class="w-full md:w-auto rounded-lg"
-  data-testid="checkout-pay">
+  data-testid="checkout-pay"
+>
   Pay
 </button>
 
 <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
   @for (item of items(); track item.id) {
-    <ais-product-card [item]="item" class="rounded-xl" />
+  <ais-product-card
+    [item]="item"
+    class="rounded-xl"
+  />
   }
 </div>
 ```
@@ -118,7 +122,7 @@ Material's `mat.theme()` writes `--mat-sys-*` CSS custom properties onto `<html>
 ## 9. Linting
 
 - `eslint-plugin-tailwindcss` enforces utility ordering, no contradicting classes, no arbitrary values when a token exists.
-- `prettier-plugin-tailwindcss` sorts utility classes deterministically. Sorting reads from `styles/tailwind.css` (configured via `tailwindStylesheet` in `.prettierrc`).
+- `prettier-plugin-tailwindcss` sorts utility classes deterministically. Sorting reads from `styles/tailwind.scss` (configured via `tailwindStylesheet` in `.prettierrc`).
 
 ## 10. Bundle hygiene
 

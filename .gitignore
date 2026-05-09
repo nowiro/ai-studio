@@ -74,3 +74,6 @@ desktop.ini
 .netlify/
 .vercel/
 storybook-static/
+
+.nx/polygraph
+.claude/worktrees

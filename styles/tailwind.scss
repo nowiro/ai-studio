@@ -1,23 +1,26 @@
 /* ---------------------------------------------------------------------------
- * AI Studio — Tailwind CSS v4 workspace base layer
+ * AI Studio — Tailwind CSS v4 workspace base layer (SCSS entry).
  *
  * INTEGRATION (per app):
  *   List this file as the FIRST entry in your project.json styles array:
  *
  *   "styles": [
- *     "styles/tailwind.css",
+ *     "styles/tailwind.scss",
  *     "apps/<name>/src/styles.scss"
  *   ]
  *
- *   Do NOT @import this file from styles.scss — Sass would emit a CSS runtime
- *   import instead of inlining it, breaking PostCSS processing.
+ *   Do NOT @use / @import this file from another stylesheet — the Angular
+ *   bundler runs each entry independently so PostCSS / Tailwind can scan
+ *   the @source globs without Sass collapsing them.
  *
  * Tailwind v4 is CSS-first: no tailwind.config.js. Tokens live under @theme
  * below and map to Material 3 system tokens so utility classes and Material
- * components share the same colour / radius / type scale.
+ * components share the same colour / radius / type scale. The @theme / @layer
+ * / @source / @import "tailwindcss" directives are valid CSS — Sass passes
+ * them through unchanged, PostCSS handles the rest.
  * --------------------------------------------------------------------------- */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tell Tailwind v4 where to scan for utility classes in the monorepo.
  * Paths are relative to this file (workspace root/styles/). */

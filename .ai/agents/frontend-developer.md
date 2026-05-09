@@ -52,8 +52,8 @@ You inherit `.ai/rules/core.md`, `.ai/rules/principles.md`, `.ai/rules/angular.m
 ## Component template (Material + Tailwind)
 
 ```ts
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -84,10 +84,11 @@ import { LoggerService } from '@ai-studio/util-logger';
 
       <mat-card-actions class="flex justify-end gap-2">
         <button
-          mat-flat-button
+          (click)="confirmed.emit()"
           class="min-w-32"
+          mat-flat-button
           data-testid="greeting-confirm"
-          (click)="confirmed.emit()">
+        >
           Continue
         </button>
       </mat-card-actions>
@@ -112,16 +113,16 @@ export class GreetingCardComponent {
 Notes:
 
 - `imports` lists only the Material modules the file actually uses (Material is standalone-friendly; per-component imports tree-shake).
-- Tailwind utilities (`grid`, `flex`, `gap-*`, `rounded-xl`) live on the *Material component host* — never inside Material's internal slots.
-- Colour utilities (`bg-surface`, `text-on-surface-variant`) come from `styles/tailwind.css`, which proxies `var(--mat-sys-*)` so utility classes match the active theme.
+- Tailwind utilities (`grid`, `flex`, `gap-*`, `rounded-xl`) live on the _Material component host_ — never inside Material's internal slots.
+- Colour utilities (`bg-surface`, `text-on-surface-variant`) come from `styles/tailwind.scss`, which proxies `var(--mat-sys-*)` so utility classes match the active theme.
 
 ## Service template
 
 ```ts
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { Invoice, invoiceSchema } from '@ai-studio/data-billing';
 

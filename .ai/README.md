@@ -53,14 +53,13 @@ Editor-, IDE- and CLI-agnostic. Files here are committed to git and reviewed lik
 
 `.ai/` is the universal source. Each AI tool gets a thin wrapper that **points** at `.ai/` instead of duplicating it:
 
-| Tool             | Wrapper location                                                                 |
-| ---------------- | -------------------------------------------------------------------------------- |
-| Claude Code      | [`CLAUDE.md`](../CLAUDE.md), [`.claude/`](../.claude/) (subagents, slash, hooks) |
-| GitHub Copilot   | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md), [`.github/instructions/`](../.github/instructions/), [`.github/prompts/`](../.github/prompts/), [`.github/chatmodes/`](../.github/chatmodes/) |
-| Any other agent  | [`AGENTS.md`](../AGENTS.md) (open AGENTS.md convention)                           |
-| VS Code MCP      | [`.vscode/mcp.json`](../.vscode/mcp.json)                                         |
+| Tool           | Wrapper location                                                                                                                                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code    | [`CLAUDE.md`](../CLAUDE.md), [`.claude/`](../.claude/) (subagents, slash, hooks)                                                                                                                                       |
+| GitHub Copilot | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md), [`.github/instructions/`](../.github/instructions/), [`.github/prompts/`](../.github/prompts/), [`.github/chatmodes/`](../.github/chatmodes/) |
+| VS Code MCP    | [`.vscode/mcp.json`](../.vscode/mcp.json)                                                                                                                                                                              |
 
-`pnpm ai:validate` enforces parity across these locations.
+The repo intentionally supports **only** Claude Code and GitHub Copilot — `pnpm ai:validate` enforces parity between these two wrappers and the `.ai/` source of truth.
 
 ## Pillars
 

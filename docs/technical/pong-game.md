@@ -64,17 +64,18 @@ The full specification lives at [`docs/analytical/specs/2026-05-08-pong-game/spe
 
 ## Tester — test pyramid
 
-```
-                ┌─────────────────────────┐
-                │  E2E (Playwright, 10)   │   ← 1 test per AC
-                └───────────▲─────────────┘
-            ┌───────────────┴────────────────┐
-            │  Integration (Vitest + jsdom)  │   ← scene transitions via GameApi
-            └───────────────▲────────────────┘
-        ┌───────────────────┴────────────────────┐
-        │  Unit (Vitest)                          │   ← pure logic + state
-        │  collision · scoring · ai · pong-state  │
-        └─────────────────────────────────────────┘
+```mermaid
+flowchart TB
+  E2E["E2E — Playwright (10 tests)<br/>1 test per acceptance criterion · chromium-only"]
+  INT["Integration — Vitest + jsdom<br/>scene transitions via GameApi"]
+  UNIT["Unit — Vitest (35 tests)<br/>collision · scoring · ai · pong-state"]
+  E2E --> INT --> UNIT
+  classDef e2e fill:#7c3aed,stroke:#5b21b6,color:#fff;
+  classDef int fill:#2563eb,stroke:#1e40af,color:#fff;
+  classDef unit fill:#059669,stroke:#047857,color:#fff;
+  class E2E e2e
+  class INT int
+  class UNIT unit
 ```
 
 ### Test scenarios

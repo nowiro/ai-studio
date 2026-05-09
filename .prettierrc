@@ -19,7 +19,7 @@
     "prettier-plugin-organize-attributes",
     "prettier-plugin-tailwindcss"
   ],
-  "tailwindStylesheet": "./styles/tailwind.css",
+  "tailwindStylesheet": "./styles/tailwind.scss",
   "tailwindFunctions": ["clsx", "cn", "tw"],
   "importOrder": ["^@angular/(.*)$", "<THIRD_PARTY_MODULES>", "^@ai-studio/(.*)$", "^[./]"],
   "importOrderSeparation": true,

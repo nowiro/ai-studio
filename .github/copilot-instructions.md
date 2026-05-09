@@ -30,10 +30,10 @@ You are working inside **AI Studio** — an Angular 21 + Material 3 + Tailwind v
 
 For anything touching ≥ 2 files OR changing behaviour, the **orchestrator** writes a plan markdown BEFORE delegating:
 
-| Task type                                             | Plan file                                                |
-| ----------------------------------------------------- | -------------------------------------------------------- |
-| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`                   |
-| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md`          |
+| Task type                                             | Plan file                                       |
+| ----------------------------------------------------- | ----------------------------------------------- |
+| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`          |
+| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` |
 
 Use [`docs/ai-workflow/plans/_template.md`](../docs/ai-workflow/plans/_template.md) for the orchestrator-owned form. Specialists (frontend-developer, backend-developer, test-engineer, test-scenario-author, doc-writer) refuse delegations whose context lacks a `plan:` field + `task_id:`.
 
@@ -50,7 +50,7 @@ Use [`docs/ai-workflow/plans/_template.md`](../docs/ai-workflow/plans/_template.
 
 - **Material 3** components: `mat-button`, `mat-card`, `mat-form-field`, `mat-table`, …
 - **Tailwind v4 utilities** for layout / spacing / typography. Colour utilities map to Material design tokens (`bg-primary`, `text-on-surface`, …).
-- No `tailwind.config.js` — config lives in `styles/tailwind.css` under `@theme`.
+- No `tailwind.config.js` — config lives in `styles/tailwind.scss` under `@theme`.
 - No `::ng-deep`, no `[ngClass]`, no `[ngStyle]`.
 
 ## Nx conventions
@@ -87,7 +87,7 @@ VS Code must have these settings enabled (already in [`.vscode/settings.json`](.
 ```jsonc
 {
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
-  "chat.promptFiles": true
+  "chat.promptFiles": true,
 }
 ```
 
