@@ -25,25 +25,41 @@ A starter you clone when you want:
 10. **GitHub** templates for issues (bug, feature, AI task, ADR, incident, tech-debt, docs) and PRs.
 11. Documentation in three layers: **technical**, **analytical**, **programming** — plus the AI workflow + monthly auto-audit (`docs-audit.yml`).
 
-## Quickstart
+## Quickstart — one command after clone
 
 ```bash
-# 1. Install
-pnpm install
+git clone https://github.com/nowiro/ai-studio.git
+cd ai-studio
+pnpm install                          # install deps so the bootstrap script can run
+pnpm bootstrap                        # → idempotent, cross-platform setup
+```
 
-# 2. Validate the AI configuration
+`pnpm bootstrap` (= `node tools/scripts/bootstrap.mjs`) runs cross-platform on **Windows / macOS / Linux** and does:
+
+1. Verifies Node version against `.nvmrc` and that `pnpm` is on `PATH`.
+2. Installs dependencies (skipped if `node_modules` already exists; `--reinstall` to force).
+3. Runs `pnpm prepare` to install husky git hooks.
+4. Runs the **trinity baseline check** — warns on drift across `ai-mcp-alm` / `ai-mcp-devtools`.
+5. Seeds a user-profile config (only when `config.example.json` exists — `ai-studio` does not need one today; the sibling MCP repos do).
+
+Flags: `--reinstall` · `--skip-install` · `--skip-trinity` · `--skip-config`. Re-running is safe.
+
+## Working in the repo
+
+```bash
+# Validate the AI configuration
 pnpm ai:validate
 
-# 3. Generate your first app (Tailwind wired in by the generator)
+# Generate your first app (Tailwind wired in by the generator)
 pnpm exec nx g @nx/angular:app studio --add-tailwind --style=scss
 
-# 4. Add Angular Material 3 (theme + CDK + animations)
+# Add Angular Material 3 (theme + CDK + animations)
 pnpm exec nx g @angular/material:ng-add --project=studio --theme=custom --typography --animations=enabled
 
-# 5. Generate a feature lib
+# Generate a feature lib
 pnpm exec nx g @nx/angular:lib feature/welcome --tags=scope:feature,type:feature
 
-# 6. Run it
+# Run it
 pnpm exec nx serve studio
 ```
 

@@ -6,12 +6,20 @@
 
 You are working inside **AI Studio** — an Angular Nx monorepo with a multi-agent AI workflow.
 
+## First-time setup
+
+```bash
+pnpm install
+pnpm bootstrap     # one-shot, idempotent — see README "Quickstart"
+```
+
 ## Always do this on session start
 
-1. Read [`.ai/README.md`](.ai/README.md).
-2. Read every file in [`.ai/rules/`](.ai/rules/). They are non-negotiable. Especially [`core.md`](.ai/rules/core.md) and [`principles.md`](.ai/rules/principles.md) (golden rules — DRY, SOLID, KISS, YAGNI).
+1. Read [`.ai/README.md`](.ai/README.md) and [`.ai/architecture.md`](.ai/architecture.md) (canonical nowiro AI architecture reference — trinity baseline).
+2. Read every file in [`.ai/rules/`](.ai/rules/). They are non-negotiable. Especially [`core.md`](.ai/rules/core.md), [`principles.md`](.ai/rules/principles.md) (DRY, SOLID, KISS, YAGNI), and [`production-readiness.md`](.ai/rules/production-readiness.md) (six must-haves before any agent feature ships).
 3. If your task is non-trivial (≥ 3 steps, or touches ≥ 2 files), spawn the **orchestrator** subagent and let it plan.
-4. Use the MCP servers configured in `.claude/settings.json` and `.ai/mcp.json` (`context7`, `playwright`, `nx`, `angular-cli`) before writing code that touches an external API.
+4. Use the MCP servers configured in `.claude/settings.json` and `.ai/mcp.json` (`context7`, `playwright`, `nx`, `angular-cli`, `memory`) before writing code that touches an external API.
+5. If you touch any [trinity baseline file](docs/architecture/nowiro-projects-map.md#cross-cutting-invariants), run `pnpm trinity:check` (also enforced on pre-push).
 
 ## Cross-tool note
 

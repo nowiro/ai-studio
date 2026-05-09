@@ -36,17 +36,21 @@
       "description": "Angular CLI: ng generate, ng add, schematic catalog, AI-friendly scaffolding hints from angular.dev/ai.",
       "purpose": "angular-scaffolding",
       "env": {}
+    },
+    "memory": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory@latest"],
+      "description": "Persistent knowledge graph (entities, relations, observations) — Anthropic-official. Cross-session persistence: orchestrator state survives between conversations. Memory MCP is documented in .ai/architecture.md §4.",
+      "purpose": "session-memory",
+      "env": {
+        "MEMORY_FILE_PATH": "${userHome}/.config/nowiro/ai-studio/memory.json"
+      }
     }
   },
   "policies": {
-    "discovery_order": ["context7", "nx", "angular-cli", "playwright"],
+    "discovery_order": ["context7", "nx", "angular-cli", "playwright", "memory"],
     "fallback": "When an MCP server is unavailable, document the gap in the response and continue with built-in tools — never silently skip the call.",
-    "forbidden_actions_via_mcp": [
-      "git push",
-      "npm publish",
-      "pnpm release",
-      "rm -rf",
-      "git reset --hard"
-    ]
+    "forbidden_actions_via_mcp": ["git push", "npm publish", "pnpm release", "rm -rf", "git reset --hard"]
   }
 }

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * check-trinity.mjs — verify the "trinity baseline" is byte-identical across
  * `ai-studio`, `ai-mcp-alm`, and `ai-mcp-devtools`.
@@ -25,9 +26,12 @@ const BASELINE = [
   '.ai/rules/core.md',
   '.ai/rules/principles.md',
   '.ai/rules/security.md',
+  '.ai/rules/production-readiness.md',
   '.ai/agents/orchestrator.md',
   '.ai/workflows/spec-driven.md',
+  '.ai/architecture.md',
   'docs/ai-workflow/plans/_template.md',
+  'tools/scripts/bootstrap.mjs',
 ];
 
 // Sibling repo names — the trinity, minus self.
@@ -87,9 +91,13 @@ async function main() {
   }
 
   if (siblingsChecked === 0) {
-    console.log(`✓ ${self}: baseline OK (no siblings checked — clone ai-mcp-alm and ai-mcp-devtools next to this repo to verify trinity sync).`);
+    console.log(
+      `✓ ${self}: baseline OK (no siblings checked — clone ai-mcp-alm and ai-mcp-devtools next to this repo to verify trinity sync).`,
+    );
   } else {
-    console.log(`✓ trinity in sync (${self} + ${siblingsChecked} sibling${siblingsChecked > 1 ? 's' : ''}, ${BASELINE.length} baseline files).`);
+    console.log(
+      `✓ trinity in sync (${self} + ${siblingsChecked} sibling${siblingsChecked > 1 ? 's' : ''}, ${BASELINE.length} baseline files).`,
+    );
   }
 }
 
