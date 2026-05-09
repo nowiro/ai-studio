@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "game-pong-ui",
+  "projectType": "library",
+  "sourceRoot": "libs/game-pong-ui/src",
+  "tags": ["scope:game", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/game-pong-ui/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

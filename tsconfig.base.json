@@ -33,7 +33,10 @@
     "strictPropertyInitialization": true,
     "alwaysStrict": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ai-studio/game-pong": ["libs/game-pong/src/index.ts"],
+      "@ai-studio/game-pong-ui": ["libs/game-pong-ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp", "dist", "coverage"]
 }

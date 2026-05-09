@@ -21,15 +21,11 @@
   ],
   "tailwindStylesheet": "./styles/tailwind.css",
   "tailwindFunctions": ["clsx", "cn", "tw"],
-  "importOrder": [
-    "^@angular/(.*)$",
-    "<THIRD_PARTY_MODULES>",
-    "^@ai-studio/(.*)$",
-    "^[./]"
-  ],
+  "importOrder": ["^@angular/(.*)$", "<THIRD_PARTY_MODULES>", "^@ai-studio/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "importOrderCaseInsensitive": true,
+  "importOrderParserPlugins": ["typescript", "decorators-legacy", "classProperties"],
   "attributeGroups": [
     "^(id|name)$",
     "$ANGULAR_STRUCTURAL_DIRECTIVE",

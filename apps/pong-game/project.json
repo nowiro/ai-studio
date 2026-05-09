@@ -1,0 +1,48 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "pong-game",
+  "projectType": "application",
+  "sourceRoot": "apps/pong-game/src",
+  "tags": ["scope:game", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/pong-game",
+        "index": "apps/pong-game/src/index.html",
+        "browser": "apps/pong-game/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/pong-game/tsconfig.app.json",
+        "assets": ["apps/pong-game/src/favicon.ico"],
+        "styles": ["apps/pong-game/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{ "type": "initial", "maximumWarning": "500kB", "maximumError": "1mB" }],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": { "buildTarget": "pong-game:build:production" },
+        "development": { "buildTarget": "pong-game:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/pong-game/tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}
