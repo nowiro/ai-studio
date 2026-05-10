@@ -13,10 +13,15 @@ pnpm install
 pnpm bootstrap     # one-shot, idempotent — see README "Quickstart"
 ```
 
+## Language preference
+
+**Chat language: Polish.** Respond to the user in Polish unless they switch.
+**Code, git, and tooling-readable surfaces: English.** See [`.ai/rules/language.md`](.ai/rules/language.md) for the full PL/EN split (docs PL · code EN · git EN · MCP tool descriptions EN).
+
 ## Always do this on session start
 
 1. Read [`.ai/README.md`](.ai/README.md) and [`.ai/architecture.md`](.ai/architecture.md) (canonical nowiro AI architecture reference — trinity baseline).
-2. Read every file in [`.ai/rules/`](.ai/rules/). They are non-negotiable. Especially [`core.md`](.ai/rules/core.md), [`principles.md`](.ai/rules/principles.md) (DRY, SOLID, KISS, YAGNI), and [`production-readiness.md`](.ai/rules/production-readiness.md) (six must-haves before any agent feature ships).
+2. Read every file in [`.ai/rules/`](.ai/rules/). They are non-negotiable. Especially [`core.md`](.ai/rules/core.md), [`principles.md`](.ai/rules/principles.md) (DRY, SOLID, KISS, YAGNI), [`production-readiness.md`](.ai/rules/production-readiness.md) (six must-haves before any agent feature ships), [`language.md`](.ai/rules/language.md) (PL/EN preference), and [`llm-optimization.md`](.ai/rules/llm-optimization.md) (token budgets and response shaping).
 3. If your task is non-trivial (≥ 3 steps, or touches ≥ 2 files), spawn the **orchestrator** subagent and let it plan.
 4. Use the MCP servers configured in `.claude/settings.json` and `.ai/mcp.json` (`context7`, `playwright`, `nx`, `angular-cli`, `memory`) before writing code that touches an external API.
 5. If you touch any [trinity baseline file](docs/architecture/nowiro-projects-map.md#cross-cutting-invariants), run `pnpm trinity:check` (also enforced on pre-push).

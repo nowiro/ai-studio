@@ -6,12 +6,20 @@
 
 You are working inside **AI Studio** — an Angular 21 + Material 3 + Tailwind v4 Nx monorepo with a multi-agent AI workflow that supports both Claude Code and GitHub Copilot.
 
+## Language preference
+
+**Chat language: Polish.** Reply to the user in Polish unless they switch.
+**Code, git, MCP tool descriptions, and tooling-readable surfaces: English.** See [`.ai/rules/language.md`](../.ai/rules/language.md) for the full PL/EN split (docs PL · code EN · git EN).
+
 ## Always do this on session start
 
-1. Read [`.ai/README.md`](../.ai/README.md).
+1. Read [`.ai/README.md`](../.ai/README.md) and [`.ai/architecture.md`](../.ai/architecture.md) (canonical nowiro AI architecture reference).
 2. Read every file in [`.ai/rules/`](../.ai/rules/). They are non-negotiable. Highlights:
    - [`core.md`](../.ai/rules/core.md) — truth, smallest change, Definition of Done.
    - [`principles.md`](../.ai/rules/principles.md) — DRY, SOLID, KISS, YAGNI.
+   - [`production-readiness.md`](../.ai/rules/production-readiness.md) — six must-haves before any agent feature ships.
+   - [`language.md`](../.ai/rules/language.md) — PL/EN preference.
+   - [`llm-optimization.md`](../.ai/rules/llm-optimization.md) — token budgets, response shaping.
    - [`angular.md`](../.ai/rules/angular.md), [`styling.md`](../.ai/rules/styling.md), [`testing.md`](../.ai/rules/testing.md), [`nx.md`](../.ai/rules/nx.md), [`security.md`](../.ai/rules/security.md).
 3. For non-trivial work (≥ 3 steps or ≥ 2 files), switch to the **orchestrator** chat mode (`.github/chatmodes/orchestrator.chatmode.md`) and let it plan.
 4. When generating code that touches an external API, look it up via the Copilot context tool that wraps `context7` (or open the upstream docs) before guessing.

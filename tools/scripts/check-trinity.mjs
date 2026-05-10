@@ -27,6 +27,8 @@ const BASELINE = [
   '.ai/rules/principles.md',
   '.ai/rules/security.md',
   '.ai/rules/production-readiness.md',
+  '.ai/rules/language.md',
+  '.ai/rules/llm-optimization.md',
   '.ai/agents/orchestrator.md',
   '.ai/workflows/spec-driven.md',
   '.ai/architecture.md',
