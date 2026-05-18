@@ -124,6 +124,17 @@ PR).
 `popularityScore`). Each shop's `testing.md` defers to that suite for
 the cross-cutting AC coverage.
 
+## Upcoming work (drafts)
+
+Two roadmap plans are pending `/clarify` + `/plan` review. They follow
+the same SDD + TDD trail; once their `[?]` markers resolve, the
+orchestrator schedules execution.
+
+| Plan                                                                                 | Status | Adds                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Dashboard + Portal + Microfrontends](../ai-workflow/plans/2026-05-18-portal-mfe.md) | draft  | `apps/portal` (4200) + `apps/dashboard` (4211); every existing app published as a Native-Federation remote and lazy-loaded into the portal. 5 chart panels on the dashboard. Shared singletons (cart, auth) hoisted to portal scope. |
+| [UI-kit wrapper library](../ai-workflow/plans/2026-05-18-ui-kit-wrappers.md)         | draft  | `libs/ui-kit` wrapping ~17 Material primitives behind a stable `<ais-…>` API. ESLint rule forbids direct `@angular/material/*` imports outside `libs/ui-kit`. Sets up a single seam for a future Material → Spartan / PrimeNG swap.  |
+
 ## Document lifecycle
 
 ```mermaid
