@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kreator danych osobowych — AI Studio</title>
+    <!--
+      `<base href="/">` is REQUIRED for SPA deep links to work after a hard refresh.
+      Without it, the browser resolves relative script URLs (`main.js`,
+      `polyfills.js`, lazy chunks) against the current path — so refreshing
+      `/wizard/5` makes the browser fetch `/wizard/main.js` instead of `/main.js`,
+      the dev server SPA-falls back to `index.html`, and the browser tries to
+      execute HTML as JavaScript → blank page.
+    -->
+    <base href="/" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-surface text-on-surface">
+    <ais-root></ais-root>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "wizard-util-pdf",
+  "projectType": "library",
+  "sourceRoot": "libs/wizard-util-pdf/src",
+  "tags": ["scope:wizard", "type:util"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/wizard-util-pdf/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.{ts,html}"
+applyTo: '**/*.{ts,html}'
 description: Angular 21 conventions for every TS/HTML file (distilled from angular.dev/ai)
 ---
 
@@ -40,6 +40,17 @@ Full text: [`.ai/rules/angular.md`](../../.ai/rules/angular.md).
 - `provideXxx()` factories in `bootstrapApplication`.
 - `provideHttpClient(withFetch(), withInterceptors([...]))`.
 - `provideRouter(routes, withViewTransitions(), withComponentInputBinding())`.
+
+## Routing
+
+- Lazy-load every feature via `loadComponent: () => import('…').then((m) => m.X)`.
+- `<base href="/">` is mandatory in every app's `index.html` — without it a
+  hard refresh on a multi-segment URL gives a blank page (relative script URLs
+  resolve against the current directory, dev server SPA-falls back, browser
+  tries to execute HTML as JS).
+- No magic-string URLs. Each app exports an `as const` route registry (`XxxPath`
+  for `Routes[].path`, `XxxNav` for typed `RouterLink`/`Router.navigate` arrays).
+  See `.ai/rules/angular.md` §5 for the full pattern + example.
 
 ## Forbidden
 

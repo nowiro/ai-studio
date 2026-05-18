@@ -5,7 +5,7 @@ type: rules
 scope: angular
 priority: 2
 upstream: https://angular.dev/ai
-version: 2.0.0
+version: 2.2.0
 ---
 
 # Angular v21+ rules
@@ -58,6 +58,56 @@ Distilled from **<https://angular.dev/ai>** and the official Angular style guide
 - Use route-level `providers` for feature-scoped DI.
 - Use `CanMatchFn` over deprecated `CanLoad`.
 - Pass route params to inputs via `withComponentInputBinding()`.
+- **`<base href="/">` is mandatory** in every app's `index.html`. Without it,
+  a hard refresh on a multi-segment route like `/wizard/5` gives a blank page —
+  the browser resolves relative script URLs against the current directory
+  (`/wizard/`) instead of the document root, the dev server SPA-falls back to
+  `index.html` for the script URL, and the browser tries to execute HTML as JS.
+- **No magic-string URLs.** Every app exposes a route registry that pairs
+  `path:` strings with typed navigation helpers. Always import from the
+  registry — never inline `'/some/url'` or `['/some', id]` in a template,
+  `routerLink`, or `Router.navigate(...)`.
+
+  Use `as const` objects (not TypeScript `enum`) per the repo convention
+  (`form-helpers.ts → ROOT_PATHS`):
+
+  ```ts
+  // libs/<scope>-feature/src/<scope>-routes.ts  (or apps/<app>/src/app/app-routes.ts)
+  export type WizardStepIndex = 1 | 2 | 3 | 4 | 5;
+
+  export const WizardPath = {
+    Dashboard: '',
+    Wizard: 'wizard',
+    WizardStep: 'wizard/:step',
+    Wildcard: '**',
+  } as const;
+
+  export const WizardNav = {
+    dashboard: (): readonly ['/'] => ['/'] as const,
+    wizardStep: (step: WizardStepIndex): readonly ['/wizard', WizardStepIndex] =>
+      ['/wizard', step] as const,
+  } as const;
+  ```
+
+  Then:
+
+  ```ts
+  // app.routes.ts
+  { path: WizardPath.Dashboard, ... },
+  { path: WizardPath.WizardStep, ... },
+  { path: WizardPath.Wildcard, redirectTo: WizardPath.Dashboard },
+
+  // component.ts
+  protected readonly homeLink = WizardNav.dashboard();
+  void this.router.navigate(WizardNav.wizardStep(3));
+
+  // template.html
+  <a [routerLink]="homeLink">Pulpit</a>
+  <a [routerLink]="WizardNav.wizardStep(tile.step)">Otwórz</a>
+  ```
+
+  A grep for `routerLink="/` or `Router.navigate(['/` in changed files is a
+  red flag during review — route literals belong in the registry.
 
 ## 6. AI-specific guardrails (from angular.dev/ai)
 

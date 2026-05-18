@@ -1,0 +1,88 @@
+@use '@angular/material' as mat;
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Personal-data-wizard — global styles
+ *
+ * Theme: Material 3 (Azure primary, Rose tertiary), pinned to light scheme.
+ * Density -2 makes form fields compact enough to fit a 5-step wizard on a
+ * laptop without scrolling between rows.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family:
+    'Inter',
+    'Roboto',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  // Pin light scheme so Material's surface tokens stay consistent with the
+  // body background (system "dark mode" would flip mat-sys-surface to dark
+  // while the stepper container stays light → mismatch).
+  color-scheme: light;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface-container);
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$rose-palette,
+      ),
+      typography: Roboto,
+      density: -2,
+    )
+  );
+}
+
+body {
+  background: var(--mat-sys-surface-container);
+}
+
+/* ─── Native form artefacts (date pickers) — make them look native ─── */
+input[type='date'],
+input[type='datetime-local'] {
+  color-scheme: light;
+}
+
+/* ─── Mat-stepper visual polish — content padding + indicator color ─── */
+.mat-stepper-horizontal,
+.mat-stepper-vertical {
+  background: transparent !important;
+}
+
+.mat-horizontal-content-container {
+  padding: 1.5rem 0 0 0 !important;
+}
+
+.mat-vertical-content {
+  padding: 0 1rem 1rem 1.5rem !important;
+}
+
+/* Pre-line lets long stepper labels wrap instead of being clipped with "…". */
+.mat-step-label {
+  white-space: pre-line !important;
+}
+
+/* ─── Scrollbar — slim, themed ─── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mat-sys-outline-variant) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mat-sys-outline-variant);
+  border-radius: 5px;
+}

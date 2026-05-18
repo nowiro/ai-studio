@@ -35,7 +35,14 @@
     "baseUrl": ".",
     "paths": {
       "@ai-studio/game-pong": ["libs/game-pong/src/index.ts"],
-      "@ai-studio/game-pong-ui": ["libs/game-pong-ui/src/index.ts"]
+      "@ai-studio/game-pong-ui": ["libs/game-pong-ui/src/index.ts"],
+      "@ai-studio/shared-app-shell": ["libs/shared-app-shell/src/index.ts"],
+      "@ai-studio/wizard-data": ["libs/wizard-data/src/index.ts"],
+      "@ai-studio/wizard-dev-tools": ["libs/wizard-dev-tools/src/index.ts"],
+      "@ai-studio/wizard-feature": ["libs/wizard-feature/src/index.ts"],
+      "@ai-studio/wizard-ui": ["libs/wizard-ui/src/index.ts"],
+      "@ai-studio/wizard-util-pdf": ["libs/wizard-util-pdf/src/index.ts"],
+      "@ai-studio/wizard-util-validators": ["libs/wizard-util-validators/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "coverage"]

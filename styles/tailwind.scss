@@ -16,11 +16,12 @@
  * Tailwind v4 is CSS-first: no tailwind.config.js. Tokens live under @theme
  * below and map to Material 3 system tokens so utility classes and Material
  * components share the same colour / radius / type scale. The @theme / @layer
- * / @source / @import "tailwindcss" directives are valid CSS — Sass passes
- * them through unchanged, PostCSS handles the rest.
+ * / @source directives are valid CSS — Sass passes them through unchanged,
+ * PostCSS handles the rest. We use `@use 'tailwindcss'` (not the deprecated
+ * `@import`) so Dart Sass 3.0 won't break this file when it drops `@import`.
  * --------------------------------------------------------------------------- */
 
-@import 'tailwindcss';
+@use 'tailwindcss';
 
 /* Tell Tailwind v4 where to scan for utility classes in the monorepo.
  * Paths are relative to this file (workspace root/styles/). */

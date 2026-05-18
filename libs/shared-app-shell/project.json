@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "shared-app-shell",
+  "projectType": "library",
+  "sourceRoot": "libs/shared-app-shell/src",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/shared-app-shell/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

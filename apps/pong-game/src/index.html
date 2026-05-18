@@ -3,6 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <title>Pong — AI Studio</title>
+    <!--
+      `<base href="/">` so any future deep link (e.g. `/highscore/123`) loads
+      script/asset URLs from the document root rather than the current path.
+      Without it, refreshing on a multi-segment URL gives a blank page because
+      the browser resolves `main.js` relative to the current directory.
+    -->
+    <base href="/" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1"

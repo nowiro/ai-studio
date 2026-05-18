@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "wizard-util-validators",
+  "projectType": "library",
+  "sourceRoot": "libs/wizard-util-validators/src",
+  "tags": ["scope:wizard", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/wizard-util-validators"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/wizard-util-validators"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/wizard-util-validators/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

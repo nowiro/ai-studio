@@ -35,11 +35,7 @@
     },
     "lint": {
       "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ]
+      "inputs": ["default", "{workspaceRoot}/eslint.config.mjs", "{workspaceRoot}/tools/eslint-rules/**/*"]
     },
     "e2e": {
       "cache": true,
@@ -107,5 +103,5 @@
   "parallel": 5,
   "useInferencePlugins": true,
   "useLegacyCache": false,
-  "nxCloudAccessToken": null
+  "neverConnectToCloud": true
 }
