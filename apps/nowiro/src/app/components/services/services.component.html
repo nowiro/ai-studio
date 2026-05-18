@@ -1,0 +1,23 @@
+<section id="services">
+  <div class="container">
+    <h2 class="section-title">{{ t().services.sectionTitle }}</h2>
+    <p class="section-subtitle">{{ t().services.sectionSubtitle }}</p>
+
+    <div class="services-grid">
+      @for (service of t().services.items; track service.title) {
+        <mat-card
+          class="service-card"
+          appearance="outlined"
+        >
+          <mat-card-content>
+            <div class="service-icon-wrapper">
+              <mat-icon class="service-icon">{{ service.icon }}</mat-icon>
+            </div>
+            <h3 class="service-title">{{ service.title }}</h3>
+            <p class="service-description">{{ service.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+export {
+  TODAY,
+  TERMS,
+  CLASS_SECTIONS,
+  SUBJECTS,
+  STUDENTS,
+  TEACHERS,
+  MEMBERS,
+  TIMETABLE,
+  GRADES,
+  ATTENDANCE,
+} from './seed.js';

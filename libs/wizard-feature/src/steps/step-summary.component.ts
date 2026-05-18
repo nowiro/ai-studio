@@ -4,7 +4,7 @@
  * that pipes the payload through {@link PdfExportService}.
  */
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { AbstractControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { type FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -393,10 +393,10 @@ export class StepSummaryComponent {
     return Object.keys(errors).map((key) => ROOT_ERROR_LABELS[key] ?? `Nieznany błąd: ${key}`);
   }
 
-  protected get termsControl(): AbstractControl {
+  protected get termsControl(): FormControl<boolean> {
     const ctrl = this.rootForm().get('meta.acceptTerms');
     if (ctrl === null) throw new Error('Missing meta.acceptTerms control.');
-    return ctrl;
+    return ctrl as FormControl<boolean>;
   }
 
   protected downloadPdf(): void {

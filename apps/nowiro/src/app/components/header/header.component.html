@@ -1,0 +1,95 @@
+<header [class.scrolled]="scrolled()">
+  <div class="header-inner container">
+    <button
+      (click)="scrollTo('hero')"
+      class="logo"
+      aria-label="NOWIRO – strona główna"
+    >
+      <img
+        class="logo-mark"
+        src="assets/logos/nowiro-logo.png"
+        alt="NOWIRO"
+      />
+    </button>
+
+    <nav class="desktop-nav">
+      <button
+        (click)="scrollTo('about')"
+        class="nav-link"
+      >
+        {{ t().header.about }}
+      </button>
+      <button
+        (click)="scrollTo('services')"
+        class="nav-link"
+      >
+        {{ t().header.services }}
+      </button>
+      <button
+        (click)="scrollTo('experience')"
+        class="nav-link"
+      >
+        {{ t().header.experience }}
+      </button>
+      <button
+        (click)="scrollTo('contact')"
+        class="nav-link"
+      >
+        {{ t().header.contact }}
+      </button>
+    </nav>
+
+    <ais-language-toggle
+      [flagSrc]="nextFlag()"
+      [label]="nextLabel()"
+      [ariaLabel]="langAriaLabel()"
+      (languageToggle)="navigateLang()"
+      class="lang-toggle-desktop"
+    />
+
+    <button
+      (click)="toggleMobileMenu()"
+      class="mobile-toggle"
+      mat-icon-button
+      aria-label="Menu"
+    >
+      <mat-icon>{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  @if (mobileMenuOpen()) {
+    <nav class="mobile-nav">
+      <button
+        (click)="scrollTo('about')"
+        class="mobile-nav-link"
+      >
+        {{ t().header.about }}
+      </button>
+      <button
+        (click)="scrollTo('services')"
+        class="mobile-nav-link"
+      >
+        {{ t().header.services }}
+      </button>
+      <button
+        (click)="scrollTo('experience')"
+        class="mobile-nav-link"
+      >
+        {{ t().header.experience }}
+      </button>
+      <button
+        (click)="scrollTo('contact')"
+        class="mobile-nav-link"
+      >
+        {{ t().header.contact }}
+      </button>
+      <ais-language-toggle
+        [flagSrc]="nextFlag()"
+        [label]="nextLabel()"
+        [ariaLabel]="langAriaLabel()"
+        (languageToggle)="navigateLang()"
+        class="lang-toggle-mobile"
+      />
+    </nav>
+  }
+</header>

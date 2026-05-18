@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "school-journal",
+  "projectType": "application",
+  "prefix": "ais",
+  "sourceRoot": "apps/school-journal/src",
+  "tags": ["scope:school-journal", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/school-journal",
+        "index": "apps/school-journal/src/index.html",
+        "browser": "apps/school-journal/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/school-journal/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/school-journal/src/favicon.ico"],
+        "styles": ["styles/tailwind.scss", "apps/school-journal/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "750kB", "maximumError": "1.5mB" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kB", "maximumError": "10kb" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4207
+      },
+      "configurations": {
+        "production": { "buildTarget": "school-journal:build:production" },
+        "development": { "buildTarget": "school-journal:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/school-journal/tsconfig.app.json --noEmit"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

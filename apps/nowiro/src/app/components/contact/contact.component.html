@@ -1,0 +1,66 @@
+<section id="contact">
+  <div class="container">
+    <h2 class="section-title">{{ t().contact.sectionTitle }}</h2>
+    <p class="section-subtitle">{{ t().contact.sectionSubtitle }}</p>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        @for (item of t().contact.items; track item.label) {
+          <div class="contact-item">
+            <mat-icon class="contact-icon">{{ item.icon }}</mat-icon>
+            <div>
+              <div class="contact-label">{{ item.label }}</div>
+              @if (item.href) {
+                <a
+                  [href]="item.href"
+                  class="contact-value"
+                >
+                  {{ item.value }}
+                </a>
+              } @else {
+                <div class="contact-value">{{ item.value }}</div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <mat-card
+        class="company-card"
+        appearance="outlined"
+      >
+        <mat-card-content>
+          <h3 class="company-card-title">{{ t().contact.companyCardTitle }}</h3>
+          <mat-divider />
+
+          <div class="company-details">
+            <div class="detail-row">
+              <span class="detail-label">{{ t().contact.labels.company }}</span>
+              <span class="detail-value">{{ companyData.name }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ t().contact.labels.nip }}</span>
+              <span class="detail-value">{{ companyData.nip }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ t().contact.labels.regon }}</span>
+              <span class="detail-value">{{ companyData.regon }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ t().contact.labels.address }}</span>
+              <span class="detail-value">{{ companyData.address }}, {{ companyData.city }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ t().contact.labels.province }}</span>
+              <span class="detail-value">{{ t().contact.labels.voivodeship }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ t().contact.labels.activeSince }}</span>
+              <span class="detail-value">{{ companyData.activeSince }}{{ t().contact.labels.activeSinceSuffix }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>

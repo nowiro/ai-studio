@@ -1,0 +1,64 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 5-pointed star, tip up, outer r=13, inner r=5.6 -->
+    <polygon fill="#FFCC00" id="s"
+             points="0,-13 3.29,-4.53 12.36,-4.02 5.33,1.73 7.64,10.52 0,5.6 -7.64,10.52 -5.33,1.73 -12.36,-4.02 -3.29,-4.53" />
+  </defs>
+
+  <!-- ── Background ── -->
+  <circle cx="256" cy="256" fill="#003399" r="256" />
+
+  <!-- ── Outer gold ring ── -->
+  <circle cx="256" cy="256" fill="none" r="241" stroke="#FFCC00" stroke-width="18" />
+
+  <!-- ── 12 EU stars at r=210 ── -->
+  <use href="#s" transform="translate(256,46)" />
+  <use href="#s" transform="translate(361,74)" />
+  <use href="#s" transform="translate(438,151)" />
+  <use href="#s" transform="translate(466,256)" />
+  <use href="#s" transform="translate(438,361)" />
+  <use href="#s" transform="translate(361,438)" />
+  <use href="#s" transform="translate(256,466)" />
+  <use href="#s" transform="translate(151,438)" />
+  <use href="#s" transform="translate(74,361)" />
+  <use href="#s" transform="translate(46,256)" />
+  <use href="#s" transform="translate(74,151)" />
+  <use href="#s" transform="translate(151,74)" />
+
+  <!-- ── Vault door: flat dark fill + bold gold border ── -->
+  <circle cx="256" cy="256" fill="#001F6B" r="148" stroke="#FFCC00" stroke-width="14" />
+
+  <!-- ── 4 locking bolts at cardinal points (r=100), bold circles ── -->
+  <circle cx="256" cy="156" fill="#FFCC00" r="15" />
+  <circle cx="256" cy="156" fill="#001F6B" r="6" />
+  <circle cx="356" cy="256" fill="#FFCC00" r="15" />
+  <circle cx="356" cy="256" fill="#001F6B" r="6" />
+  <circle cx="256" cy="356" fill="#FFCC00" r="15" />
+  <circle cx="256" cy="356" fill="#001F6B" r="6" />
+  <circle cx="156" cy="256" fill="#FFCC00" r="15" />
+  <circle cx="156" cy="256" fill="#001F6B" r="6" />
+
+  <!-- ── 6 spokes: from hub edge (r=36) to r=98, each at 0/60/120/180/240/300° ── -->
+  <!-- 0°  top   -->
+  <line stroke="#FFCC00" stroke-linecap="round" stroke-width="11" x1="256" x2="256" y1="220" y2="158" />
+  <!-- 60° upper-right -->
+  <line stroke="#FFCC00" stroke-linecap="round" stroke-width="11" x1="287" x2="341" y1="238" y2="207" />
+  <!-- 120° lower-right -->
+  <line stroke="#FFCC00" stroke-linecap="round" stroke-width="11" x1="287" x2="341" y1="274" y2="305" />
+  <!-- 180° bottom -->
+  <line stroke="#FFCC00" stroke-linecap="round" stroke-width="11" x1="256" x2="256" y1="292" y2="354" />
+  <!-- 240° lower-left -->
+  <line stroke="#FFCC00" stroke-linecap="round" stroke-width="11" x1="225" x2="171" y1="274" y2="305" />
+  <!-- 300° upper-left -->
+  <line stroke="#FFCC00" stroke-linecap="round" stroke-width="11" x1="225" x2="171" y1="238" y2="207" />
+
+  <!-- ── Inner hub ring ── -->
+  <circle cx="256" cy="256" fill="#001F6B" r="36" stroke="#FFCC00" stroke-width="11" />
+
+  <!-- ── Center disc ── -->
+  <circle cx="256" cy="256" fill="#FFCC00" r="17" />
+
+  <!-- ── Keyhole (navy on gold center) ── -->
+  <circle cx="256" cy="251" fill="#001F6B" r="6" />
+  <rect fill="#001F6B" height="11" rx="2" width="8" x="252" y="253" />
+</svg>

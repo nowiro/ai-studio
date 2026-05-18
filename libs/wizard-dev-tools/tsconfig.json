@@ -5,7 +5,7 @@
     "declaration": true,
     "types": ["node"],
     "moduleResolution": "bundler",
-    "module": "esnext",
+    "module": "preserve",
     "target": "es2022",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

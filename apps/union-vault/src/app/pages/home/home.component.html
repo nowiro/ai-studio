@@ -1,0 +1,116 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-content">
+    <h1>🔒 UnionVault.eu</h1>
+    <p class="hero-subtitle">{{ resource().heroSubtitle }}</p>
+    <p class="hero-description">
+      {{ resource().heroDescription }}
+    </p>
+    <p class="hero-country">
+      {{ resource().currentCountryLabel }}:
+      <strong>
+        <span class="fi fi-{{ countryService.selectedCountry().routeCode }} hero-flag"></span>
+        {{ selectedCountryLabel() }}
+      </strong>
+      · {{ countryService.selectedCountry().currency }} ({{ countryService.selectedCountry().currencyCode }})
+    </p>
+  </div>
+</section>
+
+<!-- Features Chips -->
+<section class="features-section">
+  <mat-chip-set aria-label="Kluczowe cechy platformy">
+    @for (feature of features(); track feature.label) {
+      <mat-chip highlighted>
+        <mat-icon matChipAvatar>{{ feature.icon }}</mat-icon>
+        {{ feature.label }}
+      </mat-chip>
+    }
+  </mat-chip-set>
+</section>
+
+<!-- Module Cards -->
+<section class="modules-section">
+  <h2 class="section-title">{{ resource().modulesTitle }}</h2>
+  <div class="modules-grid">
+    @for (module of modules(); track module.title) {
+      <mat-card
+        class="module-card"
+        appearance="outlined"
+      >
+        <mat-card-header>
+          <mat-icon
+            class="module-icon"
+            mat-card-avatar
+          >
+            {{ module.icon }}
+          </mat-icon>
+          <mat-card-title>{{ module.title }}</mat-card-title>
+          <mat-card-subtitle>{{ module.status }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ module.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <a
+            [attr.aria-label]="module.actionLabel + ': ' + module.title"
+            [routerLink]="moduleRoute(module.route)"
+            mat-button
+          >
+            {{ module.actionLabel }}
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+</section>
+
+<section class="discover-section">
+  <div class="discover-section__header">
+    <div>
+      <p class="discover-section__eyebrow">{{ localizationService.resource().discover.badge }}</p>
+      <h2 class="section-title">{{ resource().exploreTitle }}</h2>
+      <p class="discover-section__description">{{ resource().exploreDescription }}</p>
+    </div>
+    <a
+      [routerLink]="discoverRoute()"
+      mat-stroked-button
+    >
+      {{ localizationService.resource().header.navDiscover }}
+    </a>
+  </div>
+
+  <div class="discover-grid">
+    @for (card of discoverCards(); track card.title) {
+      <mat-card
+        class="discover-card"
+        appearance="outlined"
+      >
+        <mat-card-content>
+          <mat-icon>{{ card.icon }}</mat-icon>
+          <strong>{{ card.title }}</strong>
+          <p>{{ card.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</section>
+
+<!-- Info Section -->
+<section class="info-section">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <div class="info-grid">
+        @for (item of infoItems(); track item.title) {
+          <div class="info-item">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <div>
+              <strong>{{ item.title }}</strong>
+              <p>{{ item.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

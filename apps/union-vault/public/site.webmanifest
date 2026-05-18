@@ -1,0 +1,29 @@
+{
+  "name": "UnionVault.eu",
+  "short_name": "UnionVault",
+  "description": "Your trusted vault of EU financial data — oferty kredytowe, kursy walut i ceny nieruchomości z 27 krajów Unii Europejskiej.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#001F6B",
+  "theme_color": "#001F6B",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "tire-feature-catalogue",
+  "$schema_comment": "Catalogue page + product detail + facet filters for tire-shop.",
+  "projectType": "library",
+  "sourceRoot": "libs/tire-feature-catalogue/src",
+  "tags": ["scope:tire-shop", "type:feature"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/tire-feature-catalogue/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

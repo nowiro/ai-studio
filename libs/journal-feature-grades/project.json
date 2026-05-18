@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "journal-feature-grades",
+  "$schema_comment": "Grades-by-subject view + teacher grade editor for school-journal.",
+  "projectType": "library",
+  "sourceRoot": "libs/journal-feature-grades/src",
+  "tags": ["scope:school-journal", "type:feature"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/journal-feature-grades/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

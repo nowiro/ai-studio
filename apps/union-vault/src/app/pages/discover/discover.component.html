@@ -1,0 +1,91 @@
+<section class="discover-hero">
+  <div class="discover-hero__copy">
+    <p class="discover-hero__badge">{{ resource().badge }}</p>
+    <h1>{{ resource().title }}</h1>
+    <p class="discover-hero__description">{{ resource().description }}</p>
+  </div>
+
+  <div class="discover-hero__stats">
+    <mat-chip-set aria-label="Discover stats">
+      <mat-chip highlighted>{{ resource().stats.tools }}</mat-chip>
+      <mat-chip highlighted>{{ resource().stats.countries }}</mat-chip>
+      <mat-chip highlighted>{{ resource().stats.datasets }}</mat-chip>
+    </mat-chip-set>
+  </div>
+</section>
+
+<section class="discover-shell">
+  <div
+    class="discover-tabs"
+    role="tablist"
+  >
+    @for (tab of tabs(); track tab.id) {
+      <button
+        [class.discover-tab--active]="tab.id === activeTab()"
+        [attr.aria-pressed]="tab.id === activeTab()"
+        (click)="selectTab(tab.id)"
+        class="discover-tab"
+        type="button"
+      >
+        <mat-icon>{{ tab.icon }}</mat-icon>
+        <span>{{ tab.label }}</span>
+      </button>
+    }
+  </div>
+
+  <mat-card
+    class="discover-panel"
+    appearance="outlined"
+  >
+    <mat-card-content>
+      <div class="discover-panel__header">
+        <div>
+          <h2>{{ currentTab().title }}</h2>
+          <p>{{ currentTab().description }}</p>
+        </div>
+
+        <label class="discover-search">
+          <span>{{ resource().searchLabel }}</span>
+          <input
+            [value]="searchQuery()"
+            [placeholder]="currentTab().searchPlaceholder"
+            (input)="updateSearch(searchInput.value)"
+            #searchInput
+            type="search"
+          />
+        </label>
+      </div>
+
+      @if (filteredCards().length) {
+        <div class="discover-cards">
+          @for (card of filteredCards(); track card.title) {
+            <mat-card
+              class="discover-card"
+              appearance="outlined"
+            >
+              <mat-card-content>
+                <p class="discover-card__metric">{{ card.metric }}</p>
+                <strong>{{ card.title }}</strong>
+                <p>{{ card.description }}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                <a
+                  [routerLink]="cardRoute(currentTab().route)"
+                  mat-button
+                >
+                  {{ card.actionLabel }}
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <div class="discover-empty">
+          <mat-icon>travel_explore</mat-icon>
+          <strong>{{ currentTab().emptyTitle }}</strong>
+          <p>{{ currentTab().emptyDescription }}</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</section>

@@ -1,0 +1,267 @@
+// Hero
+.hero-section {
+  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 50%, #01579b 100%);
+  color: white;
+  padding: 64px 24px;
+  text-align: center;
+
+  @media (max-width: 600px) {
+    padding: 40px 16px;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 16px;
+    letter-spacing: -1px;
+
+    @media (max-width: 600px) {
+      font-size: 2rem;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin: 0 0 24px;
+    opacity: 0.9;
+
+    @media (max-width: 600px) {
+      font-size: 1.125rem;
+    }
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    opacity: 0.85;
+
+    @media (max-width: 600px) {
+      font-size: 1rem;
+    }
+  }
+
+  .hero-country {
+    font-size: 0.9375rem;
+    margin: 0;
+    opacity: 0.8;
+
+    strong {
+      opacity: 1;
+      font-weight: 600;
+
+      .hero-flag {
+        width: 1.25em;
+        height: 1.25em;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+// Features
+.features-section {
+  padding: 32px 24px;
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+
+  mat-chip-set {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+// Modules
+.modules-section {
+  padding: 48px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 32px 16px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 500;
+    margin: 0 0 32px;
+    color: #212121;
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .module-card {
+    display: flex;
+    flex-direction: column;
+
+    .module-icon {
+      color: #1565c0;
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+    }
+
+    mat-card-content p {
+      color: #616161;
+      line-height: 1.5;
+    }
+
+    mat-card-actions {
+      margin-top: auto;
+      padding: 0 16px 16px;
+    }
+  }
+}
+
+.discover-section {
+  padding: 0 24px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 0 16px 32px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    @media (max-width: 800px) {
+      align-items: start;
+      flex-direction: column;
+    }
+  }
+
+  &__eyebrow {
+    margin: 0 0 8px;
+    color: #1565c0;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  &__description {
+    margin: 8px 0 0;
+    color: #616161;
+    line-height: 1.6;
+    max-width: 760px;
+  }
+}
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.discover-card {
+  border-radius: 20px;
+  overflow: hidden;
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    min-height: 184px;
+    background:
+      radial-gradient(circle at top right, rgb(21 101 192 / 0.12), transparent 35%),
+      linear-gradient(180deg, #fff, #f8fbff);
+  }
+
+  mat-icon {
+    color: #1565c0;
+  }
+
+  strong {
+    color: #212121;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0;
+    color: #616161;
+    line-height: 1.5;
+  }
+}
+
+// Info
+.info-section {
+  padding: 0 24px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 0 16px 32px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 16px 0;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .info-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+
+    mat-icon {
+      color: #1565c0;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #212121;
+    }
+
+    p {
+      margin: 0;
+      color: #616161;
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+  }
+}

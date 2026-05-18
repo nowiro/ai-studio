@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "library-data",
+  "$schema_comment": "Models + signal services + pure logic for the library demo.",
+  "projectType": "library",
+  "sourceRoot": "libs/library-data/src",
+  "tags": ["scope:library", "type:data-access", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/library-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/library-data"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/library-data/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# Native build scripts allow-list (pnpm 11+). Without this, pnpm warns at every
+# install. We trust these packages — they ship native bindings (file watchers,
+# esbuild binary, LMDB) or post-install codemods (nx, core-js shims).
+allowBuilds:
+  "@parcel/watcher": true
+  core-js: true
+  esbuild: true
+  less: true
+  lmdb: true
+  msgpackr-extract: true
+  nx: true
+  # unrs-resolver: native bindings used by eslint-plugin-import-x for fast module
+  # resolution. Trusted (Rust binary auto-fetched per platform).
+  unrs-resolver: true

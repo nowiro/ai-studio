@@ -1,0 +1,382 @@
+<section class="contact-page">
+  <header class="page-header">
+    <p class="eyebrow">UnionVault.eu · Contact Desk</p>
+    <h1>Skontaktuj się z zespołem UnionVault.eu</h1>
+    <p class="page-subtitle">
+      W jednym miejscu obsługujemy pytania produktowe, współpracę biznesową oraz zgłoszenia dotyczące ochrony danych i
+      zgodności regulacyjnej.
+    </p>
+  </header>
+
+  <div class="contact-layout">
+    <div class="contact-main">
+      <section
+        class="section-card"
+        aria-labelledby="contact-methods-heading"
+      >
+        <div class="section-heading">
+          <p class="section-label">Kanały kontaktu</p>
+          <h2 id="contact-methods-heading">Wybierz właściwy zespół</h2>
+        </div>
+
+        <div class="channel-grid">
+          @for (channel of channels(); track channel.email) {
+            <article class="channel-card">
+              <h3>{{ channel.title }}</h3>
+              <p>{{ channel.description }}</p>
+              <dl class="channel-meta">
+                <div>
+                  <dt>E-mail</dt>
+                  <dd>
+                    <a [href]="'mailto:' + channel.email">{{ channel.email }}</a>
+                  </dd>
+                </div>
+
+                @if (channel.phone) {
+                  <div>
+                    <dt>Telefon</dt>
+                    <dd>
+                      <a [href]="'tel:' + channel.phone.replaceAll(' ', '')">{{ channel.phone }}</a>
+                    </dd>
+                  </div>
+                }
+
+                <div>
+                  <dt>Dostępność</dt>
+                  <dd>{{ channel.availability }}</dd>
+                </div>
+              </dl>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section
+        class="section-card"
+        aria-labelledby="contact-form-heading"
+      >
+        <div class="section-heading">
+          <p class="section-label">Formularz kontaktowy</p>
+          <h2 id="contact-form-heading">Napisz do nas</h2>
+          <p class="section-text">
+            Formularz jest przygotowany do późniejszej integracji z centralną obsługą routingu i bezpiecznym backendem.
+            W sprawach pilnych skorzystaj z adresów e-mail powyżej.
+          </p>
+        </div>
+
+        @if (receipt(); as confirmation) {
+          <div
+            class="status-banner status-banner--success"
+            aria-live="polite"
+            role="status"
+          >
+            <h3>Formularz został zweryfikowany</h3>
+            <p>
+              Zgłoszenie dla adresu
+              <strong>{{ confirmation.email }}</strong>
+              zostało przygotowane w trybie
+              <strong>{{ topicSummary(confirmation.topic).label }}</strong>
+              .
+            </p>
+            <p>{{ topicSummary(confirmation.topic).responseTime }} po integracji z warstwą wysyłki.</p>
+          </div>
+        }
+
+        @if (invalidFieldSummaries().length) {
+          <div
+            class="status-banner status-banner--error"
+            role="alert"
+          >
+            <h3>Formularz wymaga uzupełnienia</h3>
+            <ul>
+              @for (item of invalidFieldSummaries(); track item.field) {
+                <li>
+                  <strong>{{ item.label }}:</strong>
+                  {{ item.message }}
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        <form
+          [formGroup]="contactForm"
+          (ngSubmit)="submit()"
+          class="contact-form"
+          novalidate
+        >
+          <fieldset>
+            <legend>Dane kontaktowe</legend>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="contact-full-name">Imię i nazwisko</label>
+                <input
+                  id="contact-full-name"
+                  [attr.aria-describedby]="describedBy('fullName')"
+                  [attr.aria-invalid]="showError('fullName')"
+                  autocomplete="name"
+                  formControlName="fullName"
+                  maxlength="80"
+                  minlength="2"
+                  required
+                  type="text"
+                />
+                @if (showError('fullName')) {
+                  <p
+                    id="contact-fullName-error"
+                    class="field-error"
+                  >
+                    {{ getErrorMessage('fullName') }}
+                  </p>
+                }
+              </div>
+
+              <div class="form-field">
+                <label for="contact-email">Adres e-mail</label>
+                <input
+                  id="contact-email"
+                  [attr.aria-describedby]="describedBy('email')"
+                  [attr.aria-invalid]="showError('email')"
+                  autocomplete="email"
+                  formControlName="email"
+                  inputmode="email"
+                  maxlength="120"
+                  required
+                  type="email"
+                />
+                @if (showError('email')) {
+                  <p
+                    id="contact-email-error"
+                    class="field-error"
+                  >
+                    {{ getErrorMessage('email') }}
+                  </p>
+                }
+              </div>
+
+              <div class="form-field">
+                <label for="contact-organization">
+                  Organizacja
+                  <span>(opcjonalnie)</span>
+                </label>
+                <input
+                  id="contact-organization"
+                  [attr.aria-describedby]="describedBy('organization')"
+                  [attr.aria-invalid]="showError('organization')"
+                  autocomplete="organization"
+                  formControlName="organization"
+                  maxlength="120"
+                  type="text"
+                />
+                @if (showError('organization')) {
+                  <p
+                    id="contact-organization-error"
+                    class="field-error"
+                  >
+                    {{ getErrorMessage('organization') }}
+                  </p>
+                }
+              </div>
+
+              <div class="form-field">
+                <label for="contact-country">Kraj, którego dotyczy sprawa</label>
+                <input
+                  id="contact-country"
+                  [attr.aria-describedby]="describedBy('country')"
+                  [attr.aria-invalid]="showError('country')"
+                  autocomplete="country-name"
+                  formControlName="country"
+                  maxlength="56"
+                  minlength="2"
+                  required
+                  type="text"
+                />
+                @if (showError('country')) {
+                  <p
+                    id="contact-country-error"
+                    class="field-error"
+                  >
+                    {{ getErrorMessage('country') }}
+                  </p>
+                }
+              </div>
+
+              <div class="form-field form-field--full">
+                <label for="contact-topic">Temat kontaktu</label>
+                <select
+                  id="contact-topic"
+                  [attr.aria-describedby]="describedBy('topic', 'contact-topic-hint')"
+                  [attr.aria-invalid]="showError('topic')"
+                  formControlName="topic"
+                  required
+                >
+                  @for (topic of topics(); track topic.id) {
+                    <option [value]="topic.id">{{ topic.label }}</option>
+                  }
+                </select>
+                <p
+                  id="contact-topic-hint"
+                  class="field-hint"
+                >
+                  {{ selectedTopic().description }}
+                </p>
+                @if (showError('topic')) {
+                  <p
+                    id="contact-topic-error"
+                    class="field-error"
+                  >
+                    {{ getErrorMessage('topic') }}
+                  </p>
+                }
+              </div>
+
+              <div class="form-field form-field--full">
+                <label for="contact-message">Wiadomość</label>
+                <textarea
+                  id="contact-message"
+                  [attr.aria-describedby]="describedBy('message', 'contact-message-hint contact-message-count')"
+                  [attr.aria-invalid]="showError('message')"
+                  formControlName="message"
+                  maxlength="1500"
+                  minlength="40"
+                  required
+                  rows="7"
+                ></textarea>
+                <div class="field-footer">
+                  <p
+                    id="contact-message-hint"
+                    class="field-hint"
+                  >
+                    Opisz moduł, kraj i oczekiwany rezultat. Minimalna długość wiadomości to 40 znaków.
+                  </p>
+                  <p
+                    id="contact-message-count"
+                    [class.field-count--warning]="messageCharactersLeft() < 150"
+                    class="field-count"
+                  >
+                    {{ messageLength() }} / {{ maxMessageLength }}
+                  </p>
+                </div>
+                @if (showError('message')) {
+                  <p
+                    id="contact-message-error"
+                    class="field-error"
+                  >
+                    {{ getErrorMessage('message') }}
+                  </p>
+                }
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Zgody i wysyłka</legend>
+
+            <label
+              class="checkbox-field"
+              for="contact-consent"
+            >
+              <input
+                id="contact-consent"
+                [attr.aria-describedby]="describedBy('consent', 'contact-consent-hint')"
+                [attr.aria-invalid]="showError('consent')"
+                formControlName="consent"
+                required
+                type="checkbox"
+              />
+              <span>
+                Potwierdzam, że mogę przekazać powyższe dane kontaktowe i oczekuję odpowiedzi od UnionVault.eu.
+              </span>
+            </label>
+            <p
+              id="contact-consent-hint"
+              class="field-hint"
+            >
+              Formularz nie służy do przekazywania danych szczególnie wrażliwych ani informacji płatniczych.
+            </p>
+            @if (showError('consent')) {
+              <p
+                id="contact-consent-error"
+                class="field-error"
+              >
+                {{ getErrorMessage('consent') }}
+              </p>
+            }
+
+            <div class="form-actions">
+              <button
+                class="primary-action"
+                type="submit"
+              >
+                Zweryfikuj formularz
+              </button>
+              <a
+                class="secondary-action"
+                href="mailto:support@unionvault.eu"
+              >
+                Wyślij e-mail bezpośrednio
+              </a>
+            </div>
+          </fieldset>
+        </form>
+      </section>
+    </div>
+
+    <aside
+      class="contact-sidebar section-card"
+      aria-labelledby="contact-sidebar-heading"
+    >
+      <div class="section-heading">
+        <p class="section-label">Informacje dodatkowe</p>
+        <h2 id="contact-sidebar-heading">Jak przyspieszyć odpowiedź</h2>
+      </div>
+
+      <section
+        class="sidebar-block"
+        aria-labelledby="selected-topic-heading"
+      >
+        <h3 id="selected-topic-heading">Aktualnie wybrany temat</h3>
+        <p class="topic-badge">{{ selectedTopic().label }}</p>
+        <p>{{ selectedTopic().responseTime }}</p>
+        <p>{{ selectedTopic().description }}</p>
+      </section>
+
+      <section
+        class="sidebar-block"
+        aria-labelledby="guidelines-heading"
+      >
+        <h3 id="guidelines-heading">Dobre praktyki zgłoszenia</h3>
+        <ul class="guideline-list">
+          @for (guideline of guidelines(); track guideline.title) {
+            <li>
+              <strong>{{ guideline.title }}</strong>
+              <p>{{ guideline.description }}</p>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section
+        class="sidebar-block"
+        aria-labelledby="legal-contact-heading"
+      >
+        <h3 id="legal-contact-heading">Kontakt prawny i rejestrowy</h3>
+        <dl class="legal-details">
+          <div>
+            <dt>Obsługa europejska</dt>
+            <dd>UnionVault.eu · Warsaw, Poland</dd>
+          </div>
+          <div>
+            <dt>E-mail compliance</dt>
+            <dd><a href="mailto:compliance@unionvault.eu">compliance@unionvault.eu</a></dd>
+          </div>
+          <div>
+            <dt>Bezpieczeństwo</dt>
+            <dd><a href="mailto:security@unionvault.eu">security@unionvault.eu</a></dd>
+          </div>
+        </dl>
+      </section>
+    </aside>
+  </div>
+</section>

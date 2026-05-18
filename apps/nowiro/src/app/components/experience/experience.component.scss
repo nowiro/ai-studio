@@ -1,0 +1,133 @@
+section {
+  background: #fff;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+
+    @media (min-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.timeline-card {
+  border-radius: 16px !important;
+  margin-left: 48px;
+  position: relative;
+  transition: transform 0.2s;
+
+  // Dot marker on the timeline. Strategy: `box-sizing: border-box` so the
+  // 14px width includes the 3px white ring (the visual width is exactly 14),
+  // and `transform: translateX(-50%)` so the dot's centre sits at the chosen
+  // `left` anchor. The anchor is then placed exactly on the line in each
+  // breakpoint — no fractional offsets, no off-by-(border-width) drift.
+  &::before {
+    content: '';
+    position: absolute;
+    // Mobile: line centre = 24px + (2px / 2) = 25px (absolute).
+    // Card.left = 48px (margin-left). Anchor = 25 - 48 = -23px (relative).
+    left: -23px;
+    top: 28px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #6366f1;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #6366f1;
+    box-sizing: border-box;
+    transform: translateX(-50%);
+  }
+
+  &:hover {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 768px) {
+    width: calc(50% - 32px);
+    margin-left: 0;
+
+    &:nth-child(odd) {
+      margin-left: auto;
+      margin-right: 0;
+
+      // Card sits on the right (card.left = 50% + 32px). Anchor at -32 from
+      // card.left lands exactly on the line at 50%.
+      &::before {
+        left: -32px;
+      }
+    }
+
+    &:nth-child(even) {
+      margin-left: 0;
+      margin-right: auto;
+
+      // Card sits on the left (card.right = 50% - 32px). Anchor at
+      // `100% + 32px` from card.left equals card.right + 32 = 50%.
+      &::before {
+        left: calc(100% + 32px);
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 24px;
+  }
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.timeline-period {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6366f1;
+  background: #eef2ff;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.timeline-company {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.timeline-role {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.timeline-description {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+mat-chip-set {
+  mat-chip {
+    font-size: 0.8rem;
+  }
+}

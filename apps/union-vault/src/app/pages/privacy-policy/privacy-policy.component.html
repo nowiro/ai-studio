@@ -1,0 +1,438 @@
+<article
+  class="privacy-page"
+  lang="en"
+>
+  <header class="page-header">
+    <p class="eyebrow">UnionVault.eu · Legal &amp; Compliance</p>
+    <h1>Privacy Policy</h1>
+    <p class="page-subtitle">
+      This Privacy Policy explains how UnionVault.eu collects, uses, and protects personal data in accordance with the
+      EU General Data Protection Regulation (GDPR).
+    </p>
+    <p class="meta">
+      Last updated:
+      <time [attr.datetime]="lastUpdated">{{ lastUpdated }}</time>
+    </p>
+  </header>
+
+  <nav
+    class="toc"
+    aria-label="Table of contents"
+  >
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#controller">Data Controller</a></li>
+      <li><a href="#dpo">Data Protection Officer (DPO)</a></li>
+      <li><a href="#data-collected">What Data We Collect</a></li>
+      <li><a href="#purposes">Purposes and Legal Bases</a></li>
+      <li><a href="#cookies">Cookies &amp; Local Storage</a></li>
+      <li><a href="#retention">Retention Periods</a></li>
+      <li><a href="#third-parties">Third-Party Services</a></li>
+      <li><a href="#rights">Your Rights Under GDPR</a></li>
+      <li><a href="#transfers">International Transfers</a></li>
+      <li><a href="#children">Children&apos;s Privacy</a></li>
+      <li><a href="#changes">Changes to This Policy</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </nav>
+
+  <div class="policy-body">
+    <section
+      id="controller"
+      aria-labelledby="controller-heading"
+    >
+      <h2 id="controller-heading">1. Data Controller</h2>
+      <p>The data controller for UnionVault.eu is:</p>
+      <address>
+        <strong>UnionVault.eu</strong>
+        <br />
+        Warsaw, Poland
+        <br />
+        E-mail:
+        <a href="mailto:privacy&#64;unionvault.eu">privacy&#64;unionvault.eu</a>
+      </address>
+      <p>
+        UnionVault.eu is a pan-European financial and real-estate information platform aggregating publicly available
+        data from 27 EU countries. The service is informational only and does not constitute financial advice.
+      </p>
+    </section>
+
+    <section
+      id="dpo"
+      aria-labelledby="dpo-heading"
+    >
+      <h2 id="dpo-heading">2. Data Protection Officer (DPO)</h2>
+      <p>
+        In accordance with Article 37 GDPR, UnionVault.eu has designated a Data Protection Officer. You may contact the
+        DPO at:
+      </p>
+      <address>
+        <strong>Data Protection Officer — UnionVault.eu</strong>
+        <br />
+        E-mail:
+        <a href="mailto:dpo&#64;unionvault.eu">dpo&#64;unionvault.eu</a>
+        <br />
+        Postal address: UnionVault.eu, Attn: DPO, Warsaw, Poland
+      </address>
+      <p>
+        The DPO is independent, does not receive instructions regarding the exercise of tasks, and reports directly to
+        the highest management level.
+      </p>
+    </section>
+
+    <section
+      id="data-collected"
+      aria-labelledby="data-collected-heading"
+    >
+      <h2 id="data-collected-heading">3. What Data We Collect</h2>
+
+      <h3>3.1 Data you provide voluntarily</h3>
+      <ul>
+        <li>Name and e-mail address when submitting the contact form.</li>
+        <li>Organisation name (optional).</li>
+        <li>Message content and selected contact topic.</li>
+      </ul>
+
+      <h3>3.2 Data collected automatically</h3>
+      <ul>
+        <li>IP address and approximate geolocation (country level) for access logging.</li>
+        <li>Browser type, operating system, and referring URL (standard HTTP headers).</li>
+        <li>Page views and navigation events (analytics, see Section 5).</li>
+      </ul>
+
+      <h3>3.3 Data stored locally on your device</h3>
+      <ul>
+        <li>
+          Selected country preference (
+          <code>uv_country</code>
+          ).
+        </li>
+        <li>
+          Selected language preference (
+          <code>uv_language</code>
+          ,
+          <code>uv_language_preferences</code>
+          ).
+        </li>
+        <li>
+          Cached exchange-rate data (
+          <code>uv_fx_rates_v1</code>
+          ) with a 1-hour TTL.
+        </li>
+      </ul>
+      <p>
+        All locally stored data remains on your device. It is never transmitted to UnionVault.eu servers and is used
+        solely to restore your preferences across sessions.
+      </p>
+    </section>
+
+    <section
+      id="purposes"
+      aria-labelledby="purposes-heading"
+    >
+      <h2 id="purposes-heading">4. Purposes and Legal Bases</h2>
+      <table>
+        <caption>Processing activities and their legal bases under GDPR Art. 6</caption>
+        <thead>
+          <tr>
+            <th scope="col">Purpose</th>
+            <th scope="col">Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Responding to contact-form submissions</td>
+            <td>Art. 6(1)(b) — performance of a contract / pre-contractual steps</td>
+          </tr>
+          <tr>
+            <td>Security monitoring and fraud prevention</td>
+            <td>Art. 6(1)(f) — legitimate interests</td>
+          </tr>
+          <tr>
+            <td>Aggregated, anonymised usage analytics</td>
+            <td>Art. 6(1)(f) — legitimate interests (no individual profiling)</td>
+          </tr>
+          <tr>
+            <td>Compliance with legal obligations</td>
+            <td>Art. 6(1)(c) — legal obligation</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>We do not use personal data for automated decision-making or profiling as defined in Article 22 GDPR.</p>
+    </section>
+
+    <section
+      id="cookies"
+      aria-labelledby="cookies-heading"
+    >
+      <h2 id="cookies-heading">5. Cookies &amp; Local Storage</h2>
+
+      <h3>5.1 Strictly necessary (no consent required)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Key</th>
+            <th scope="col">Storage</th>
+            <th scope="col">Purpose</th>
+            <th scope="col">TTL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>uv_country</code></td>
+            <td>localStorage</td>
+            <td>Remembers selected EU country</td>
+            <td>Until cleared</td>
+          </tr>
+          <tr>
+            <td><code>uv_language</code></td>
+            <td>localStorage</td>
+            <td>Remembers selected UI language</td>
+            <td>Until cleared</td>
+          </tr>
+          <tr>
+            <td><code>uv_language_preferences</code></td>
+            <td>localStorage</td>
+            <td>Per-country language overrides</td>
+            <td>Until cleared</td>
+          </tr>
+          <tr>
+            <td><code>uv_fx_rates_v1</code></td>
+            <td>localStorage</td>
+            <td>Cached exchange rates (reduces API calls)</td>
+            <td>1 hour</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        UnionVault.eu does
+        <strong>not</strong>
+        use advertising cookies, cross-site tracking cookies, or third-party social-media pixels.
+      </p>
+
+      <h3>5.2 How to manage cookies</h3>
+      <p>
+        You can clear localStorage data at any time via your browser settings (
+        <em>DevTools &rarr; Application &rarr; Local Storage</em>
+        or equivalent). Clearing this data will reset your country and language preferences.
+      </p>
+    </section>
+
+    <section
+      id="retention"
+      aria-labelledby="retention-heading"
+    >
+      <h2 id="retention-heading">6. Retention Periods</h2>
+      <ul>
+        <li>
+          Contact-form data: retained for up to
+          <strong>12 months</strong>
+          after the last correspondence, then securely deleted.
+        </li>
+        <li>
+          Server access logs: retained for
+          <strong>90 days</strong>
+          for security purposes.
+        </li>
+        <li>
+          Anonymised analytics data: retained for up to
+          <strong>24 months</strong>
+          .
+        </li>
+        <li>localStorage data: stored on your device until you clear it (no server copy).</li>
+      </ul>
+    </section>
+
+    <section
+      id="third-parties"
+      aria-labelledby="third-parties-heading"
+    >
+      <h2 id="third-parties-heading">7. Third-Party Services</h2>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Service</th>
+            <th scope="col">Provider</th>
+            <th scope="col">Purpose</th>
+            <th scope="col">Data shared</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Exchange rates (primary)</td>
+            <td>Frankfurter API (api.frankfurter.dev)</td>
+            <td>Live EUR currency rates — ECB-based</td>
+            <td>IP address (HTTP request)</td>
+          </tr>
+          <tr>
+            <td>Exchange rates (fallback)</td>
+            <td>FloatRates (floatrates.com)</td>
+            <td>Fallback currency feed</td>
+            <td>IP address (HTTP request)</td>
+          </tr>
+          <tr>
+            <td>Maps (planned)</td>
+            <td>Google Maps Platform</td>
+            <td>Real-estate map visualisation</td>
+            <td>IP address, browser fingerprint (subject to Google Privacy Policy)</td>
+          </tr>
+          <tr>
+            <td>Hosting</td>
+            <td>cyber_Folks S.A. (Poland, EU)</td>
+            <td>LiteSpeed web server</td>
+            <td>Standard server logs</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        All third-party services operating as data processors have signed Data Processing Agreements (DPA) or operate
+        under EU Standard Contractual Clauses where required.
+      </p>
+    </section>
+
+    <section
+      id="rights"
+      aria-labelledby="rights-heading"
+    >
+      <h2 id="rights-heading">8. Your Rights Under GDPR</h2>
+      <p>Under the GDPR you have the following rights:</p>
+      <dl>
+        <div>
+          <dt>Right of access (Art. 15)</dt>
+          <dd>You may request a copy of all personal data we hold about you.</dd>
+        </div>
+        <div>
+          <dt>Right to rectification (Art. 16)</dt>
+          <dd>You may ask us to correct inaccurate data.</dd>
+        </div>
+        <div>
+          <dt>Right to erasure (Art. 17)</dt>
+          <dd>You may request deletion of your personal data (&ldquo;right to be forgotten&rdquo;).</dd>
+        </div>
+        <div>
+          <dt>Right to restriction (Art. 18)</dt>
+          <dd>You may request that we restrict processing in certain circumstances.</dd>
+        </div>
+        <div>
+          <dt>Right to data portability (Art. 20)</dt>
+          <dd>You may receive your data in a structured, machine-readable format.</dd>
+        </div>
+        <div>
+          <dt>Right to object (Art. 21)</dt>
+          <dd>You may object to processing based on legitimate interests.</dd>
+        </div>
+        <div>
+          <dt>Right to withdraw consent (Art. 7(3))</dt>
+          <dd>
+            Where processing is based on consent, you may withdraw it at any time without affecting prior lawful
+            processing.
+          </dd>
+        </div>
+      </dl>
+      <p>
+        To exercise any of these rights, contact:
+        <a href="mailto:privacy&#64;unionvault.eu">privacy&#64;unionvault.eu</a>
+        or the DPO at
+        <a href="mailto:dpo&#64;unionvault.eu">dpo&#64;unionvault.eu</a>
+        . We will respond within
+        <strong>30 days</strong>
+        (extendable to 60 days for complex requests per Art. 12(3) GDPR).
+      </p>
+      <p>
+        You also have the right to lodge a complaint with your national supervisory authority. In Poland:
+        <a
+          href="https://uodo.gov.pl"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          UODO (uodo.gov.pl)
+        </a>
+        . A full list of EU supervisory authorities is available at
+        <a
+          href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          edpb.europa.eu
+        </a>
+        .
+      </p>
+    </section>
+
+    <section
+      id="transfers"
+      aria-labelledby="transfers-heading"
+    >
+      <h2 id="transfers-heading">9. International Transfers</h2>
+      <p>
+        UnionVault.eu processes and stores data within the European Economic Area (EEA). Where third-party services
+        involve transfers outside the EEA (e.g. certain API providers), appropriate safeguards are in place under
+        Chapter V GDPR (Standard Contractual Clauses or adequacy decisions).
+      </p>
+    </section>
+
+    <section
+      id="children"
+      aria-labelledby="children-heading"
+    >
+      <h2 id="children-heading">10. Children&apos;s Privacy</h2>
+      <p>
+        UnionVault.eu is not directed at children under 16 years of age. We do not knowingly collect personal data from
+        children. If you believe a child has provided us with personal data, please contact
+        <a href="mailto:privacy&#64;unionvault.eu">privacy&#64;unionvault.eu</a>
+        and we will delete it promptly.
+      </p>
+    </section>
+
+    <section
+      id="changes"
+      aria-labelledby="changes-heading"
+    >
+      <h2 id="changes-heading">11. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy periodically. The &ldquo;Last updated&rdquo; date at the top of this page
+        indicates when the most recent revision was made. For material changes, we will place a prominent notice on the
+        website homepage.
+      </p>
+    </section>
+
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+    >
+      <h2 id="contact-heading">12. Contact</h2>
+      <p>For any questions about this Privacy Policy or data protection at UnionVault.eu:</p>
+      <ul>
+        <li>
+          General privacy enquiries:
+          <a href="mailto:privacy&#64;unionvault.eu">privacy&#64;unionvault.eu</a>
+        </li>
+        <li>
+          DPO:
+          <a href="mailto:dpo&#64;unionvault.eu">dpo&#64;unionvault.eu</a>
+        </li>
+        <li>
+          Compliance:
+          <a href="mailto:compliance&#64;unionvault.eu">compliance&#64;unionvault.eu</a>
+        </li>
+        <li>
+          Security:
+          <a href="mailto:security&#64;unionvault.eu">security&#64;unionvault.eu</a>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <footer class="policy-footer">
+    <a
+      [routerLink]="homeRoute()"
+      class="back-link"
+    >
+      &larr; Back to home
+    </a>
+    <p class="policy-note">
+      This policy is published in English as the legally authoritative version. Translations into all 24 official EU
+      languages will be added incrementally.
+    </p>
+  </footer>
+</article>

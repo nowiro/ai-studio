@@ -3,7 +3,7 @@ import eslint from '@eslint/js';
 import nx from '@nx/eslint-plugin';
 import angular from 'angular-eslint';
 import prettier from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import jsdoc from 'eslint-plugin-jsdoc';
 import rxjsX from 'eslint-plugin-rxjs-x';
 import sonarjs from 'eslint-plugin-sonarjs';
@@ -138,7 +138,34 @@ export default tseslint.config(
           depConstraints: [
             {
               sourceTag: 'scope:app',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:feature', 'scope:ui', 'scope:data', 'scope:util'],
+              onlyDependOnLibsWithTags: [
+                'scope:shared',
+                'scope:feature',
+                'scope:ui',
+                'scope:data',
+                'scope:util',
+                // Each game gets its own dedicated scope. Apps that host a game
+                // depend on its lib pair (`game-foo` + `game-foo-ui`) but no
+                // cross-game leakage is allowed.
+                'scope:game',
+                'scope:game-tetris',
+                // Domain demo apps each get their own scope to isolate dependencies.
+                'scope:tire-shop',
+                'scope:library',
+                'scope:school-journal',
+              ],
+            },
+            {
+              sourceTag: 'scope:tire-shop',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:tire-shop', 'scope:util'],
+            },
+            {
+              sourceTag: 'scope:library',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:library', 'scope:util'],
+            },
+            {
+              sourceTag: 'scope:school-journal',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:school-journal', 'scope:util'],
             },
             {
               sourceTag: 'scope:feature',
@@ -225,6 +252,7 @@ export default tseslint.config(
     files: [
       '**/*.config.{ts,mts,cts,mjs}',
       '**/vitest.config.*',
+      '**/vitest.workspace.{ts,mts,js,mjs}',
       '**/playwright.config.*',
       '**/eslint.config.*',
       '**/prettier.config.*',

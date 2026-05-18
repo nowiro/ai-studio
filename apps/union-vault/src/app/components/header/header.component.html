@@ -1,0 +1,95 @@
+<mat-toolbar class="app-toolbar">
+  <!-- Logo -->
+  <a
+    [attr.aria-label]="brandAriaLabel()"
+    [routerLink]="['/', countryService.selectedCountry().routeCode]"
+    class="toolbar-brand"
+  >
+    <!-- Desktop: full horizontal logo -->
+    <img
+      class="toolbar-logo-full"
+      alt="UnionVault.eu"
+      src="logo.svg"
+    />
+    <!-- Mobile: icon only -->
+    <img
+      class="toolbar-logo-icon"
+      alt="UnionVault logo"
+      src="icon.svg"
+    />
+  </a>
+  <!-- Desktop Navigation -->
+  <nav
+    [attr.aria-label]="navigationAriaLabel()"
+    class="desktop-nav"
+  >
+    @for (item of navItems(); track item.route) {
+      <button
+        [attr.aria-label]="item.label"
+        [routerLink]="['/', countryService.selectedCountry().routeCode, item.route]"
+        class="nav-button"
+        mat-button
+        routerLinkActive="active-link"
+        type="button"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </nav>
+  <span class="toolbar-spacer"></span>
+  <!-- Country Selector + Language Switcher (desktop) -->
+  <div class="toolbar-actions desktop-actions">
+    <ais-country-selector />
+    <ais-language-switcher />
+  </div>
+  <!-- Hamburger Menu (mobile) -->
+  <button
+    [matMenuTriggerFor]="mobileMenu"
+    [attr.aria-label]="mobileMenuAriaLabel()"
+    class="hamburger-button"
+    mat-icon-button
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<!-- Mobile Menu -->
+<mat-menu
+  class="mobile-menu"
+  #mobileMenu="matMenu"
+>
+  <div class="mobile-menu-header">
+    <span class="mobile-brand">UnionVault.eu</span>
+    <span class="mobile-country">
+      <span class="fi fi-{{ countryService.selectedCountry().routeCode }} mobile-flag"></span>
+      {{ mobileCountryLabel() }}: {{ localizationService.currentCountryLabel() }}
+    </span>
+  </div>
+  <mat-divider />
+  @for (item of navItems(); track item.route) {
+    <button
+      [attr.aria-label]="item.label"
+      [routerLink]="['/', countryService.selectedCountry().routeCode, item.route]"
+      mat-menu-item
+      routerLinkActive="active-link"
+    >
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+    </button>
+  }
+  <mat-divider />
+  <!-- Non-interactive wrapper that stops bubbling so opening country/language
+       menus from inside the mobile mat-menu doesn't close the menu. The element
+       itself is presentational — focus and keyboard events stay on the inner
+       <ais-country-selector> / <ais-language-switcher> components. -->
+  <div
+    (click)="$event.stopPropagation()"
+    (keydown)="$event.stopPropagation()"
+    class="mobile-selectors"
+    role="presentation"
+    tabindex="-1"
+  >
+    <ais-country-selector />
+    <ais-language-switcher />
+  </div>
+</mat-menu>

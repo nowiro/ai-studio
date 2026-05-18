@@ -1,0 +1,52 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "tetris-game",
+  "projectType": "application",
+  "sourceRoot": "apps/tetris-game/src",
+  "tags": ["scope:app", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/tetris-game",
+        "index": "apps/tetris-game/src/index.html",
+        "browser": "apps/tetris-game/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/tetris-game/tsconfig.app.json",
+        "assets": ["apps/tetris-game/src/favicon.ico"],
+        "styles": ["apps/tetris-game/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{ "type": "initial", "maximumWarning": "500kB", "maximumError": "1mB" }],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4204
+      },
+      "configurations": {
+        "production": { "buildTarget": "tetris-game:build:production" },
+        "development": { "buildTarget": "tetris-game:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/tetris-game/tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}

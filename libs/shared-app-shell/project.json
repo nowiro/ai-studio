@@ -3,7 +3,7 @@
   "name": "shared-app-shell",
   "projectType": "library",
   "sourceRoot": "libs/shared-app-shell/src",
-  "tags": ["scope:shared", "type:ui"],
+  "tags": ["scope:shared", "type:ui", "type:util"],
   "targets": {
     "typecheck": {
       "executor": "nx:run-commands",

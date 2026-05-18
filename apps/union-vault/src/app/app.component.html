@@ -1,0 +1,31 @@
+<ais-header />
+
+<main class="app-main">
+  <router-outlet />
+</main>
+
+<mat-divider />
+
+<footer class="app-footer">
+  <p>
+    &copy; {{ currentYear() }} UnionVault.eu &mdash;
+    {{ localizationService.resource().footer.rightsReserved }}
+    <span class="footer-version">v{{ appVersion }}</span>
+  </p>
+  <p
+    [matTooltip]="fullLastUpdated()"
+    class="footer-update"
+  >
+    {{ footerLastUpdatedLabel() }}: {{ formattedLastUpdated() }}
+  </p>
+  <nav
+    class="footer-legal"
+    aria-label="Legal links"
+  >
+    <a [routerLink]="privacyPolicyRoute()">Privacy Policy</a>
+    <span aria-hidden="true">&middot;</span>
+    <a href="mailto:dpo@unionvault.eu">DPO Contact</a>
+  </nav>
+</footer>
+
+<ais-cookie-consent />

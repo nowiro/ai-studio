@@ -76,6 +76,58 @@ If `ai-studio` adds a feature that needs a third-party token (Memory MCP cloud s
 
 The trinity rules are codified in [`.ai/rules/production-readiness.md`](.ai/rules/production-readiness.md) §1 (Permissions) and §2 (Audit logs) — both byte-identical across the three repos.
 
+## Angular security checklist (v21+)
+
+Reference: <https://angular.dev/best-practices/security>. Applied across all four apps (`nowiro`, `union-vault`, `pong-game`, `personal-data-wizard`).
+
+| #   | Requirement                               | Status | Notes                                                                                                                                                                                               |
+| --- | ----------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Latest Angular                            | ✅     | v21.0.0                                                                                                                                                                                             |
+| 2   | No customized Angular core                | ✅     | Stock distribution only                                                                                                                                                                             |
+| 3   | No APIs marked "Security Risk"            | ✅     | Audit clean                                                                                                                                                                                         |
+| 4-9 | XSS / interpolation / no DOM mutation     | ✅     | Templates use `{{ }}`; no `eval`/`Function`/`document.write`                                                                                                                                        |
+| 7   | AOT in production                         | ✅     | `@angular/build:application` default                                                                                                                                                                |
+| 10  | `bypassSecurityTrust*` audited            | ✅     | Zero uses anywhere in `apps/` or `libs/`                                                                                                                                                            |
+| 11  | Content Security Policy                   | ✅     | Per-app `<meta http-equiv="Content-Security-Policy">` in each `apps/*/src/index.html`; tighten via HTTP header in prod                                                                              |
+| 12  | Unique CSP nonces per request             | ⏳     | Server-side concern — add at deploy                                                                                                                                                                 |
+| 13  | Trusted Types                             | ⏳     | Add `require-trusted-types-for 'script'` directive to deploy-time CSP header                                                                                                                        |
+| 14  | XSRF/CSRF protection                      | ✅     | `provideHttpClient(withFetch())` in `union-vault` (cross-origin GETs only — XSRF tokens auto-suppressed). Switch to `withXsrfConfiguration()` when same-origin backend with mutating requests lands |
+| 15  | Non-standard XSRF cookie/header names     | N/A    | No same-origin backend yet                                                                                                                                                                          |
+| 16  | Validate Host headers (`allowedHosts`)    | ⏳     | Configure at deploy (Cloudflare Pages / Netlify rules)                                                                                                                                              |
+| 17  | Trust proxy headers cautiously            | ⏳     | Deploy-time toggle                                                                                                                                                                                  |
+| 18  | Strip XSSI prefixes                       | ✅     | `HttpClient` auto-removes `)]}',\n`                                                                                                                                                                 |
+| 19  | Never serve Angular templates from server | ✅     | Static SPA — no server-side templating                                                                                                                                                              |
+| 20  | Audit security-sensitive APIs             | ✅     | grep clean: no `bypassSecurityTrust*`, no `[innerHTML]` with user input                                                                                                                             |
+| 21  | `strictTemplates: true`                   | ✅     | All four apps' `tsconfig.json` enable Angular strict template type-checking                                                                                                                         |
+| 22  | No dynamic template generation            | ✅     | No `compileTemplate` / dynamic component compilation                                                                                                                                                |
+| 23  | Disable XSRF only when necessary          | N/A    | Default XSRF stays enabled                                                                                                                                                                          |
+| 24  | Server-side validation                    | N/A    | No backend in any app                                                                                                                                                                               |
+
+### Known-safe `[innerHTML]` usage
+
+`apps/nowiro/src/app/components/about/about.component.html` binds `[innerHTML]` to `t().about.p1/p2/p3`. The content is static i18n owned by the repo (`<strong>` accents only), and Angular's `DomSanitizer` runs on every `[innerHTML]` binding (SecurityContext.HTML) — no exploit surface.
+
+### Per-app CSP summary
+
+| App                    | External resources whitelisted in CSP                                                                             |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `nowiro`               | + Google Fonts (Material Icons CSS + woff2). Flagi PL/GB serwowane lokalnie z `assets/flags/` — żadnego flag CDN. |
+| `pong-game`            | `'self'` only + `blob:` images (Phaser canvas)                                                                    |
+| `personal-data-wizard` | + `fonts.googleapis.com` (CSS), `fonts.gstatic.com` (woff2)                                                       |
+| `union-vault`          | + Google Fonts, `cdn.jsdelivr.net` (flag-icons), `api.frankfurter.dev`, `www.floatrates.com`                      |
+
+`'unsafe-inline'` for `script-src`/`style-src` is required because Angular emits an inline boot script and Material/Tailwind inject inline styles. Production deploys should swap meta CSP for an HTTP header with per-request nonces (§11-12).
+
+### Why `frame-ancestors` lives at the HTTP layer
+
+Every app's `<meta http-equiv="Content-Security-Policy">` **intentionally** omits `frame-ancestors`. The CSP spec requires that directive to come from an HTTP response header — browsers ignore it (and `report-uri` / `sandbox`) when delivered via `<meta>` and emit a console warning. Set it on the production host (Cloudflare Pages / Netlify / nginx) with:
+
+```
+Content-Security-Policy: frame-ancestors 'none'
+```
+
+Or combined with the meta directives as a single header for full coverage.
+
 ## Hardening references
 
 - [`.ai/rules/security.md`](.ai/rules/security.md) — internal security rules every agent obeys.

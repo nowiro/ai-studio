@@ -77,3 +77,12 @@ storybook-static/
 
 .nx/polygraph
 .claude/worktrees
+.angular
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+.nx/self-healing
+
+# Python cache from tools/scripts/*.py (favicon generator etc.)
+__pycache__/
+*.pyc

@@ -1,0 +1,44 @@
+<button
+  [matMenuTriggerFor]="languageMenu"
+  [matTooltip]="selectedTooltip()"
+  [attr.aria-label]="triggerAriaLabel()"
+  class="selector-button"
+  mat-button
+>
+  <span class="selector-trigger">
+    <span class="fi fi-{{ countryService.selectedLanguage().flagCode }} flag"></span>
+    <span class="label">{{ countryService.selectedLanguage().code | uppercase }}</span>
+    <mat-icon class="selector-caret">arrow_drop_down</mat-icon>
+  </span>
+</button>
+
+<mat-menu
+  class="language-menu"
+  #languageMenu="matMenu"
+  panelClass="selector-menu-panel language-menu-panel"
+>
+  <div class="menu-header">
+    <mat-icon>translate</mat-icon>
+    <span>{{ menuTitle() }}</span>
+  </div>
+  <div class="language-list">
+    @for (language of countryService.languages; track language.code) {
+      <button
+        [attr.aria-label]="language.name + ' — ' + language.nativeName"
+        [class.active]="language.code === countryService.selectedLanguage().code"
+        (click)="selectLanguage(language)"
+        class="language-item"
+        mat-menu-item
+      >
+        <span class="language-main">
+          <span class="fi fi-{{ language.flagCode }} language-flag"></span>
+          <span class="language-copy">
+            <span class="language-native">{{ language.nativeName }}</span>
+            <span class="language-name">{{ language.name }}</span>
+          </span>
+        </span>
+        <span class="language-code">{{ language.code | uppercase }}</span>
+      </button>
+    }
+  </div>
+</mat-menu>

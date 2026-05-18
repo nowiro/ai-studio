@@ -5,7 +5,7 @@
     "declaration": true,
     "types": ["node", "vitest/globals"],
     "moduleResolution": "bundler",
-    "module": "esnext",
+    "module": "preserve",
     "target": "es2022",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -17,5 +17,12 @@
   },
   "files": [],
   "include": [],
-  "references": [{ "path": "./tsconfig.lib.json" }, { "path": "./tsconfig.spec.json" }]
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

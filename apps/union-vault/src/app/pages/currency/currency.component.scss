@@ -1,0 +1,372 @@
+.currency-flag {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.page-header {
+  padding: 2rem 0 1rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+
+    mat-icon {
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+      color: var(--mat-sys-primary);
+    }
+  }
+
+  .page-subtitle {
+    color: var(--mat-sys-on-surface-variant);
+    margin: 0 0 0.75rem;
+    max-width: 60rem;
+  }
+
+  .source-chip {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(0, 51, 153, 0.08), rgba(240, 180, 0, 0.14));
+    color: var(--mat-sys-on-surface);
+    font-size: 0.9rem;
+
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .source-time {
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+}
+
+.overview-section,
+.controls-section,
+.converter-section,
+.rates-section,
+.chart-section {
+  margin-bottom: 1.75rem;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.overview-card {
+  .eyebrow {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--mat-sys-on-surface-variant);
+    margin-bottom: 0.5rem;
+  }
+
+  strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.control-grid,
+.converter-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.converter-form {
+  align-items: start;
+  margin-bottom: 1.5rem;
+
+  .amount-field,
+  .currency-field {
+    min-width: 0;
+  }
+
+  .swap-btn {
+    align-self: center;
+    justify-self: center;
+    margin-top: 0.25rem;
+  }
+}
+
+.converter-card {
+  width: 100%;
+}
+
+.converter-result {
+  background:
+    radial-gradient(circle at top left, rgba(240, 180, 0, 0.16), transparent 35%),
+    linear-gradient(135deg, rgba(0, 51, 153, 0.08), rgba(47, 111, 237, 0.04));
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+
+  .result-main {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .result-amount {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--mat-sys-primary);
+    }
+
+    .result-currency {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+
+  .result-rate {
+    font-size: 0.875rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.section-divider {
+  margin: 1.5rem 0;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.section-subtitle {
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0 0 1.25rem;
+  max-width: 60rem;
+}
+
+.table-container {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.rates-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 58rem;
+
+  th,
+  td {
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--mat-sys-on-surface-variant);
+    background: rgba(0, 51, 153, 0.04);
+  }
+
+  .currency-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    span:last-child {
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+
+  .rate-cell {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+  }
+
+  .change-cell {
+    min-width: 9rem;
+  }
+
+  tr.eurozone-row td {
+    background: rgba(0, 51, 153, 0.025);
+  }
+
+  tr.active-row td {
+    background: rgba(0, 51, 153, 0.09);
+    font-weight: 600;
+  }
+}
+
+.trend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+  font-weight: 600;
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.trend-up {
+  color: #0a7a34;
+  background: rgba(10, 122, 52, 0.12);
+}
+
+.trend-down {
+  color: #b3261e;
+  background: rgba(179, 38, 30, 0.12);
+}
+
+.trend-flat {
+  color: #5f6368;
+  background: rgba(95, 99, 104, 0.12);
+}
+
+.chart-wrapper {
+  display: grid;
+  gap: 1rem;
+}
+
+.trend-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: linear-gradient(180deg, rgba(0, 51, 153, 0.02), rgba(0, 51, 153, 0));
+  border-radius: 16px;
+}
+
+.grid-line {
+  stroke: rgba(0, 0, 0, 0.08);
+  stroke-width: 1;
+}
+
+.axis-line {
+  stroke: rgba(0, 0, 0, 0.16);
+  stroke-width: 1;
+}
+
+.axis-label {
+  fill: rgba(0, 0, 0, 0.62);
+  font-size: 12px;
+  text-anchor: end;
+}
+
+.axis-label-bottom {
+  text-anchor: middle;
+}
+
+.chart-path {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-point {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  background: rgba(0, 51, 153, 0.05);
+}
+
+.legend-swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+}
+
+.disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.1rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .overview-grid,
+  .control-grid,
+  .converter-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .overview-grid,
+  .control-grid,
+  .converter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .converter-result .result-main .result-amount {
+    font-size: 1.8rem;
+  }
+
+  .rates-table {
+    min-width: 46rem;
+  }
+}

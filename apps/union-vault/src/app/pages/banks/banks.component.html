@@ -1,0 +1,292 @@
+<section class="page-header">
+  <p class="eyebrow">Moduł bankowy · dane demonstracyjne</p>
+  <h1>Oferty kredytowe w Unii Europejskiej</h1>
+  <p class="page-subtitle">
+    Dedykowany widok do porównywania kredytów hipotecznych, gotówkowych i firmowych. Wszystkie wartości w mockach są
+    znormalizowane do EUR, dzięki czemu późniejsze podpięcie realnych feedów i routingu będzie prostsze.
+  </p>
+
+  <div
+    class="header-chips"
+    aria-live="polite"
+  >
+    <span class="info-chip">{{ summary().total }} dopasowanych ofert</span>
+    <span class="info-chip">Zakres: {{ selectedCountryLabel() }}</span>
+    @if (summary().lowestAprOffer; as lowestAprOffer) {
+      <span class="info-chip">Najniższe RRSO od {{ formatPercent(lowestAprOffer.apr) }}</span>
+    }
+  </div>
+</section>
+
+<section
+  class="overview-section"
+  aria-label="Podsumowanie ofert kredytowych"
+>
+  <div class="overview-grid">
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="card-label">Najlepsze RRSO</span>
+        @if (summary().lowestAprOffer; as offer) {
+          <strong>{{ formatPercent(offer.apr) }}</strong>
+          <p>{{ offer.bankName }} · {{ offer.productName }}</p>
+        } @else {
+          <strong>—</strong>
+          <p>Brak ofert dla aktualnych filtrów</p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="card-label">Najszybsza decyzja</span>
+        @if (summary().fastestDecisionOffer; as offer) {
+          <strong>{{ offer.decisionDays }} dni</strong>
+          <p>{{ offer.bankName }} · {{ loanTypeLabel(offer.loanType) }}</p>
+        } @else {
+          <strong>—</strong>
+          <p>Dodaj mniej restrykcyjne kryteria</p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="card-label">Najszerszy zakres finansowania</span>
+        @if (summary().widestAmountOffer; as offer) {
+          <strong>{{ formatMoney(offer.maxAmount) }}</strong>
+          <p>Od {{ formatMoney(offer.minAmount) }} do {{ formatMoney(offer.maxAmount) }}</p>
+        } @else {
+          <strong>—</strong>
+          <p>Brak danych dla bieżącego widoku</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<section
+  class="filters-section"
+  aria-labelledby="banks-filters-heading"
+>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>tune</mat-icon>
+      <mat-card-title id="banks-filters-heading">Filtry ofert kredytowych</mat-card-title>
+      <mat-card-subtitle>
+        Zawęź wyniki po kraju, rodzaju produktu, trybie oprocentowania oraz oczekiwanym budżecie.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="filters-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Kraj</mat-label>
+          <mat-select
+            [value]="countryFilter()"
+            (valueChange)="setCountryFilter($event)"
+            aria-label="Filtruj oferty po kraju"
+          >
+            <mat-option value="all">Cała UE</mat-option>
+            @for (country of countryOptions(); track country.code) {
+              <mat-option [value]="country.code">{{ country.flag }} {{ country.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Typ kredytu</mat-label>
+          <mat-select
+            [value]="loanTypeFilter()"
+            (valueChange)="setLoanTypeFilter($event)"
+            aria-label="Filtruj po typie kredytu"
+          >
+            <mat-option value="all">Wszystkie</mat-option>
+            @for (option of loanTypeOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tryb oprocentowania</mat-label>
+          <mat-select
+            [value]="rateModeFilter()"
+            (valueChange)="setRateModeFilter($event)"
+            aria-label="Filtruj po trybie oprocentowania"
+          >
+            <mat-option value="all">Dowolny</mat-option>
+            @for (option of rateModeOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Wnioskowana kwota (EUR)</mat-label>
+          <input
+            [value]="requestedAmount() ?? ''"
+            (input)="setRequestedAmount(amountInput.value)"
+            #amountInput
+            aria-label="Wnioskowana kwota kredytu w euro"
+            matInput
+            min="1"
+            type="number"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Okres spłaty (mies.)</mat-label>
+          <input
+            [value]="requestedTermMonths() ?? ''"
+            (input)="setRequestedTerm(termInput.value)"
+            #termInput
+            aria-label="Okres spłaty w miesiącach"
+            matInput
+            min="1"
+            type="number"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="filters-footer">
+        <p class="filters-note">
+          Dane demonstracyjne pokazują strukturę przyszłej integracji. Po wdrożeniu backendu karty mogą zostać zasilone
+          feedem bankowym bez przebudowy UI.
+        </p>
+
+        <button
+          [disabled]="!hasActiveFilters()"
+          (click)="resetFilters()"
+          mat-stroked-button
+          type="button"
+        >
+          Resetuj filtry
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section
+  class="results-section"
+  aria-labelledby="banks-results-heading"
+>
+  <div class="results-heading">
+    <div>
+      <h2 id="banks-results-heading">Lista ofert</h2>
+      <p>
+        Sortowanie premiuje oferty wyróżnione i niższe RRSO. Karty są gotowe do późniejszego rozszerzenia o CTA, routing
+        i integrację z backendem.
+      </p>
+    </div>
+  </div>
+
+  @if (filteredOffers().length) {
+    <div
+      class="results-grid"
+      aria-label="Lista dopasowanych ofert kredytowych"
+      role="list"
+    >
+      @for (offer of filteredOffers(); track offer.id) {
+        <mat-card
+          class="offer-card"
+          appearance="outlined"
+          role="listitem"
+        >
+          <mat-card-header>
+            <div
+              class="country-avatar"
+              mat-card-avatar
+              aria-hidden="true"
+            >
+              {{ countryFlag(offer.countryCode) }}
+            </div>
+            <mat-card-title>{{ offer.bankName }}</mat-card-title>
+            <mat-card-subtitle>{{ offer.productName }} · {{ countryName(offer.countryCode) }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="offer-tags">
+              <span class="offer-tag">{{ loanTypeLabel(offer.loanType) }}</span>
+              <span class="offer-tag">{{ rateModeLabel(offer.rateMode) }}</span>
+              @if (offer.badge) {
+                <span class="offer-tag offer-tag--accent">{{ offer.badge }}</span>
+              }
+            </div>
+
+            <dl class="offer-metrics">
+              <div>
+                <dt>RRSO</dt>
+                <dd>{{ formatPercent(offer.apr) }}</dd>
+              </div>
+              <div>
+                <dt>Oprocentowanie</dt>
+                <dd>{{ formatPercent(offer.nominalRate) }}</dd>
+              </div>
+              <div>
+                <dt>Rata od</dt>
+                <dd>{{ formatMoney(offer.monthlyInstallment, offer.currencyCode) }}</dd>
+              </div>
+              <div>
+                <dt>Koszt całkowity</dt>
+                <dd>{{ formatMoney(offer.totalCost, offer.currencyCode) }}</dd>
+              </div>
+              <div>
+                <dt>Kwota</dt>
+                <dd>{{ formatMoney(offer.minAmount) }}–{{ formatMoney(offer.maxAmount) }}</dd>
+              </div>
+              <div>
+                <dt>Okres</dt>
+                <dd>{{ formatTermRange(offer.minTermMonths, offer.maxTermMonths) }}</dd>
+              </div>
+              <div>
+                <dt>Decyzja</dt>
+                <dd>{{ offer.decisionDays }} dni</dd>
+              </div>
+              <div>
+                <dt>Max LTV</dt>
+                <dd>{{ offer.maxLtv ? offer.maxLtv + '%' : 'n/d' }}</dd>
+              </div>
+            </dl>
+
+            <mat-chip-set aria-label="Najważniejsze cechy oferty">
+              @for (highlight of offer.highlights; track highlight) {
+                <mat-chip>{{ highlight }}</mat-chip>
+              }
+            </mat-chip-set>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  } @else {
+    <mat-card
+      class="empty-state"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <mat-icon aria-hidden="true">search_off</mat-icon>
+        <h3>Brak ofert dla aktualnych filtrów</h3>
+        <p>
+          Zmień kraj, zmniejsz kwotę lub skróć okres spłaty. Pusty stan jest gotowy pod przyszłe komunikaty backendowe i
+          scenariusze braku danych.
+        </p>
+        <button
+          (click)="resetFilters()"
+          mat-flat-button
+          type="button"
+        >
+          Przywróć domyślne filtry
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+</section>

@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "journal-data",
+  "$schema_comment": "Models + signal services + pure logic + seed for the school-journal demo.",
+  "projectType": "library",
+  "sourceRoot": "libs/journal-data/src",
+  "tags": ["scope:school-journal", "type:data-access", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/journal-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/journal-data"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/journal-data/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

@@ -1,0 +1,224 @@
+:host {
+  display: block;
+}
+
+.privacy-page {
+  display: grid;
+  gap: 2rem;
+  padding: 2rem 0 3rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.page-header,
+.toc,
+.policy-body section,
+.policy-footer {
+  border: 1px solid rgba(0, 51, 153, 0.12);
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 255, 0.96));
+  box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.06);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #003399;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+h1 {
+  margin: 0.25rem 0 0.75rem;
+  color: #10233f;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.15;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  color: #10233f;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+h3 {
+  margin: 1.25rem 0 0.5rem;
+  color: #1a3a6b;
+  font-size: 1rem;
+}
+
+.page-subtitle {
+  margin: 0 0 0.5rem;
+  color: #374151;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.meta {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+// Table of contents
+.toc ol {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+  line-height: 2;
+}
+
+.toc a {
+  color: #003399;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Policy sections
+.policy-body section {
+  display: grid;
+  gap: 0.75rem;
+}
+
+p,
+li,
+dd {
+  color: #374151;
+  line-height: 1.7;
+  margin: 0;
+}
+
+ul,
+ol {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.25rem;
+}
+
+address {
+  font-style: normal;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 51, 153, 0.04);
+  border-left: 3px solid #003399;
+  border-radius: 0 0.5rem 0.5rem 0;
+  line-height: 1.8;
+}
+
+address a,
+p a,
+dd a,
+li a {
+  color: #003399;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: #001f7a;
+  }
+}
+
+// Tables
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+caption {
+  text-align: left;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+th {
+  background: rgba(0, 51, 153, 0.06);
+  color: #10233f;
+  font-weight: 600;
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  border-bottom: 2px solid rgba(0, 51, 153, 0.15);
+}
+
+td {
+  padding: 0.5rem 0.875rem;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(0, 51, 153, 0.07);
+  color: #374151;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85em;
+  background: rgba(0, 51, 153, 0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+}
+
+// Rights list (dl)
+dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+dl div {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 51, 153, 0.1);
+  border-radius: 0.75rem;
+  background: rgba(245, 248, 255, 0.8);
+}
+
+dt {
+  font-weight: 600;
+  color: #1a3a6b;
+  margin-bottom: 0.25rem;
+}
+
+// Footer
+.policy-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.back-link {
+  color: #003399;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.policy-note {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  table {
+    font-size: 0.8rem;
+  }
+
+  th,
+  td {
+    padding: 0.4rem 0.5rem;
+  }
+}

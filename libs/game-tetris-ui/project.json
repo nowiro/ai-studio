@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "game-tetris-ui",
+  "projectType": "library",
+  "sourceRoot": "libs/game-tetris-ui/src",
+  "tags": ["scope:game-tetris", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/game-tetris-ui/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

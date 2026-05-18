@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "library-ui",
+  "$schema_comment": "Presentational components + role-guard directive for the library demo.",
+  "projectType": "library",
+  "sourceRoot": "libs/library-ui/src",
+  "tags": ["scope:library", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/library-ui/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

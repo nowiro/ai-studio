@@ -23,3 +23,5 @@ node_modules/
 *.bundle.js
 .cache/
 tmp/
+
+.angular

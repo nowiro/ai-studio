@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nowiro</title>
+    <base href="/" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <!--
+      Content Security Policy (Angular best practices §11).
+      `frame-ancestors` is intentionally NOT here — browsers ignore it when
+      delivered via <meta> (spec restriction). Set it as an HTTP response
+      header at deploy time instead (e.g. Cloudflare Pages / Netlify rules).
+      Same applies to `report-uri` and `sandbox`. `unsafe-inline` is needed
+      for Angular's inline boot script and Material/Tailwind inline styles.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; base-uri 'self'; form-action 'self'"
+    />
+    <meta
+      name="referrer"
+      content="strict-origin-when-cross-origin"
+    />
+    <!-- Multi-res favicon.ico (16/32/48) generated from the real logo PNG via
+         `tools/scripts/generate-favicon.py` — re-run after editing the source.
+         No SVG variant: we ship only the rasterised crop of the original mark
+         rather than an artist's approximation. -->
+    <link
+      rel="icon"
+      href="favicon.ico"
+      sizes="any"
+    />
+
+    <!-- Material Icons font — required by <mat-icon>name</mat-icon> usages in
+         hero / header / services / about / contact. Without this link, every
+         icon renders as the literal name text ("arrow_downward", "menu", …). -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <ais-root></ais-root>
+  </body>
+</html>

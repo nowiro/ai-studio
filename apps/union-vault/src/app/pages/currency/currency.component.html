@@ -1,0 +1,405 @@
+<section class="page-header">
+  <h1>
+    <mat-icon>currency_exchange</mat-icon>
+    Kursy walut UE
+  </h1>
+  <p class="page-subtitle">
+    Porównanie wielu darmowych feedów kursowych z widokiem domyślnym opartym o średnią aplikacji.
+  </p>
+  <div
+    class="source-chip"
+    matTooltip="{{ currencyService.sourceDescription() }}"
+  >
+    <mat-icon>database</mat-icon>
+    <span>{{ currencyService.source() }}</span>
+    <span class="source-time">
+      Snapshot: {{ currencyService.lastUpdated() | date: 'd MMM yyyy, HH:mm' : undefined : 'pl' }}
+    </span>
+  </div>
+</section>
+
+<section class="overview-section">
+  <div class="overview-grid">
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="eyebrow">Aktywny widok</span>
+        <strong>{{ selectedProvider().shortName }}</strong>
+        <p>{{ currencyService.sourceCadence() }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="eyebrow">Największy ruch 24h</span>
+        @if (insights(); as summary) {
+          <strong>{{ summary.topMover.code }}</strong>
+          <p [class]="trendClass(summary.topMover.changePercent)">
+            {{ formatPercent(summary.topMover.changePercent) }}
+          </p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="eyebrow">Najszerszy rozrzut źródeł</span>
+        @if (insights(); as summary) {
+          <strong>{{ summary.widestSpread.code }}</strong>
+          <p>{{ formatPercent(summary.widestSpread.spreadPercent) }}</p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="overview-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="eyebrow">Najspójniejsze feedy</span>
+        @if (insights(); as summary) {
+          <strong>{{ summary.lowestSpread.code }}</strong>
+          <p>{{ formatPercent(summary.lowestSpread.spreadPercent) }}</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<section class="controls-section">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>tune</mat-icon>
+      <mat-card-title>Konfiguracja widoku</mat-card-title>
+      <mat-card-subtitle>Wybierz bazową walutę, feed i kolumny porównawcze</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Źródło kursów</mat-label>
+          <mat-select
+            [value]="currencyService.selectedProviderId()"
+            (valueChange)="setProvider($event)"
+            aria-label="Wybór źródła kursów"
+          >
+            @for (provider of providerOptions(); track provider.id) {
+              <mat-option [value]="provider.id">{{ provider.shortName }} — {{ provider.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Waluta bazowa porównania</mat-label>
+          <mat-select
+            [value]="fromCode()"
+            (valueChange)="setFromCode($event)"
+            aria-label="Waluta bazowa"
+          >
+            @for (currency of availableCurrencies(); track currency.code) {
+              <mat-option [value]="currency.code">
+                <span class="fi fi-{{ currency.flagCode }} currency-flag"></span>
+                {{ currency.code }} — {{ currency.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Waluty na wykresie i w tabeli</mat-label>
+          <mat-select
+            [value]="resolvedCompareCodes()"
+            (valueChange)="setCompareCodes($event)"
+            aria-label="Waluty porównawcze"
+            multiple
+          >
+            @for (currency of availableCurrencies(); track currency.code) {
+              @if (currency.code !== fromCode()) {
+                <mat-option [value]="currency.code">
+                  <span class="fi fi-{{ currency.flagCode }} currency-flag"></span>
+                  {{ currency.code }} — {{ currency.name }}
+                </mat-option>
+              }
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Widoczne kolumny źródeł</mat-label>
+          <mat-select
+            [value]="visibleProviderIds()"
+            (valueChange)="setVisibleProviders($event)"
+            aria-label="Widoczne kolumny źródeł"
+            multiple
+          >
+            @for (provider of currencyService.providers(); track provider.id) {
+              <mat-option [value]="provider.id">{{ provider.shortName }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section class="converter-section">
+  <mat-card
+    class="converter-card"
+    appearance="outlined"
+  >
+    <mat-card-header>
+      <mat-icon mat-card-avatar>swap_horiz</mat-icon>
+      <mat-card-title>Konwerter walut</mat-card-title>
+      <mat-card-subtitle>
+        Przeliczanie wykorzystuje aktualnie wybrany feed: {{ selectedProvider().shortName }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="converter-form">
+        <mat-form-field
+          class="amount-field"
+          appearance="outline"
+        >
+          <mat-label>Kwota</mat-label>
+          <input
+            [value]="amount()"
+            (input)="setAmount(amountInput.value)"
+            #amountInput
+            aria-label="Kwota do przeliczenia"
+            matInput
+            min="0"
+            type="number"
+          />
+          @if (fromCurrency()) {
+            <span matSuffix>{{ fromCurrency()!.symbol }}</span>
+          }
+        </mat-form-field>
+
+        <mat-form-field
+          class="currency-field"
+          appearance="outline"
+        >
+          <mat-label>Z waluty</mat-label>
+          <mat-select
+            [value]="fromCode()"
+            (valueChange)="setFromCode($event)"
+            aria-label="Waluta źródłowa"
+          >
+            @for (currency of availableCurrencies(); track currency.code) {
+              <mat-option [value]="currency.code">
+                <span class="fi fi-{{ currency.flagCode }} currency-flag"></span>
+                {{ currency.code }} — {{ currency.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <button
+          (click)="swapCurrencies()"
+          class="swap-btn"
+          aria-label="Zamień waluty"
+          mat-icon-button
+          matTooltip="Zamień waluty"
+        >
+          <mat-icon>swap_horiz</mat-icon>
+        </button>
+
+        <mat-form-field
+          class="currency-field"
+          appearance="outline"
+        >
+          <mat-label>Na walutę</mat-label>
+          <mat-select
+            [value]="toCode()"
+            (valueChange)="toCode.set($event)"
+            aria-label="Waluta docelowa"
+          >
+            @for (currency of availableCurrencies(); track currency.code) {
+              <mat-option [value]="currency.code">
+                <span class="fi fi-{{ currency.flagCode }} currency-flag"></span>
+                {{ currency.code }} — {{ currency.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div
+        class="converter-result"
+        aria-live="polite"
+      >
+        <div class="result-main">
+          <span class="result-amount">{{ formatAmount(convertedAmount()) }}</span>
+          @if (toCurrency()) {
+            <span class="result-currency">{{ toCurrency()!.code }}</span>
+          }
+        </div>
+        <div class="result-rate">
+          @if (fromCurrency() && toCurrency()) {
+            1 {{ fromCurrency()!.code }} = {{ formatRate(rate()) }} {{ toCurrency()!.code }}
+          }
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<mat-divider class="section-divider" />
+
+<section class="rates-section">
+  <h2 class="section-title">Macierz porównawcza kursów</h2>
+  <p class="section-subtitle">
+    Tabela automatycznie rozszerza się o kolejne feedy. Im więcej źródeł dodasz w danych aplikacji, tym więcej kolumn
+    pojawi się bez przebudowy widoku.
+  </p>
+
+  <mat-card appearance="outlined">
+    <mat-card-content class="table-container">
+      <table
+        class="rates-table"
+        aria-label="Tabela porównawcza kursów walut UE"
+      >
+        <thead>
+          <tr>
+            <th>Waluta</th>
+            <th>Kurs aktywny</th>
+            <th>Zmiana 24h</th>
+            <th>Średnia</th>
+            <th>Rozrzut źródeł</th>
+            @for (provider of providerColumns(); track provider.id) {
+              <th>{{ provider.shortName }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of comparisonRows(); track row.code) {
+            <tr
+              [class.active-row]="row.code === toCode()"
+              [class.eurozone-row]="row.isEurozone"
+            >
+              <td class="currency-cell">
+                <span class="fi fi-{{ row.flagCode }} currency-flag"></span>
+                <div>
+                  <strong>{{ row.code }}</strong>
+                  <span>{{ row.name }}</span>
+                </div>
+              </td>
+              <td class="rate-cell">{{ formatRate(row.activeRate) }}</td>
+              <td class="change-cell">
+                <span [class]="'trend-chip ' + trendClass(row.changePercent)">
+                  <mat-icon>{{ trendIcon(row.changePercent) }}</mat-icon>
+                  {{ formatPercent(row.changePercent) }}
+                </span>
+              </td>
+              <td class="rate-cell">{{ formatRate(row.averageRate) }}</td>
+              <td class="rate-cell">{{ formatPercent(row.spreadPercent) }}</td>
+              @for (provider of providerColumns(); track provider.id) {
+                <td class="rate-cell">{{ formatRate(row.providerRates[provider.id]) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section class="chart-section">
+  <h2 class="section-title">Trend kursów</h2>
+  <p class="section-subtitle">
+    Wykres pokazuje trend wybranych walut względem {{ fromCode() }} dla aktywnego źródła danych.
+  </p>
+
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      @if (chartModel(); as chart) {
+        <div class="chart-wrapper">
+          <svg
+            [attr.viewBox]="'0 0 860 320'"
+            class="trend-chart"
+            aria-label="Wykres liniowy trendów kursów walut"
+            role="img"
+          >
+            @for (tick of chart.yTicks; track tick.label) {
+              <line
+                [attr.x1]="62"
+                [attr.x2]="836"
+                [attr.y1]="tick.y"
+                [attr.y2]="tick.y"
+                class="grid-line"
+              />
+              <text
+                [attr.x]="52"
+                [attr.y]="tick.y + 4"
+                class="axis-label"
+              >
+                {{ tick.label }}
+              </text>
+            }
+
+            <line
+              [attr.x1]="62"
+              [attr.x2]="836"
+              [attr.y1]="chart.baselineY"
+              [attr.y2]="chart.baselineY"
+              class="axis-line"
+            />
+
+            @for (series of chart.series; track series.code) {
+              <path
+                [attr.d]="series.path"
+                [attr.stroke]="series.color"
+                class="chart-path"
+              />
+              @if (series.lastPoint) {
+                <circle
+                  [attr.cx]="series.lastPoint.x"
+                  [attr.cy]="series.lastPoint.y"
+                  [attr.fill]="series.color"
+                  class="chart-point"
+                  r="4"
+                />
+              }
+            }
+
+            @for (tick of chart.xTicks; track tick.label + '-' + tick.x) {
+              <text
+                [attr.x]="tick.x"
+                class="axis-label axis-label-bottom"
+                y="300"
+              >
+                {{ tick.label }}
+              </text>
+            }
+          </svg>
+
+          <div class="chart-legend">
+            @for (series of chart.series; track series.code) {
+              <div class="legend-item">
+                <span
+                  [style.background]="series.color"
+                  class="legend-swatch"
+                ></span>
+                <strong>{{ series.code }}</strong>
+                <span>{{ formatRate(series.lastValue) }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <p class="disclaimer">
+    <mat-icon>info</mat-icon>
+    <strong>{{ localizationService.currentLegalNotice().title }}:</strong>
+    {{ localizationService.currentLegalNotice().body }}
+  </p>
+</section>

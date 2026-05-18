@@ -31,7 +31,11 @@
       "defaultConfiguration": "production"
     },
     "serve": {
+      "continuous": true,
       "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4203
+      },
       "configurations": {
         "production": { "buildTarget": "personal-data-wizard:build:production" },
         "development": { "buildTarget": "personal-data-wizard:build:development" }

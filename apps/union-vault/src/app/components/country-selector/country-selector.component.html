@@ -1,0 +1,44 @@
+<button
+  [matMenuTriggerFor]="countryMenu"
+  [matTooltip]="'Wybrany kraj: ' + countryService.selectedCountry().name"
+  class="selector-button"
+  aria-label="Wybierz kraj"
+  mat-button
+>
+  <span class="selector-trigger">
+    <span class="fi fi-{{ countryService.selectedCountry().routeCode }} flag"></span>
+    <span class="label">{{ countryService.selectedCountry().code }}</span>
+    <mat-icon class="selector-caret">arrow_drop_down</mat-icon>
+  </span>
+</button>
+
+<mat-menu
+  class="country-menu"
+  #countryMenu="matMenu"
+  panelClass="selector-menu-panel country-menu-panel"
+>
+  <div class="menu-header">
+    <mat-icon>public</mat-icon>
+    <span>Wybierz kraj (27 krajów UE)</span>
+  </div>
+  <div class="country-grid">
+    @for (country of countryService.countries; track country.code) {
+      <button
+        [attr.aria-label]="country.name + ' ' + country.flag"
+        [class.active]="country.code === countryService.selectedCountry().code"
+        (click)="selectCountry(country)"
+        class="country-item"
+        mat-menu-item
+      >
+        <span class="country-main">
+          <span class="fi fi-{{ country.routeCode }} country-flag"></span>
+          <span class="country-copy">
+            <span class="country-name">{{ country.name }}</span>
+            <span class="country-code">{{ country.code }}</span>
+          </span>
+        </span>
+        <span class="country-currency">{{ country.currencyCode }}</span>
+      </button>
+    }
+  </div>
+</mat-menu>

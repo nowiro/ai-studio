@@ -1,0 +1,36 @@
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">{{ t().about.sectionTitle }}</h2>
+    <p class="section-subtitle">{{ t().about.sectionSubtitle }}</p>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <!--
+          [innerHTML] safety note (Angular best practices §10, §20):
+          Content comes from `translations.ts` — static, repo-owned copy that
+          contains `<strong>` accents only. Angular's `DomSanitizer` runs on
+          every [innerHTML] binding (SecurityContext.HTML) and strips any
+          unexpected tags / event handlers / javascript: URLs. There is no
+          user-supplied input on this path — so this is a safe-by-design use.
+        -->
+        <p [innerHTML]="t().about.p1"></p>
+        <p [innerHTML]="t().about.p2"></p>
+        <p [innerHTML]="t().about.p3"></p>
+      </div>
+      <div class="about-stats">
+        @for (stat of t().about.stats; track stat.label) {
+          <mat-card
+            class="stat-card"
+            appearance="outlined"
+          >
+            <mat-card-content>
+              <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+              <div class="stat-value">{{ stat.value }}</div>
+              <div class="stat-label">{{ stat.label }}</div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  </div>
+</section>

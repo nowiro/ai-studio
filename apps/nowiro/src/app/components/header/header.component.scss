@@ -1,0 +1,133 @@
+:host {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+
+  &.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom-color: #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 0 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.logo-mark {
+  // Source PNG is 200×60 — keep aspect ratio, fit to header height.
+  height: 40px;
+  width: auto;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.desktop-nav {
+  display: none;
+  gap: 32px;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: color 0.2s;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  padding: 0;
+
+  &:hover {
+    color: #1a1a2e;
+  }
+}
+
+.mobile-toggle {
+  display: flex;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 16px 24px 24px;
+  border-bottom: 1px solid #e5e7eb;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.mobile-nav-link {
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  text-align: left;
+  width: 100%;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    color: #1a1a2e;
+  }
+}
+
+// `<ais-language-toggle>` from @ai-studio/shared-language ships its own
+// flex layout for flag + label. We only drive responsive *visibility* here.
+.lang-toggle-desktop {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: inline-flex;
+  }
+}
+
+.lang-toggle-mobile {
+  margin-top: 8px;
+  align-self: flex-start;
+}

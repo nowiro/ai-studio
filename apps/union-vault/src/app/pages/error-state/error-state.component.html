@@ -1,0 +1,43 @@
+<section class="error-state">
+  <mat-card
+    class="error-card"
+    appearance="outlined"
+  >
+    <div class="error-hero">
+      <mat-icon class="error-icon">{{ viewModel().icon }}</mat-icon>
+      <p class="error-badge">{{ viewModel().badge }}</p>
+      <h1>{{ viewModel().title }}</h1>
+      <p class="error-description">{{ viewModel().description }}</p>
+    </div>
+
+    <div class="error-actions">
+      <a
+        [routerLink]="homeRoute()"
+        mat-flat-button
+      >
+        {{ localizationService.resource().errors.homeAction }}
+      </a>
+      <a
+        [routerLink]="contactRoute()"
+        mat-stroked-button
+      >
+        {{ localizationService.resource().errors.contactAction }}
+      </a>
+    </div>
+
+    <div class="error-shortcuts">
+      <a
+        [routerLink]="banksRoute()"
+        mat-button
+      >
+        {{ localizationService.resource().errors.banksAction }}
+      </a>
+      <a
+        [routerLink]="currenciesRoute()"
+        mat-button
+      >
+        {{ localizationService.resource().errors.currenciesAction }}
+      </a>
+    </div>
+  </mat-card>
+</section>

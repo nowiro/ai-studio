@@ -12,32 +12,11 @@ export class BootScene extends Phaser.Scene {
     super(SCENE_BOOT);
   }
 
-  preload(): void {
-    // Inline 1x1 white texture used for paddles and ball — keeps the lib
-    // free of binary assets while still letting Phaser render rectangles.
-    this.textures.generate('white', {
-      data: ['1'],
-      pixelWidth: 1,
-      palette: {
-        0: '#fff',
-        1: '#fff',
-        2: '#fff',
-        3: '#fff',
-        4: '#fff',
-        5: '#fff',
-        6: '#fff',
-        7: '#fff',
-        8: '#fff',
-        9: '#fff',
-        A: '#fff',
-        B: '#fff',
-        C: '#fff',
-        D: '#fff',
-        E: '#fff',
-        F: '#fff',
-      },
-    });
-  }
+  // No preload needed — PlayScene renders geometric primitives via
+  // `this.add.rectangle(...)` which draws coloured polys directly. The earlier
+  // inline `textures.generate('white', ...)` was dead code (the rectangles
+  // never referenced the 'white' texture) and `TextureManager.generate` was
+  // removed in Phaser 4, so this scene jumps straight to play.
 
   create(): void {
     this.scene.start(SCENE_PLAY);

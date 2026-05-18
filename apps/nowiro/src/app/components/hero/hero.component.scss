@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1b1b1b 0%, #333 100%);
+  color: #fff;
+  padding: 140px 24px 80px;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+}
+
+.hero-tag {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #e53935;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.highlight {
+  background: linear-gradient(90deg, #e53935 0%, #ff8f00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 36px;
+  max-width: 480px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  button[mat-flat-button] {
+    background: #e53935;
+    color: #fff;
+    font-weight: 600;
+    padding: 0 28px;
+    height: 48px;
+    border-radius: 6px;
+  }
+
+  button[mat-stroked-button] {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+    font-weight: 600;
+    padding: 0 24px;
+    height: 48px;
+    border-radius: 6px;
+  }
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-logo {
+  width: clamp(180px, 30vw, 280px);
+  opacity: 0.9;
+  filter: brightness(0) invert(1);
+}

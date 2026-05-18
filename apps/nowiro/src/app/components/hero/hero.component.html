@@ -1,0 +1,41 @@
+<section
+  id="hero"
+  class="hero"
+>
+  <div class="hero-content container">
+    <div class="hero-text">
+      <p class="hero-tag">{{ t().hero.tag }}</p>
+      <h1 class="hero-title">
+        {{ t().hero.titleLine1 }}
+        <br />
+        {{ t().hero.titlePre }}
+        <span class="highlight">{{ t().hero.titleHighlight }}</span>
+        {{ t().hero.titlePost }}
+      </h1>
+      <p class="hero-description">{{ t().hero.description }}</p>
+      <div class="hero-actions">
+        <button
+          (click)="scrollTo('contact')"
+          mat-flat-button
+          color="primary"
+        >
+          {{ t().hero.ctaContact }}
+        </button>
+        <button
+          (click)="scrollTo('services')"
+          mat-stroked-button
+        >
+          {{ t().hero.ctaServices }}
+          <mat-icon iconPositionEnd>arrow_downward</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img
+        class="hero-logo"
+        src="assets/logos/nowiro-logo.png"
+        alt="NOWIRO"
+      />
+    </div>
+  </div>
+</section>

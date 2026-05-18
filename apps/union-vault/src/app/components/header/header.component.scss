@@ -1,0 +1,178 @@
+// =============================================================
+// Header — Mobile First
+// =============================================================
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 8px;
+  background-color: #ffffff !important;
+  color: #212121 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  border-bottom: 3px solid #003399; // EU navy accent
+}
+
+// Logo / Brand
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+
+  // Full horizontal logo — desktop
+  .toolbar-logo-full {
+    height: 44px;
+    width: auto;
+    border-radius: 6px;
+    display: block;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  // Icon only — mobile
+  .toolbar-logo-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: none;
+
+    @media (max-width: 600px) {
+      display: block;
+    }
+  }
+}
+
+// Desktop Navigation
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 16px;
+
+  // Hide on tablet and below → hamburger takes over
+  @media (max-width: 900px) {
+    display: none;
+  }
+
+  .nav-button {
+    color: #212121;
+    opacity: 0.85;
+    font-size: 0.875rem;
+
+    &:hover:not([disabled]) {
+      opacity: 1;
+      background-color: rgba(0, 51, 153, 0.07);
+      color: #003399;
+    }
+
+    &.active-link {
+      color: #003399;
+      font-weight: 600;
+    }
+
+    &.disabled {
+      color: rgba(0, 0, 0, 0.35);
+      cursor: default;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+// Desktop Actions (country + language)
+.desktop-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+// Hamburger (mobile only)
+.hamburger-button {
+  color: #212121;
+  display: none;
+
+  @media (max-width: 900px) {
+    display: flex;
+  }
+}
+
+// Override selector-button colors inside the white header
+// (both country-selector and language-switcher use color: white by default)
+::ng-deep .app-toolbar app-country-selector .selector-button,
+::ng-deep .app-toolbar app-language-switcher .selector-button {
+  color: #212121 !important;
+
+  mat-icon {
+    color: #212121 !important;
+  }
+
+  .label {
+    color: #212121 !important;
+  }
+}
+
+// Mobile Menu styles
+.mobile-menu-header {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 12px;
+  pointer-events: none;
+
+  .mobile-brand {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #003399;
+  }
+
+  .mobile-country {
+    font-size: 0.875rem;
+    color: #616161;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .mobile-flag {
+      width: 1.25em;
+      height: 1.25em;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+  }
+}
+
+.soon-badge {
+  font-size: 0.6875rem;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-radius: 10px;
+  padding: 2px 8px;
+  margin-left: auto;
+  font-weight: 500;
+}
+
+.mobile-selectors {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "library",
+  "projectType": "application",
+  "prefix": "ais",
+  "sourceRoot": "apps/library/src",
+  "tags": ["scope:library", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/library",
+        "index": "apps/library/src/index.html",
+        "browser": "apps/library/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/library/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/library/src/favicon.ico"],
+        "styles": ["styles/tailwind.scss", "apps/library/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "750kB", "maximumError": "1.5mB" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kB", "maximumError": "10kb" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4206
+      },
+      "configurations": {
+        "production": { "buildTarget": "library:build:production" },
+        "development": { "buildTarget": "library:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/library/tsconfig.app.json --noEmit"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

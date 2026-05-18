@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "journal-feature-shell",
+  "$schema_comment": "Shell + login mock + term switcher + dashboard for school-journal.",
+  "projectType": "library",
+  "sourceRoot": "libs/journal-feature-shell/src",
+  "tags": ["scope:school-journal", "type:feature"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/journal-feature-shell/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "tire-shop",
+  "projectType": "application",
+  "prefix": "ais",
+  "sourceRoot": "apps/tire-shop/src",
+  "tags": ["scope:tire-shop", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/tire-shop",
+        "index": "apps/tire-shop/src/index.html",
+        "browser": "apps/tire-shop/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/tire-shop/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/tire-shop/src/favicon.ico"],
+        "styles": ["styles/tailwind.scss", "apps/tire-shop/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "750kB", "maximumError": "1.5mB" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kB", "maximumError": "10kb" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4205
+      },
+      "configurations": {
+        "production": { "buildTarget": "tire-shop:build:production" },
+        "development": { "buildTarget": "tire-shop:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/tire-shop/tsconfig.app.json --noEmit"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

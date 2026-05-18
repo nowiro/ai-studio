@@ -1,0 +1,309 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">UnionVault.eu · ready for map integration</p>
+    <h1>
+      <mat-icon>real_estate_agent</mat-icon>
+      Rynek nieruchomości w UE
+    </h1>
+    <p class="page-summary">
+      Widok przygotowany pod przyszłe osadzenie map Google i routing per kraj. Już teraz umożliwia szybkie filtrowanie
+      ofert, porównanie budżetów i wybór rekordu do podglądu mapowego.
+    </p>
+  </div>
+
+  <div
+    class="summary-grid"
+    aria-label="Podsumowanie modułu nieruchomości"
+  >
+    <mat-card
+      class="summary-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="summary-label">Widoczne oferty</span>
+        <strong>{{ overview().totalVisible }}</strong>
+        <p>z {{ overview().totalAvailable }} przygotowanych rekordów mock</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="summary-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="summary-label">Średni budżet</span>
+        <strong>{{ formatPrice(overview().averagePrice) }}</strong>
+        <p>Dla aktywnych filtrów w widoku</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="summary-card"
+      appearance="outlined"
+    >
+      <mat-card-content>
+        <span class="summary-label">Kraje w wynikach</span>
+        <strong>{{ overview().countriesCovered }}</strong>
+        <p>Map-ready z podziałem na lokalizacje UE</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<section
+  class="filters-section"
+  aria-labelledby="filters-heading"
+>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>tune</mat-icon>
+      <mat-card-title id="filters-heading">Filtry wyszukiwania</mat-card-title>
+      <mat-card-subtitle>
+        Zakres wyników dla {{ selectedCountryLabel() }} z zachowaniem układu pod przyszły widok mapy.
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="filter-grid">
+        <label class="filter-field">
+          <span>Kraj</span>
+          <select
+            [value]="selectedCountryCode()"
+            (change)="setCountryCode(readSelectValue($event))"
+            aria-label="Filtruj oferty według kraju"
+          >
+            <option value="ALL">Wszystkie kraje</option>
+            @for (country of countryOptions(); track country.code) {
+              <option [value]="country.code">{{ country.flag }} {{ country.name }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="filter-field">
+          <span>Typ nieruchomości</span>
+          <select
+            [value]="selectedPropertyType()"
+            (change)="setPropertyType(readSelectValue($event))"
+            aria-label="Filtruj według typu nieruchomości"
+          >
+            @for (option of propertyTypeOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="filter-field">
+          <span>Budżet</span>
+          <select
+            [value]="selectedPriceBand()"
+            (change)="setPriceBand(readSelectValue($event))"
+            aria-label="Filtruj według budżetu"
+          >
+            @for (option of priceBandOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="filter-field">
+          <span>Sypialnie</span>
+          <select
+            [value]="selectedBedrooms()"
+            (change)="setBedrooms(readSelectValue($event))"
+            aria-label="Filtruj według minimalnej liczby sypialni"
+          >
+            @for (option of bedroomOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      <div class="filter-toolbar">
+        <p
+          class="results-summary"
+          aria-live="polite"
+        >
+          @if (hasResults()) {
+            {{ overview().totalVisible }} ofert odpowiada aktywnym filtrom.
+          } @else {
+            Brak ofert pasujących do wybranych filtrów.
+          }
+        </p>
+
+        <button
+          [disabled]="!hasActiveFilters()"
+          (click)="resetFilters()"
+          mat-stroked-button
+          type="button"
+        >
+          Resetuj filtry
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section
+  class="results-section"
+  aria-labelledby="results-heading"
+>
+  <div class="content-grid">
+    <div class="list-panel">
+      <div class="section-header">
+        <h2 id="results-heading">Oferty gotowe do integracji mapowej</h2>
+        <p>Karty są przygotowane pod późniejsze połączenie z markerami, warstwami map i nawigacją po kraju.</p>
+      </div>
+
+      @if (hasResults()) {
+        @if (selectedListing(); as activeListing) {
+          <div class="listing-grid">
+            @for (listing of filteredListings(); track listing.id) {
+              <button
+                [attr.aria-pressed]="activeListing.id === listing.id"
+                [class.is-selected]="activeListing.id === listing.id"
+                (click)="selectListing(listing.id)"
+                class="listing-card"
+                type="button"
+              >
+                <img
+                  [alt]="listing.title"
+                  [src]="listing.imageUrl"
+                  class="listing-thumbnail"
+                  loading="lazy"
+                />
+
+                <div class="listing-card__header">
+                  <div>
+                    <span class="listing-country">{{ countryFlag(listing.countryCode) }}</span>
+                    <h3>{{ listing.title }}</h3>
+                    <p>{{ listing.city }}, {{ listing.district }} · {{ countryName(listing.countryCode) }}</p>
+                  </div>
+                  <span class="listing-price">{{ formatPrice(listing.priceEur) }}</span>
+                </div>
+
+                <div
+                  class="listing-meta"
+                  aria-label="Szczegóły nieruchomości"
+                >
+                  <span>{{ propertyTypeLabel(listing.propertyType) }}</span>
+                  <span>{{ listing.bedrooms }} syp.</span>
+                  <span>{{ listing.bathrooms }} łaz.</span>
+                  <span>{{ formatArea(listing.areaSqm) }}</span>
+                </div>
+
+                <p class="listing-highlight">{{ listing.highlight }}</p>
+
+                <div class="listing-footer">
+                  <span class="badge">{{ availabilityLabel(listing.availability) }}</span>
+                  <span class="badge badge--muted">Klasa {{ listing.energyLabel }}</span>
+                  @if (listing.isFeatured) {
+                    <span class="badge badge--accent">Featured</span>
+                  }
+                </div>
+              </button>
+            }
+          </div>
+        }
+      } @else {
+        <mat-card
+          class="empty-state"
+          appearance="outlined"
+        >
+          <mat-card-content>
+            <mat-icon>search_off</mat-icon>
+            <h3>Brak wyników</h3>
+            <p>Spróbuj rozszerzyć budżet, zmienić typ nieruchomości albo wrócić do domyślnych filtrów.</p>
+            <button
+              (click)="resetFilters()"
+              mat-flat-button
+              type="button"
+            >
+              Pokaż wszystkie mocki
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <aside
+      class="map-panel"
+      aria-labelledby="detail-panel-heading"
+    >
+      <mat-card
+        class="map-card"
+        appearance="outlined"
+      >
+        <mat-card-header>
+          <mat-icon mat-card-avatar>home</mat-icon>
+          <mat-card-title id="detail-panel-heading">Szczegóły nieruchomości</mat-card-title>
+          <mat-card-subtitle>Wybierz ofertę z listy, aby zobaczyć szczegóły</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (selectedListing(); as listing) {
+            <img
+              [alt]="listing.title"
+              [src]="listing.imageUrl"
+              class="property-image"
+            />
+
+            <div class="selection-details">
+              <h3>{{ listing.title }}</h3>
+              <dl>
+                <div>
+                  <dt>Lokalizacja</dt>
+                  <dd>{{ listing.city }}, {{ listing.district }}, {{ countryName(listing.countryCode) }}</dd>
+                </div>
+                <div>
+                  <dt>Powierzchnia</dt>
+                  <dd>{{ formatArea(listing.areaSqm) }}</dd>
+                </div>
+                <div>
+                  <dt>Sypialnie / łazienki</dt>
+                  <dd>{{ listing.bedrooms }} syp. · {{ listing.bathrooms }} łaz.</dd>
+                </div>
+                <div>
+                  <dt>Cena (EUR)</dt>
+                  <dd>{{ formatPrice(listing.priceEur) }}</dd>
+                </div>
+                @if (localCurrencyPrice(); as localPrice) {
+                  <div>
+                    <dt>Cena ({{ localCurrencyCode() }})</dt>
+                    <dd class="converted-price">≈ {{ formatLocalPrice(localPrice, localCurrencyCode()) }}</dd>
+                  </div>
+                }
+                <div>
+                  <dt>Status</dt>
+                  <dd>{{ availabilityLabel(listing.availability) }}</dd>
+                </div>
+                <div>
+                  <dt>Klasa energetyczna</dt>
+                  <dd>{{ listing.energyLabel }}</dd>
+                </div>
+                <div>
+                  <dt>Koordynaty</dt>
+                  <dd>{{ formatCoordinates(listing) }}</dd>
+                </div>
+              </dl>
+
+              <a
+                [href]="listing.sourceUrl"
+                class="source-link"
+                mat-stroked-button
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <mat-icon>open_in_new</mat-icon>
+                Przejdź do portalu
+              </a>
+            </div>
+          } @else {
+            <div class="map-placeholder map-placeholder--empty">
+              <mat-icon>home_work</mat-icon>
+              <p>Wybierz ofertę z listy, aby zobaczyć zdjęcie, cenę i szczegóły nieruchomości.</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "journal-ui",
+  "$schema_comment": "Presentational chips + role-allow directive + role guard for school-journal.",
+  "projectType": "library",
+  "sourceRoot": "libs/journal-ui/src",
+  "tags": ["scope:school-journal", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/journal-ui/tsconfig.json --noEmit"
+      }
+    }
+  }
+}
