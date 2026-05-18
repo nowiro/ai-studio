@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "shop-ui",
+  "$schema_comment": "Generic Angular components shared across every shop demo (product card, cart drawer, cart page, checkout, price tag, stars rating, empty state).",
+  "projectType": "library",
+  "sourceRoot": "libs/shop-ui/src",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/shop-ui/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

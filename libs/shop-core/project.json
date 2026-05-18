@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "shop-core",
+  "$schema_comment": "Generic e-commerce primitives (Product, CartService, cart-math, sort/filter helpers) shared across every shop demo.",
+  "projectType": "library",
+  "sourceRoot": "libs/shop-core/src",
+  "tags": ["scope:shared", "type:data-access", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/shop-core"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/shop-core"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/shop-core/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

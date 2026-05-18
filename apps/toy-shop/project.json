@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "toy-shop",
+  "projectType": "application",
+  "prefix": "ais",
+  "sourceRoot": "apps/toy-shop/src",
+  "tags": ["scope:toy-shop", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/toy-shop",
+        "index": "apps/toy-shop/src/index.html",
+        "browser": "apps/toy-shop/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/toy-shop/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/toy-shop/src/favicon.ico"],
+        "styles": ["styles/tailwind.scss", "apps/toy-shop/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "900kB", "maximumError": "1.5mB" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kB", "maximumError": "10kb" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4210
+      },
+      "configurations": {
+        "production": { "buildTarget": "toy-shop:build:production" },
+        "development": { "buildTarget": "toy-shop:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/toy-shop/tsconfig.app.json --noEmit"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

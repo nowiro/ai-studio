@@ -86,11 +86,43 @@ Coverage gates per project (enforced in each lib's `vitest.config.ts`):
 
 ## Projects
 
-| Project          | Port | Demo focus                                       | Docs                               |
-| ---------------- | ---- | ------------------------------------------------ | ---------------------------------- |
-| `tire-shop`      | 4205 | Faceted e-commerce + cart + 4-step checkout      | [README](tire-shop/README.md)      |
-| `library`        | 4206 | Role-based views (reader / librarian) + MatTable | [README](library/README.md)        |
-| `school-journal` | 4207 | Multi-role + multi-context (term × class) views  | [README](school-journal/README.md) |
+| Project          | Port | Demo focus                                                                   | Docs                               |
+| ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------- |
+| `tire-shop`      | 4205 | Faceted e-commerce + cart + 4-step checkout (legacy — pre `shop-core` split) | [README](tire-shop/README.md)      |
+| `library`        | 4206 | Role-based views (reader / librarian) + MatTable                             | [README](library/README.md)        |
+| `school-journal` | 4207 | Multi-role + multi-context (term × class) views                              | [README](school-journal/README.md) |
+| `bookstore`      | 4208 | E-commerce on shared `shop-core` + `shop-ui`                                 | [README](bookstore/README.md)      |
+| `tools-shop`     | 4209 | E-commerce on shared core; numeric attributes                                | [README](tools-shop/README.md)     |
+| `toy-shop`       | 4210 | E-commerce on shared core; age-gating + safety                               | [README](toy-shop/README.md)       |
+
+## `shop-core` / `shop-ui` shared primitives
+
+The bookstore, tools-shop and toy-shop demos all sit on top of two
+shared libraries that absorb the generic e-commerce concerns:
+
+| Lib              | Tags                                          | Provides                                                                                                                                                                                                                                                                      |
+| ---------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `libs/shop-core` | `scope:shared · type:data-access · type:util` | `BaseProduct` / `BaseFilters` / `CartLine` / `OrderDraft` types, `matchesBaseFilters`, `sortProducts`, `summariseBaseFacets`, `buildCartView`, `cartTotal`, `cartCount`, `mergeLines`, `popularityScore`, `ShopCartService`, `PRODUCT_LOOKUP` + `CART_STORAGE_KEY` DI tokens. |
+| `libs/shop-ui`   | `scope:shared · type:ui`                      | `<ais-shop-product-card>`, `<ais-shop-cart-drawer>`, `<ais-shop-cart-page>`, `<ais-shop-checkout>` (4-step Reactive-Forms), `<ais-shop-price-tag>`, `<ais-shop-stars-rating>`, `<ais-shop-empty-state>`.                                                                      |
+
+Each shop wires its catalogue + storage key in `main.ts`:
+
+```typescript
+{ provide: PRODUCT_LOOKUP,   useExisting: BookstoreCatalogueService },
+{ provide: CART_STORAGE_KEY, useValue:    'ais.bookstore.cart.v1' },
+```
+
+The 4-step Reactive-Forms checkout, the cart drawer, the cart page and
+the price/rating/empty-state primitives are **zero-duplication** across
+bookstore, tools-shop and toy-shop. Tire-shop predates this split and
+keeps its own copies (documented as tech-debt for a future harmonisation
+PR).
+
+25 unit tests cover the shared pure layer
+(`matchesBaseFilters`, `sortProducts`, `summariseBaseFacets`,
+`buildCartView`, `cartTotal`, `cartCount`, `mergeLines`,
+`popularityScore`). Each shop's `testing.md` defers to that suite for
+the cross-cutting AC coverage.
 
 ## Document lifecycle
 

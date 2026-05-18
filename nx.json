@@ -112,5 +112,6 @@
   "parallel": 5,
   "useInferencePlugins": true,
   "useLegacyCache": false,
-  "neverConnectToCloud": true
+  "neverConnectToCloud": true,
+  "analytics": false
 }

@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "tools-shop",
+  "projectType": "application",
+  "prefix": "ais",
+  "sourceRoot": "apps/tools-shop/src",
+  "tags": ["scope:tools-shop", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/tools-shop",
+        "index": "apps/tools-shop/src/index.html",
+        "browser": "apps/tools-shop/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/tools-shop/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/tools-shop/src/favicon.ico"],
+        "styles": ["styles/tailwind.scss", "apps/tools-shop/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "900kB", "maximumError": "1.5mB" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kB", "maximumError": "10kb" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4209
+      },
+      "configurations": {
+        "production": { "buildTarget": "tools-shop:build:production" },
+        "development": { "buildTarget": "tools-shop:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/tools-shop/tsconfig.app.json --noEmit"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
