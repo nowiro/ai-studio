@@ -1,0 +1,66 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "dashboard",
+  "projectType": "application",
+  "sourceRoot": "apps/dashboard/src",
+  "tags": ["scope:dashboard", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/dashboard",
+        "index": "apps/dashboard/src/index.html",
+        "browser": "apps/dashboard/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/dashboard/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/dashboard/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{ "type": "initial", "maximumWarning": "1mB", "maximumError": "1.8mB" }],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4211
+      },
+      "configurations": {
+        "production": { "buildTarget": "dashboard:build:production" },
+        "development": { "buildTarget": "dashboard:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "build-element": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/dashboard-element",
+        "browser": "apps/dashboard/src/element.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/dashboard/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/dashboard/src/styles.scss"],
+        "outputHashing": "none",
+        "budgets": [{ "type": "initial", "maximumWarning": "1.8mB", "maximumError": "3mB" }]
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/dashboard/tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}

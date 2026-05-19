@@ -1,0 +1,66 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "individual-wizard",
+  "projectType": "application",
+  "sourceRoot": "apps/individual-wizard/src",
+  "tags": ["scope:wizard", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/individual-wizard",
+        "index": "apps/individual-wizard/src/index.html",
+        "browser": "apps/individual-wizard/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/individual-wizard/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/individual-wizard/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{ "type": "initial", "maximumWarning": "1.5mB", "maximumError": "2.5mB" }],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "build-element": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/individual-wizard-element",
+        "browser": "apps/individual-wizard/src/element.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/individual-wizard/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/individual-wizard/src/styles.scss"],
+        "outputHashing": "none",
+        "budgets": [{ "type": "initial", "maximumWarning": "1.8mB", "maximumError": "3mB" }]
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4203
+      },
+      "configurations": {
+        "production": { "buildTarget": "individual-wizard:build:production" },
+        "development": { "buildTarget": "individual-wizard:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/individual-wizard/tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}

@@ -35,6 +35,20 @@
       },
       "defaultConfiguration": "production"
     },
+    "build-element": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/bookstore-element",
+        "browser": "apps/bookstore/src/element.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/bookstore/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/bookstore/src/styles.scss"],
+        "outputHashing": "none",
+        "budgets": [{ "type": "initial", "maximumWarning": "1.8mB", "maximumError": "3mB" }]
+      }
+    },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",

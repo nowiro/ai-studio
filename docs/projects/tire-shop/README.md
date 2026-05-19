@@ -10,6 +10,7 @@ links:
   adr: ../../adr/0006-tire-shop-state.md
   app: ../../../apps/tire-shop
   port: 4205
+  bpmn: ../../bpmn/tire-shop-checkout.bpmn
 ---
 
 # Tire-shop

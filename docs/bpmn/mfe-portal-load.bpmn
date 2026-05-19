@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_mfe_portal_load"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/mfe-portal-load">
+  <bpmn:process id="Process_mfe_portal_load" name="Microfrontend portal load (Native Federation)" isExecutable="false">
+    <bpmn:documentation>apps/portal acts as shell, lazy-loads remote MFE manifests in parallel, then renders.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="Portal bootstrap"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="Task_InitNF" name="initFederation (shell)"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_FetchManifestList" name="Fetch list of remote manifests"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:subProcess id="SubProcess_PerRemote" name="For each remote (parallel)">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="false"/>
+      <bpmn:startEvent id="StartEvent_Remote" name="Remote ref"><bpmn:outgoing>Flow_4</bpmn:outgoing></bpmn:startEvent>
+      <bpmn:serviceTask id="Task_LoadRemoteEntry" name="loadRemoteModule(remoteName, exposed)"><bpmn:incoming>Flow_4</bpmn:incoming><bpmn:outgoing>Flow_5</bpmn:outgoing></bpmn:serviceTask>
+      <bpmn:serviceTask id="Task_RegisterRoutes" name="Register lazy routes"><bpmn:incoming>Flow_5</bpmn:incoming><bpmn:outgoing>Flow_5_Done</bpmn:outgoing></bpmn:serviceTask>
+      <bpmn:endEvent id="EndEvent_Remote" name="Remote ready"><bpmn:incoming>Flow_5_Done</bpmn:incoming></bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_4" sourceRef="StartEvent_Remote" targetRef="Task_LoadRemoteEntry"/>
+      <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_LoadRemoteEntry" targetRef="Task_RegisterRoutes"/>
+      <bpmn:sequenceFlow id="Flow_5_Done" sourceRef="Task_RegisterRoutes" targetRef="EndEvent_Remote"/>
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="Task_RenderShell" name="Render portal shell (toolbar + nav)"><bpmn:incoming>Flow_6</bpmn:incoming><bpmn:outgoing>Flow_7</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Done" name="Portal ready"><bpmn:incoming>Flow_7</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_InitNF"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_InitNF" targetRef="Task_FetchManifestList"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_FetchManifestList" targetRef="SubProcess_PerRemote"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="SubProcess_PerRemote" targetRef="Task_RenderShell"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_RenderShell" targetRef="EndEvent_Done"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_mfe_portal_load">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InitNF_di" bpmnElement="Task_InitNF"><dc:Bounds x="230" y="178" width="180" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FetchManifestList_di" bpmnElement="Task_FetchManifestList"><dc:Bounds x="430" y="178" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_PerRemote_di" bpmnElement="SubProcess_PerRemote" isExpanded="true"><dc:Bounds x="690" y="100" width="700" height="240"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Remote_di" bpmnElement="StartEvent_Remote"><dc:Bounds x="720" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LoadRemoteEntry_di" bpmnElement="Task_LoadRemoteEntry"><dc:Bounds x="800" y="178" width="240" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegisterRoutes_di" bpmnElement="Task_RegisterRoutes"><dc:Bounds x="1080" y="178" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Remote_di" bpmnElement="EndEvent_Remote"><dc:Bounds x="1320" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RenderShell_di" bpmnElement="Task_RenderShell"><dc:Bounds x="1430" y="178" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Done_di" bpmnElement="EndEvent_Done"><dc:Bounds x="1680" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="218"/><di:waypoint x="230" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="410" y="218"/><di:waypoint x="430" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="650" y="218"/><di:waypoint x="690" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="756" y="218"/><di:waypoint x="800" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="1040" y="218"/><di:waypoint x="1080" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_Done_di" bpmnElement="Flow_5_Done"><di:waypoint x="1280" y="218"/><di:waypoint x="1320" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="1390" y="218"/><di:waypoint x="1430" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1650" y="218"/><di:waypoint x="1680" y="218"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

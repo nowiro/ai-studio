@@ -1,5 +1,5 @@
 /**
- * Generic 404 fallback used by both `pong-game` and `personal-data-wizard`
+ * Generic 404 fallback used by both `pong-game` and `individual-wizard`
  * (and any future app). Renders a centred "404 — strona niedostępna" message.
  * Uses Tailwind utilities and Material design tokens so it picks up each app's
  * theme automatically.

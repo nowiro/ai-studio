@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_library_overdue_handling"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/library-overdue-handling">
+  <bpmn:process id="Process_library_overdue_handling" name="Library overdue handling (daily check, mark, fine)" isExecutable="false">
+    <bpmn:documentation>Daily batch over active loans. Marks overdue, computes fine (FINE_GROSZE_PER_DAY = 50), refreshes KPI.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="Daily timer">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1"/>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_LoadActiveLoans" name="Load active loans (status = borrowed)"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:subProcess id="SubProcess_PerLoan" name="For each loan">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="false"/>
+      <bpmn:startEvent id="StartEvent_Loan" name="Loan record">
+        <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:exclusiveGateway id="Gateway_DueDate" name="dueDate &lt; today?">
+        <bpmn:incoming>Flow_3</bpmn:incoming>
+        <bpmn:outgoing>Flow_4_Yes</bpmn:outgoing>
+        <bpmn:outgoing>Flow_4_No</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:serviceTask id="Task_MarkOverdue" name="Mark overdue + compute fine">
+        <bpmn:incoming>Flow_4_Yes</bpmn:incoming>
+        <bpmn:outgoing>Flow_4_Done</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:endEvent id="EndEvent_Loan" name="Loan processed">
+        <bpmn:incoming>Flow_4_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_4_No</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_3" sourceRef="StartEvent_Loan" targetRef="Gateway_DueDate"/>
+      <bpmn:sequenceFlow id="Flow_4_Yes" name="yes" sourceRef="Gateway_DueDate" targetRef="Task_MarkOverdue"/>
+      <bpmn:sequenceFlow id="Flow_4_No" name="no" sourceRef="Gateway_DueDate" targetRef="EndEvent_Loan"/>
+      <bpmn:sequenceFlow id="Flow_4_Done" sourceRef="Task_MarkOverdue" targetRef="EndEvent_Loan"/>
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="Task_RefreshKPI" name="Refresh KPI strip (overdue count + total fines)"><bpmn:incoming>Flow_5</bpmn:incoming><bpmn:outgoing>Flow_6</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Done" name="Batch complete"><bpmn:incoming>Flow_6</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_LoadActiveLoans"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_LoadActiveLoans" targetRef="SubProcess_PerLoan"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="SubProcess_PerLoan" targetRef="Task_RefreshKPI"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_RefreshKPI" targetRef="EndEvent_Done"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_library_overdue_handling">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LoadActiveLoans_di" bpmnElement="Task_LoadActiveLoans"><dc:Bounds x="230" y="178" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_PerLoan_di" bpmnElement="SubProcess_PerLoan" isExpanded="true"><dc:Bounds x="490" y="100" width="600" height="240"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_Loan_di" bpmnElement="StartEvent_Loan"><dc:Bounds x="520" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DueDate_di" bpmnElement="Gateway_DueDate" isMarkerVisible="true"><dc:Bounds x="600" y="193" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MarkOverdue_di" bpmnElement="Task_MarkOverdue"><dc:Bounds x="700" y="140" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Loan_di" bpmnElement="EndEvent_Loan"><dc:Bounds x="960" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RefreshKPI_di" bpmnElement="Task_RefreshKPI"><dc:Bounds x="1130" y="178" width="240" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Done_di" bpmnElement="EndEvent_Done"><dc:Bounds x="1400" y="200" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="218"/><di:waypoint x="230" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="450" y="218"/><di:waypoint x="490" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="556" y="218"/><di:waypoint x="600" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_Yes_di" bpmnElement="Flow_4_Yes"><di:waypoint x="625" y="193"/><di:waypoint x="625" y="180"/><di:waypoint x="700" y="180"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_No_di" bpmnElement="Flow_4_No"><di:waypoint x="625" y="243"/><di:waypoint x="625" y="280"/><di:waypoint x="978" y="280"/><di:waypoint x="978" y="236"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_Done_di" bpmnElement="Flow_4_Done"><di:waypoint x="920" y="180"/><di:waypoint x="978" y="180"/><di:waypoint x="978" y="200"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="1090" y="218"/><di:waypoint x="1130" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="1370" y="218"/><di:waypoint x="1400" y="218"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

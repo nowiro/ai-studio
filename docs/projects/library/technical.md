@@ -338,3 +338,42 @@ Reload starts unauthenticated.
 | Add a librarian-only action     | Add row in `librarian-page.component.ts`; gate via `*aisRoleAllow`. Add E2E.                                                    |
 | Add a new role (e.g. archivist) | Extend `MemberRole`; update `roleGuard` calls; document in [ADR-0007 § Compliance](../../adr/0007-library-roles.md#compliance). |
 | Add a third language            | Pull strings into `@ai-studio/shared-language` (already used by union-vault).                                                   |
+
+## Web Component embedding
+
+The app ships a Web Component build target ([ADR-0012](../../adr/0012-app-dual-mode-web-components.md)) so a non-Angular host page can drop in the entire feature with a single tag:
+
+```bash
+pnpm nx run library:build-element
+# → dist/apps/library-element/{main.js,styles.css,polyfills.js,...}
+```
+
+```html
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+/>
+<link
+  rel="stylesheet"
+  href="./library-element/styles.css"
+/>
+<script
+  type="module"
+  src="./library-element/main.js"
+></script>
+<ais-library></ais-library>
+```
+
+Embeds the mock AuthService by default; swap to provideKeycloak() (from @ai-studio/keycloak-auth) for production deployments.
+
+### Limitations
+
+- Routing is virtual — the host page's URL bar does not reflect step / route changes inside the custom element.
+- Each Web Component ships its own Angular runtime (~200 KB gzipped). For multiple AI Studio elements on one page, use the portal (ADR-0009) instead.
+- CSP for the bundle is the host page's responsibility (the WC ships no <meta http-equiv="Content-Security-Policy">).
+
+Combined demo of 4 Web Components side-by-side: [`docs/projects/elements-demo/index.html`](../elements-demo/index.html).

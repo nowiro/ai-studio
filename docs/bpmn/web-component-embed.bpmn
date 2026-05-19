@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_web_component_embed"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/web-component-embed">
+  <bpmn:process id="Process_web_component_embed" name="Web Component embed (host loads ais-app)" isExecutable="false">
+    <bpmn:documentation>Cross-cutting flow for ais-app Web Components produced by build:element. Host page may use standalone or federated mode.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="Host page loaded"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="Task_LoadESM" name="Load ESM bundle (ais-app.js)"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_DefineCustomElement" name="customElements.define('ais-app', AisAppElement)"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Mode" name="Embedding mode"><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_4_Standalone</bpmn:outgoing><bpmn:outgoing>Flow_5_Federated</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_MountStandalone" name="Mount &lt;ais-app&gt;&lt;/ais-app&gt; (standalone bootstrap)"><bpmn:incoming>Flow_4_Standalone</bpmn:incoming><bpmn:outgoing>Flow_6</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_MountFederated" name="Mount via portal shell (Native Federation)"><bpmn:incoming>Flow_5_Federated</bpmn:incoming><bpmn:outgoing>Flow_7</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_RenderUI" name="Render Angular UI (signals, OnPush)"><bpmn:incoming>Flow_6</bpmn:incoming><bpmn:incoming>Flow_7</bpmn:incoming><bpmn:outgoing>Flow_8</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Done" name="App visible"><bpmn:incoming>Flow_8</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_LoadESM"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_LoadESM" targetRef="Task_DefineCustomElement"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_DefineCustomElement" targetRef="Gateway_Mode"/>
+    <bpmn:sequenceFlow id="Flow_4_Standalone" name="standalone" sourceRef="Gateway_Mode" targetRef="Task_MountStandalone"/>
+    <bpmn:sequenceFlow id="Flow_5_Federated" name="federated" sourceRef="Gateway_Mode" targetRef="Task_MountFederated"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_MountStandalone" targetRef="Task_RenderUI"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_MountFederated" targetRef="Task_RenderUI"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_RenderUI" targetRef="EndEvent_Done"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_web_component_embed">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="240" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LoadESM_di" bpmnElement="Task_LoadESM"><dc:Bounds x="230" y="218" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DefineCustomElement_di" bpmnElement="Task_DefineCustomElement"><dc:Bounds x="450" y="218" width="280" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Mode_di" bpmnElement="Gateway_Mode" isMarkerVisible="true"><dc:Bounds x="760" y="233" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MountStandalone_di" bpmnElement="Task_MountStandalone"><dc:Bounds x="850" y="120" width="280" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MountFederated_di" bpmnElement="Task_MountFederated"><dc:Bounds x="850" y="320" width="280" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RenderUI_di" bpmnElement="Task_RenderUI"><dc:Bounds x="1180" y="218" width="240" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Done_di" bpmnElement="EndEvent_Done"><dc:Bounds x="1450" y="240" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="258"/><di:waypoint x="230" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="430" y="258"/><di:waypoint x="450" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="730" y="258"/><di:waypoint x="760" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_Standalone_di" bpmnElement="Flow_4_Standalone"><di:waypoint x="785" y="233"/><di:waypoint x="785" y="160"/><di:waypoint x="850" y="160"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_Federated_di" bpmnElement="Flow_5_Federated"><di:waypoint x="785" y="283"/><di:waypoint x="785" y="360"/><di:waypoint x="850" y="360"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="1130" y="160"/><di:waypoint x="1300" y="160"/><di:waypoint x="1300" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1130" y="360"/><di:waypoint x="1300" y="360"/><di:waypoint x="1300" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1420" y="258"/><di:waypoint x="1450" y="258"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

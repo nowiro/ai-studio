@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_keycloak_auth_flow"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/keycloak-auth-flow">
+  <bpmn:process id="Process_keycloak_auth_flow" name="Keycloak authentication and role guard" isExecutable="false">
+    <bpmn:documentation>Cross-cutting auth flow used by every app that opts into provideKeycloak(). Backed by libs/keycloak-auth.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="User clicks Login"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="Task_RedirectKeycloak" name="Redirect to Keycloak"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="Task_Authenticate" name="User authenticates (Keycloak login form)"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_ReceiveCallback" name="Receive callback with code"><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_ExchangeToken" name="Exchange code for tokens (keycloak-js)"><bpmn:incoming>Flow_4</bpmn:incoming><bpmn:outgoing>Flow_5</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_TokenValid" name="Token valid?"><bpmn:incoming>Flow_5</bpmn:incoming><bpmn:outgoing>Flow_6_Invalid</bpmn:outgoing><bpmn:outgoing>Flow_7_Valid</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_Reject" name="Redirect to login"><bpmn:incoming>Flow_6_Invalid</bpmn:incoming></bpmn:endEvent>
+    <bpmn:serviceTask id="Task_ExtractRoles" name="Extract roles to AuthService.role()"><bpmn:incoming>Flow_7_Valid</bpmn:incoming><bpmn:outgoing>Flow_8</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_NavigateRoute" name="Navigate to requested route"><bpmn:incoming>Flow_8</bpmn:incoming><bpmn:outgoing>Flow_9</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_RouteGuard" name="roleGuard allows?"><bpmn:incoming>Flow_9</bpmn:incoming><bpmn:outgoing>Flow_10_Deny</bpmn:outgoing><bpmn:outgoing>Flow_11_Allow</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_RedirectFallback" name="Redirect to fallback path"><bpmn:incoming>Flow_10_Deny</bpmn:incoming><bpmn:outgoing>Flow_12</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Denied" name="Access denied"><bpmn:incoming>Flow_12</bpmn:incoming></bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_Allowed" name="Route rendered"><bpmn:incoming>Flow_11_Allow</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_RedirectKeycloak"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_RedirectKeycloak" targetRef="Task_Authenticate"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Authenticate" targetRef="Task_ReceiveCallback"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_ReceiveCallback" targetRef="Task_ExchangeToken"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_ExchangeToken" targetRef="Gateway_TokenValid"/>
+    <bpmn:sequenceFlow id="Flow_6_Invalid" name="no" sourceRef="Gateway_TokenValid" targetRef="EndEvent_Reject"/>
+    <bpmn:sequenceFlow id="Flow_7_Valid" name="yes" sourceRef="Gateway_TokenValid" targetRef="Task_ExtractRoles"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_ExtractRoles" targetRef="Task_NavigateRoute"/>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_NavigateRoute" targetRef="Gateway_RouteGuard"/>
+    <bpmn:sequenceFlow id="Flow_10_Deny" name="no" sourceRef="Gateway_RouteGuard" targetRef="Task_RedirectFallback"/>
+    <bpmn:sequenceFlow id="Flow_11_Allow" name="yes" sourceRef="Gateway_RouteGuard" targetRef="EndEvent_Allowed"/>
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_RedirectFallback" targetRef="EndEvent_Denied"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_keycloak_auth_flow">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="280" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RedirectKeycloak_di" bpmnElement="Task_RedirectKeycloak"><dc:Bounds x="230" y="258" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Authenticate_di" bpmnElement="Task_Authenticate"><dc:Bounds x="450" y="258" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveCallback_di" bpmnElement="Task_ReceiveCallback"><dc:Bounds x="690" y="258" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExchangeToken_di" bpmnElement="Task_ExchangeToken"><dc:Bounds x="910" y="258" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TokenValid_di" bpmnElement="Gateway_TokenValid" isMarkerVisible="true"><dc:Bounds x="1150" y="273" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Reject_di" bpmnElement="EndEvent_Reject"><dc:Bounds x="1160" y="140" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExtractRoles_di" bpmnElement="Task_ExtractRoles"><dc:Bounds x="1240" y="258" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NavigateRoute_di" bpmnElement="Task_NavigateRoute"><dc:Bounds x="1480" y="258" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RouteGuard_di" bpmnElement="Gateway_RouteGuard" isMarkerVisible="true"><dc:Bounds x="1700" y="273" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RedirectFallback_di" bpmnElement="Task_RedirectFallback"><dc:Bounds x="1660" y="420" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Denied_di" bpmnElement="EndEvent_Denied"><dc:Bounds x="1880" y="442" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Allowed_di" bpmnElement="EndEvent_Allowed"><dc:Bounds x="1790" y="280" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="298"/><di:waypoint x="230" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="430" y="298"/><di:waypoint x="450" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="670" y="298"/><di:waypoint x="690" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="890" y="298"/><di:waypoint x="910" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="1130" y="298"/><di:waypoint x="1150" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_Invalid_di" bpmnElement="Flow_6_Invalid"><di:waypoint x="1175" y="273"/><di:waypoint x="1175" y="176"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_Valid_di" bpmnElement="Flow_7_Valid"><di:waypoint x="1200" y="298"/><di:waypoint x="1240" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1460" y="298"/><di:waypoint x="1480" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1680" y="298"/><di:waypoint x="1700" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_Deny_di" bpmnElement="Flow_10_Deny"><di:waypoint x="1725" y="323"/><di:waypoint x="1725" y="460"/><di:waypoint x="1660" y="460"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_Allow_di" bpmnElement="Flow_11_Allow"><di:waypoint x="1750" y="298"/><di:waypoint x="1790" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12"><di:waypoint x="1860" y="460"/><di:waypoint x="1880" y="460"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

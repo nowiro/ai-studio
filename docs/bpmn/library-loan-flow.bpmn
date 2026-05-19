@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_library_loan_flow"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/library-loan-flow">
+  <bpmn:process id="Process_library_loan_flow" name="Library loan flow (search, reserve, borrow, return)" isExecutable="false">
+    <bpmn:documentation>Reader and librarian collaborate over the same Book/Loan/Reservation entities.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="Reader on catalog"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_SearchBook" name="Search book (filter, search, sort)"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_OpenDetail" name="Open book detail"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Availability" name="Free copies > 0?"><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_4_Free</bpmn:outgoing><bpmn:outgoing>Flow_5_Busy</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Reserve" name="Reader: Reserve (FIFO queue)"><bpmn:incoming>Flow_5_Busy</bpmn:incoming><bpmn:outgoing>Flow_6</bpmn:outgoing></bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Event_WaitFreeCopy" name="Wait for free copy"><bpmn:incoming>Flow_6</bpmn:incoming><bpmn:outgoing>Flow_7</bpmn:outgoing></bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_LibrarianIssue" name="Librarian: Issue book (mark borrowed)"><bpmn:incoming>Flow_4_Free</bpmn:incoming><bpmn:incoming>Flow_7</bpmn:incoming><bpmn:outgoing>Flow_8</bpmn:outgoing></bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Event_LoanPeriod" name="14 day loan period"><bpmn:incoming>Flow_8</bpmn:incoming><bpmn:outgoing>Flow_9</bpmn:outgoing></bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_LibrarianReturn" name="Librarian: Mark returned"><bpmn:incoming>Flow_9</bpmn:incoming><bpmn:outgoing>Flow_10</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_UpdateKPI" name="Update KPI strip + reservation queue"><bpmn:incoming>Flow_10</bpmn:incoming><bpmn:outgoing>Flow_11</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Done" name="Loan completed"><bpmn:incoming>Flow_11</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_SearchBook"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_SearchBook" targetRef="Task_OpenDetail"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_OpenDetail" targetRef="Gateway_Availability"/>
+    <bpmn:sequenceFlow id="Flow_4_Free" name="yes" sourceRef="Gateway_Availability" targetRef="Task_LibrarianIssue"/>
+    <bpmn:sequenceFlow id="Flow_5_Busy" name="no" sourceRef="Gateway_Availability" targetRef="Task_Reserve"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_Reserve" targetRef="Event_WaitFreeCopy"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Event_WaitFreeCopy" targetRef="Task_LibrarianIssue"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_LibrarianIssue" targetRef="Event_LoanPeriod"/>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Event_LoanPeriod" targetRef="Task_LibrarianReturn"/>
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Task_LibrarianReturn" targetRef="Task_UpdateKPI"/>
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_UpdateKPI" targetRef="EndEvent_Done"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_library_loan_flow">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="280" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SearchBook_di" bpmnElement="Task_SearchBook"><dc:Bounds x="230" y="258" width="180" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OpenDetail_di" bpmnElement="Task_OpenDetail"><dc:Bounds x="430" y="258" width="160" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Availability_di" bpmnElement="Gateway_Availability" isMarkerVisible="true"><dc:Bounds x="610" y="273" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Reserve_di" bpmnElement="Task_Reserve"><dc:Bounds x="700" y="420" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_WaitFreeCopy_di" bpmnElement="Event_WaitFreeCopy"><dc:Bounds x="940" y="442" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LibrarianIssue_di" bpmnElement="Task_LibrarianIssue"><dc:Bounds x="700" y="140" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_LoanPeriod_di" bpmnElement="Event_LoanPeriod"><dc:Bounds x="940" y="162" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LibrarianReturn_di" bpmnElement="Task_LibrarianReturn"><dc:Bounds x="1020" y="140" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UpdateKPI_di" bpmnElement="Task_UpdateKPI"><dc:Bounds x="1260" y="140" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Done_di" bpmnElement="EndEvent_Done"><dc:Bounds x="1510" y="162" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="298"/><di:waypoint x="230" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="410" y="298"/><di:waypoint x="430" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="590" y="298"/><di:waypoint x="610" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_Free_di" bpmnElement="Flow_4_Free"><di:waypoint x="635" y="273"/><di:waypoint x="635" y="180"/><di:waypoint x="700" y="180"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_Busy_di" bpmnElement="Flow_5_Busy"><di:waypoint x="635" y="323"/><di:waypoint x="635" y="460"/><di:waypoint x="700" y="460"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="900" y="460"/><di:waypoint x="940" y="460"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="958" y="442"/><di:waypoint x="958" y="320"/><di:waypoint x="800" y="320"/><di:waypoint x="800" y="220"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="900" y="180"/><di:waypoint x="940" y="180"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="976" y="180"/><di:waypoint x="1020" y="180"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10"><di:waypoint x="1220" y="180"/><di:waypoint x="1260" y="180"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11"><di:waypoint x="1480" y="180"/><di:waypoint x="1510" y="180"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -33,6 +33,9 @@
     "strictPropertyInitialization": true,
     "alwaysStrict": true,
     "paths": {
+      "@ai-studio/business-wizard-data": ["./libs/business-wizard-data/src/index.ts"],
+      "@ai-studio/business-wizard-feature": ["./libs/business-wizard-feature/src/index.ts"],
+      "@ai-studio/wizard-core": ["./libs/wizard-core/src/index.ts"],
       "@ai-studio/game-pong": ["./libs/game-pong/src/index.ts"],
       "@ai-studio/game-pong-ui": ["./libs/game-pong-ui/src/index.ts"],
       "@ai-studio/game-tetris": ["./libs/game-tetris/src/index.ts"],
@@ -62,10 +65,14 @@
       "@ai-studio/tire-feature-cart": ["./libs/tire-feature-cart/src/index.ts"],
       "@ai-studio/tire-feature-catalogue": ["./libs/tire-feature-catalogue/src/index.ts"],
       "@ai-studio/tire-ui": ["./libs/tire-ui/src/index.ts"],
-      "@ai-studio/wizard-data": ["./libs/wizard-data/src/index.ts"],
-      "@ai-studio/wizard-dev-tools": ["./libs/wizard-dev-tools/src/index.ts"],
-      "@ai-studio/wizard-feature": ["./libs/wizard-feature/src/index.ts"],
-      "@ai-studio/wizard-ui": ["./libs/wizard-ui/src/index.ts"],
+      "@ai-studio/dashboard-data": ["./libs/dashboard-data/src/index.ts"],
+      "@ai-studio/dashboard-feature": ["./libs/dashboard-feature/src/index.ts"],
+      "@ai-studio/keycloak-auth": ["./libs/keycloak-auth/src/index.ts"],
+      "@ai-studio/portal-shell": ["./libs/portal-shell/src/index.ts"],
+      "@ai-studio/individual-wizard-data": ["./libs/individual-wizard-data/src/index.ts"],
+      "@ai-studio/individual-wizard-dev-tools": ["./libs/individual-wizard-dev-tools/src/index.ts"],
+      "@ai-studio/individual-wizard-feature": ["./libs/individual-wizard-feature/src/index.ts"],
+      "@ai-studio/individual-wizard-ui": ["./libs/individual-wizard-ui/src/index.ts"],
       "@ai-studio/wizard-util-pdf": ["./libs/wizard-util-pdf/src/index.ts"],
       "@ai-studio/wizard-util-validators": ["./libs/wizard-util-validators/src/index.ts"]
     }

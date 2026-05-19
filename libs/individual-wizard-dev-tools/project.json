@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "individual-wizard-dev-tools",
+  "projectType": "library",
+  "sourceRoot": "libs/individual-wizard-dev-tools/src",
+  "tags": ["scope:wizard", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/individual-wizard-dev-tools"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/individual-wizard-dev-tools"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/individual-wizard-dev-tools/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

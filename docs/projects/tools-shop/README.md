@@ -8,6 +8,8 @@ links:
   hub: ../README.md
   app: ../../../apps/tools-shop
   port: 4209
+  bpmn: ../../bpmn/bookstore-purchase.bpmn
+  bpmn_note: shop-core checkout flow — reusable across bookstore, tools-shop, toy-shop
 ---
 
 # Tools-shop

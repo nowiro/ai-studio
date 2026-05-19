@@ -30,6 +30,20 @@
       },
       "defaultConfiguration": "production"
     },
+    "build-element": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/pong-game-element",
+        "browser": "apps/pong-game/src/element.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/pong-game/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/pong-game/src/styles.scss"],
+        "outputHashing": "none",
+        "budgets": [{ "type": "initial", "maximumWarning": "1.8mB", "maximumError": "3mB" }]
+      }
+    },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",

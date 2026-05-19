@@ -78,7 +78,7 @@ The trinity rules are codified in [`.ai/rules/production-readiness.md`](.ai/rule
 
 ## Angular security checklist (v21+)
 
-Reference: <https://angular.dev/best-practices/security>. Applied across all four apps (`nowiro`, `union-vault`, `pong-game`, `personal-data-wizard`).
+Reference: <https://angular.dev/best-practices/security>. Applied across all four apps (`nowiro`, `union-vault`, `pong-game`, `individual-wizard`).
 
 | #   | Requirement                               | Status | Notes                                                                                                                                                                                               |
 | --- | ----------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -109,12 +109,12 @@ Reference: <https://angular.dev/best-practices/security>. Applied across all fou
 
 ### Per-app CSP summary
 
-| App                    | External resources whitelisted in CSP                                                                             |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `nowiro`               | + Google Fonts (Material Icons CSS + woff2). Flagi PL/GB serwowane lokalnie z `assets/flags/` — żadnego flag CDN. |
-| `pong-game`            | `'self'` only + `blob:` images (Phaser canvas)                                                                    |
-| `personal-data-wizard` | + `fonts.googleapis.com` (CSS), `fonts.gstatic.com` (woff2)                                                       |
-| `union-vault`          | + Google Fonts, `cdn.jsdelivr.net` (flag-icons), `api.frankfurter.dev`, `www.floatrates.com`                      |
+| App                 | External resources whitelisted in CSP                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `nowiro`            | + Google Fonts (Material Icons CSS + woff2). Flagi PL/GB serwowane lokalnie z `assets/flags/` — żadnego flag CDN. |
+| `pong-game`         | `'self'` only + `blob:` images (Phaser canvas)                                                                    |
+| `individual-wizard` | + `fonts.googleapis.com` (CSS), `fonts.gstatic.com` (woff2)                                                       |
+| `union-vault`       | + Google Fonts, `cdn.jsdelivr.net` (flag-icons), `api.frankfurter.dev`, `www.floatrates.com`                      |
 
 `'unsafe-inline'` for `script-src`/`style-src` is required because Angular emits an inline boot script and Material/Tailwind inject inline styles. Production deploys should swap meta CSP for an HTTP header with per-request nonces (§11-12).
 

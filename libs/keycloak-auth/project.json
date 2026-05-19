@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "keycloak-auth",
+  "projectType": "library",
+  "sourceRoot": "libs/keycloak-auth/src",
+  "tags": ["scope:auth", "type:data-access"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/keycloak-auth/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

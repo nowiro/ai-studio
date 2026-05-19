@@ -1,0 +1,66 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "business-wizard",
+  "projectType": "application",
+  "sourceRoot": "apps/business-wizard/src",
+  "tags": ["scope:wizard", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/business-wizard",
+        "index": "apps/business-wizard/src/index.html",
+        "browser": "apps/business-wizard/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/business-wizard/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/business-wizard/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{ "type": "initial", "maximumWarning": "1.5mB", "maximumError": "2.5mB" }],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "build-element": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/business-wizard-element",
+        "browser": "apps/business-wizard/src/element.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/business-wizard/tsconfig.app.json",
+        "assets": [],
+        "styles": ["styles/tailwind.scss", "apps/business-wizard/src/styles.scss"],
+        "outputHashing": "none",
+        "budgets": [{ "type": "initial", "maximumWarning": "1.8mB", "maximumError": "3mB" }]
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4212
+      },
+      "configurations": {
+        "production": { "buildTarget": "business-wizard:build:production" },
+        "development": { "buildTarget": "business-wizard:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/business-wizard/tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}

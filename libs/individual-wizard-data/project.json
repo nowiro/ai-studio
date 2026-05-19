@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "individual-wizard-data",
+  "projectType": "library",
+  "sourceRoot": "libs/individual-wizard-data/src",
+  "tags": ["scope:wizard", "type:data-access"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/individual-wizard-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/individual-wizard-data"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/individual-wizard-data/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

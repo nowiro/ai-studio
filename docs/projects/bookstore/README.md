@@ -8,6 +8,7 @@ links:
   hub: ../README.md
   app: ../../../apps/bookstore
   port: 4208
+  bpmn: ../../bpmn/bookstore-purchase.bpmn
 ---
 
 # Bookstore

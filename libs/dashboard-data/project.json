@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "dashboard-data",
+  "projectType": "library",
+  "sourceRoot": "libs/dashboard-data/src",
+  "tags": ["scope:dashboard", "type:data-access"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/dashboard-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/dashboard-data"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/dashboard-data/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

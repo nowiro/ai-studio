@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_bookstore_purchase"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/bookstore-purchase">
+  <bpmn:process id="Process_bookstore_purchase" name="Bookstore purchase (shop-core flow, reusable for tools-shop and toy-shop)" isExecutable="false">
+    <bpmn:documentation>Generic shop-core purchase flow. Reused by bookstore, tools-shop, and toy-shop via PRODUCT_LOOKUP / CART_STORAGE_KEY DI tokens. Tire-shop predates the split and runs its own copy.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="User on shop"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_BrowseCatalog" name="Browse catalog (facets, search, sort)"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_AddToCart" name="Add product to cart (ShopCartService)"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_CartReview" name="Open cart drawer / page"><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_4</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Continue" name="Continue to checkout?"><bpmn:incoming>Flow_4</bpmn:incoming><bpmn:outgoing>Flow_5_Yes</bpmn:outgoing><bpmn:outgoing>Flow_6_Back</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Checkout" name="4-step Reactive Forms checkout (ais-shop-checkout)"><bpmn:incoming>Flow_5_Yes</bpmn:incoming><bpmn:outgoing>Flow_7</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_PaymentMock" name="Payment mock (no real gateway)"><bpmn:incoming>Flow_7</bpmn:incoming><bpmn:outgoing>Flow_8</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_OrderConfirm" name="Persist OrderDraft + clear cart"><bpmn:incoming>Flow_8</bpmn:incoming><bpmn:outgoing>Flow_9</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Done" name="Order confirmation"><bpmn:incoming>Flow_9</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_BrowseCatalog"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_BrowseCatalog" targetRef="Task_AddToCart"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_AddToCart" targetRef="Task_CartReview"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_CartReview" targetRef="Gateway_Continue"/>
+    <bpmn:sequenceFlow id="Flow_5_Yes" name="yes" sourceRef="Gateway_Continue" targetRef="Task_Checkout"/>
+    <bpmn:sequenceFlow id="Flow_6_Back" name="keep shopping" sourceRef="Gateway_Continue" targetRef="Task_BrowseCatalog"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Checkout" targetRef="Task_PaymentMock"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_PaymentMock" targetRef="Task_OrderConfirm"/>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_OrderConfirm" targetRef="EndEvent_Done"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_bookstore_purchase">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="240" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BrowseCatalog_di" bpmnElement="Task_BrowseCatalog"><dc:Bounds x="230" y="218" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AddToCart_di" bpmnElement="Task_AddToCart"><dc:Bounds x="460" y="218" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CartReview_di" bpmnElement="Task_CartReview"><dc:Bounds x="710" y="218" width="180" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Continue_di" bpmnElement="Gateway_Continue" isMarkerVisible="true"><dc:Bounds x="920" y="233" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Checkout_di" bpmnElement="Task_Checkout"><dc:Bounds x="1010" y="218" width="240" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PaymentMock_di" bpmnElement="Task_PaymentMock"><dc:Bounds x="1280" y="218" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OrderConfirm_di" bpmnElement="Task_OrderConfirm"><dc:Bounds x="1510" y="218" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Done_di" bpmnElement="EndEvent_Done"><dc:Bounds x="1760" y="240" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="258"/><di:waypoint x="230" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="430" y="258"/><di:waypoint x="460" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="680" y="258"/><di:waypoint x="710" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="890" y="258"/><di:waypoint x="920" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_Yes_di" bpmnElement="Flow_5_Yes"><di:waypoint x="970" y="258"/><di:waypoint x="1010" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_Back_di" bpmnElement="Flow_6_Back"><di:waypoint x="945" y="283"/><di:waypoint x="945" y="400"/><di:waypoint x="330" y="400"/><di:waypoint x="330" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1250" y="258"/><di:waypoint x="1280" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1480" y="258"/><di:waypoint x="1510" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1730" y="258"/><di:waypoint x="1760" y="258"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

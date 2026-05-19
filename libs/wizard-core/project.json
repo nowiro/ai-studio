@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "wizard-core",
+  "projectType": "library",
+  "sourceRoot": "libs/wizard-core/src",
+  "tags": ["scope:wizard", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/wizard-core"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/wizard-core"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/wizard-core/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

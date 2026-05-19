@@ -1,0 +1,45 @@
+@use '@angular/material' as mat;
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Portal — global styles
+ *
+ * Theme: Material 3 (Indigo primary, Cyan tertiary) — distinct from any
+ * single sub-app's palette so the portal chrome is visually unambiguous.
+ * Each loaded Web Component ships its own theme inside its bundle — palette
+ * drift is documented as accepted in the /clarify resolution.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family:
+    'Inter',
+    'Roboto',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  color-scheme: light;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface-container);
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$indigo-palette,
+        tertiary: mat.$cyan-palette,
+      ),
+      typography: Roboto,
+      density: -1,
+    )
+  );
+}
+
+body {
+  background: var(--mat-sys-surface-container);
+}

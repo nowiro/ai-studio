@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "individual-wizard-ui",
+  "projectType": "library",
+  "sourceRoot": "libs/individual-wizard-ui/src",
+  "tags": ["scope:wizard", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/individual-wizard-ui/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

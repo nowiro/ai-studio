@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "business-wizard-feature",
+  "projectType": "library",
+  "sourceRoot": "libs/business-wizard-feature/src",
+  "tags": ["scope:wizard", "type:feature"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/business-wizard-feature/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

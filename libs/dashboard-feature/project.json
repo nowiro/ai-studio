@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "dashboard-feature",
+  "projectType": "library",
+  "sourceRoot": "libs/dashboard-feature/src",
+  "tags": ["scope:dashboard", "type:feature"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/dashboard-feature/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

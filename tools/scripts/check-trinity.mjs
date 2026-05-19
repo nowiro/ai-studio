@@ -15,7 +15,7 @@
  */
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import process from 'node:process';
 
@@ -35,6 +35,10 @@ const BASELINE = [
   'docs/ai-workflow/plans/_template.md',
   'tools/scripts/bootstrap.mjs',
 ];
+
+// Directories where every entry in `.ai/<dir>/` must also exist (same filename) in `.claude/<dir>/`.
+// Names listed are the trinity-wide expectation for agent parity across Claude Code + Copilot wrappers.
+const CLAUDE_MIRROR_DIRS = ['agents'];
 
 // Sibling repo names — the trinity, minus self.
 const SIBLINGS = ['ai-studio', 'ai-mcp-alm', 'ai-mcp-devtools'];
@@ -87,8 +91,41 @@ async function main() {
     }
   }
 
-  if (drift) {
-    console.error('\nTrinity baseline has drift. Sync the offending files from the canonical (ai-studio).');
+  // Verify .ai/<dir>/*.md ≡ .claude/<dir>/*.md parity inside THIS repo.
+  // Mirror is required so Claude Code's Agent({subagent_type: ...}) and Copilot wrappers share the same roster.
+  let mirrorDrift = false;
+  for (const dir of CLAUDE_MIRROR_DIRS) {
+    const aiDir = resolve(ROOT, '.ai', dir);
+    const claudeDir = resolve(ROOT, '.claude', dir);
+    if (!existsSync(aiDir)) continue;
+    const aiNames = (await readdir(aiDir)).filter((f) => f.endsWith('.md')).sort();
+    if (!existsSync(claudeDir)) {
+      console.error(`✗ ${self}: .claude/${dir}/ missing — expected mirror of .ai/${dir}/`);
+      mirrorDrift = true;
+      continue;
+    }
+    const claudeNames = (await readdir(claudeDir)).filter((f) => f.endsWith('.md')).sort();
+    for (const name of aiNames) {
+      if (!claudeNames.includes(name)) {
+        console.error(`✗ ${self}: .claude/${dir}/${name} missing (present in .ai/${dir}/)`);
+        mirrorDrift = true;
+      }
+    }
+    for (const name of claudeNames) {
+      if (!aiNames.includes(name)) {
+        console.error(`✗ ${self}: .ai/${dir}/${name} missing (present in .claude/${dir}/)`);
+        mirrorDrift = true;
+      }
+    }
+  }
+
+  if (drift || mirrorDrift) {
+    if (drift) {
+      console.error('\nTrinity baseline has drift. Sync the offending files from the canonical (ai-studio).');
+    }
+    if (mirrorDrift) {
+      console.error('\n.ai/<dir>/ ↔ .claude/<dir>/ parity violated. Add the missing mirror or remove the orphan.');
+    }
     process.exit(1);
   }
 
@@ -98,7 +135,7 @@ async function main() {
     );
   } else {
     console.log(
-      `✓ trinity in sync (${self} + ${siblingsChecked} sibling${siblingsChecked > 1 ? 's' : ''}, ${BASELINE.length} baseline files).`,
+      `✓ trinity in sync (${self} + ${siblingsChecked} sibling${siblingsChecked > 1 ? 's' : ''}, ${BASELINE.length} baseline files; .ai ↔ .claude parity OK).`,
     );
   }
 }

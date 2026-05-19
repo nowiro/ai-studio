@@ -1,0 +1,59 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "portal",
+  "projectType": "application",
+  "sourceRoot": "apps/portal/src",
+  "tags": ["scope:portal", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/portal",
+        "index": "apps/portal/src/index.html",
+        "browser": "apps/portal/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/portal/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "dist/apps",
+            "ignore": ["portal/**"],
+            "output": "element-bundles"
+          }
+        ],
+        "styles": ["styles/tailwind.scss", "apps/portal/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{ "type": "initial", "maximumWarning": "1mB", "maximumError": "2mB" }],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4220
+      },
+      "configurations": {
+        "production": { "buildTarget": "portal:build:production" },
+        "development": { "buildTarget": "portal:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/portal/tsconfig.app.json --noEmit"
+      }
+    }
+  }
+}

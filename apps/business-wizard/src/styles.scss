@@ -1,0 +1,83 @@
+@use '@angular/material' as mat;
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * business-wizard — global styles
+ *
+ * Theme: Material 3 (Azure primary, Cyan tertiary) — slightly cooler palette
+ * than individual-wizard's azure/rose, to visually distinguish the two
+ * demos when run side by side.
+ * Density -2 packs the 6-step stepper into laptop screens without scrolling
+ * between rows.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family:
+    'Inter',
+    'Roboto',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  color-scheme: light;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface-container);
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$cyan-palette,
+      ),
+      typography: Roboto,
+      density: -2,
+    )
+  );
+}
+
+body {
+  background: var(--mat-sys-surface-container);
+}
+
+input[type='date'],
+input[type='datetime-local'] {
+  color-scheme: light;
+}
+
+.mat-stepper-horizontal,
+.mat-stepper-vertical {
+  background: transparent !important;
+}
+
+.mat-horizontal-content-container {
+  padding: 1.5rem 0 0 0 !important;
+}
+
+.mat-vertical-content {
+  padding: 0 1rem 1rem 1.5rem !important;
+}
+
+.mat-step-label {
+  white-space: pre-line !important;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mat-sys-outline-variant) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mat-sys-outline-variant);
+  border-radius: 5px;
+}

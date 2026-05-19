@@ -174,3 +174,42 @@ initial 750 kB warning / 1.5 MB error.
 | Add a new facet (e.g. publisher) | Add field to `BookFilters` + predicate in `matching.ts` + UI in `filter-panel.component.ts`.  |
 | Swap the seed for an API         | Replace `signal(BOOK_CATALOGUE)` in `BookstoreCatalogueService` with an HTTP-driven signal.   |
 | Add a new product domain         | Copy the bookstore structure; only `<shop>-data` + `<shop>-feature-catalogue` need to be new. |
+
+## Web Component embedding
+
+The app ships a Web Component build target ([ADR-0012](../../adr/0012-app-dual-mode-web-components.md)) so a non-Angular host page can drop in the entire feature with a single tag:
+
+```bash
+pnpm nx run bookstore:build-element
+# → dist/apps/bookstore-element/{main.js,styles.css,polyfills.js,...}
+```
+
+```html
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+/>
+<link
+  rel="stylesheet"
+  href="./bookstore-element/styles.css"
+/>
+<script
+  type="module"
+  src="./bookstore-element/main.js"
+></script>
+<ais-bookstore></ais-bookstore>
+```
+
+Bundles the shared cart drawer + Material checkout into a single ESM artefact.
+
+### Limitations
+
+- Routing is virtual — the host page's URL bar does not reflect step / route changes inside the custom element.
+- Each Web Component ships its own Angular runtime (~200 KB gzipped). For multiple AI Studio elements on one page, use the portal (ADR-0009) instead.
+- CSP for the bundle is the host page's responsibility (the WC ships no <meta http-equiv="Content-Security-Policy">).
+
+Combined demo of 4 Web Components side-by-side: [`docs/projects/elements-demo/index.html`](../elements-demo/index.html).

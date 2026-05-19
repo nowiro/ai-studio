@@ -161,3 +161,42 @@ initial 900 kB warning / 1.5 MB error.
 - New safety axis (e.g. `chokingHazard: boolean`) → add to `Toy` model
   - seed + (optionally) `ToyFilters`.
 - Gift cards / vouchers → new feature lib under `scope:toy-shop`.
+
+## Web Component embedding
+
+The app ships a Web Component build target ([ADR-0012](../../adr/0012-app-dual-mode-web-components.md)) so a non-Angular host page can drop in the entire feature with a single tag:
+
+```bash
+pnpm nx run toy-shop:build-element
+# → dist/apps/toy-shop-element/{main.js,styles.css,polyfills.js,...}
+```
+
+```html
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+/>
+<link
+  rel="stylesheet"
+  href="./toy-shop-element/styles.css"
+/>
+<script
+  type="module"
+  src="./toy-shop-element/main.js"
+></script>
+<ais-toy-shop></ais-toy-shop>
+```
+
+Wires the toy catalogue into the shared ShopCartService; age-gating + safety badges render the same as standalone.
+
+### Limitations
+
+- Routing is virtual — the host page's URL bar does not reflect step / route changes inside the custom element.
+- Each Web Component ships its own Angular runtime (~200 KB gzipped). For multiple AI Studio elements on one page, use the portal (ADR-0009) instead.
+- CSP for the bundle is the host page's responsibility (the WC ships no <meta http-equiv="Content-Security-Policy">).
+
+Combined demo of 4 Web Components side-by-side: [`docs/projects/elements-demo/index.html`](../elements-demo/index.html).

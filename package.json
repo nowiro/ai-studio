@@ -16,7 +16,7 @@
     "start:nowiro": "nx serve nowiro",
     "start:union-vault": "nx serve union-vault",
     "start:pong-game": "nx serve pong-game",
-    "start:personal-data-wizard": "nx serve personal-data-wizard",
+    "start:individual-wizard": "nx serve individual-wizard",
     "start:tetris-game": "nx serve tetris-game",
     "start:tire-shop": "nx serve tire-shop",
     "start:library": "nx serve library",
@@ -24,7 +24,13 @@
     "start:bookstore": "nx serve bookstore",
     "start:tools-shop": "nx serve tools-shop",
     "start:toy-shop": "nx serve toy-shop",
-    "start:all": "nx run-many -t serve --projects=nowiro,union-vault,pong-game,personal-data-wizard,tetris-game,tire-shop,library,school-journal,bookstore,tools-shop,toy-shop --parallel=11",
+    "start:business-wizard": "nx serve business-wizard",
+    "build:business-wizard-element": "nx run business-wizard:build-element",
+    "start:portal": "nx serve portal",
+    "start:dashboard": "nx serve dashboard",
+    "start:portal-stack": "nx run-many -t serve --projects=portal,dashboard --parallel=2",
+    "build:all-elements": "nx run-many -t build-element --parallel=4",
+    "start:all": "nx run-many -t serve --projects=nowiro,union-vault,pong-game,individual-wizard,tetris-game,tire-shop,library,school-journal,bookstore,tools-shop,toy-shop,business-wizard,portal,dashboard --parallel=8",
     "build": "nx run-many -t build",
     "test": "nx run-many -t test",
     "test:watch": "nx run-many -t test --watch",
@@ -51,7 +57,9 @@
     "test:scenarios": "node tools/scripts/scenarios-from-specs.mjs",
     "trinity:check": "node tools/scripts/check-trinity.mjs",
     "docs:lint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#dist\" \"#coverage\" \"#.nx\"",
-    "docs:linkcheck": "lychee --config lychee.toml --no-progress \"./**/*.md\""
+    "docs:linkcheck": "lychee --config lychee.toml --no-progress \"./**/*.md\"",
+    "bpmn:lint": "bpmnlint docs/bpmn/**/*.bpmn",
+    "bpmn:render": "node tools/scripts/bpmn-render.mjs"
   },
   "dependencies": {
     "@angular/animations": "^21.2.13",
@@ -93,6 +101,8 @@
     "@types/node": "^25.8.0",
     "@vitest/coverage-v8": "^4.1.6",
     "angular-eslint": "21.4.0",
+    "bpmn-to-image": "^0.10.0",
+    "bpmnlint": "^11.5.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^10.4.0",
@@ -132,6 +142,11 @@
     ],
     "*.{js,mjs,cjs,json,md,yml,yaml,scss,css}": [
       "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "puppeteer"
     ]
   }
 }

@@ -1,0 +1,39 @@
+# Local Keycloak server for the library demo (and any other ai-studio app
+# that flips to `provideKeycloak()` per ADR-0013).
+#
+# Boot:
+#   docker compose -f tools/keycloak/docker-compose.yml up
+#
+# Then:
+#   KEYCLOAK_ENABLED=true pnpm start:library
+#
+# Realm + users seeded from realm-export.json on every boot (ephemeral storage).
+# Never use this for production — single replica, no persistence, default admin password.
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: ai-studio-keycloak
+    command:
+      - start-dev
+      - --import-realm
+      - --http-port=8080
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'exec 3<>/dev/tcp/localhost/8080; echo -e "GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\n\\r\\n" >&3; head -n1 <&3 | grep -q 200',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s

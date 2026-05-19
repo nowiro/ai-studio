@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "individual-wizard-e2e",
+  "projectType": "application",
+  "sourceRoot": "apps/individual-wizard-e2e/src",
+  "tags": ["scope:wizard", "type:e2e"],
+  "implicitDependencies": ["individual-wizard"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/individual-wizard-e2e"],
+      "options": {
+        "config": "apps/individual-wizard-e2e/playwright.config.ts"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "tetris-game-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/tetris-game-e2e/src",
+  "projectType": "application",
+  "tags": ["scope:game-tetris", "type:e2e"],
+  "implicitDependencies": ["tetris-game"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/tetris-game-e2e"],
+      "options": {
+        "config": "apps/tetris-game-e2e/playwright.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

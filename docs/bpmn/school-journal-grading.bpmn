@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_school_journal_grading"
+                  targetNamespace="https://nowiro.dev/bpmn/ai-studio/school-journal-grading">
+  <bpmn:process id="Process_school_journal_grading" name="School journal grading (multi-context term x class)" isExecutable="false">
+    <bpmn:documentation>Teacher selects term and class, then a student, assigns grade in 1..6 range, persists and aggregates semester average.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1" name="Teacher logged in"><bpmn:outgoing>Flow_1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:userTask id="Task_SelectTerm" name="Select term (semester / year)"><bpmn:incoming>Flow_1</bpmn:incoming><bpmn:outgoing>Flow_2</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_SelectClass" name="Select class (e.g. 5A)"><bpmn:incoming>Flow_2</bpmn:incoming><bpmn:outgoing>Flow_3</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_SelectStudent" name="Select student"><bpmn:incoming>Flow_3</bpmn:incoming><bpmn:outgoing>Flow_4</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="Task_AssignGrade" name="Assign grade (1..6)"><bpmn:incoming>Flow_4</bpmn:incoming><bpmn:outgoing>Flow_5</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_RangeValid" name="Grade in 1..6?"><bpmn:incoming>Flow_5</bpmn:incoming><bpmn:outgoing>Flow_6_Invalid</bpmn:outgoing><bpmn:outgoing>Flow_7_Valid</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ShowError" name="Show validation error (mat-error)"><bpmn:incoming>Flow_6_Invalid</bpmn:incoming><bpmn:outgoing>Flow_8</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="Task_SaveGrade" name="Save grade (in-memory store)"><bpmn:incoming>Flow_7_Valid</bpmn:incoming><bpmn:outgoing>Flow_9</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_FanOut" name="Side effects"><bpmn:incoming>Flow_9</bpmn:incoming><bpmn:outgoing>Flow_10_Aggregate</bpmn:outgoing><bpmn:outgoing>Flow_11_Notify</bpmn:outgoing></bpmn:parallelGateway>
+    <bpmn:serviceTask id="Task_UpdateAggregate" name="Update semester average (computed signal)"><bpmn:incoming>Flow_10_Aggregate</bpmn:incoming><bpmn:outgoing>Flow_12</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_NotifyParent" name="Notify parent (event bus stub)"><bpmn:incoming>Flow_11_Notify</bpmn:incoming><bpmn:outgoing>Flow_13</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_Join" name="Join"><bpmn:incoming>Flow_12</bpmn:incoming><bpmn:incoming>Flow_13</bpmn:incoming><bpmn:outgoing>Flow_14</bpmn:outgoing></bpmn:parallelGateway>
+    <bpmn:endEvent id="EndEvent_Done" name="Grade entered"><bpmn:incoming>Flow_14</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_SelectTerm"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_SelectTerm" targetRef="Task_SelectClass"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_SelectClass" targetRef="Task_SelectStudent"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_SelectStudent" targetRef="Task_AssignGrade"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_AssignGrade" targetRef="Gateway_RangeValid"/>
+    <bpmn:sequenceFlow id="Flow_6_Invalid" name="no" sourceRef="Gateway_RangeValid" targetRef="Task_ShowError"/>
+    <bpmn:sequenceFlow id="Flow_7_Valid" name="yes" sourceRef="Gateway_RangeValid" targetRef="Task_SaveGrade"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_ShowError" targetRef="Task_AssignGrade"/>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_SaveGrade" targetRef="Gateway_FanOut"/>
+    <bpmn:sequenceFlow id="Flow_10_Aggregate" sourceRef="Gateway_FanOut" targetRef="Task_UpdateAggregate"/>
+    <bpmn:sequenceFlow id="Flow_11_Notify" sourceRef="Gateway_FanOut" targetRef="Task_NotifyParent"/>
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_UpdateAggregate" targetRef="Gateway_Join"/>
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Task_NotifyParent" targetRef="Gateway_Join"/>
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="Gateway_Join" targetRef="EndEvent_Done"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_school_journal_grading">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1"><dc:Bounds x="150" y="280" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectTerm_di" bpmnElement="Task_SelectTerm"><dc:Bounds x="230" y="258" width="160" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectClass_di" bpmnElement="Task_SelectClass"><dc:Bounds x="410" y="258" width="160" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectStudent_di" bpmnElement="Task_SelectStudent"><dc:Bounds x="590" y="258" width="160" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AssignGrade_di" bpmnElement="Task_AssignGrade"><dc:Bounds x="770" y="258" width="160" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RangeValid_di" bpmnElement="Gateway_RangeValid" isMarkerVisible="true"><dc:Bounds x="950" y="273" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ShowError_di" bpmnElement="Task_ShowError"><dc:Bounds x="900" y="420" width="200" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SaveGrade_di" bpmnElement="Task_SaveGrade"><dc:Bounds x="1040" y="258" width="180" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FanOut_di" bpmnElement="Gateway_FanOut"><dc:Bounds x="1240" y="273" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UpdateAggregate_di" bpmnElement="Task_UpdateAggregate"><dc:Bounds x="1320" y="140" width="240" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyParent_di" bpmnElement="Task_NotifyParent"><dc:Bounds x="1320" y="380" width="220" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_di" bpmnElement="Gateway_Join"><dc:Bounds x="1590" y="273" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Done_di" bpmnElement="EndEvent_Done"><dc:Bounds x="1680" y="280" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="186" y="298"/><di:waypoint x="230" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="390" y="298"/><di:waypoint x="410" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="570" y="298"/><di:waypoint x="590" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="750" y="298"/><di:waypoint x="770" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="930" y="298"/><di:waypoint x="950" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_Invalid_di" bpmnElement="Flow_6_Invalid"><di:waypoint x="975" y="323"/><di:waypoint x="975" y="420"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_Valid_di" bpmnElement="Flow_7_Valid"><di:waypoint x="1000" y="298"/><di:waypoint x="1040" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="900" y="460"/><di:waypoint x="850" y="460"/><di:waypoint x="850" y="338"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1220" y="298"/><di:waypoint x="1240" y="298"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_Aggregate_di" bpmnElement="Flow_10_Aggregate"><di:waypoint x="1265" y="273"/><di:waypoint x="1265" y="180"/><di:waypoint x="1320" y="180"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_Notify_di" bpmnElement="Flow_11_Notify"><di:waypoint x="1265" y="323"/><di:waypoint x="1265" y="420"/><di:waypoint x="1320" y="420"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12"><di:waypoint x="1560" y="180"/><di:waypoint x="1615" y="180"/><di:waypoint x="1615" y="273"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13"><di:waypoint x="1540" y="420"/><di:waypoint x="1615" y="420"/><di:waypoint x="1615" y="323"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14"><di:waypoint x="1640" y="298"/><di:waypoint x="1680" y="298"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

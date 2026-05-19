@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "portal-shell",
+  "projectType": "library",
+  "sourceRoot": "libs/portal-shell/src",
+  "tags": ["scope:portal", "type:ui"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/portal-shell/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

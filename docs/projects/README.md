@@ -86,14 +86,18 @@ Coverage gates per project (enforced in each lib's `vitest.config.ts`):
 
 ## Projects
 
-| Project          | Port | Demo focus                                                                   | Docs                               |
-| ---------------- | ---- | ---------------------------------------------------------------------------- | ---------------------------------- |
-| `tire-shop`      | 4205 | Faceted e-commerce + cart + 4-step checkout (legacy — pre `shop-core` split) | [README](tire-shop/README.md)      |
-| `library`        | 4206 | Role-based views (reader / librarian) + MatTable                             | [README](library/README.md)        |
-| `school-journal` | 4207 | Multi-role + multi-context (term × class) views                              | [README](school-journal/README.md) |
-| `bookstore`      | 4208 | E-commerce on shared `shop-core` + `shop-ui`                                 | [README](bookstore/README.md)      |
-| `tools-shop`     | 4209 | E-commerce on shared core; numeric attributes                                | [README](tools-shop/README.md)     |
-| `toy-shop`       | 4210 | E-commerce on shared core; age-gating + safety                               | [README](toy-shop/README.md)       |
+| Project             | Port | Demo focus                                                                                                                                                                    | Docs                                  |
+| ------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `tire-shop`         | 4205 | Faceted e-commerce + cart + 4-step checkout (legacy — pre `shop-core` split)                                                                                                  | [README](tire-shop/README.md)         |
+| `library`           | 4206 | Role-based views (reader / librarian) + MatTable                                                                                                                              | [README](library/README.md)           |
+| `school-journal`    | 4207 | Multi-role + multi-context (term × class) views                                                                                                                               | [README](school-journal/README.md)    |
+| `bookstore`         | 4208 | E-commerce on shared `shop-core` + `shop-ui`                                                                                                                                  | [README](bookstore/README.md)         |
+| `tools-shop`        | 4209 | E-commerce on shared core; numeric attributes                                                                                                                                 | [README](tools-shop/README.md)        |
+| `toy-shop`          | 4210 | E-commerce on shared core; age-gating + safety                                                                                                                                | [README](toy-shop/README.md)          |
+| `individual-wizard` | 4203 | 5-step reactive-forms wizard for personal data (PESEL, RODO consents). Shares `libs/wizard-core` with business-wizard.                                                        | [README](individual-wizard/README.md) |
+| `business-wizard`   | 4212 | 6-step B2B reactive-forms survey + Web Component build (`<ais-business-wizard>`). Shares `libs/wizard-core` with individual-wizard.                                           | [README](business-wizard/README.md)   |
+| `portal`            | 4220 | Host application — sidenav listing every demo; each remote loads as a Web Component (`<ais-<slug>>`). WC-based composition (ADR-0009).                                        | [README](portal/README.md)            |
+| `dashboard`         | 4211 | KPI panel — revenue per shop, top products, low-stock, daily orders, category mix. Pure aggregation in `libs/dashboard-data`; charts render as tables until ngx-charts lands. | [README](dashboard/README.md)         |
 
 ## `shop-core` / `shop-ui` shared primitives
 
@@ -124,16 +128,66 @@ PR).
 `popularityScore`). Each shop's `testing.md` defers to that suite for
 the cross-cutting AC coverage.
 
-## Upcoming work (drafts)
+## Upcoming work (consolidated roadmap)
 
-Two roadmap plans are pending `/clarify` + `/plan` review. They follow
-the same SDD + TDD trail; once their `[?]` markers resolve, the
-orchestrator schedules execution.
+The two earlier draft plans (`portal-mfe.md`, `ui-kit-wrappers.md`) have
+been **merged into one consolidated roadmap** that also adds Web
+Components (every app embeddable as `<ais-<app>>`), a pluggable
+Keycloak auth provider, and an ESLint scale-up for the 11+-app
+workspace. The originals are kept with `status: superseded` headers
+pointing here.
 
-| Plan                                                                                 | Status | Adds                                                                                                                                                                                                                                 |
-| ------------------------------------------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Dashboard + Portal + Microfrontends](../ai-workflow/plans/2026-05-18-portal-mfe.md) | draft  | `apps/portal` (4200) + `apps/dashboard` (4211); every existing app published as a Native-Federation remote and lazy-loaded into the portal. 5 chart panels on the dashboard. Shared singletons (cart, auth) hoisted to portal scope. |
-| [UI-kit wrapper library](../ai-workflow/plans/2026-05-18-ui-kit-wrappers.md)         | draft  | `libs/ui-kit` wrapping ~17 Material primitives behind a stable `<ais-…>` API. ESLint rule forbids direct `@angular/material/*` imports outside `libs/ui-kit`. Sets up a single seam for a future Material → Spartan / PrimeNG swap.  |
+| Plan                                                                                                                | Status | Phases                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Portal + Web Components + Keycloak + ESLint scale-up](../ai-workflow/plans/2026-05-18-portal-elements-keycloak.md) | draft  | **P0** ESLint scale-up · **P1** dual-mode WC per app · **P2** `libs/ui-kit` wrappers · **P3** `apps/portal` + `apps/dashboard` + Native Federation · **P4** `libs/keycloak-auth` · **P5** docs + final validation gate. ADRs 0009-0013 land alongside their respective phases. |
+
+### Dual-mode embedding contract
+
+Every app is consumable **three ways without code changes**:
+
+1. **Standalone SPA** — `pnpm start:<app>` boots the app on its
+   dedicated port (existing).
+2. **Web Component** ✅ **landed** — `pnpm nx run <app>:build-element`
+   produces an ESM bundle; host pages drop in `<ais-<app>></ais-<app>>`.
+   All 12 apps (nowiro, union-vault, pong-game, individual-wizard,
+   tetris-game, tire-shop, library, school-journal, bookstore,
+   tools-shop, toy-shop, business-wizard) ship the `build-element`
+   target. Combined demo page at
+   [`docs/projects/elements-demo/index.html`](elements-demo/index.html).
+3. **Federated remote** — `apps/portal` (4200) lazy-loads each app's
+   Native Federation manifest at runtime. Pending Phase 3.
+
+The same `AppComponent` mounts in all three modes — only the entry
+point differs. Contract documented in
+[ADR-0012](../adr/0012-app-dual-mode-web-components.md) (Web Components — `accepted`) and
+[ADR-0009](../adr/0009-microfrontend-architecture.md) (MFE — `accepted`).
+
+### Pluggable auth (Keycloak-ready)
+
+The existing `AUTH_CONTEXT` token (`libs/shared-app-shell`) now has
+two drop-in providers in **`libs/keycloak-auth`** (`scope:auth`,
+`type:data-access`) ✅ landed:
+
+- `provideMockKeycloak({ initialRole })` — the default in dev / CI.
+  No network calls. Imported from `@ai-studio/keycloak-auth`.
+- `provideKeycloak({ url, realm, clientId })` — wires a real
+  Keycloak server via `keycloak-js` (peer dependency, lazily loaded
+  so unused apps pay zero bundle cost). Imported from
+  `@ai-studio/keycloak-auth`.
+
+Switching is a one-line provider change in the app's `main.ts`.
+Contract documented in
+[ADR-0013](../adr/0013-keycloak-auth-integration.md).
+
+### Roadmap-driven ADRs
+
+| ADR                                                 | Topic                                                               | Linked phase |
+| --------------------------------------------------- | ------------------------------------------------------------------- | ------------ |
+| [0009](../adr/0009-microfrontend-architecture.md)   | Native Federation vs Module Federation vs Web Components vs iframes | Phase 3      |
+| [0010](../adr/0010-dashboard-chart-library.md)      | ngx-charts vs ApexCharts vs Chart.js for the dashboard              | Phase 3      |
+| [0011](../adr/0011-ui-kit-wrapper-strategy.md)      | Thin wrappers + ESLint guard for `@angular/material/*`              | Phase 2      |
+| [0012](../adr/0012-app-dual-mode-web-components.md) | `@angular/elements` + per-app `build:element` target                | Phase 1      |
+| [0013](../adr/0013-keycloak-auth-integration.md)    | `keycloak-js` peer dep + opt-in `provideKeycloak()` helper          | Phase 4      |
 
 ## Document lifecycle
 

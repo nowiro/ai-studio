@@ -1,0 +1,67 @@
+{
+  "$schema": "./manifest.schema.json",
+  "version": 1,
+  "comment": "Portal-loaded remote MFE registry. Each entry is consumed by the portal shell at bootstrap; a missing/404 entry is skipped with a toast (see apps/portal/src/app/health.ts after plan 2026-05-19-portal.md T004 lands).",
+  "remotes": [
+    {
+      "name": "bookstore",
+      "url": "http://localhost:4208/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:bookstore"
+    },
+    {
+      "name": "tire-shop",
+      "url": "http://localhost:4205/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:tire-shop"
+    },
+    {
+      "name": "tools-shop",
+      "url": "http://localhost:4209/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:tools-shop"
+    },
+    {
+      "name": "toy-shop",
+      "url": "http://localhost:4210/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:toy-shop"
+    },
+    {
+      "name": "library",
+      "url": "http://localhost:4206/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:library"
+    },
+    {
+      "name": "school-journal",
+      "url": "http://localhost:4207/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:school-journal"
+    },
+    {
+      "name": "individual-wizard",
+      "url": "http://localhost:4203/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:individual-wizard"
+    },
+    {
+      "name": "business-wizard",
+      "url": "http://localhost:4212/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:business-wizard"
+    },
+    {
+      "name": "tetris-game",
+      "url": "http://localhost:4204/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:game-tetris"
+    },
+    {
+      "name": "pong-game",
+      "url": "http://localhost:4202/remoteEntry.json",
+      "exposes": ["./Module"],
+      "scope": "scope:game-pong"
+    }
+  ]
+}

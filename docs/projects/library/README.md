@@ -10,6 +10,8 @@ links:
   adr: ../../adr/0007-library-roles.md
   app: ../../../apps/library
   port: 4206
+  bpmn: ../../bpmn/library-loan-flow.bpmn
+  bpmn_secondary: ../../bpmn/library-overdue-handling.bpmn
 ---
 
 # Library

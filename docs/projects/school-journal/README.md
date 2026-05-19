@@ -10,6 +10,7 @@ links:
   adr: ../../adr/0008-journal-context.md
   app: ../../../apps/school-journal
   port: 4207
+  bpmn: ../../bpmn/school-journal-grading.bpmn
 ---
 
 # School-journal

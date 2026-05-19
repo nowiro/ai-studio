@@ -130,6 +130,24 @@ export default tseslint.config(
       // the eslint-config audit (tracked separately). Keeping plugin loaded.
 
       // ── Nx module boundaries ──
+      //
+      // Scoping strategy (post-roadmap, see 2026-05-18-portal-elements-keycloak.md):
+      //
+      //   scope:shared      → `shared-*`, `shop-core`, `shop-ui`, `ui-kit`,
+      //                       `shared-app-shell`, `shared-language` — usable from anywhere
+      //   scope:auth        → `keycloak-auth` (and any future auth provider lib)
+      //   scope:portal      → `portal-shell` + future `portal-*` libs
+      //   scope:dashboard   → `dashboard-*` libs
+      //   scope:<demo>      → per-app domain libs (tire-shop, library, school-journal,
+      //                       bookstore, tools-shop, toy-shop). Each demo's libs may
+      //                       only depend on `scope:shared`, `scope:util`, or their
+      //                       own domain — never another demo's libs.
+      //   scope:game / scope:game-tetris → per-game libs (same isolation rules)
+      //
+      // The collapse into one parametric `scope:demo` row + a `domain:<name>` tag
+      // is tracked as Phase 0.1 in the consolidated roadmap plan and stays a
+      // follow-up — for now we keep the explicit row per demo, which is verbose
+      // but obvious.
       '@nx/enforce-module-boundaries': [
         'error',
         {
@@ -144,6 +162,9 @@ export default tseslint.config(
                 'scope:ui',
                 'scope:data',
                 'scope:util',
+                'scope:auth',
+                'scope:portal',
+                'scope:dashboard',
                 // Each game gets its own dedicated scope. Apps that host a game
                 // depend on its lib pair (`game-foo` + `game-foo-ui`) but no
                 // cross-game leakage is allowed.
@@ -153,20 +174,57 @@ export default tseslint.config(
                 'scope:tire-shop',
                 'scope:library',
                 'scope:school-journal',
+                'scope:bookstore',
+                'scope:tools-shop',
+                'scope:toy-shop',
+                'scope:nowiro',
+                'scope:wizard',
+                'scope:union-vault',
               ],
             },
+            // ── Per-demo isolation rules ──
             {
               sourceTag: 'scope:tire-shop',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:tire-shop', 'scope:util'],
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:tire-shop', 'scope:util', 'scope:auth'],
             },
             {
               sourceTag: 'scope:library',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:library', 'scope:util'],
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:library', 'scope:util', 'scope:auth'],
             },
             {
               sourceTag: 'scope:school-journal',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:school-journal', 'scope:util'],
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:school-journal', 'scope:util', 'scope:auth'],
             },
+            {
+              sourceTag: 'scope:bookstore',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:bookstore', 'scope:util', 'scope:auth'],
+            },
+            {
+              sourceTag: 'scope:tools-shop',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:tools-shop', 'scope:util', 'scope:auth'],
+            },
+            {
+              sourceTag: 'scope:toy-shop',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:toy-shop', 'scope:util', 'scope:auth'],
+            },
+            {
+              sourceTag: 'scope:wizard',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:wizard', 'scope:util'],
+            },
+            // ── New roadmap scopes (portal, dashboard, ui-kit, auth, elements) ──
+            {
+              sourceTag: 'scope:portal',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:portal', 'scope:dashboard', 'scope:util', 'scope:auth'],
+            },
+            {
+              sourceTag: 'scope:dashboard',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:dashboard', 'scope:util'],
+            },
+            {
+              sourceTag: 'scope:auth',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:util'],
+            },
+            // ── Layer-based rules ──
             {
               sourceTag: 'scope:feature',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:ui', 'scope:data', 'scope:util'],
@@ -202,6 +260,28 @@ export default tseslint.config(
             {
               sourceTag: 'type:util',
               onlyDependOnLibsWithTags: ['type:util'],
+            },
+          ],
+        },
+      ],
+
+      // ── Material import gate (Phase 2 of the consolidated roadmap) ──
+      //
+      // Once libs/ui-kit lands and every app/lib migrates to <ais-…> wrappers,
+      // flip the severity below from 'off' to 'error'. The exception list keeps
+      // it ergonomic: libs/ui-kit/** is the only place that may import the
+      // underlying framework.
+      //
+      // While disabled this still validates the rule shape (no typos on the
+      // restricted pattern) and serves as documentation of the future contract.
+      'no-restricted-imports': [
+        'off',
+        {
+          patterns: [
+            {
+              group: ['@angular/material/*', '@angular/cdk/*'],
+              message:
+                'Direct @angular/material / @angular/cdk imports are forbidden outside libs/ui-kit. Import the wrapper from @ai-studio/ui-kit instead.',
             },
           ],
         },

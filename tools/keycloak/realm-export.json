@@ -1,0 +1,51 @@
+{
+  "realm": "ai-studio",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": false,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 1800,
+  "roles": {
+    "realm": [
+      { "name": "reader", "description": "Library patron — read-only access" },
+      { "name": "librarian", "description": "Library staff — issue / return books" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "library-web",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "rootUrl": "http://localhost:4206",
+      "baseUrl": "http://localhost:4206",
+      "redirectUris": ["http://localhost:4206/*"],
+      "webOrigins": ["http://localhost:4206"],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:4206/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "anna",
+      "enabled": true,
+      "firstName": "Anna",
+      "lastName": "Kowalska",
+      "credentials": [{ "type": "password", "value": "demo", "temporary": false }],
+      "realmRoles": ["reader"]
+    },
+    {
+      "username": "ewa",
+      "enabled": true,
+      "firstName": "Ewa",
+      "lastName": "Lewandowska",
+      "credentials": [{ "type": "password", "value": "demo", "temporary": false }],
+      "realmRoles": ["librarian"]
+    }
+  ]
+}

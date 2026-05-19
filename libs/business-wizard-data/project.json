@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "business-wizard-data",
+  "projectType": "library",
+  "sourceRoot": "libs/business-wizard-data/src",
+  "tags": ["scope:wizard", "type:data-access"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/business-wizard-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/business-wizard-data"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/business-wizard-data/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

@@ -9,6 +9,7 @@ allowBuilds:
   lmdb: true
   msgpackr-extract: true
   nx: true
+  puppeteer: true
   # unrs-resolver: native bindings used by eslint-plugin-import-x for fast module
   # resolution. Trusted (Rust binary auto-fetched per platform).
   unrs-resolver: true

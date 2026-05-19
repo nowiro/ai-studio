@@ -554,6 +554,6 @@ Before reporting "done":
 
 ---
 
-_Reference implementation lives in `apps/personal-data-wizard` + `libs/wizard-feature` +
-`libs/wizard-ui`. When in doubt, mirror what the wizard-shell + step-\* components do — every
+_Reference implementation lives in `apps/individual-wizard` + `libs/individual-wizard-feature` +
+`libs/individual-wizard-ui`. When in doubt, mirror what the wizard-shell + step-\* components do — every
 pattern above is exercised there._

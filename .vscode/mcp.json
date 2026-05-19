@@ -20,6 +20,48 @@
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@angular/cli-mcp@latest"]
+    },
+    "alm-jira": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-jira.js"],
+      "description": "Jira read tools (sibling repo: ai-mcp-alm). Requires JIRA_BASE_URL/JIRA_EMAIL/JIRA_TOKEN."
+    },
+    "alm-confluence": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-confluence.js"],
+      "description": "Confluence read tools (sibling repo: ai-mcp-alm)."
+    },
+    "alm-figma": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-figma.js"],
+      "description": "Figma read tools (sibling repo: ai-mcp-alm)."
+    },
+    "alm-sonar": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-sonar.js"],
+      "description": "SonarQube/Cloud read tools (sibling repo: ai-mcp-alm)."
+    },
+    "alm-github": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-github.js"],
+      "description": "GitHub read tools via user PAT (sibling repo: ai-mcp-alm)."
+    },
+    "alm-gitlab": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-alm/dist/server-gitlab.js"],
+      "description": "GitLab read tools via user PAT (sibling repo: ai-mcp-alm)."
+    },
+    "devtools": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["../ai-mcp-devtools/dist/server.js"],
+      "description": "Dev workflow tools — read_docs, analyze_code, propose_fix, run_playwright, compliance_report (sibling repo: ai-mcp-devtools)."
     }
   }
 }
