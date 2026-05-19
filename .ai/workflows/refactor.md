@@ -2,7 +2,7 @@
 id: workflow.refactor
 title: Refactor
 type: workflow
-trigger: "non-behavioural code change for readability, cohesion or performance"
+trigger: 'non-behavioural code change for readability, cohesion or performance'
 owner: orchestrator
 version: 1.0.0
 ---

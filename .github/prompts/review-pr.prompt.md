@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Run a full PR review (code-reviewer + security-auditor when applicable)
-tools: ["editFiles", "search", "runCommands", "problems"]
+tools: ['editFiles', 'search', 'runCommands', 'problems']
 ---
 
 # Review PR

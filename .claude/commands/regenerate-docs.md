@@ -8,7 +8,7 @@ Run **after** `/audit-docs`.
 Steps:
 
 1. Locate the latest `tmp/doc-audit-*.md`. If none, run `/audit-docs` first.
-2. Spawn the **doc-auditor** subagent in *regeneration mode* (per `.ai/agents/doc-auditor.md`).
+2. Spawn the **doc-auditor** subagent in _regeneration mode_ (per `.ai/agents/doc-auditor.md`).
 3. For each must-fix item: doc-auditor verifies against current code and rewrites the affected section.
 4. For each should-fix item: append a section to the appropriate doc (lib README, dependencies map, etc.).
 5. Re-run `pnpm docs:audit` to confirm the delta.

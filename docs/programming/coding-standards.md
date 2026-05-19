@@ -48,16 +48,16 @@ Follows [`.ai/rules/angular.md`](../../.ai/rules/angular.md) verbatim. Key rules
 
 ## Naming
 
-| Kind                  | Style          | Example                     |
-| --------------------- | -------------- | --------------------------- |
-| File                  | `kebab-case`   | `invoice-list.component.ts` |
-| Class                 | `PascalCase`   | `InvoiceListComponent`      |
-| Function / variable   | `camelCase`    | `loadInvoices`              |
-| Constant              | `UPPER_SNAKE`  | `MAX_PAGE_SIZE`             |
-| Type / Interface      | `PascalCase`   | `Invoice`                   |
-| Selector (component)  | `ais-…`        | `ais-invoice-list`          |
-| Selector (directive)  | `ais…`         | `aisAutofocus`              |
-| `data-testid`         | `kebab-case`   | `invoice-row`               |
+| Kind                 | Style         | Example                     |
+| -------------------- | ------------- | --------------------------- |
+| File                 | `kebab-case`  | `invoice-list.component.ts` |
+| Class                | `PascalCase`  | `InvoiceListComponent`      |
+| Function / variable  | `camelCase`   | `loadInvoices`              |
+| Constant             | `UPPER_SNAKE` | `MAX_PAGE_SIZE`             |
+| Type / Interface     | `PascalCase`  | `Invoice`                   |
+| Selector (component) | `ais-…`       | `ais-invoice-list`          |
+| Selector (directive) | `ais…`        | `aisAutofocus`              |
+| `data-testid`        | `kebab-case`  | `invoice-row`               |
 
 ## Commits & PRs
 

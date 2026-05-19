@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Phase 1 of spec-driven flow — analyst writes spec.md (what & why, no tech)
-tools: ["editFiles", "search", "problems"]
+tools: ['editFiles', 'search', 'problems']
 ---
 
 # Specify (Phase 1 — SDD)

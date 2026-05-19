@@ -24,6 +24,7 @@ Why a pyramid? Cost scales: a unit test runs in milliseconds; an E2E in seconds.
 
 ```ts
 import { TestBed } from '@angular/core/testing';
+
 import { describe, expect, it } from 'vitest';
 
 import { Counter } from './counter';
@@ -68,11 +69,11 @@ describe('Counter', () => {
 
 ## Performance
 
-| Suite                | Budget          |
-| -------------------- | --------------- |
-| Unit per project     | ≤ 30 s          |
-| Integration per app  | ≤ 1 min         |
-| E2E per app (CI)     | ≤ 5 min wallclock|
+| Suite               | Budget            |
+| ------------------- | ----------------- |
+| Unit per project    | ≤ 30 s            |
+| Integration per app | ≤ 1 min           |
+| E2E per app (CI)    | ≤ 5 min wallclock |
 
 ## Running locally
 

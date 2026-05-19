@@ -49,4 +49,4 @@ body:
     id: ic
     attributes:
       label: Incident Commander
-      placeholder: @handle (or "Orchestrator" if AI-driven)
+      placeholder: '@handle (or "Orchestrator" if AI-driven)'

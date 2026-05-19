@@ -9,7 +9,7 @@ version: 1.0.0
 
 > Curated skills from <https://skills.sh/> that complement AI Studio's stack.
 > **Nothing here is installed.** Install on demand per developer/agent — they live outside the repo.
-> Source of truth for our own conventions remains `.ai/rules/` — external skills *augment*, never override.
+> Source of truth for our own conventions remains `.ai/rules/` — external skills _augment_, never override.
 
 ## How to install (per developer)
 
@@ -25,14 +25,14 @@ After install, the agent loads the skill metadata at session start. To remove, d
 
 ## When to reach for an external skill vs use our agents
 
-| Need                                              | Use this                                              |
-| ------------------------------------------------- | ----------------------------------------------------- |
-| Codify project-specific rules (Angular 21, Nx)    | `.ai/rules/*.md` — already defined                    |
-| Multi-step workflow with handoffs                 | `.ai/agents/orchestrator.md` + specialists           |
-| Cross-cutting expertise (TDD method, debugging)   | External skill (this file)                           |
-| One-off transform on a snippet                    | Direct prompt — no skill needed                       |
+| Need                                            | Use this                                   |
+| ----------------------------------------------- | ------------------------------------------ |
+| Codify project-specific rules (Angular 21, Nx)  | `.ai/rules/*.md` — already defined         |
+| Multi-step workflow with handoffs               | `.ai/agents/orchestrator.md` + specialists |
+| Cross-cutting expertise (TDD method, debugging) | External skill (this file)                 |
+| One-off transform on a snippet                  | Direct prompt — no skill needed            |
 
-A skill is a *frozen prompt* that ships expertise. Our agents are *roles* that delegate.
+A skill is a _frozen prompt_ that ships expertise. Our agents are _roles_ that delegate.
 
 ## Curated skills
 

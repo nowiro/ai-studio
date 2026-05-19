@@ -42,14 +42,14 @@ flowchart TB
 
 ## Library taxonomy
 
-| Layer            | Allowed dependencies          | Examples                           |
-| ---------------- | ----------------------------- | ---------------------------------- |
-| `apps/*`         | feature, ui, data, util       | `apps/studio`                      |
-| `libs/feature/*` | ui, data, util                | `libs/feature/billing`             |
-| `libs/ui/*`      | ui, util                      | `libs/ui/button`, `libs/ui/forms`  |
-| `libs/data/*`    | data, util                    | `libs/data/billing`                |
-| `libs/util/*`    | util only                     | `libs/util/logger`                 |
-| `libs/shared/*`  | util                          | `libs/shared/theme`                |
+| Layer            | Allowed dependencies    | Examples                          |
+| ---------------- | ----------------------- | --------------------------------- |
+| `apps/*`         | feature, ui, data, util | `apps/studio`                     |
+| `libs/feature/*` | ui, data, util          | `libs/feature/billing`            |
+| `libs/ui/*`      | ui, util                | `libs/ui/button`, `libs/ui/forms` |
+| `libs/data/*`    | data, util              | `libs/data/billing`               |
+| `libs/util/*`    | util only               | `libs/util/logger`                |
+| `libs/shared/*`  | util                    | `libs/shared/theme`               |
 
 Boundary enforcement: `@nx/enforce-module-boundaries` (see `eslint.config.mjs`).
 
@@ -89,12 +89,12 @@ See [`docs/ai-workflow/multi-agent-flow.md`](../ai-workflow/multi-agent-flow.md)
 
 ## CI pipeline
 
-| Workflow        | Trigger             | Jobs                                                    |
-| --------------- | ------------------- | ------------------------------------------------------- |
-| `ci.yml`        | push, PR            | validate-ai, lint, typecheck, test, build               |
-| `e2e.yml`       | push, PR, dispatch  | Playwright on chromium, firefox, webkit                 |
-| `pr-checks.yml` | PR opened/edited    | Conventional commits, PR title, docs-on-API-change      |
-| `release.yml`   | manual dispatch     | `nx release` (dry-run by default)                       |
+| Workflow        | Trigger            | Jobs                                               |
+| --------------- | ------------------ | -------------------------------------------------- |
+| `ci.yml`        | push, PR           | validate-ai, lint, typecheck, test, build          |
+| `e2e.yml`       | push, PR, dispatch | Playwright on chromium, firefox, webkit            |
+| `pr-checks.yml` | PR opened/edited   | Conventional commits, PR title, docs-on-API-change |
+| `release.yml`   | manual dispatch    | `nx release` (dry-run by default)                  |
 
 ## Performance budget
 

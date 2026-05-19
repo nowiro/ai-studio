@@ -25,12 +25,12 @@ import { GameOverOverlayComponent, MenuOverlayComponent, ScoreDisplayComponent }
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block w-full min-h-screen relative bg-surface' },
   template: `
-    <div class="absolute top-6 left-1/2 z-10 -translate-x-1/2">
+    <div class="top-6 absolute left-1/2 z-10 -translate-x-1/2">
       <ais-score-display [score]="score()" />
     </div>
 
     <div
-      class="absolute inset-0 grid place-items-center"
+      class="inset-0 absolute grid place-items-center"
       #canvas
       data-testid="game-canvas"
     ></div>
@@ -45,7 +45,7 @@ import { GameOverOverlayComponent, MenuOverlayComponent, ScoreDisplayComponent }
 
     @if (status() === 'paused') {
       <div
-        class="absolute inset-0 grid place-items-center bg-surface/70"
+        class="inset-0 absolute grid place-items-center bg-surface/70"
         data-testid="paused"
       >
         <p class="text-3xl font-bold tracking-wide">PAUSED</p>

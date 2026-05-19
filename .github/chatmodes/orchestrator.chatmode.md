@@ -1,6 +1,6 @@
 ---
 description: AI Studio Orchestrator — coordinates multi-agent workflows; gates Definition of Done
-tools: ["editFiles", "search", "runCommands", "runTasks", "problems", "githubRepo", "fetch"]
+tools: ['editFiles', 'search', 'runCommands', 'runTasks', 'problems', 'githubRepo', 'fetch']
 ---
 
 # Orchestrator chat mode

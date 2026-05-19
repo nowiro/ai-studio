@@ -31,7 +31,7 @@ body:
       options:
         - 1 PR
         - 2–3 PRs
-        - > 3 PRs (needs ADR)
+        - "> 3 PRs (needs ADR)"
     validations:
       required: true
 

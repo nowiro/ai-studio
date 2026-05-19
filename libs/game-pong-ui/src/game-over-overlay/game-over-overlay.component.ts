@@ -18,7 +18,7 @@ import type { PongScore, Side } from '@ai-studio/game-pong';
   host: { class: 'absolute inset-0 grid place-items-center bg-surface/90' },
   template: `
     <div
-      class="flex flex-col items-center gap-6 p-8"
+      class="gap-6 p-8 flex flex-col items-center"
       data-testid="game-over"
     >
       <h2
@@ -28,7 +28,7 @@ import type { PongScore, Side } from '@ai-studio/game-pong';
         {{ message() }}
       </h2>
       <p
-        class="font-mono text-2xl tabular-nums opacity-80"
+        class="text-2xl font-mono tabular-nums opacity-80"
         data-testid="final-score"
       >
         {{ score().player }} – {{ score().cpu }}

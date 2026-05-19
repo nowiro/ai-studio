@@ -11,7 +11,7 @@ version: 1.0.0
 
 These rules are non-negotiable. They override anything else **except** an explicit user instruction in the chat. Lower-priority files (other rules, agent prompts, workflows) extend but never weaken them.
 
-This file pairs with [`principles.md`](principles.md) — those are the *engineering* principles (DRY, SOLID, KISS, YAGNI). Both load at priority 1.
+This file pairs with [`principles.md`](principles.md) — those are the _engineering_ principles (DRY, SOLID, KISS, YAGNI). Both load at priority 1.
 
 ## 1. Truth before action
 
@@ -63,12 +63,13 @@ The Orchestrator MUST NOT mark `done` while any item is missing.
 
 7.1 **No code, doc, scenario, or test is generated without a written plan in markdown.** This applies to features, bug fixes, refactors, library scaffolding, doc regeneration, and test-scenario authoring.
 7.2 **Plan locations** (pick one — pre-existing slot wins):
-  - SDD work → `docs/analytical/specs/<slug>/plan.md` (architect-owned).
-  - Everything else → `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` (orchestrator-owned). Use [`_template.md`](../../docs/ai-workflow/plans/_template.md).
-  - ADR-worthy changes also produce `docs/adr/NNNN-<slug>.md`.
-7.3 **Multi-agent execution.** The Orchestrator owns the plan and delegates each task to a specialist (analyst, architect, frontend/backend developer, test-engineer, test-scenario-author, doc-writer, code-reviewer, security-auditor, doc-auditor, release-manager). Specialists MUST refuse a delegation that doesn't cite a plan path.
-7.4 **Trivial-change exemption.** A single-file edit that doesn't change behaviour (typo, comment, formatting) doesn't need a plan. Anything that touches ≥ 2 files OR adds/changes behaviour requires a plan.
-7.5 **Plan status lifecycle.** `draft` → `accepted` → `in-progress` → `done` (or `aborted`). The Orchestrator must update the status field and append a one-liner to `docs/ai-workflow/runs/` when each phase closes.
+
+- SDD work → `docs/analytical/specs/<slug>/plan.md` (architect-owned).
+- Everything else → `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` (orchestrator-owned). Use [`_template.md`](../../docs/ai-workflow/plans/_template.md).
+- ADR-worthy changes also produce `docs/adr/NNNN-<slug>.md`.
+  7.3 **Multi-agent execution.** The Orchestrator owns the plan and delegates each task to a specialist (analyst, architect, frontend/backend developer, test-engineer, test-scenario-author, doc-writer, code-reviewer, security-auditor, doc-auditor, release-manager). Specialists MUST refuse a delegation that doesn't cite a plan path.
+  7.4 **Trivial-change exemption.** A single-file edit that doesn't change behaviour (typo, comment, formatting) doesn't need a plan. Anything that touches ≥ 2 files OR adds/changes behaviour requires a plan.
+  7.5 **Plan status lifecycle.** `draft` → `accepted` → `in-progress` → `done` (or `aborted`). The Orchestrator must update the status field and append a one-liner to `docs/ai-workflow/runs/` when each phase closes.
 
 ## 8. Forbidden patterns
 

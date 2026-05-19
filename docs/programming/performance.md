@@ -4,33 +4,33 @@
 
 ## App-level
 
-| Metric                          | Budget                  | Tool                   |
-| ------------------------------- | ----------------------- | ---------------------- |
-| Initial JS (gzipped)            | < 200 kB                | `nx build`, source-map |
-| LCP (P75 mobile)                | < 2.5 s                 | Lighthouse CI          |
-| TBT (P75 mobile)                | < 200 ms                | Lighthouse CI          |
-| CLS                             | < 0.1                   | Lighthouse CI          |
-| First-route TTI                 | < 3 s                   | Lighthouse CI          |
+| Metric               | Budget   | Tool                   |
+| -------------------- | -------- | ---------------------- |
+| Initial JS (gzipped) | < 200 kB | `nx build`, source-map |
+| LCP (P75 mobile)     | < 2.5 s  | Lighthouse CI          |
+| TBT (P75 mobile)     | < 200 ms | Lighthouse CI          |
+| CLS                  | < 0.1    | Lighthouse CI          |
+| First-route TTI      | < 3 s    | Lighthouse CI          |
 
 Budget bust → CI fails on Lighthouse score < threshold.
 
 ## Tests
 
-| Suite                  | Budget       |
-| ---------------------- | ------------ |
-| Unit per project       | ≤ 30 s       |
-| Integration per app    | ≤ 1 min      |
-| E2E per app (CI)       | ≤ 5 min wallclock |
+| Suite               | Budget            |
+| ------------------- | ----------------- |
+| Unit per project    | ≤ 30 s            |
+| Integration per app | ≤ 1 min           |
+| E2E per app (CI)    | ≤ 5 min wallclock |
 
 ## CI
 
-| Job                | P95 budget |
-| ------------------ | ---------- |
-| Lint               | ≤ 2 min    |
-| Typecheck          | ≤ 3 min    |
-| Test               | ≤ 5 min    |
-| Build              | ≤ 6 min    |
-| E2E (per browser)  | ≤ 8 min    |
+| Job               | P95 budget |
+| ----------------- | ---------- |
+| Lint              | ≤ 2 min    |
+| Typecheck         | ≤ 3 min    |
+| Test              | ≤ 5 min    |
+| Build             | ≤ 6 min    |
+| E2E (per browser) | ≤ 8 min    |
 
 P95 budget over a rolling 30 days. If we breach, file a tech-debt issue.
 

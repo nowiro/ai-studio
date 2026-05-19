@@ -4,14 +4,14 @@
 
 ## Branches
 
-| Branch        | Purpose                              |
-| ------------- | ------------------------------------ |
-| `main`        | Always-green trunk; deployable       |
-| `feat/*`      | New feature work                     |
-| `fix/*`       | Bug fix                              |
-| `chore/*`     | Tooling / config / non-functional    |
-| `docs/*`      | Docs-only changes                    |
-| `release/*`   | (Auto) created by `nx release`       |
+| Branch      | Purpose                           |
+| ----------- | --------------------------------- |
+| `main`      | Always-green trunk; deployable    |
+| `feat/*`    | New feature work                  |
+| `fix/*`     | Bug fix                           |
+| `chore/*`   | Tooling / config / non-functional |
+| `docs/*`    | Docs-only changes                 |
+| `release/*` | (Auto) created by `nx release`    |
 
 Lifetime: ≤ 5 working days. If a branch is older, rebase onto `main` daily.
 

@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Phase 2 of spec-driven flow — architect writes plan.md (tech & architecture)
-tools: ["editFiles", "search", "runCommands", "problems"]
+tools: ['editFiles', 'search', 'runCommands', 'problems']
 ---
 
 # Plan (Phase 2 — SDD)

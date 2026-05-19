@@ -25,8 +25,8 @@
 
 /* Tell Tailwind v4 where to scan for utility classes in the monorepo.
  * Paths are relative to this file (workspace root/styles/). */
-@source "../apps/**/*.{ts,html}";
-@source "../libs/**/*.{ts,html}";
+@source '../apps/**/*.{ts,html}';
+@source '../libs/**/*.{ts,html}';
 
 /* Material 3 reset compatibility:
  * Tailwind preflight resets <button>/<input> styles; Material re-applies them.

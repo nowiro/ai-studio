@@ -38,6 +38,7 @@ Per `.ai/rules/core.md` §7, you ONLY accept delegations that cite a plan markdo
 
 ```ts
 import { TestBed } from '@angular/core/testing';
+
 import { describe, expect, it } from 'vitest';
 
 import { GreetingComponent } from './greeting.component';
@@ -56,9 +57,7 @@ describe('GreetingComponent', () => {
     const fixture = TestBed.createComponent(GreetingComponent);
     fixture.detectChanges();
 
-    expect(
-      fixture.nativeElement.querySelector('[data-testid="greeting-empty"]'),
-    ).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="greeting-empty"]')).not.toBeNull();
   });
 });
 ```

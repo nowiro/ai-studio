@@ -4,9 +4,9 @@
 
 ## Active
 
-| Id    | Area        | Cost today                          | Cheapest fix                  | Status   |
-| ----- | ----------- | ----------------------------------- | ----------------------------- | -------- |
-| TD-001 | tooling    | No automated prompt eval suite      | Add `pnpm ai:eval` harness    | proposed |
+| Id     | Area    | Cost today                     | Cheapest fix               | Status   |
+| ------ | ------- | ------------------------------ | -------------------------- | -------- |
+| TD-001 | tooling | No automated prompt eval suite | Add `pnpm ai:eval` harness | proposed |
 
 ## Resolved
 

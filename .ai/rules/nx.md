@@ -11,15 +11,15 @@ version: 1.0.0
 
 ## 1. Project taxonomy
 
-| Folder              | What lives there                                  | Tags                            |
-| ------------------- | ------------------------------------------------- | ------------------------------- |
-| `apps/<name>`       | Deployable Angular apps (one per binary)          | `scope:app`, `type:app`         |
-| `apps/<name>-e2e`   | Playwright E2E suite for the app                  | `scope:app`, `type:e2e`         |
-| `libs/feature/*`    | Smart features (routes, container components)     | `scope:feature`, `type:feature` |
-| `libs/ui/*`         | Dumb / presentational components & primitives     | `scope:ui`, `type:ui`           |
-| `libs/data/*`       | API clients, stores, adapters                     | `scope:data`, `type:data-access`|
-| `libs/util/*`       | Pure helpers, constants, schemas                  | `scope:util`, `type:util`       |
-| `libs/shared/*`     | Cross-app primitives (auth, theming, i18n)        | `scope:shared`, `type:util`     |
+| Folder            | What lives there                              | Tags                             |
+| ----------------- | --------------------------------------------- | -------------------------------- |
+| `apps/<name>`     | Deployable Angular apps (one per binary)      | `scope:app`, `type:app`          |
+| `apps/<name>-e2e` | Playwright E2E suite for the app              | `scope:app`, `type:e2e`          |
+| `libs/feature/*`  | Smart features (routes, container components) | `scope:feature`, `type:feature`  |
+| `libs/ui/*`       | Dumb / presentational components & primitives | `scope:ui`, `type:ui`            |
+| `libs/data/*`     | API clients, stores, adapters                 | `scope:data`, `type:data-access` |
+| `libs/util/*`     | Pure helpers, constants, schemas              | `scope:util`, `type:util`        |
+| `libs/shared/*`   | Cross-app primitives (auth, theming, i18n)    | `scope:shared`, `type:util`      |
 
 ## 2. Module boundaries (enforced by ESLint)
 
@@ -51,7 +51,7 @@ Every project has at minimum:
 ```jsonc
 // project.json
 {
-  "tags": ["scope:<feature|ui|data|util|shared|app>", "type:<feature|ui|data-access|util|app|e2e>"]
+  "tags": ["scope:<feature|ui|data|util|shared|app>", "type:<feature|ui|data-access|util|app|e2e>"],
 }
 ```
 

@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Run the full new-feature workflow (analyst → architect → dev + test in parallel → reviewer + auditor → doc-writer)
-tools: ["editFiles", "search", "runCommands", "runTasks", "problems"]
+tools: ['editFiles', 'search', 'runCommands', 'runTasks', 'problems']
 ---
 
 # New feature

@@ -23,11 +23,11 @@ flowchart TB
 
 ## Repos at a glance
 
-| Repo                | Tier            | Tokens?                | What it ships                                                                                                              |
-| ------------------- | --------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `ai-studio`         | Application     | none                   | Angular 21 + Material + Tailwind starter; canonical `.ai/` rules; orchestrator + 12 specialists; spec-driven slash commands |
-| `ai-mcp-alm`        | Integration     | per-tool user PATs     | 6 MCP servers (read-first; writes guarded by `MCP_WRITE_ENABLED` + allowlist)                                              |
-| `ai-mcp-devtools`   | Toolbox         | none                   | 1 MCP server with 5 composable dev-workflow tools                                                                          |
+| Repo              | Tier        | Tokens?            | What it ships                                                                                                               |
+| ----------------- | ----------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `ai-studio`       | Application | none               | Angular 21 + Material + Tailwind starter; canonical `.ai/` rules; orchestrator + 12 specialists; spec-driven slash commands |
+| `ai-mcp-alm`      | Integration | per-tool user PATs | 6 MCP servers (read-first; writes guarded by `MCP_WRITE_ENABLED` + allowlist)                                               |
+| `ai-mcp-devtools` | Toolbox     | none               | 1 MCP server with 5 composable dev-workflow tools                                                                           |
 
 ## How they collaborate (the spec-driven loop)
 
@@ -83,7 +83,7 @@ Set the ALM tokens (Jira / Confluence / Figma / Sonar / GitHub / GitLab) in your
 
 - **Independent release cadence**: ALM-API churn doesn't bump the Angular starter.
 - **Least privilege**: tokens live only in `ai-mcp-alm`.
-- **Separation of concerns**: `ai-studio` is *what to build*, `ai-mcp-alm` is *how to read external state*, `ai-mcp-devtools` is *how to operate locally on code*.
+- **Separation of concerns**: `ai-studio` is _what to build_, `ai-mcp-alm` is _how to read external state_, `ai-mcp-devtools` is _how to operate locally on code_.
 - **Clean DRY mechanism**: 6 files duplicated, hash-verified — no shared package to publish.
 
 See [ADR 0005](../adr/0005-trinity-architecture.md) for the considered alternatives.

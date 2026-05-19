@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Phase 1.5 of spec-driven flow — resolve open questions in spec.md
-tools: ["editFiles", "search", "problems"]
+tools: ['editFiles', 'search', 'problems']
 ---
 
 # Clarify (Phase 1.5 — SDD)

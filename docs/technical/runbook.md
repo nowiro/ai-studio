@@ -4,18 +4,18 @@
 
 ## Daily commands
 
-| Want to…                                  | Command                                       |
-| ----------------------------------------- | --------------------------------------------- |
-| Install / refresh deps                    | `pnpm install --frozen-lockfile`              |
-| See the project graph                     | `pnpm graph` (opens browser)                  |
-| Run only what changed                     | `pnpm affected:test` / `:lint` / `:build`     |
-| Format the repo                           | `pnpm format`                                 |
-| Lint with auto-fix                        | `pnpm lint:fix`                               |
-| Run a single app                          | `pnpm exec nx serve <app>`                    |
-| Run a single test                         | `pnpm exec nx test <project> --watch`         |
-| Open Playwright UI                        | `pnpm exec nx e2e <app>-e2e --ui`             |
-| Validate `.ai/` config                    | `pnpm ai:validate`                            |
-| Build the AI context digest               | `pnpm ai:context` → `tmp/ai-context.md`       |
+| Want to…                    | Command                                   |
+| --------------------------- | ----------------------------------------- |
+| Install / refresh deps      | `pnpm install --frozen-lockfile`          |
+| See the project graph       | `pnpm graph` (opens browser)              |
+| Run only what changed       | `pnpm affected:test` / `:lint` / `:build` |
+| Format the repo             | `pnpm format`                             |
+| Lint with auto-fix          | `pnpm lint:fix`                           |
+| Run a single app            | `pnpm exec nx serve <app>`                |
+| Run a single test           | `pnpm exec nx test <project> --watch`     |
+| Open Playwright UI          | `pnpm exec nx e2e <app>-e2e --ui`         |
+| Validate `.ai/` config      | `pnpm ai:validate`                        |
+| Build the AI context digest | `pnpm ai:context` → `tmp/ai-context.md`   |
 
 ## Emergencies
 

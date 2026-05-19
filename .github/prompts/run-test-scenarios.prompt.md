@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Execute generated E2E scenarios — Playwright runner first, MCP for live debugging
-tools: ["editFiles", "search", "runCommands", "problems"]
+tools: ['editFiles', 'search', 'runCommands', 'problems']
 ---
 
 # Run test scenarios

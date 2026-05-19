@@ -28,7 +28,7 @@ Question: do we still need Analog?
 
 Chosen **option 2**.
 
-Angular 21's native unit-test builder runs Vitest under the hood, configures jsdom, and supports `TestBed`, signals, standalone and zoneless components without extra glue. Analog remains a fine choice when a project adopts it as a *meta-framework* (file-based routing, server endpoints à la SvelteKit) — that's an orthogonal decision, not a test-runner decision.
+Angular 21's native unit-test builder runs Vitest under the hood, configures jsdom, and supports `TestBed`, signals, standalone and zoneless components without extra glue. Analog remains a fine choice when a project adopts it as a _meta-framework_ (file-based routing, server endpoints à la SvelteKit) — that's an orthogonal decision, not a test-runner decision.
 
 ### Consequences
 

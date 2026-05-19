@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Generate Playwright E2E scenario skeletons from analytical specs
-tools: ["editFiles", "search", "runCommands"]
+tools: ['editFiles', 'search', 'runCommands']
 ---
 
 # Generate test scenarios

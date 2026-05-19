@@ -2,7 +2,7 @@
 id: workflow.new-library
 title: New Library
 type: workflow
-trigger: "new lib needed in the monorepo"
+trigger: 'new lib needed in the monorepo'
 owner: orchestrator
 version: 1.0.0
 ---
@@ -13,11 +13,11 @@ A library is added when an idea is needed by ≥ 2 consumers, or when a single c
 
 ## Decision matrix
 
-| Consumers | Surface (LOC) | Verdict                           |
-| --------- | ------------- | --------------------------------- |
-| 1         | < 200         | Don't extract; keep in consumer.  |
-| 1         | ≥ 200         | Extract for isolation + testing.  |
-| ≥ 2       | any           | Extract.                          |
+| Consumers | Surface (LOC) | Verdict                          |
+| --------- | ------------- | -------------------------------- |
+| 1         | < 200         | Don't extract; keep in consumer. |
+| 1         | ≥ 200         | Extract for isolation + testing. |
+| ≥ 2       | any           | Extract.                         |
 
 ## Steps
 

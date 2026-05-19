@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Migrate a single legacy doc to the AI Studio template
-tools: ["editFiles", "search", "runCommands"]
+tools: ['editFiles', 'search', 'runCommands']
 ---
 
 # Migrate doc

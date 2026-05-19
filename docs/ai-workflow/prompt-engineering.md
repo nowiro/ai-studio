@@ -12,7 +12,7 @@
 
 ## Anatomy
 
-```markdown
+````markdown
 ---
 id: prompt.<slug>
 title: <Human title>
@@ -24,23 +24,30 @@ version: <semver>
 # <Human title>
 
 ## Variables
+
 - `{{NAME}}` — definition
 
 ## Task
+
 <imperative, ≤ 5 short sentences>
 
 ## Steps
+
 1. …
 2. …
 
 ## Acceptance
+
 - ✅ …
 - ✅ …
 
 ## Output format
+
 ```yaml
 …
 ```
+````
+
 ```
 
 ## Patterns we like
@@ -71,3 +78,4 @@ We don't have an automated eval suite yet (TODO). For now, manual smoke:
 1. Run the prompt against a contrived but realistic task.
 2. Check the output matches the declared format.
 3. Save the result under `docs/ai-workflow/runs/<date>-<slug>.md` for posterity.
+```

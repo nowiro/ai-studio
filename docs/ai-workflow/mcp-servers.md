@@ -2,11 +2,11 @@
 
 > Live capabilities the agents call out to. Configured in three places and kept in sync via `pnpm ai:validate`.
 
-| Where        | File                       | Used by                  |
-| ------------ | -------------------------- | ------------------------ |
-| Universal    | `.ai/mcp.json`             | source of truth          |
-| Claude Code  | `.claude/settings.json`    | `mcpServers`             |
-| VS Code      | `.vscode/mcp.json`         | VS Code MCP integration  |
+| Where       | File                    | Used by                 |
+| ----------- | ----------------------- | ----------------------- |
+| Universal   | `.ai/mcp.json`          | source of truth         |
+| Claude Code | `.claude/settings.json` | `mcpServers`            |
+| VS Code     | `.vscode/mcp.json`      | VS Code MCP integration |
 
 ## Catalog
 

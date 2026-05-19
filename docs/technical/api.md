@@ -19,19 +19,19 @@ OAuth2 + PKCE, bearer JWT in `Authorization`. Tokens issued by the platform's Id
 
 ### `GET /api/invoices`
 
-| Field              | Notes                                |
-| ------------------ | ------------------------------------ |
-| `cursor` (query)   | optional                             |
-| `limit` (query)    | default 50, max 200                  |
-| Response           | `{ data: Invoice[], nextCursor? }`   |
+| Field            | Notes                              |
+| ---------------- | ---------------------------------- |
+| `cursor` (query) | optional                           |
+| `limit` (query)  | default 50, max 200                |
+| Response         | `{ data: Invoice[], nextCursor? }` |
 
 ### `POST /api/summarise`
 
-| Field      | Notes                                    |
-| ---------- | ---------------------------------------- |
+| Field      | Notes                                                           |
+| ---------- | --------------------------------------------------------------- |
 | Body       | `{ text: string, audience: 'exec' \| 'engineer' \| 'support' }` |
-| Response   | `{ summary: string, bullets: string[] }` |
-| Auth       | required                                 |
-| Rate limit | 30 / minute / user                       |
+| Response   | `{ summary: string, bullets: string[] }`                        |
+| Auth       | required                                                        |
+| Rate limit | 30 / minute / user                                              |
 
 > Each new endpoint adds a row here **and** a Zod schema in `libs/util/schemas`. The doc-writer agent enforces this on PRs touching server routes.

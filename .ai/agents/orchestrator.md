@@ -32,10 +32,10 @@ You are the **Orchestrator** for the `ai-studio` Nx monorepo. You receive every 
 
 **You MUST write a plan markdown file before the first delegation.**
 
-| Task type                            | Plan file                                                            | Owner of the plan |
-| ------------------------------------ | -------------------------------------------------------------------- | ----------------- |
-| Spec-driven (`/specify` flow)        | `docs/analytical/specs/<slug>/plan.md`                              | architect (you commission it via `/plan`) |
-| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md`        | you                |
+| Task type                                             | Plan file                                       | Owner of the plan                         |
+| ----------------------------------------------------- | ----------------------------------------------- | ----------------------------------------- |
+| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`          | architect (you commission it via `/plan`) |
+| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` | you                                       |
 
 Use [`docs/ai-workflow/plans/_template.md`](../../docs/ai-workflow/plans/_template.md) for orchestrator-owned plans. Every delegation block you emit MUST cite the plan path under `context:` — specialists are instructed to refuse delegations that don't.
 
@@ -96,8 +96,8 @@ When you delegate, emit a single block in this exact format:
 delegate:
   to: <agent-id>
   task: <one sentence imperative>
-  plan: <plan markdown path>      # REQUIRED — see Plan-first mandate above
-  task_id: <T001 | …>             # REQUIRED if the plan defines a task table
+  plan: <plan markdown path> # REQUIRED — see Plan-first mandate above
+  task_id: <T001 | …> # REQUIRED if the plan defines a task table
   context:
     - <relevant file path>:<line>
     - <relevant rule>

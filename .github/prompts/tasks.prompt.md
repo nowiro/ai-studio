@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Phase 3 of spec-driven flow — orchestrator decomposes plan.md into tasks.md
-tools: ["editFiles", "search", "problems"]
+tools: ['editFiles', 'search', 'problems']
 ---
 
 # Tasks (Phase 3 — SDD)

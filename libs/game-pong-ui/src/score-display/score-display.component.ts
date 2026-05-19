@@ -16,7 +16,7 @@ import type { PongScore } from '@ai-studio/game-pong';
   host: { class: 'block text-on-surface select-none' },
   template: `
     <div
-      class="flex items-center justify-center gap-12 font-mono text-6xl tabular-nums"
+      class="gap-12 text-6xl flex items-center justify-center font-mono tabular-nums"
       data-testid="score-display"
     >
       <span data-testid="score-player">{{ score().player }}</span>

@@ -34,18 +34,18 @@ flowchart TB
 
 ## Roles at a glance
 
-| Agent              | What they own                                                            | Where defined                                       |
-| ------------------ | ------------------------------------------------------------------------ | --------------------------------------------------- |
-| Orchestrator       | Decomposition, delegation, gating Done                                   | [.ai/agents/orchestrator.md](../../.ai/agents/orchestrator.md) |
-| Analyst            | Specs with measurable AC                                                 | [.ai/agents/analyst.md](../../.ai/agents/analyst.md)     |
-| Architect          | ADRs (MADR 4.0) + generator plans                                        | [.ai/agents/architect.md](../../.ai/agents/architect.md) |
-| Frontend Developer | Angular 21 code (Material 3 + Tailwind v4) conforming to angular.dev/ai  | [.ai/agents/frontend-developer.md](../../.ai/agents/frontend-developer.md) |
-| Backend Developer  | Server routes, Genkit flows                                              | [.ai/agents/backend-developer.md](../../.ai/agents/backend-developer.md) |
-| Test Engineer      | Vitest + Playwright tests                                                | [.ai/agents/test-engineer.md](../../.ai/agents/test-engineer.md) |
-| Code Reviewer      | Last gate before merge                                                   | [.ai/agents/code-reviewer.md](../../.ai/agents/code-reviewer.md) |
-| Security Auditor   | OWASP / OWASP-LLM review                                                 | [.ai/agents/security-auditor.md](../../.ai/agents/security-auditor.md) |
-| Doc Writer         | docs/ + README + run logs                                                | [.ai/agents/doc-writer.md](../../.ai/agents/doc-writer.md) |
-| Release Manager    | `nx release` flow                                                        | [.ai/agents/release-manager.md](../../.ai/agents/release-manager.md) |
+| Agent              | What they own                                                           | Where defined                                                              |
+| ------------------ | ----------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Orchestrator       | Decomposition, delegation, gating Done                                  | [.ai/agents/orchestrator.md](../../.ai/agents/orchestrator.md)             |
+| Analyst            | Specs with measurable AC                                                | [.ai/agents/analyst.md](../../.ai/agents/analyst.md)                       |
+| Architect          | ADRs (MADR 4.0) + generator plans                                       | [.ai/agents/architect.md](../../.ai/agents/architect.md)                   |
+| Frontend Developer | Angular 21 code (Material 3 + Tailwind v4) conforming to angular.dev/ai | [.ai/agents/frontend-developer.md](../../.ai/agents/frontend-developer.md) |
+| Backend Developer  | Server routes, Genkit flows                                             | [.ai/agents/backend-developer.md](../../.ai/agents/backend-developer.md)   |
+| Test Engineer      | Vitest + Playwright tests                                               | [.ai/agents/test-engineer.md](../../.ai/agents/test-engineer.md)           |
+| Code Reviewer      | Last gate before merge                                                  | [.ai/agents/code-reviewer.md](../../.ai/agents/code-reviewer.md)           |
+| Security Auditor   | OWASP / OWASP-LLM review                                                | [.ai/agents/security-auditor.md](../../.ai/agents/security-auditor.md)     |
+| Doc Writer         | docs/ + README + run logs                                               | [.ai/agents/doc-writer.md](../../.ai/agents/doc-writer.md)                 |
+| Release Manager    | `nx release` flow                                                       | [.ai/agents/release-manager.md](../../.ai/agents/release-manager.md)       |
 
 ## Delegation contract
 
@@ -92,22 +92,35 @@ Every multi-agent run produces `docs/ai-workflow/runs/YYYY-MM-DD-<slug>.md` with
 # <Date> – <Slug>
 
 ## Trigger
+
 - Issue / user prompt
+
 ## Plan
+
 - Bullets the Orchestrator emitted
+
 ## Delegations
+
 - to: analyst — outcome: spec at …
 - to: architect — outcome: ADR NNNN
 - …
+
 ## MCP calls
+
 - nx graph (twice)
 - context7 (Angular signals docs)
+
 ## Artefacts
+
 - diff: PR #…
 - docs: …
+
 ## Validation
+
 - lint ✅ / typecheck ✅ / test ✅ / e2e ✅ / build ✅
+
 ## Verdict
+
 - Done | Blocked
 ```
 

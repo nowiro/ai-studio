@@ -24,8 +24,8 @@ One sentence — what does success look like.
 
 ## Scope
 
-| In  | Out |
-| --- | --- |
+| In       | Out      |
+| -------- | -------- |
 | <bullet> | <bullet> |
 | <bullet> | <bullet> |
 
@@ -37,14 +37,14 @@ One sentence — what does success look like.
 
 ## Tasks (DAG)
 
-| id   | title                              | agent              | inputs                          | outputs                          | done_when                                | parallel_with | blocked_by |
-| ---- | ---------------------------------- | ------------------ | ------------------------------- | -------------------------------- | ---------------------------------------- | ------------- | ---------- |
-| T001 | <imperative — "Create FooService"> | analyst            | <files/specs>                   | docs/analytical/specs/<slug>/spec.md | spec.md exists, no `[?]` markers      |               |            |
-| T002 | <imperative>                       | architect          | T001 output                     | docs/adr/NNNN-<slug>.md          | ADR Status: accepted                     |               | T001       |
-| T003 | <imperative>                       | frontend-developer | T002 output                     | libs/feature-foo/...             | tests pass, lint clean                  | T004          | T002       |
-| T004 | <imperative>                       | test-engineer      | T003 hand-off                   | libs/feature-foo/**/*.spec.ts    | coverage ≥ 80 % on touched code         | T003          | T002       |
-| T005 | <imperative>                       | code-reviewer      | T003 + T004 diff                | review verdict                   | verdict: approved                        |               | T003, T004 |
-| T006 | <imperative>                       | doc-writer         | accepted PR                     | docs/technical/<topic>.md        | doc-audit clean for touched files       |               | T005       |
+| id   | title                              | agent              | inputs           | outputs                              | done_when                         | parallel_with | blocked_by |
+| ---- | ---------------------------------- | ------------------ | ---------------- | ------------------------------------ | --------------------------------- | ------------- | ---------- |
+| T001 | <imperative — "Create FooService"> | analyst            | <files/specs>    | docs/analytical/specs/<slug>/spec.md | spec.md exists, no `[?]` markers  |               |            |
+| T002 | <imperative>                       | architect          | T001 output      | docs/adr/NNNN-<slug>.md              | ADR Status: accepted              |               | T001       |
+| T003 | <imperative>                       | frontend-developer | T002 output      | libs/feature-foo/...                 | tests pass, lint clean            | T004          | T002       |
+| T004 | <imperative>                       | test-engineer      | T003 hand-off    | libs/feature-foo/\*_/_.spec.ts       | coverage ≥ 80 % on touched code   | T003          | T002       |
+| T005 | <imperative>                       | code-reviewer      | T003 + T004 diff | review verdict                       | verdict: approved                 |               | T003, T004 |
+| T006 | <imperative>                       | doc-writer         | accepted PR      | docs/technical/<topic>.md            | doc-audit clean for touched files |               | T005       |
 
 Tasks form a DAG (no cycles). Keep each task ≤ 1 specialist turn — split if larger.
 

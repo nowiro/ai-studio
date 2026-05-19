@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Run the bug-fix workflow — failing test first, smallest diff, regression test
-tools: ["editFiles", "search", "runCommands", "problems"]
+tools: ['editFiles', 'search', 'runCommands', 'problems']
 ---
 
 # Bug fix

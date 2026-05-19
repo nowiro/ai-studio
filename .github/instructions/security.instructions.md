@@ -1,5 +1,5 @@
 ---
-applyTo: "**"
+applyTo: '**'
 description: Security rules — secrets, sanitisation, AI surfaces
 ---
 

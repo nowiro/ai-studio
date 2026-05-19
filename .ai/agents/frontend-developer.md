@@ -67,7 +67,7 @@ import { LoggerService } from '@ai-studio/util-logger';
   host: { class: 'block' },
   template: `
     <mat-card class="rounded-xl border border-outline-variant bg-surface">
-      <mat-card-header class="flex items-center gap-3">
+      <mat-card-header class="gap-3 flex items-center">
         <mat-icon aria-hidden="true">waving_hand</mat-icon>
         <mat-card-title>
           @if (name(); as n) {
@@ -78,11 +78,11 @@ import { LoggerService } from '@ai-studio/util-logger';
         </mat-card-title>
       </mat-card-header>
 
-      <mat-card-content class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <mat-card-content class="gap-4 md:grid-cols-2 grid grid-cols-1">
         <p class="text-on-surface-variant">Characters: {{ greetingLength() }}</p>
       </mat-card-content>
 
-      <mat-card-actions class="flex justify-end gap-2">
+      <mat-card-actions class="gap-2 flex justify-end">
         <button
           (click)="confirmed.emit()"
           class="min-w-32"

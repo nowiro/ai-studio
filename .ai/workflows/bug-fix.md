@@ -2,7 +2,7 @@
 id: workflow.bug-fix
 title: Bug Fix
 type: workflow
-trigger: "reproducible bug report"
+trigger: 'reproducible bug report'
 owner: orchestrator
 version: 1.0.0
 ---

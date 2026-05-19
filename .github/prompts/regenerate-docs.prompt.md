@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Regenerate docs from a doc-audit report
-tools: ["editFiles", "search", "runCommands"]
+tools: ['editFiles', 'search', 'runCommands']
 ---
 
 # Regenerate docs from audit

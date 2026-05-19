@@ -18,14 +18,14 @@ When two principles conflict, **clarity wins**. Write code humans want to mainta
 Each piece of knowledge has a single, authoritative representation.
 
 - Same intent appearing in three or more places → extract.
-- **But**: don't deduplicate code that *looks* similar but represents *different* concerns. Three identical-looking lines of unrelated logic are not a duplication; abstracting them couples futures that should stay independent.
+- **But**: don't deduplicate code that _looks_ similar but represents _different_ concerns. Three identical-looking lines of unrelated logic are not a duplication; abstracting them couples futures that should stay independent.
 - Heuristic: deduplicate **knowledge**, not **lines**. If both copies must change for the same reason, they were duplicated; if they change for different reasons, they're not.
 
-| Good                                                           | Bad                                                  |
-| -------------------------------------------------------------- | ---------------------------------------------------- |
-| One Zod schema in `libs/util/schemas` reused by API + form     | Same schema duplicated in 3 components               |
-| One `LoggerService` everyone injects                           | Five `console.log` wrappers across libs              |
-| One Tailwind token (`bg-primary`) sourcing Material design var | Hard-coded `#6750a4` in 12 components                |
+| Good                                                           | Bad                                     |
+| -------------------------------------------------------------- | --------------------------------------- |
+| One Zod schema in `libs/util/schemas` reused by API + form     | Same schema duplicated in 3 components  |
+| One `LoggerService` everyone injects                           | Five `console.log` wrappers across libs |
+| One Tailwind token (`bg-primary`) sourcing Material design var | Hard-coded `#6750a4` in 12 components   |
 
 ## 2. KISS — Keep It Simple
 
@@ -37,7 +37,7 @@ Pick the simplest solution that solves the problem **as it exists today**. Cleve
 - Prefer `@if` / `@for` over building a custom directive.
 - Avoid metaprogramming (decorators-creating-decorators, dynamic class generation) unless there's a measured win.
 
-If you find yourself writing comments to explain *what* the code does, the code is not simple.
+If you find yourself writing comments to explain _what_ the code does, the code is not simple.
 
 ## 3. YAGNI — You Aren't Gonna Need It
 
@@ -163,7 +163,7 @@ Optimise for the next reader, not the current writer.
 
 ## How agents apply these
 
-Every agent loads this file at the start of its task. When two competing approaches both satisfy the immediate spec, the agent picks the one closer to these principles and notes the trade-off in its hand-off block. A code reviewer who spots a violation cites the **principle id** (e.g. *SRP*, *KISS*) — not vague "this seems wrong".
+Every agent loads this file at the start of its task. When two competing approaches both satisfy the immediate spec, the agent picks the one closer to these principles and notes the trade-off in its hand-off block. A code reviewer who spots a violation cites the **principle id** (e.g. _SRP_, _KISS_) — not vague "this seems wrong".
 
 ## What these are NOT
 

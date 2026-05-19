@@ -4,7 +4,7 @@ argument-hint: <source-path> <target-path> <type:technical|analytical|programmin
 allowed-tools: Read, Glob, Grep, Bash, Edit, Write, Agent
 ---
 
-Spawn the **doc-auditor** subagent in *migration mode* (per `.ai/agents/doc-auditor.md`).
+Spawn the **doc-auditor** subagent in _migration mode_ (per `.ai/agents/doc-auditor.md`).
 
 Args: $ARGUMENTS
 

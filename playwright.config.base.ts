@@ -1,5 +1,5 @@
-import { defineConfig, devices } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
+import { defineConfig, devices } from '@playwright/test';
 
 const PORT = Number(process.env.PORT ?? 4200);
 const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}`;
@@ -35,7 +35,7 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /.*\.setup\.ts/,
+      testMatch: /\.setup\.ts$/,
     },
     {
       name: 'chromium',

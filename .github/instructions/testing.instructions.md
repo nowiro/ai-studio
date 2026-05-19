@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.{spec,test}.ts,**/e2e/**/*.ts,**/playwright.config.*"
+applyTo: '**/*.{spec,test}.ts,**/e2e/**/*.ts,**/playwright.config.*'
 description: Vitest + Playwright testing rules
 ---
 

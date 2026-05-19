@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'absolute inset-0 grid place-items-center bg-surface/85 backdrop-blur-sm' },
   template: `
-    <div class="flex flex-col items-center gap-6 p-8">
+    <div class="gap-6 p-8 flex flex-col items-center">
       <h1
         class="text-5xl font-bold tracking-wide"
         data-testid="menu-title"

@@ -12,13 +12,13 @@ AI Studio is a workspace for building Angular applications with AI agents pair-p
 
 ## Strategic goals (next 6 months)
 
-| Goal                                                      | Metric                                            | Target |
-| --------------------------------------------------------- | ------------------------------------------------- | ------ |
-| Cut "first feature lands" time for new contributor       | Days from clone to merged PR                       | ≤ 2    |
-| Keep AI-generated PRs stable                             | % AI PRs reverted within 14d                       | ≤ 5 %  |
-| Maintain code quality                                    | Statement coverage on touched files                | ≥ 80 % |
-| Keep CI fast                                             | P95 CI duration on PR                              | ≤ 10 m |
-| Stay docs-current                                        | % public-API PRs with doc update                   | 100 %  |
+| Goal                                               | Metric                              | Target |
+| -------------------------------------------------- | ----------------------------------- | ------ |
+| Cut "first feature lands" time for new contributor | Days from clone to merged PR        | ≤ 2    |
+| Keep AI-generated PRs stable                       | % AI PRs reverted within 14d        | ≤ 5 %  |
+| Maintain code quality                              | Statement coverage on touched files | ≥ 80 % |
+| Keep CI fast                                       | P95 CI duration on PR               | ≤ 10 m |
+| Stay docs-current                                  | % public-API PRs with doc update    | 100 %  |
 
 ## Non-goals
 

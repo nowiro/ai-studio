@@ -37,8 +37,8 @@ Per `.ai/rules/core.md` §7, you ONLY accept delegations that cite a plan markdo
 ## Genkit flow template (AI feature)
 
 ```ts
-import { defineFlow } from 'genkit';
 import { gemini15Flash } from '@genkit-ai/googleai';
+import { defineFlow } from 'genkit';
 import { z } from 'zod';
 
 const summariseInput = z.object({

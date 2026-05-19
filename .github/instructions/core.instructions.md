@@ -1,5 +1,5 @@
 ---
-applyTo: "**"
+applyTo: '**'
 description: AI Studio core rules — applies to every file
 ---
 

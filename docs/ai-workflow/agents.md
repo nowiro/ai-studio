@@ -2,37 +2,37 @@
 
 > Quick reference for every agent. Source of truth is `.ai/agents/<role>.md`; this doc summarises and links.
 
-| Agent                 | Tier   | Model hint  | Touches code? | Fast use                              |
-| --------------------- | ------ | ----------- | ------------- | ------------------------------------- |
-| Orchestrator          | Lead   | opus        | rarely        | every non-trivial task                |
-| Analyst               | Plan   | sonnet      | no            | turn ask → spec                       |
-| Architect             | Plan   | opus        | no            | design + ADR                          |
-| Frontend Developer    | Worker | sonnet      | yes           | Angular code                          |
-| Backend Developer     | Worker | sonnet      | yes           | server / Genkit                       |
-| Test Engineer         | Worker | sonnet      | tests only    | Vitest + Playwright                   |
-| Test Scenario Author  | Worker | sonnet      | tests only    | extract Given/When/Then → Playwright skeletons |
-| Code Reviewer         | Gate   | opus        | reads diff    | last gate before merge                |
-| Security Auditor      | Gate   | opus        | reads diff    | auth / sanitisation / deps            |
-| Doc Writer            | Plan   | sonnet      | docs only     | docs/ + READMEs                       |
-| Doc Auditor           | Gate   | sonnet      | docs only     | scan code+docs, classify drift, regenerate |
-| Release Manager       | Gate   | sonnet      | release tags  | `nx release`                          |
+| Agent                | Tier   | Model hint | Touches code? | Fast use                                       |
+| -------------------- | ------ | ---------- | ------------- | ---------------------------------------------- |
+| Orchestrator         | Lead   | opus       | rarely        | every non-trivial task                         |
+| Analyst              | Plan   | sonnet     | no            | turn ask → spec                                |
+| Architect            | Plan   | opus       | no            | design + ADR                                   |
+| Frontend Developer   | Worker | sonnet     | yes           | Angular code                                   |
+| Backend Developer    | Worker | sonnet     | yes           | server / Genkit                                |
+| Test Engineer        | Worker | sonnet     | tests only    | Vitest + Playwright                            |
+| Test Scenario Author | Worker | sonnet     | tests only    | extract Given/When/Then → Playwright skeletons |
+| Code Reviewer        | Gate   | opus       | reads diff    | last gate before merge                         |
+| Security Auditor     | Gate   | opus       | reads diff    | auth / sanitisation / deps                     |
+| Doc Writer           | Plan   | sonnet     | docs only     | docs/ + READMEs                                |
+| Doc Auditor          | Gate   | sonnet     | docs only     | scan code+docs, classify drift, regenerate     |
+| Release Manager      | Gate   | sonnet     | release tags  | `nx release`                                   |
 
 ## Where to use them
 
-| `.ai/agents/<role>.md`        | Claude Code subagent type | GitHub Copilot surface                                |
-| ----------------------------- | ------------------------- | ----------------------------------------------------- |
-| `orchestrator.md`             | `orchestrator`            | `.github/chatmodes/orchestrator.chatmode.md`          |
-| `analyst.md`                  | `analyst`                 | (instructions + orchestrator chat mode)               |
-| `architect.md`                | `architect`               | (instructions + orchestrator chat mode)               |
-| `frontend-developer.md`       | `frontend-developer`      | (`.github/instructions/angular.instructions.md`)      |
-| `backend-developer.md`        | `backend-developer`       | (instructions + security)                             |
-| `test-engineer.md`            | `test-engineer`           | (`.github/instructions/testing.instructions.md`)      |
-| `test-scenario-author.md`     | `test-scenario-author`    | `.github/prompts/generate-test-scenarios.prompt.md`   |
-| `code-reviewer.md`            | `code-reviewer`           | `.github/prompts/review-pr.prompt.md`                 |
-| `security-auditor.md`         | `security-auditor`        | (`.github/instructions/security.instructions.md`)     |
-| `doc-writer.md`               | `doc-writer`              | (`.github/prompts/regenerate-docs.prompt.md`)         |
-| `doc-auditor.md`              | `doc-auditor`             | `.github/chatmodes/doc-auditor.chatmode.md`           |
-| `release-manager.md`          | `release-manager`         | (orchestrator chat mode)                              |
+| `.ai/agents/<role>.md`    | Claude Code subagent type | GitHub Copilot surface                              |
+| ------------------------- | ------------------------- | --------------------------------------------------- |
+| `orchestrator.md`         | `orchestrator`            | `.github/chatmodes/orchestrator.chatmode.md`        |
+| `analyst.md`              | `analyst`                 | (instructions + orchestrator chat mode)             |
+| `architect.md`            | `architect`               | (instructions + orchestrator chat mode)             |
+| `frontend-developer.md`   | `frontend-developer`      | (`.github/instructions/angular.instructions.md`)    |
+| `backend-developer.md`    | `backend-developer`       | (instructions + security)                           |
+| `test-engineer.md`        | `test-engineer`           | (`.github/instructions/testing.instructions.md`)    |
+| `test-scenario-author.md` | `test-scenario-author`    | `.github/prompts/generate-test-scenarios.prompt.md` |
+| `code-reviewer.md`        | `code-reviewer`           | `.github/prompts/review-pr.prompt.md`               |
+| `security-auditor.md`     | `security-auditor`        | (`.github/instructions/security.instructions.md`)   |
+| `doc-writer.md`           | `doc-writer`              | (`.github/prompts/regenerate-docs.prompt.md`)       |
+| `doc-auditor.md`          | `doc-auditor`             | `.github/chatmodes/doc-auditor.chatmode.md`         |
+| `release-manager.md`      | `release-manager`         | (orchestrator chat mode)                            |
 
 ## Adding a new agent
 

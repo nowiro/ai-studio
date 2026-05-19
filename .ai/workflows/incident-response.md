@@ -2,7 +2,7 @@
 id: workflow.incident-response
 title: Incident Response
 type: workflow
-trigger: "production incident — outage, regression, security event"
+trigger: 'production incident — outage, regression, security event'
 owner: orchestrator
 version: 1.0.0
 ---

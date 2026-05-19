@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Audit docs against current code and produce a compliance report
-tools: ["editFiles", "search", "runCommands"]
+tools: ['editFiles', 'search', 'runCommands']
 ---
 
 # Audit docs

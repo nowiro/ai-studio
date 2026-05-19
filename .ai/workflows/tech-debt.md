@@ -2,7 +2,7 @@
 id: workflow.tech-debt
 title: Tech Debt
 type: workflow
-trigger: "issue tagged tech-debt or refactor opportunity surfaced by audit"
+trigger: 'issue tagged tech-debt or refactor opportunity surfaced by audit'
 owner: orchestrator
 version: 1.0.0
 ---

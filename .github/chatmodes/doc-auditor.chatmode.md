@@ -1,6 +1,6 @@
 ---
 description: Doc Auditor — verifies docs against current code and proposes regenerations
-tools: ["editFiles", "search", "runCommands"]
+tools: ['editFiles', 'search', 'runCommands']
 ---
 
 # Doc Auditor chat mode

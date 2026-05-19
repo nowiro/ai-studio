@@ -2,7 +2,7 @@
 id: workflow.documentation-audit
 title: Documentation audit
 type: workflow
-trigger: "scheduled (monthly) OR docs drift suspected OR `audit-docs` invoked"
+trigger: 'scheduled (monthly) OR docs drift suspected OR `audit-docs` invoked'
 owner: orchestrator
 version: 1.0.0
 ---

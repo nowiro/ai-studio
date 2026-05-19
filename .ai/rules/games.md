@@ -13,12 +13,12 @@ version: 1.0.0
 
 ## 1. When to reach for Phaser
 
-| Need                                              | Use this                          |
-| ------------------------------------------------- | --------------------------------- |
-| Sprite-based 2D game (puzzle, arcade, side-scroller) | **Phaser 3** scene + game lib  |
-| Interactive UI widget that *looks* game-like      | Angular component + CSS animation |
-| 3D / WebGPU                                       | Out of scope — open an ADR        |
-| Visualisation / chart                             | D3 or Chart.js — not Phaser       |
+| Need                                                 | Use this                          |
+| ---------------------------------------------------- | --------------------------------- |
+| Sprite-based 2D game (puzzle, arcade, side-scroller) | **Phaser 3** scene + game lib     |
+| Interactive UI widget that _looks_ game-like         | Angular component + CSS animation |
+| 3D / WebGPU                                          | Out of scope — open an ADR        |
+| Visualisation / chart                                | D3 or Chart.js — not Phaser       |
 
 **Phaser is for actual games.** Don't use it as a fancy animation library.
 
@@ -41,8 +41,13 @@ Use a thin host component — never let Phaser scenes import from Angular libs.
 
 ```ts
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, DestroyRef,
-  ElementRef, inject, viewChild,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -52,7 +57,13 @@ import { createGame, type GameApi } from '@ai-studio/game-asteroids';
   selector: 'ais-asteroids-host',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block h-screen bg-surface' },
-  template: `<div #canvas class="h-full w-full" data-testid="game-canvas"></div>`,
+  template: `
+    <div
+      class="h-full w-full"
+      #canvas
+      data-testid="game-canvas"
+    ></div>
+  `,
 })
 export class AsteroidsHostComponent implements AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);

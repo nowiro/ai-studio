@@ -24,15 +24,15 @@ stateDiagram-v2
 
 ## Decision rules
 
-| Situation                                              | Move                                              |
-| ------------------------------------------------------ | ------------------------------------------------- |
-| Goal unclear or stakeholders ambiguous                 | → Analyst                                         |
-| Solution shape unknown / cross-lib                     | → Architect                                       |
-| Spec ready, design clear                               | → Developer(s) + Test Engineer in parallel        |
-| Code touches `auth/`, `interceptors/`, deps, CSP, AI   | + Security Auditor on the gate                    |
-| Public API or behaviour change                         | → Doc Writer at the end                           |
-| Release-bound                                          | → Release Manager closes the loop                 |
-| Validator fails repeatedly (3×)                        | Pause; ask the user                               |
+| Situation                                            | Move                                       |
+| ---------------------------------------------------- | ------------------------------------------ |
+| Goal unclear or stakeholders ambiguous               | → Analyst                                  |
+| Solution shape unknown / cross-lib                   | → Architect                                |
+| Spec ready, design clear                             | → Developer(s) + Test Engineer in parallel |
+| Code touches `auth/`, `interceptors/`, deps, CSP, AI | + Security Auditor on the gate             |
+| Public API or behaviour change                       | → Doc Writer at the end                    |
+| Release-bound                                        | → Release Manager closes the loop          |
+| Validator fails repeatedly (3×)                      | Pause; ask the user                        |
 
 ## What the Orchestrator never does itself
 
@@ -54,15 +54,15 @@ stateDiagram-v2
 
 Approximate ranges to set expectations:
 
-| Step                    | Typical cost    |
-| ----------------------- | --------------- |
-| Triage + plan           | seconds         |
-| Spec (Analyst)          | minutes         |
-| ADR (Architect)         | minutes         |
-| Implementation (FE/BE)  | minutes (small) – tens of minutes (medium) |
-| Tests                   | minutes         |
-| Review + audit          | minutes         |
-| Docs                    | minutes         |
-| Release                 | < 5 min in CI   |
+| Step                   | Typical cost                               |
+| ---------------------- | ------------------------------------------ |
+| Triage + plan          | seconds                                    |
+| Spec (Analyst)         | minutes                                    |
+| ADR (Architect)        | minutes                                    |
+| Implementation (FE/BE) | minutes (small) – tens of minutes (medium) |
+| Tests                  | minutes                                    |
+| Review + audit         | minutes                                    |
+| Docs                   | minutes                                    |
+| Release                | < 5 min in CI                              |
 
 For larger work the Orchestrator splits across PRs and updates the run log between them.

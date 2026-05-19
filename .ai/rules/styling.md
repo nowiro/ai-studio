@@ -78,14 +78,14 @@ Material's `mat.theme()` writes `--mat-sys-*` CSS custom properties onto `<html>
 
 ```html
 <button
-  class="w-full rounded-lg md:w-auto"
+  class="md:w-auto w-full rounded-lg"
   mat-flat-button
   data-testid="checkout-pay"
 >
   Pay
 </button>
 
-<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+<div class="gap-4 md:grid-cols-3 grid grid-cols-1">
   @for (item of items(); track item.id) {
   <ais-product-card
     [item]="item"

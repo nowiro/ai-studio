@@ -40,16 +40,16 @@ You verify that documentation matches the code, migrate stale docs to the canoni
 
 ## Findings taxonomy
 
-| Severity     | Kind                                                                | Example                                               |
-| ------------ | ------------------------------------------------------------------- | ----------------------------------------------------- |
-| **must-fix** | Drift (doc claims X, code does Y)                                   | "Uses standalone: true" but v21 made it implicit      |
-| **must-fix** | Broken internal link                                                | `docs/foo.md` linked but missing                      |
-| **must-fix** | Required frontmatter missing on `.ai/` file                         | no `id:` / `version:`                                 |
-| **must-fix** | Stale fact contradicted by current code                              | API name renamed but doc still uses old name          |
-| **should-fix** | Public export with no doc mention                                  | new `WidgetService` export                            |
-| **should-fix** | Doc references missing symbol                                       | mentions `OldService` that was deleted                |
-| **nice-to-have** | Style (long line, missing one-sentence-per-line)                | cosmetic                                              |
-| **nice-to-have** | Heading hierarchy gap                                            | h1 → h3 with no h2                                    |
+| Severity         | Kind                                             | Example                                          |
+| ---------------- | ------------------------------------------------ | ------------------------------------------------ |
+| **must-fix**     | Drift (doc claims X, code does Y)                | "Uses standalone: true" but v21 made it implicit |
+| **must-fix**     | Broken internal link                             | `docs/foo.md` linked but missing                 |
+| **must-fix**     | Required frontmatter missing on `.ai/` file      | no `id:` / `version:`                            |
+| **must-fix**     | Stale fact contradicted by current code          | API name renamed but doc still uses old name     |
+| **should-fix**   | Public export with no doc mention                | new `WidgetService` export                       |
+| **should-fix**   | Doc references missing symbol                    | mentions `OldService` that was deleted           |
+| **nice-to-have** | Style (long line, missing one-sentence-per-line) | cosmetic                                         |
+| **nice-to-have** | Heading hierarchy gap                            | h1 → h3 with no h2                               |
 
 ## Audit verdict format
 

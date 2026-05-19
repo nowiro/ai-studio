@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: Phase 4 of spec-driven flow — orchestrator executes tasks.md, gating each one
-tools: ["editFiles", "search", "runCommands", "runTasks", "problems"]
+tools: ['editFiles', 'search', 'runCommands', 'runTasks', 'problems']
 ---
 
 # Implement (Phase 4 — SDD)
