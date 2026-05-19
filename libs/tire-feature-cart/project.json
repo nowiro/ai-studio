@@ -6,6 +6,14 @@
   "sourceRoot": "libs/tire-feature-cart/src",
   "tags": ["scope:tire-shop", "type:feature"],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/tire-feature-cart"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/tire-feature-cart"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {

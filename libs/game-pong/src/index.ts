@@ -18,3 +18,14 @@ export { PongState } from './state/pong-state.js';
 export { applyScore, isWinningScore, serveDirection } from './logic/scoring.js';
 export { reflectBallOnPaddle, reflectBallOnWall, type Ball, type Paddle } from './logic/collision.js';
 export { nextAiVelocity } from './logic/ai.js';
+export {
+  createTournament,
+  leaderboard,
+  nextMatch,
+  recordResult,
+  type Match,
+  type Player,
+  type Tournament,
+  type TournamentStatus,
+} from './tournament.js';
+export { LeaderboardStore } from './leaderboard-store.js';

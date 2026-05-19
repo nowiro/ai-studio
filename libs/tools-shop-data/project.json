@@ -6,6 +6,14 @@
   "sourceRoot": "libs/tools-shop-data/src",
   "tags": ["scope:tools-shop", "type:data-access", "type:util"],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/tools-shop-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/tools-shop-data"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {

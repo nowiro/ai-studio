@@ -12,6 +12,14 @@ const MAX_QUANTITY = 99;
  * Holds the cart contents as a signal and mirrors them to localStorage on
  * every mutation. Browser-only side effects are guarded so unit tests under
  * Node don't crash.
+ *
+ * MIGRATION NOTE: new code should prefer `TireCartAdapter` from
+ * `@ai-studio/tire-feature-cart`, which builds on the generic
+ * `ShopCartService` primitives from `@ai-studio/shop-core` and adds
+ * tire-specific business rules (bulk discount on full sets of four, free
+ * mounting service). This class is retained for `CartDrawerComponent`,
+ * `CartPageComponent` and `CheckoutComponent` until their migration lands —
+ * `@deprecated` will be added in a follow-up once those consumers move over.
  */
 @Injectable({ providedIn: 'root' })
 export class CartService {

@@ -13,6 +13,8 @@ export { RoleAllowDirective } from './role-allow.directive.js';
 export { roleGuard, type RoleGuardRedirect } from './role-guard.js';
 export { RoleBadgeComponent, type BadgeTone } from './role-badge.component.js';
 export { MockLoginComponent, type MockLoginProfile } from './mock-login.component.js';
+export { AnalyticsService, provideAnalytics, type AnalyticsEvent, type AnalyticsOptions } from './analytics.js';
+export { MfeBus, type MfeEvent } from './mfe-bus.js';
 
 // Keycloak primitives moved to `@ai-studio/keycloak-auth` (scope:auth).
 // The lib is opt-in: apps that don't need real Keycloak install nothing extra.

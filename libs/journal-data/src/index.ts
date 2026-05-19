@@ -53,3 +53,4 @@ export {
   ATTENDANCE,
   TIMETABLE,
 } from './seed/seed.js';
+export { NotificationStubStore, type NotificationWithMeta, type ParentNotification } from './notification-store.js';

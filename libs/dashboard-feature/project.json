@@ -5,6 +5,14 @@
   "sourceRoot": "libs/dashboard-feature/src",
   "tags": ["scope:dashboard", "type:feature"],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/dashboard-feature"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/dashboard-feature"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {

@@ -5,6 +5,14 @@
   "sourceRoot": "libs/shared-app-shell/src",
   "tags": ["scope:shared", "type:ui", "type:util"],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/shared-app-shell"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/shared-app-shell"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {

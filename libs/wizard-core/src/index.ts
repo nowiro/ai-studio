@@ -12,3 +12,5 @@ export { asArray, asControl, asGroup, asOptionalGroup } from './form-helpers.js'
 export type { WizardTileDescriptor } from './tile-descriptor.js';
 export { computeWizardStatus } from './wizard-status.js';
 export type { WizardStatus } from './wizard-status.js';
+export { decryptField, encryptField, generateKey } from './draft-crypto.js';
+export { EncryptedDraftStore } from './encrypted-draft-store.js';

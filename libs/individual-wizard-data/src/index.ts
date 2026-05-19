@@ -63,6 +63,9 @@ export type {
   SurveyValue,
   ThesisValue,
 } from './models.js';
+export { EN_MESSAGES, MESSAGES_BY_LOCALE, PL_MESSAGES, getMessages } from './i18n.js';
+export type { Locale, Messages } from './i18n.js';
+export { LOCALE_STORAGE_KEY, LocaleStore } from './locale-store.js';
 export { WizardFormFactory } from './wizard-form.factory.js';
 export { WizardFormService } from './wizard-form.service.js';
 export { WizardNav, WizardPath } from './wizard-routes.js';

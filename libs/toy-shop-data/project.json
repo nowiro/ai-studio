@@ -6,6 +6,14 @@
   "sourceRoot": "libs/toy-shop-data/src",
   "tags": ["scope:toy-shop", "type:data-access", "type:util"],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/toy-shop-data"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/toy-shop-data"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
