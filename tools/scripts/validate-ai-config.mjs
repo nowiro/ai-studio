@@ -4,6 +4,8 @@
  *   - every markdown file under .ai/ has YAML frontmatter with id/title/type/version
  *   - .ai/mcp.json conforms to the schema-lite expected shape
  *   - every agent in .ai/agents/ has a Claude Code counterpart in .claude/agents/
+ *   - every agent in .ai/agents/ has a Copilot chatmode in .github/chatmodes/<name>.chatmode.md
+ *   - every rule in .ai/rules/ has a Copilot instructions wrapper in .github/instructions/<name>.instructions.md
  *   - .github/copilot-instructions.md exists
  *   - every file in .github/instructions/ has frontmatter with `applyTo` + `description`
  *   - every file in .github/prompts/ has frontmatter with `mode` + `description`
@@ -12,9 +14,9 @@
  *
  * Exits 0 on success, 1 on any failure. Used by `pnpm ai:validate` and CI.
  */
-import { readFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { resolve, basename } from 'node:path';
+import { readdir, readFile } from 'node:fs/promises';
+import { basename, resolve } from 'node:path';
 import process from 'node:process';
 
 const errors = [];
@@ -26,9 +28,7 @@ const must = (cond, msg) => {
 async function listMd(dir) {
   if (!existsSync(dir)) return [];
   const entries = await readdir(dir, { withFileTypes: true });
-  return entries
-    .filter((e) => e.isFile() && e.name.endsWith('.md'))
-    .map((e) => resolve(dir, e.name));
+  return entries.filter((e) => e.isFile() && e.name.endsWith('.md')).map((e) => resolve(dir, e.name));
 }
 
 async function frontmatter(file) {
@@ -66,6 +66,35 @@ async function main() {
   const claudeAgents = (await listMd('.claude/agents')).map((f) => basename(f, '.md'));
   for (const a of aiAgents) {
     must(claudeAgents.includes(a), `Agent "${a}" defined in .ai/agents/ but missing in .claude/agents/`);
+  }
+
+  // ── 2b. Copilot chatmode parity ──
+  // Every .ai/agents/<name>.md MUST have a .github/chatmodes/<name>.chatmode.md wrapper.
+  const copilotChatmodes = new Set(
+    (await listMd('.github/chatmodes'))
+      .map((f) => basename(f, '.md'))
+      .map((n) => (n.endsWith('.chatmode') ? n.slice(0, -'.chatmode'.length) : n)),
+  );
+  for (const a of aiAgents) {
+    must(
+      copilotChatmodes.has(a),
+      `Agent "${a}" defined in .ai/agents/ but missing Copilot chatmode at .github/chatmodes/${a}.chatmode.md`,
+    );
+  }
+
+  // ── 2c. Copilot instructions parity ──
+  // Every .ai/rules/<name>.md MUST have a .github/instructions/<name>.instructions.md wrapper.
+  const aiRules = (await listMd('.ai/rules')).map((f) => basename(f, '.md'));
+  const copilotInstructions = new Set(
+    (await listMd('.github/instructions'))
+      .map((f) => basename(f, '.md'))
+      .map((n) => (n.endsWith('.instructions') ? n.slice(0, -'.instructions'.length) : n)),
+  );
+  for (const r of aiRules) {
+    must(
+      copilotInstructions.has(r),
+      `Rule "${r}" defined in .ai/rules/ but missing Copilot instructions at .github/instructions/${r}.instructions.md`,
+    );
   }
 
   // ── 3. MCP registry sanity ──
@@ -121,9 +150,7 @@ async function main() {
     'tasks',
     'implement',
   ];
-  const claudeCommands = new Set(
-    (await listMd('.claude/commands')).map((f) => basename(f, '.md')),
-  );
+  const claudeCommands = new Set((await listMd('.claude/commands')).map((f) => basename(f, '.md')));
   // Copilot prompt files end in .prompt.md → strip the suffix.
   const copilotPrompts = new Set(
     (await listMd('.github/prompts'))
