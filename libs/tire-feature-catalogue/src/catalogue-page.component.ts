@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-import { ShopHeroComponent } from '@ai-studio/shop-ui';
+import { timer } from 'rxjs';
+
+import { ProductCardSkeletonComponent, ShopHeroComponent } from '@ai-studio/shop-ui';
 import { CartService, CatalogueService, type Tire, TIRE_SORT_KEYS, type TireSortKey } from '@ai-studio/tire-data';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
@@ -28,6 +31,7 @@ const SORT_LABELS: Readonly<Record<TireSortKey, string>> = {
     MatSelectModule,
     FilterPanelComponent,
     ProductCardComponent,
+    ProductCardSkeletonComponent,
     ShopHeroComponent,
   ],
   template: `
@@ -68,7 +72,16 @@ const SORT_LABELS: Readonly<Record<TireSortKey, string>> = {
           </mat-form-field>
         </header>
 
-        @if (results().length === 0) {
+        @if (loading()) {
+          <div
+            class="gap-4 sm:grid-cols-2 lg:grid-cols-3 grid"
+            data-testid="catalogue-loading"
+          >
+            @for (n of skeletons; track n) {
+              <ais-shop-product-card-skeleton />
+            }
+          </div>
+        } @else if (results().length === 0) {
           <div
             class="gap-3 py-16 flex flex-col items-center text-center text-on-surface-variant"
             data-testid="catalogue-empty"
@@ -106,8 +119,19 @@ export class CataloguePageComponent {
   protected readonly sortKeys = TIRE_SORT_KEYS;
   protected readonly sort = this.catalogue.sort;
   protected readonly results = this.catalogue.filtered;
+  /** 6-cell skeleton grid mirrors the typical "above the fold" grid density. */
+  protected readonly skeletons = [1, 2, 3, 4, 5, 6];
+  /** Demo-only loading state — see bookstore-catalogue for the contract. */
+  protected readonly loading = signal(true);
 
   protected readonly hasResults = computed(() => this.results().length > 0);
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    timer(500)
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe(() => this.loading.set(false));
+  }
 
   protected labelOf(key: TireSortKey): string {
     return SORT_LABELS[key];

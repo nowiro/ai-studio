@@ -1,12 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
+import { timer } from 'rxjs';
+
 import { type Book, BookstoreCatalogueService } from '@ai-studio/bookstore-data';
 import { BASE_SORT_KEYS, type BaseSortKey, ShopCartService } from '@ai-studio/shop-core';
-import { EmptyResultsComponent, ProductCardComponent, ShopHeroComponent } from '@ai-studio/shop-ui';
+import {
+  EmptyResultsComponent,
+  ProductCardComponent,
+  ProductCardSkeletonComponent,
+  ShopHeroComponent,
+} from '@ai-studio/shop-ui';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
 
@@ -29,6 +37,7 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
     MatFormFieldModule,
     MatSelectModule,
     ProductCardComponent,
+    ProductCardSkeletonComponent,
     ShopHeroComponent,
   ],
   template: `
@@ -67,7 +76,16 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
           </mat-form-field>
         </header>
 
-        @if (catalogue.filtered().length === 0) {
+        @if (loading()) {
+          <div
+            class="gap-4 sm:grid-cols-2 lg:grid-cols-3 grid"
+            data-testid="catalogue-loading"
+          >
+            @for (n of skeletons; track n) {
+              <ais-shop-product-card-skeleton />
+            }
+          </div>
+        } @else if (catalogue.filtered().length === 0) {
           <ais-shop-empty-results
             (clear)="catalogue.resetFilters()"
             title="Brak książek"
@@ -97,6 +115,21 @@ export class CataloguePageComponent {
   protected readonly catalogue = inject(BookstoreCatalogueService);
   protected readonly cart = inject(ShopCartService);
   protected readonly sortKeys = BASE_SORT_KEYS;
+  /** 6-cell skeleton grid mirrors the typical "above the fold" grid density. */
+  protected readonly skeletons = [1, 2, 3, 4, 5, 6];
+  /**
+   * Demo-only loading state — flips false after a brief simulated fetch so the
+   * skeleton primitive is visible in the live demo. Real catalogues should
+   * drive this from `resource()` or an HTTP-backed signal.
+   */
+  protected readonly loading = signal(true);
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    timer(500)
+      .pipe(takeUntilDestroyed(destroyRef))
+      .subscribe(() => this.loading.set(false));
+  }
 
   protected labelOf(key: BaseSortKey): string {
     return SORT_LABELS[key];
