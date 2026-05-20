@@ -100,7 +100,7 @@
     "@tailwindcss/postcss": "^4.3.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.8.0",
-    "@vitest/coverage-v8": "^4.1.6",
+    "@vitest/coverage-v8": "^4.1.7",
     "angular-eslint": "21.4.0",
     "bpmn-to-image": "^0.10.0",
     "bpmnlint": "^11.5.0",
@@ -129,7 +129,7 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.59.3",
     "vite": "^8.0.13",
-    "vitest": "^4.1.6"
+    "vitest": "^4.1.7"
   },
   "config": {
     "commitizen": {
