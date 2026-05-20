@@ -56,7 +56,9 @@ const CELL = 30;
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block w-full h-full' },
   template: `
-    <div class="gap-6 p-6 text-white flex min-h-screen flex-col items-center justify-center bg-[#0b1020]">
+    <div
+      class="gap-6 p-6 flex min-h-screen flex-col items-center justify-center bg-surface-container-highest text-on-surface"
+    >
       <h1 class="text-2xl font-bold tracking-widest opacity-80">TETRIS</h1>
       <div class="gap-6 flex items-start">
         <div class="gap-6 flex flex-col">

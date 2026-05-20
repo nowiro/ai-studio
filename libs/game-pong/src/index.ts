@@ -29,3 +29,4 @@ export {
   type TournamentStatus,
 } from './tournament.js';
 export { LeaderboardStore } from './leaderboard-store.js';
+export { PongHighScoreStore } from './high-score-store.js';
