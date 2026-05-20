@@ -25,3 +25,18 @@ node_modules/
 tmp/
 
 .angular
+
+# Trinity baseline files — synchronised across siblings by SHA-256 hash
+# (see tools/scripts/check-trinity.mjs). They are owned by ai-studio; do not
+# reformat them locally or `pnpm trinity:check` will detect drift.
+.ai/rules/core.md
+.ai/rules/principles.md
+.ai/rules/security.md
+.ai/rules/production-readiness.md
+.ai/rules/language.md
+.ai/rules/llm-optimization.md
+.ai/agents/orchestrator.md
+.ai/workflows/spec-driven.md
+.ai/architecture.md
+docs/ai-workflow/plans/_template.md
+tools/scripts/bootstrap.mjs

@@ -22,33 +22,33 @@ trinity-baseline: true
 
 ## Domyślne ustawienie
 
-| Powierzchnia                                             | Język   | Dlaczego                                                                           |
-| -------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------- |
-| **Czat z Claude / Copilot**                              | polski  | Preferencja użytkownika; szybsze reasoning po stronie zespołu                      |
-| `README.md`, `CONTRIBUTING.md`, `SECURITY.md`            | polski  | Czytane przez zespół + ewentualnych kontrybutorów PL                               |
-| `CLAUDE.md`, `AGENTS.md`                                 | polski  | Czytane przez agentów (Claude Code · Copilot rozumieją PL); kontekst dla człowieka |
-| `docs/technical/`, `docs/architecture/`, `docs/adr/`     | polski  | Czytane przez tester · dev · devops · architekta                                   |
-| `docs/analytical/specs/<slug>/*.md`                      | polski  | SDD — domena biznesowa, uzasadnienia                                               |
-| `docs/ai-workflow/plans/`, `docs/ai-workflow/runs/`      | polski  | Plany i logi przebiegów dla zespołu                                                |
-| `CHANGELOG.md`, `PLAN.md`                                | polski  | Notki dla zespołu                                                                  |
-| `.ai/README.md`, `.ai/architecture.md`                   | polski  | Proza w nawigacji `.ai/` — wskaźniki dla agentów rozumieją PL                      |
-| `.ai/rules/*.md` (proza, oprócz tożsamości baseline)     | polski  | Proza reguł — identyfikatory/nazwy zostają EN                                      |
-| `.ai/agents/*.md`, `.ai/workflows/*.md`                  | polski  | Definicje ról i procesów — proza PL                                                |
-| `.ai/prompts/*.md`, `.ai/context/*.md`                   | polski  | Templatki promptów i glossary domenowy                                             |
-| `.github/copilot-instructions.md` (proza)                | polski  | Czytana przez Copilot Chat (Copilot rozumie PL); spójność z `CLAUDE.md`            |
-| `.github/instructions/*.instructions.md` (proza)         | polski  | Mirror `.ai/rules/` po PL; `applyTo:` globy pozostają EN                           |
-| `.github/prompts/*.prompt.md` (proza)                    | polski  | Mirror `.ai/prompts/`                                                              |
-| `.github/chatmodes/*.chatmode.md` (proza)                | polski  | Chat modes domain — proza PL                                                       |
-| `.github/ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE`       | polski  | Wypełniane przez zespół PL                                                         |
-| **Code (TS/JS/HTML/SCSS)** — identyfikatory, sygnatury   | english | Międzynarodowy standard, AI tokenizer, OSS                                         |
-| Komentarze inline w kodzie + JSDoc                       | english | Spójność z kodem; AI tooling lepiej tokenizuje                                     |
-| Test names (`it('should ...')`), fixture data            | english | Czytane przez CI raportery, snapshot diffs                                         |
-| MCP tool `description`, parametry schema (Zod itp.)      | english | Wysyłane do LLM przy każdym `list_tools` — token cost                              |
-| Komunikaty błędów (`Error`, `throw`), log entries        | english | Konsumowane przez monitoring JSON, alerty                                          |
-| Git: branch · commit · PR title · PR body                | english | Conventional Commits, commitlint, automatyzacja, OSS-friendly                      |
-| `package.json` fields (`name`, `description`, scripts)   | english | Czytane przez npm registry i automation                                            |
-| Frontmatter keys (`id:`, `type:`, `scope:`, `priority:`) | english | Identyfikatory schema — czytane przez walidator                                    |
-| `LICENSE`                                                | english | Wymóg licencji (czytany przez audytorów spoza zespołu)                             |
+| Powierzchnia                                             | Język   | Dlaczego                                                                            |
+| -------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------- |
+| **Czat z Claude / Copilot**                              | polski  | Preferencja użytkownika; szybsze reasoning po stronie zespołu                       |
+| `README.md`, `CONTRIBUTING.md`, `SECURITY.md`            | polski  | Czytane przez zespół + ewentualnych kontrybutorów PL                                |
+| `CLAUDE.md`, `AGENTS.md`                                 | polski  | Czytane przez agentów (Claude Code · Copilot rozumieją PL); kontekst dla człowieka  |
+| `docs/technical/`, `docs/architecture/`, `docs/adr/`     | polski  | Czytane przez tester · dev · devops · architekta                                    |
+| `docs/analytical/specs/<slug>/*.md`                      | polski  | SDD — domena biznesowa, uzasadnienia                                                |
+| `docs/ai-workflow/plans/`, `docs/ai-workflow/runs/`      | polski  | Plany i logi przebiegów dla zespołu                                                 |
+| `CHANGELOG.md`, `PLAN.md`                                | polski  | Notki dla zespołu                                                                   |
+| `.ai/README.md`, `.ai/architecture.md`                   | polski  | Proza w nawigacji `.ai/` — wskaźniki dla agentów rozumieją PL                       |
+| `.ai/rules/*.md` (proza, oprócz tożsamości baseline)     | polski  | Proza reguł — identyfikatory/nazwy zostają EN                                       |
+| `.ai/agents/*.md`, `.ai/workflows/*.md`                  | polski  | Definicje ról i procesów — proza PL                                                 |
+| `.ai/prompts/*.md`, `.ai/context/*.md`                   | polski  | Templatki promptów i glossary domenowy                                              |
+| `.github/copilot-instructions.md` (proza)                | polski  | Czytana przez Copilot Chat (Copilot rozumie PL); spójność z `CLAUDE.md`             |
+| `.github/instructions/*.instructions.md` (proza)         | polski  | Mirror `.ai/rules/` po PL; `applyTo:` globy pozostają EN                            |
+| `.github/prompts/*.prompt.md` (proza)                    | polski  | Mirror `.ai/prompts/`                                                               |
+| `.github/chatmodes/*.chatmode.md` (proza)                | polski  | Chat modes domain — proza PL                                                        |
+| `.github/ISSUE_TEMPLATE/`, `PULL_REQUEST_TEMPLATE`       | polski  | Wypełniane przez zespół PL                                                          |
+| **Code (TS/JS/HTML/SCSS)** — identyfikatory, sygnatury   | english | Międzynarodowy standard, AI tokenizer, OSS                                          |
+| Komentarze inline w kodzie + JSDoc                       | english | Spójność z kodem; AI tooling lepiej tokenizuje                                      |
+| Test names (`it('should ...')`), fixture data            | english | Czytane przez CI raportery, snapshot diffs                                          |
+| MCP tool `description`, parametry schema (Zod itp.)      | english | Wysyłane do LLM przy każdym `list_tools` — token cost                               |
+| Komunikaty błędów (`Error`, `throw`), log entries        | english | Konsumowane przez monitoring JSON, alerty                                           |
+| Git: branch · commit · PR title · PR body                | english | Conventional Commits, commitlint, automatyzacja, OSS-friendly                       |
+| `package.json` fields (`name`, `description`, scripts)   | english | Czytane przez npm registry i automation                                             |
+| Frontmatter keys (`id:`, `type:`, `scope:`, `priority:`) | english | Identyfikatory schema — czytane przez walidator                                     |
+| `LICENSE`                                                | english | Wymóg licencji (czytany przez audytorów spoza zespołu)                              |
 
 ## Dlaczego ten podział
 
