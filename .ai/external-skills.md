@@ -63,8 +63,17 @@ A skill is a _frozen prompt_ that ships expertise. Our agents are _roles_ that d
   - Install: `npx skillsadd wshobson/agents`
 
 - **Frontend Design Guidelines** — `anthropics/skills/frontend-design`
-  - General design principles (hierarchy, contrast, spacing). Useful for the `frontend-developer` agent on greenfield UI.
+  - General design principles (hierarchy, contrast, spacing) + opinionated anti-pattern catalog (no Inter/Roboto, no purple-gradient AI-aesthetic). Useful gdy `frontend-developer` agent buduje greenfield UI z custom branding.
+  - **⚠ M3 conflict watch**: Material 3 jest opinionated framework — fixed type scale (Roboto Flex), fixed color tokens, fixed motion specs. Ten skill wymusza bold aesthetic direction, co bije w sam fundament M3. **Installer guidance:** używaj ad-hoc dla pre-design exploration, nie dla codzienej feature pracy gdzie M3 tokens są authoritative. Anti-pattern list jest portable (wartość jako lockdown lista — patrz "Design lockdowns" niżej).
   - Install: `npx skillsadd anthropics/skills`
+
+- **Web Interface Guidelines** — `vercel-labs/agent-skills/web-design-guidelines`
+  - Audit UI code wg Vercel Web Interface Guidelines (design + a11y + UX) z `file:line` reporting. Fetchuje canonical raw guideline przy każdym review.
+  - **Verdict: NOT installed.** Content źródłowy jest React/Next.js-centric (komponenty + klasy Tailwinda jako przykłady), koliduje z Material 3. Pattern "audit-against-canonical-source" jest jednak warty zaadaptowania jako workflow `audit-design.md` w `.ai/workflows/` (canonical source = nasz `angular-material-design` + `accessibility-a11y` + `styling.md`).
+
+- **UI/UX Pro Max** — `nextlevelbuilder/ui-ux-pro-max-skill/ui-ux-pro-max`
+  - Design intelligence pack: 99 priority-ranked UX heuristics, 161 color palettes, 57 font pairings, 25 chart types, 161 product type patterns, 50+ design styles.
+  - **Verdict: NOT installed.** Pakiet ma mocną zależność od **shadcn/ui** (Radix + Tailwind) — bezpośrednio konkuruje z naszym Material 3 (color palettes/font pairings konfliktują z `--mat-sys-*` tokens). Templates są React/shadcn-only. Wartość unikalna (99 UX heuristics) wymaga manual cherry-pick — większość duplikuje WCAG/M3 wytyczne.
 
 ### TypeScript
 
@@ -92,3 +101,16 @@ A skill is a _frozen prompt_ that ships expertise. Our agents are _roles_ that d
 ## Removing
 
 If a skill turns out to overlap with one of our rules, or its guidance contradicts ours, remove the entry and note the reason in the PR description. Our rules win.
+
+## Design lockdowns (extracted from `frontend-design` 2026-05-20)
+
+Lista anti-patterns wyekstraktowana z `anthropics/skills/frontend-design` — portable, aplikowalna nawet bez instalacji skilla. Reviewer powinien blockować PR-y wprowadzające te wzorce:
+
+- ❌ **Google Sans / Inter / Roboto** jako "safe choice" dla custom branding. Material 3 ma Roboto Flex jako default, ale gdy app ma custom identity, wybierz świadomie (nie domyślnie sięgaj po Inter "bo Vercel").
+- ❌ **Purple-to-pink gradients** (`from-purple-500 to-pink-500` style) — telltale "AI aesthetic", devaluuje brand.
+- ❌ **Gradient-as-personality** — gradient jako jedyna decoration, bo "nowoczesne".
+- ❌ **Centered hero + 3-column features + cta-card** layout — generic SaaS-template look (każdy startup w 2024 wyglądał tak).
+- ❌ **Sparkle / starburst / "magic wand" icons** w UI nie-AI app — visual marker "AI-built generic".
+- ❌ **Soft shadows + rounded-xl + light gradients wszędzie** — design równa-w-dół, no character.
+
+Reviewerzy code-reviewer + frontend-developer cytują ten lockdown przy PR review (jak `DRY`/`SRP` z `principles.md`).

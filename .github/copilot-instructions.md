@@ -110,7 +110,7 @@ Gdy zadanie pasuje do jednego z tych flowów, śledź go dokładnie:
 - `tech-debt` — scoped, measurable
 - `incident-response` — speed > polish
 - `documentation-audit` — skanuj code + docs, produkuj raport, regeneruj z raportu
-- `spec-driven` — fazowy SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/implement`), zaadaptowany z [github/spec-kit](https://github.com/github/spec-kit)
+- `spec-driven` — fazowy SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/checklist` → `/analyze` → `/implement` → `/taskstoissues` opt), zaadaptowany z [github/spec-kit](https://github.com/github/spec-kit) (v2.1.0 sync z PR #2518 quality gates)
 
 Pełny set żyje w [`.ai/workflows/`](../.ai/workflows/).
 

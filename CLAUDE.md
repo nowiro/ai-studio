@@ -120,7 +120,7 @@ Wybierz jeden z [`.ai/workflows/`](.ai/workflows/) gdy zadanie pasuje do jego tr
 - `new-library.md` — generator + ADR + docs.
 - `tech-debt.md` — scoped, measurable.
 - `documentation-audit.md` — skanuj code+docs → raport → regenerate z raportu.
-- `spec-driven.md` — fazowy flow SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/implement`), zaadaptowany z [github/spec-kit](https://github.com/github/spec-kit) na naszych agentów.
+- `spec-driven.md` — fazowy flow SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/checklist` → `/analyze` → `/implement` → `/taskstoissues` opt), zaadaptowany z [github/spec-kit](https://github.com/github/spec-kit) (v2.1.0 sync z PR #2518 quality gates).
 - `incident-response.md` — speed > polish.
 
 ## Slash commands
@@ -144,7 +144,10 @@ Zdefiniowane pod [`.claude/commands/`](.claude/commands/) (bliźniaki pod [`.git
 | `/clarify [slug]`                      | SDD faza 1.5 — rozwiąż markery `[?]` w `spec.md`               |
 | `/plan [slug]`                         | SDD faza 2 — architect pisze `plan.md` + (jeśli trzeba) ADR    |
 | `/tasks [slug]`                        | SDD faza 3 — orchestrator dekomponuje plan na DAG `tasks.md`   |
+| `/checklist [slug]`                    | SDD faza 3.5 — quality gate jakości requirements (dual review) |
+| `/analyze [slug]`                      | SDD faza 3.6 — cross-artifact consistency check (audit)        |
 | `/implement [slug] [task\|all]`        | SDD faza 4 — orchestrator egzekutuje zadania + DoD gate        |
+| `/taskstoissues [slug]`                | SDD faza 5 (opt) — mapuj `tasks.md` → GitHub Issues            |
 
 ## Validation gate (przed raportowaniem Done)
 
