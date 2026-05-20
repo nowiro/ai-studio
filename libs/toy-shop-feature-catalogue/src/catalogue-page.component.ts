@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { BASE_SORT_KEYS, type BaseSortKey, ShopCartService } from '@ai-studio/shop-core';
-import { EmptyStateComponent, ProductCardComponent } from '@ai-studio/shop-ui';
+import { EmptyResultsComponent, ProductCardComponent } from '@ai-studio/shop-ui';
 import { type Toy, ToyShopCatalogueService } from '@ai-studio/toy-shop-data';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
@@ -21,7 +21,7 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
   selector: 'ais-toy-shop-catalogue-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    EmptyStateComponent,
+    EmptyResultsComponent,
     FilterPanelComponent,
     FormsModule,
     MatFormFieldModule,
@@ -58,12 +58,10 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
         </header>
 
         @if (catalogue.filtered().length === 0) {
-          <ais-shop-empty-state
-            (action)="catalogue.resetFilters()"
-            testId="catalogue-empty"
-            icon="toys"
-            message="Brak zabawek spełniających kryteria."
-            actionLabel="Wyczyść filtry"
+          <ais-shop-empty-results
+            (clear)="catalogue.resetFilters()"
+            title="Brak zabawek"
+            subtitle="Żadna zabawka nie pasuje do aktywnych filtrów. Spróbuj poszerzyć kryteria."
           />
         } @else {
           <div

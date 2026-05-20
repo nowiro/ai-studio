@@ -2,19 +2,26 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { RouterLink } from '@angular/router';
 
 import { ShopCartService } from '@ai-studio/shop-core';
-import { PriceTagComponent, StarsRatingComponent } from '@ai-studio/shop-ui';
+import { type Breadcrumb, BreadcrumbsComponent, PriceTagComponent, StarsRatingComponent } from '@ai-studio/shop-ui';
 import { ToolsShopCatalogueService } from '@ai-studio/tools-shop-data';
 
 @Component({
   selector: 'ais-tools-shop-tool-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatChipsModule, NgOptimizedImage, PriceTagComponent, RouterLink, StarsRatingComponent],
+  imports: [
+    BreadcrumbsComponent,
+    MatButtonModule,
+    MatChipsModule,
+    NgOptimizedImage,
+    PriceTagComponent,
+    StarsRatingComponent,
+  ],
   template: `
     @let tool = currentTool();
     @if (tool) {
+      <ais-shop-breadcrumbs [crumbs]="crumbsFor(tool.name)" />
       <article
         class="p-4 gap-6 md:grid-cols-[18rem_1fr] max-w-5xl mx-auto grid"
         data-testid="tool-detail"
@@ -28,12 +35,6 @@ import { ToolsShopCatalogueService } from '@ai-studio/tools-shop-data';
           priority
         />
         <div class="gap-3 flex flex-col">
-          <a
-            [routerLink]="['/']"
-            class="text-sm text-on-surface-variant hover:underline"
-          >
-            ← Wróć do katalogu
-          </a>
           <p class="m-0 text-xs tracking-wide text-on-surface-variant uppercase">{{ tool.brand }}</p>
           <h1 class="m-0 text-2xl font-semibold">{{ tool.name }}</h1>
           <ais-shop-stars-rating
@@ -85,4 +86,8 @@ export class ToolDetailComponent {
   protected readonly cart = inject(ShopCartService);
 
   protected readonly currentTool = computed(() => this.catalogue.findById(this.id()));
+
+  protected crumbsFor(toolName: string): readonly Breadcrumb[] {
+    return [{ label: 'Sklep', routerLink: ['/'] }, { label: toolName }];
+  }
 }

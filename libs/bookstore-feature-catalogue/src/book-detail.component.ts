@@ -2,19 +2,26 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { RouterLink } from '@angular/router';
 
 import { BookstoreCatalogueService } from '@ai-studio/bookstore-data';
 import { ShopCartService } from '@ai-studio/shop-core';
-import { PriceTagComponent, StarsRatingComponent } from '@ai-studio/shop-ui';
+import { type Breadcrumb, BreadcrumbsComponent, PriceTagComponent, StarsRatingComponent } from '@ai-studio/shop-ui';
 
 @Component({
   selector: 'ais-bookstore-book-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatChipsModule, NgOptimizedImage, PriceTagComponent, RouterLink, StarsRatingComponent],
+  imports: [
+    BreadcrumbsComponent,
+    MatButtonModule,
+    MatChipsModule,
+    NgOptimizedImage,
+    PriceTagComponent,
+    StarsRatingComponent,
+  ],
   template: `
     @let book = currentBook();
     @if (book) {
+      <ais-shop-breadcrumbs [crumbs]="crumbsFor(book.name)" />
       <article
         class="p-4 gap-6 md:grid-cols-[16rem_1fr] max-w-4xl mx-auto grid"
         data-testid="book-detail"
@@ -28,12 +35,6 @@ import { PriceTagComponent, StarsRatingComponent } from '@ai-studio/shop-ui';
           priority
         />
         <div class="gap-3 flex flex-col">
-          <a
-            [routerLink]="['/']"
-            class="text-sm text-on-surface-variant hover:underline"
-          >
-            ← Wróć do katalogu
-          </a>
           <h1 class="m-0 text-2xl font-semibold">{{ book.name }}</h1>
           <p class="m-0 text-on-surface-variant">{{ book.author }} · {{ book.publishedYear }}</p>
           <ais-shop-stars-rating
@@ -81,4 +82,8 @@ export class BookDetailComponent {
   protected readonly cart = inject(ShopCartService);
 
   protected readonly currentBook = computed(() => this.catalogue.findById(this.id()));
+
+  protected crumbsFor(bookName: string): readonly Breadcrumb[] {
+    return [{ label: 'Sklep', routerLink: ['/'] }, { label: bookName }];
+  }
 }

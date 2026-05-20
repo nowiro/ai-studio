@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
-import { RouterLink } from '@angular/router';
 
+import { type Breadcrumb, BreadcrumbsComponent } from '@ai-studio/shop-ui';
 import { CartService, CatalogueService, formatPln } from '@ai-studio/tire-data';
 import { EuLabelComponent, PriceTagComponent, StarsRatingComponent } from '@ai-studio/tire-ui';
 
@@ -13,12 +13,12 @@ import { EuLabelComponent, PriceTagComponent, StarsRatingComponent } from '@ai-s
   selector: 'ais-product-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    BreadcrumbsComponent,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
     MatTabsModule,
     NgOptimizedImage,
-    RouterLink,
     EuLabelComponent,
     PriceTagComponent,
     StarsRatingComponent,
@@ -26,6 +26,7 @@ import { EuLabelComponent, PriceTagComponent, StarsRatingComponent } from '@ai-s
   template: `
     @let model = tire();
     @if (model) {
+      <ais-shop-breadcrumbs [crumbs]="crumbsFor(model.brand + ' ' + model.model)" />
       <article
         class="p-4 gap-6 md:grid-cols-2 max-w-5xl mx-auto grid"
         data-testid="product-detail"
@@ -56,12 +57,6 @@ import { EuLabelComponent, PriceTagComponent, StarsRatingComponent } from '@ai-s
 
         <div class="gap-4 flex flex-col">
           <header class="gap-1 flex flex-col">
-            <a
-              [routerLink]="['/']"
-              class="text-sm text-on-surface-variant hover:underline"
-            >
-              ← Wróć do katalogu
-            </a>
             <p class="m-0 text-xs tracking-wide text-on-surface-variant uppercase">
               {{ model.brand }}
             </p>
@@ -211,5 +206,9 @@ export class ProductDetailComponent {
     if (candidate) {
       this.cart.addLine(candidate.id);
     }
+  }
+
+  protected crumbsFor(tireLabel: string): readonly Breadcrumb[] {
+    return [{ label: 'Sklep', routerLink: ['/'] }, { label: tireLabel }];
   }
 }

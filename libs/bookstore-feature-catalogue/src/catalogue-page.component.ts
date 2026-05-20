@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { type Book, BookstoreCatalogueService } from '@ai-studio/bookstore-data';
 import { BASE_SORT_KEYS, type BaseSortKey, ShopCartService } from '@ai-studio/shop-core';
-import { EmptyStateComponent, ProductCardComponent } from '@ai-studio/shop-ui';
+import { EmptyResultsComponent, ProductCardComponent } from '@ai-studio/shop-ui';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
 
@@ -22,7 +22,7 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
   selector: 'ais-bookstore-catalogue-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    EmptyStateComponent,
+    EmptyResultsComponent,
     FilterPanelComponent,
     FormsModule,
     MatButtonModule,
@@ -60,12 +60,10 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
         </header>
 
         @if (catalogue.filtered().length === 0) {
-          <ais-shop-empty-state
-            (action)="catalogue.resetFilters()"
-            testId="catalogue-empty"
-            icon="menu_book"
-            message="Brak książek spełniających kryteria."
-            actionLabel="Wyczyść filtry"
+          <ais-shop-empty-results
+            (clear)="catalogue.resetFilters()"
+            title="Brak książek"
+            subtitle="Żaden tytuł nie pasuje do aktywnych filtrów. Spróbuj poszerzyć kryteria."
           />
         } @else {
           <div
