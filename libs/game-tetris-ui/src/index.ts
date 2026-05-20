@@ -9,3 +9,4 @@ export { TetrisNextQueueComponent } from './next-queue.component.js';
 export { TetrisScoreComponent } from './score-display.component.js';
 export { TetrisSettingsOverlayComponent } from './settings-overlay.component.js';
 export { PIECE_COLOURS, BLOCK_OUTLINE, GHOST_FILL, GHOST_OUTLINE } from './palette.js';
+export { detectGesture, gestureToMove, type TetrisGesture, type TouchPoint } from './touch-gestures.js';

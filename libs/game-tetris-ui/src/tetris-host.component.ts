@@ -41,6 +41,7 @@ import { TetrisNextQueueComponent } from './next-queue.component.js';
 import { BLOCK_OUTLINE, GHOST_FILL, GHOST_OUTLINE, PIECE_COLOURS } from './palette.js';
 import { TetrisScoreComponent } from './score-display.component.js';
 import { TetrisSettingsOverlayComponent } from './settings-overlay.component.js';
+import { detectGesture, gestureToMove, type TouchPoint } from './touch-gestures.js';
 
 /** Pixels per cell — the canvas is `cols·CELL × rows·CELL`. */
 const CELL = 30;
@@ -70,7 +71,9 @@ const CELL = 30;
         </div>
 
         <div
-          class="relative"
+          (touchstart)="onTouchStart($event)"
+          (touchend)="onTouchEnd($event)"
+          class="relative touch-none"
           data-testid="tetris-board-wrapper"
         >
           <canvas
@@ -104,8 +107,14 @@ const CELL = 30;
         <ais-tetris-next-queue [queue]="nextQueue()" />
       </div>
 
-      <p class="text-xs opacity-50">
+      <p class="text-xs opacity-70">
         ←/→ move · ↓ soft-drop · ↑/Z rotate · Space hard-drop · Shift/C hold · P/Esc pause
+      </p>
+      <p
+        class="md:hidden text-xs opacity-70"
+        data-testid="tetris-touch-hint"
+      >
+        Mobile: machnij ← / → / ↓ klockiem · machnij ↑ — twardy spad · tap — obrót.
       </p>
     </div>
   `,
@@ -211,6 +220,52 @@ export class TetrisHostComponent implements AfterViewInit {
 
   protected onResume(): void {
     this.state.resume();
+  }
+
+  // ── touch input (mobile) ───────────────────────────────────────────────
+  // Touch handlers translate single-finger gestures into discrete tetris
+  // moves. Two-finger gestures are ignored so users can pinch-zoom the
+  // browser without affecting gameplay.
+
+  private touchStart?: TouchPoint;
+
+  protected onTouchStart(event: TouchEvent): void {
+    if (event.touches.length !== 1) {
+      this.touchStart = undefined;
+      return;
+    }
+    const t = event.touches[0];
+    if (!t) return;
+    this.touchStart = { x: t.clientX, y: t.clientY, t: performance.now() };
+    // `touch-none` on the wrapper kills native scroll/zoom on the board, but
+    // some browsers still need a preventDefault on touchstart to lock in the
+    // gesture stream.
+    event.preventDefault();
+  }
+
+  protected onTouchEnd(event: TouchEvent): void {
+    if (!this.touchStart) return;
+    const t = event.changedTouches[0];
+    if (!t) {
+      this.touchStart = undefined;
+      return;
+    }
+    const end: TouchPoint = { x: t.clientX, y: t.clientY, t: performance.now() };
+    const gesture = detectGesture(this.touchStart, end);
+    this.touchStart = undefined;
+    if (!gesture) return;
+    if (this.settingsOpen()) return;
+    if (this.status() === 'idle') {
+      // Start the game on the first deliberate touch so mobile users don't
+      // need a hardware keyboard to leave the menu.
+      this.onStart();
+      event.preventDefault();
+      return;
+    }
+    if (this.status() !== 'playing') return;
+    this.state.input(gestureToMove(gesture));
+    this.score.set(this.state.getScore());
+    event.preventDefault();
   }
 
   // ── render loop ────────────────────────────────────────────────────────

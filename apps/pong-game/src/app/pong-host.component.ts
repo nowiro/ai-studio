@@ -44,7 +44,7 @@ import {
     </div>
 
     <div
-      class="inset-0 absolute grid place-items-center"
+      class="inset-0 absolute grid touch-none place-items-center"
       #canvas
       data-testid="game-canvas"
     ></div>

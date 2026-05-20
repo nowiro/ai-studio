@@ -13,9 +13,18 @@ function readPlayerInput(
   cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined,
   keyW: Phaser.Input.Keyboard.Key | undefined,
   keyS: Phaser.Input.Keyboard.Key | undefined,
+  pointer: Phaser.Input.Pointer | undefined,
+  canvasHeight: number,
 ): PlayerInput {
+  // Keyboard wins so power users keep precision input on desktop.
   if (cursors?.up.isDown || keyW?.isDown) return 'up';
   if (cursors?.down.isDown || keyS?.isDown) return 'down';
+  // Pointer / touch fallback — top half = up, bottom half = down. `isDown`
+  // is true for both mouse-drag and any active touch, so this works on
+  // mobile without a separate code path.
+  if (pointer?.isDown) {
+    return pointer.y < canvasHeight / 2 ? 'up' : 'down';
+  }
   return 'idle';
 }
 
@@ -76,7 +85,7 @@ export class PlayScene extends Phaser.Scene {
   }
 
   override update(_time: number, delta: number): void {
-    const input = readPlayerInput(this.cursors, this.keyW, this.keyS);
+    const input = readPlayerInput(this.cursors, this.keyW, this.keyS, this.input.activePointer, this.config.height);
     this.state.setPlayerInput(input);
     this.state.tick(delta);
 

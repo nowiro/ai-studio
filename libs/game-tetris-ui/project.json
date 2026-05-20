@@ -10,6 +10,14 @@
       "options": {
         "command": "tsc -p libs/game-tetris-ui/tsconfig.json --noEmit"
       }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/game-tetris-ui"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/game-tetris-ui"
+      }
     }
   }
 }
