@@ -1,6 +1,6 @@
 # AI Studio
 
-> Angular 21 + Material 3 + Tailwind v4 Nx monorepo starter with a multi-agent AI workflow built around the rules at [angular.dev/ai](https://angular.dev/ai).
+> Starter Angular 21 + Material 3 + Tailwind v4 Nx monorepo z multi-agentowym workflow AI zbudowanym wokół reguł z [angular.dev/ai](https://angular.dev/ai).
 
 [![CI](https://img.shields.io/badge/ci-green-brightgreen)](.github/workflows/ci.yml)
 [![Angular](https://img.shields.io/badge/Angular-21-dd0031)](https://angular.dev)
@@ -9,92 +9,92 @@
 [![Nx](https://img.shields.io/badge/Nx-21-143055)](https://nx.dev)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0-yellow)](https://www.conventionalcommits.org)
 
-## What this is
+## Co to jest
 
-A starter you clone when you want:
+Starter który klonujesz gdy chcesz:
 
-1. An **Angular 21** Nx monorepo with strict library taxonomy and module-boundary lint.
-2. **Angular Material 3** for components and **Tailwind CSS v4** for utilities — design tokens shared via CSS variables.
-3. A **multi-agent AI workflow** (Orchestrator + 11 specialists) **driven by Claude Code _and_ GitHub Copilot equally** — `.ai/` is the universal source of truth, `.claude/` and `.github/{instructions,prompts,chatmodes}/` are thin wrappers.
-4. **Golden engineering rules** (DRY, SOLID, KISS, YAGNI) in [`.ai/rules/principles.md`](.ai/rules/principles.md) — agents and reviewers cite them by id.
-5. **Doc tooling**: scanners + auditor agent + slash command to migrate legacy docs to canonical templates and regenerate docs from compliance reports.
-6. **Test scenario tooling**: extracts Given/When/Then from analytical specs into Playwright skeletons, then runs them via the Playwright MCP for live debugging.
-7. **Vitest** (native via `@angular/build:unit-test`) + **Playwright** with a working pyramid. No Analog dependency.
+1. Monorepo Nx **Angular 21** ze ścisłą taksonomią library i module-boundary lint.
+2. **Angular Material 3** dla komponentów i **Tailwind CSS v4** dla utility — design tokens współdzielone via CSS variables.
+3. **Multi-agentowy workflow AI** (Orchestrator + 11 specjalistów) **napędzany przez Claude Code _i_ GitHub Copilot równo** — `.ai/` jest uniwersalnym źródłem prawdy, `.claude/` i `.github/{instructions,prompts,chatmodes}/` są cienkimi wrapperami.
+4. **Złote reguły inżynierskie** (DRY, SOLID, KISS, YAGNI) w [`.ai/rules/principles.md`](.ai/rules/principles.md) — agenci i reviewerzy cytują je po id.
+5. **Doc tooling**: skanery + auditor agent + slash komenda do migracji legacy docs do kanonicznych templatów i regeneracji docs z raportów compliance.
+6. **Test scenario tooling**: wyciąga Given/When/Then z analytical specs do szkieletów Playwright, potem uruchamia je via Playwright MCP do live debugu.
+7. **Vitest** (natywny via `@angular/build:unit-test`) + **Playwright** z działającą piramidą. Bez zależności Analog.
 8. **ESLint flat config** + Prettier + Husky + lint-staged + commitlint + Commitizen.
-9. **MCP servers** preconfigured: `context7`, `playwright`, `nx`, `angular-cli`.
-10. **GitHub** templates for issues (bug, feature, AI task, ADR, incident, tech-debt, docs) and PRs.
-11. Documentation in three layers: **technical**, **analytical**, **programming** — plus the AI workflow + monthly auto-audit (`docs-audit.yml`).
+9. **Serwery MCP** preconfigured: `context7`, `playwright`, `nx`, `angular-cli`.
+10. Templatki **GitHub** dla issues (bug, feature, AI task, ADR, incident, tech-debt, docs) i PR-ów.
+11. Dokumentacja w trzech warstwach: **technical**, **analytical**, **programming** — plus AI workflow + miesięczny auto-audyt (`docs-audit.yml`).
 
-## Quickstart — one command after clone
+## Quickstart — jedna komenda po clone
 
 ```bash
 git clone https://github.com/nowiro/ai-studio.git
 cd ai-studio
-pnpm install                          # install deps so the bootstrap script can run
+pnpm install                          # zainstaluj deps żeby bootstrap mógł uruchomić
 pnpm bootstrap                        # → idempotent, cross-platform setup
 ```
 
-`pnpm bootstrap` (= `node tools/scripts/bootstrap.mjs`) runs cross-platform on **Windows / macOS / Linux** and does:
+`pnpm bootstrap` (= `node tools/scripts/bootstrap.mjs`) działa cross-platform na **Windows / macOS / Linux** i:
 
-1. Verifies Node version against `.nvmrc` and that `pnpm` is on `PATH`.
-2. Installs dependencies (skipped if `node_modules` already exists; `--reinstall` to force).
-3. Runs `pnpm prepare` to install husky git hooks.
-4. Runs the **trinity baseline check** — warns on drift across `ai-mcp-alm` / `ai-mcp-devtools`.
-5. Seeds a user-profile config (only when `config.example.json` exists — `ai-studio` does not need one today; the sibling MCP repos do).
+1. Weryfikuje wersję Node względem `.nvmrc` i obecność `pnpm` na `PATH`.
+2. Instaluje zależności (pomijane jeśli `node_modules` już istnieje; `--reinstall` wymusza).
+3. Uruchamia `pnpm prepare` żeby zainstalować hooki husky git.
+4. Uruchamia **trinity baseline check** — ostrzega o drift między `ai-mcp-alm` / `ai-mcp-devtools`.
+5. Zasiewa user-profile config (tylko gdy `config.example.json` istnieje — `ai-studio` nie potrzebuje dziś; siostrzane repo MCP potrzebują).
 
-Flags: `--reinstall` · `--skip-install` · `--skip-trinity` · `--skip-config`. Re-running is safe.
+Flagi: `--reinstall` · `--skip-install` · `--skip-trinity` · `--skip-config`. Ponowne uruchomienie jest bezpieczne.
 
-## Working in the repo
+## Praca w repo
 
 ```bash
-# Validate the AI configuration
+# Walidacja konfiguracji AI
 pnpm ai:validate
 
-# Generate your first app (Tailwind wired in by the generator)
+# Wygeneruj pierwszą aplikację (Tailwind wired in przez generator)
 pnpm exec nx g @nx/angular:app studio --add-tailwind --style=scss
 
-# Add Angular Material 3 (theme + CDK + animations)
+# Dodaj Angular Material 3 (theme + CDK + animations)
 pnpm exec nx g @angular/material:ng-add --project=studio --theme=custom --typography --animations=enabled
 
-# Generate a feature lib
+# Wygeneruj feature liba
 pnpm exec nx g @nx/angular:lib feature/welcome --tags=scope:feature,type:feature
 
-# Run it
+# Uruchom
 pnpm exec nx serve studio
 ```
 
-After step 4 the app's `src/styles.scss` should contain `@use '@angular/material' as mat;` + `mat.theme(...)`. List `styles/tailwind.scss` as the first entry in `project.json` `styles` array (do **not** `@import` it from `styles.scss`). See [`.ai/rules/styling.md`](.ai/rules/styling.md) for the full pattern.
+Po kroku 4 `src/styles.scss` aplikacji powinien zawierać `@use '@angular/material' as mat;` + `mat.theme(...)`. Wymień `styles/tailwind.scss` jako pierwszy wpis w arrayu `styles` w `project.json` (**nie** `@import` go z `styles.scss`). Pełen pattern: [`.ai/rules/styling.md`](.ai/rules/styling.md).
 
-## Repository layout
+## Layout repozytorium
 
 ```
 ai-studio/
-├── apps/                     # deployable Angular apps
-├── libs/                     # feature / ui / data / util / shared libs
-├── .ai/                      # universal AI knowledge base
-│   ├── rules/                #   non-negotiable rules (incl. principles.md)
-│   ├── agents/               #   role definitions (11)
+├── apps/                     # deployowalne aplikacje Angular
+├── libs/                     # feature / ui / data / util / shared liby
+├── .ai/                      # uniwersalna baza wiedzy AI
+│   ├── rules/                #   reguły nienegocjowalne (incl. principles.md)
+│   ├── agents/               #   definicje ról (11)
 │   ├── workflows/            #   multi-agent recipes (7)
-│   ├── prompts/              #   reusable templates
+│   ├── prompts/              #   reużywalne templatki
 │   ├── context/              #   long-lived context
-│   └── mcp.json              #   MCP server registry
-├── .claude/                  # Claude Code wrappers (subagents, slash commands, hooks)
-├── .github/                  # issue / PR templates, CI workflows, dependabot
-│   ├── copilot-instructions.md  # Copilot main entrypoint
+│   └── mcp.json              #   rejestr serwerów MCP
+├── .claude/                  # wrappery Claude Code (subagents, slash commands, hooks)
+├── .github/                  # templatki issue / PR, workflows CI, dependabot
+│   ├── copilot-instructions.md  # główny entrypoint Copilot
 │   ├── instructions/         #   scoped instructions (applyTo glob)
-│   ├── prompts/              #   /promptname for Copilot Chat
+│   ├── prompts/              #   /promptname dla Copilot Chat
 │   └── chatmodes/            #   custom chat modes (Orchestrator, Doc Auditor)
-├── .husky/                   # git hooks
+├── .husky/                   # hooki git
 ├── .vscode/                  # extensions, settings, MCP
 ├── docs/
-│   ├── technical/            # architecture, system design, runbook
-│   ├── analytical/           # business reqs, personas, specs
-│   ├── programming/          # coding standards, testing, git workflow
+│   ├── technical/            # architektura, system design, runbook
+│   ├── analytical/           # wymagania biznesowe, persony, specs
+│   ├── programming/          # standardy kodowania, testowanie, git workflow
 │   ├── ai-workflow/          # multi-agent flow, prompts, runs
-│   ├── architecture/         # system, dependencies, tech-debt
-│   └── adr/                  # ADRs (MADR 4.0)
+│   ├── architecture/         # system, zależności, tech-debt
+│   └── adr/                  # ADR-y (MADR 4.0)
 ├── tools/scripts/            # build-ai-context, validate-ai-config, hooks
-├── CLAUDE.md                 # Claude Code entry point
+├── CLAUDE.md                 # entry point Claude Code
 ├── CONTRIBUTING.md
 ├── SECURITY.md
 └── package.json / nx.json / tsconfig.base.json / eslint.config.mjs / …
@@ -120,81 +120,81 @@ ai-studio/
                   Release Manager
 ```
 
-Read [`docs/ai-workflow/multi-agent-flow.md`](docs/ai-workflow/multi-agent-flow.md) for the full picture, [`CLAUDE.md`](CLAUDE.md) for Claude Code specifics, and [`.github/copilot-instructions.md`](.github/copilot-instructions.md) for GitHub Copilot specifics.
+Pełny obraz: [`docs/ai-workflow/multi-agent-flow.md`](docs/ai-workflow/multi-agent-flow.md). Specyfika Claude Code: [`CLAUDE.md`](CLAUDE.md). Specyfika GitHub Copilot: [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
 
 ## Tech stack
 
-| Layer            | Choice                                                            |
+| Warstwa          | Wybór                                                             |
 | ---------------- | ----------------------------------------------------------------- |
 | Monorepo         | **Nx 21+**                                                        |
 | Framework        | **Angular 21** (standalone, signals, native SSR)                  |
-| Components       | **Angular Material 3** (`@angular/material` + `@angular/cdk`)     |
+| Komponenty       | **Angular Material 3** (`@angular/material` + `@angular/cdk`)     |
 | Utility CSS      | **Tailwind CSS v4** (CSS-first, `@tailwindcss/postcss`)           |
-| Unit / Component | **Vitest** via native `@angular/build:unit-test`                  |
+| Unit / Component | **Vitest** via natywne `@angular/build:unit-test`                 |
 | E2E              | **Playwright** (chromium, firefox, webkit, mobile)                |
 | Linting          | **ESLint 9** flat + `angular-eslint` + `tailwindcss`              |
 | Formatting       | **Prettier 3** + sort-imports + organize-attributes + tailwindcss |
 | Hooks            | **Husky 9** + `lint-staged`                                       |
-| Commits          | **Commitizen** + **Commitlint** (Conventional)                    |
+| Commity          | **Commitizen** + **Commitlint** (Conventional)                    |
 | Package manager  | **pnpm 9**                                                        |
 | Node             | **20.19+ LTS**                                                    |
-| MCP servers      | context7, playwright, nx, angular-cli                             |
+| Serwery MCP      | context7, playwright, nx, angular-cli                             |
 
-See [`docs/technical/tech-stack.md`](docs/technical/tech-stack.md) for the rationale.
+Uzasadnienie: [`docs/technical/tech-stack.md`](docs/technical/tech-stack.md).
 
-## Daily commands
+## Komendy codzienne
 
 ```bash
 pnpm install                # install deps
-pnpm graph                  # open the project graph in browser
-pnpm affected:test          # tests for what changed
-pnpm affected:lint          # lint  for what changed
-pnpm affected:e2e           # E2E   for what changed
-pnpm affected:build         # build for what changed
-pnpm test:cov               # all tests with coverage
-pnpm format                 # prettier --write everywhere
+pnpm graph                  # otwórz project graph w przeglądarce
+pnpm affected:test          # testy dla tego co się zmieniło
+pnpm affected:lint          # lint  dla tego co się zmieniło
+pnpm affected:e2e           # E2E   dla tego co się zmieniło
+pnpm affected:build         # build dla tego co się zmieniło
+pnpm test:cov               # wszystkie testy z coverage
+pnpm format                 # prettier --write wszędzie
 pnpm commit                 # guided conventional commit
-pnpm release                # nx release (dry-run via CI dispatch by default)
-pnpm ai:validate            # validate .ai/, .claude/ and .github/{instructions,prompts,chatmodes} parity
-pnpm ai:context             # build a single-file digest of .ai/
+pnpm release                # nx release (dry-run via CI dispatch domyślnie)
+pnpm ai:validate            # walidacja parytetu .ai/, .claude/ i .github/{instructions,prompts,chatmodes}
+pnpm ai:context             # zbuduj single-file digest .ai/
 
 # Documentation tooling
-pnpm docs:scan              # inventory every md file → tmp/docs-scan.json
-pnpm docs:api               # extract every public export → tmp/public-api.json
-pnpm docs:audit             # combine into a markdown report → tmp/doc-audit-<date>.md
+pnpm docs:scan              # inwentaryzuj każdy plik md → tmp/docs-scan.json
+pnpm docs:api               # wyciągnij każdy public export → tmp/public-api.json
+pnpm docs:audit             # połącz w markdown raport → tmp/doc-audit-<date>.md
 
 # Test scenario tooling
-pnpm test:scenarios         # extract Given/When/Then → tmp/scenarios/<spec>.{json,spec.ts}
+pnpm test:scenarios         # wyciągnij Given/When/Then → tmp/scenarios/<spec>.{json,spec.ts}
 ```
 
 ## AI tooling cheatsheet
 
-Both Claude Code (slash commands) and GitHub Copilot Chat (`/promptname`) expose the same workflows:
+Zarówno Claude Code (slash commands) jak i GitHub Copilot Chat (`/promptname`) wystawiają te same workflows:
 
-| Workflow                                    | Claude command                    | Copilot prompt                |
-| ------------------------------------------- | --------------------------------- | ----------------------------- |
-| Full multi-agent feature                    | `/new-feature <desc>`             | `/new-feature`                |
-| Bug fix (failing test first)                | `/bug-fix <summary>`              | `/bug-fix`                    |
-| New library scaffolding                     | `/new-library <name> <s> <t>`     | _(orchestrator chat mode)_    |
-| PR review                                   | `/review-pr <pr or branch>`       | `/review-pr`                  |
-| Migrate legacy doc to canonical template    | `/migrate-doc <src> <tgt> <type>` | `/migrate-doc`                |
-| Audit docs vs current code                  | `/audit-docs`                     | `/audit-docs`                 |
-| Regenerate docs from latest audit report    | `/regenerate-docs`                | `/regenerate-docs`            |
-| Generate Playwright skeletons from specs    | `/generate-test-scenarios [slug]` | `/generate-test-scenarios`    |
-| Run E2E + debug failures via Playwright MCP | `/run-test-scenarios [grep]`      | `/run-test-scenarios`         |
-| Cut a release                               | `/release [notes]`                | _(release-manager chat mode)_ |
+| Workflow                                        | Komenda Claude                    | Prompt Copilot                |
+| ----------------------------------------------- | --------------------------------- | ----------------------------- |
+| Pełna multi-agent feature                       | `/new-feature <desc>`             | `/new-feature`                |
+| Bug fix (najpierw failing test)                 | `/bug-fix <summary>`              | `/bug-fix`                    |
+| Scaffolding nowego liba                         | `/new-library <name> <s> <t>`     | _(orchestrator chat mode)_    |
+| Review PR                                       | `/review-pr <pr or branch>`       | `/review-pr`                  |
+| Migracja legacy doc do kanonicznego template    | `/migrate-doc <src> <tgt> <type>` | `/migrate-doc`                |
+| Audyt docs vs aktualny kod                      | `/audit-docs`                     | `/audit-docs`                 |
+| Regeneracja docs z najnowszego raportu audytu   | `/regenerate-docs`                | `/regenerate-docs`            |
+| Generuj szkielety Playwright z specs            | `/generate-test-scenarios [slug]` | `/generate-test-scenarios`    |
+| Uruchom E2E + debug failures via Playwright MCP | `/run-test-scenarios [grep]`      | `/run-test-scenarios`         |
+| Wydanie                                         | `/release [notes]`                | _(release-manager chat mode)_ |
 
-## Documentation entry points
+## Entry points dokumentacji
 
-| Audience             | Start here                                                                                                                     |
+| Audience             | Zacznij tutaj                                                                                                                  |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| New contributor      | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                                                           |
-| Claude Code agent    | [`CLAUDE.md`](CLAUDE.md) + [`.claude/`](.claude/)                                                                              |
-| GitHub Copilot agent | [`.github/copilot-instructions.md`](.github/copilot-instructions.md) + [`.github/{instructions,prompts,chatmodes}/`](.github/) |
-| Architect / reviewer | [`docs/architecture/system.md`](docs/architecture/system.md) + [`docs/adr/`](docs/adr/)                                        |
-| Product / Analyst    | [`docs/analytical/`](docs/analytical/)                                                                                         |
+| Nowy kontrybutor     | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                                                           |
+| Agent Claude Code    | [`CLAUDE.md`](CLAUDE.md) + [`.claude/`](.claude/)                                                                              |
+| Agent GitHub Copilot | [`.github/copilot-instructions.md`](.github/copilot-instructions.md) + [`.github/{instructions,prompts,chatmodes}/`](.github/) |
+| Architekt / reviewer | [`docs/architecture/system.md`](docs/architecture/system.md) + [`docs/adr/`](docs/adr/)                                        |
+| Product / Analityk   | [`docs/analytical/`](docs/analytical/)                                                                                         |
 | QA / Test Engineer   | [`docs/programming/testing-strategy.md`](docs/programming/testing-strategy.md)                                                 |
 
-## License
+## Licencja
 
-MIT — see [LICENSE](LICENSE).
+MIT — patrz [LICENSE](LICENSE).
