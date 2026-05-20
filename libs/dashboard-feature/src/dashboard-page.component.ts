@@ -1,18 +1,30 @@
 /**
- * Dashboard page — renders the KPI strip + 5 chart panels.
+ * Dashboard page — KPI strip + 4 chart panels + 1 colour-coded table.
  *
- * v1 ships with **table-style placeholders** for the chart bodies. Phase 3.5
- * of the consolidated roadmap swaps them for `<ngx-charts-*>` after
- * `@swimlane/ngx-charts` is installed. The data pipeline + signals are
- * unchanged across the swap — only the panel templates change.
+ * Charts use the `libs/charts` wrappers (`ais-bar-chart`, `ais-line-chart`,
+ * `ais-pie-chart`) — backed by Apache ECharts today, swappable per ADR-0016
+ * without touching this file. The `lowStock` panel stays a table because
+ * the data is genuinely tabular (label + threshold + badge).
  *
  * @packageDocumentation
  */
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { timer } from 'rxjs';
+
+import {
+  BarChartComponent,
+  type ChartAxis,
+  type ChartSeries,
+  type ChartSlice,
+  LineChartComponent,
+  PieChartComponent,
+} from '@ai-studio/charts';
 import { DashboardService } from '@ai-studio/dashboard-data';
 
 import { KpiTileComponent } from './kpi-tile.component.js';
@@ -23,7 +35,16 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
   selector: 'ais-dashboard-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [KpiTileComponent, MatButtonModule, MatIconModule, MatToolbarModule],
+  imports: [
+    BarChartComponent,
+    KpiTileComponent,
+    LineChartComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    PieChartComponent,
+  ],
   host: { class: 'block min-h-screen' },
   styles: [
     `
@@ -49,6 +70,10 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         max-width: 96rem;
         margin: 0 auto;
         padding: 1.5rem;
+      }
+      .progress {
+        margin-bottom: 1.25rem;
+        height: 2px;
       }
       .kpi-row {
         display: grid;
@@ -96,10 +121,11 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         font: var(--mat-sys-title-medium);
         margin: 0;
       }
-      .panel__placeholder-note {
-        font: var(--mat-sys-label-small);
-        color: var(--mat-sys-on-surface-variant);
-        margin: 0;
+      .panel__chart {
+        height: 18rem;
+      }
+      .panel__chart--tall {
+        height: 22rem;
       }
       .table {
         width: 100%;
@@ -134,6 +160,12 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         background: var(--mat-sys-error-container);
         color: var(--mat-sys-on-error-container);
       }
+      .empty {
+        padding: 2rem 1rem;
+        text-align: center;
+        color: var(--mat-sys-on-surface-variant);
+        font: var(--mat-sys-body-small);
+      }
     `,
   ],
   template: `
@@ -144,14 +176,23 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
       </span>
       <span class="topbar__spacer"></span>
       <button
-        (click)="dashboard.refresh()"
+        [disabled]="loading()"
+        (click)="onRefresh()"
         matButton
         data-testid="dashboard-refresh"
       >
         <mat-icon>refresh</mat-icon>
-        Odśwież
+        {{ loading() ? 'Odświeżanie…' : 'Odśwież' }}
       </button>
     </mat-toolbar>
+
+    @if (loading()) {
+      <mat-progress-bar
+        class="progress"
+        mode="indeterminate"
+        data-testid="dashboard-progress"
+      />
+    }
 
     <main
       class="page"
@@ -195,24 +236,19 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         >
           <header class="panel__head">
             <h3 class="panel__title">Przychód wg sklepu</h3>
-            <p class="panel__placeholder-note">Bar chart — ngx-charts po Phase 3.5</p>
           </header>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Sklep</th>
-                <th class="num">Przychód</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of dashboard.revenue(); track row.shop) {
-                <tr>
-                  <td>{{ row.label }}</td>
-                  <td class="num">{{ formatPln(row.revenueCents) }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          @if (revenueSeries().length > 0 && revenueAxis().labels?.length) {
+            <div class="panel__chart">
+              <ais-bar-chart
+                [series]="revenueSeries()"
+                [categoryAxis]="revenueAxis()"
+                ariaLabel="Wykres słupkowy przychodu wg sklepu"
+                testId="chart-revenue"
+              />
+            </div>
+          } @else {
+            <p class="empty">Brak danych o przychodzie.</p>
+          }
         </article>
 
         <article
@@ -221,26 +257,20 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         >
           <header class="panel__head">
             <h3 class="panel__title">Top produkty</h3>
-            <p class="panel__placeholder-note">Horizontal bar — ngx-charts po Phase 3.5</p>
           </header>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Produkt</th>
-                <th>Sklep</th>
-                <th class="num">Sprzedano</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of dashboard.topProducts(); track row.productId) {
-                <tr>
-                  <td>{{ row.productName }}</td>
-                  <td>{{ row.shop }}</td>
-                  <td class="num">{{ row.unitsSold }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          @if (topProductsSeries().length > 0 && topProductsAxis().labels?.length) {
+            <div class="panel__chart">
+              <ais-bar-chart
+                [series]="topProductsSeries()"
+                [categoryAxis]="topProductsAxis()"
+                orientation="horizontal"
+                ariaLabel="Poziomy wykres słupkowy najlepiej sprzedających się produktów"
+                testId="chart-top-products"
+              />
+            </div>
+          } @else {
+            <p class="empty">Brak top produktów do pokazania.</p>
+          }
         </article>
 
         <article
@@ -249,28 +279,31 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         >
           <header class="panel__head">
             <h3 class="panel__title">Niski stan magazynu</h3>
-            <p class="panel__placeholder-note">Color-coded table</p>
           </header>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Produkt</th>
-                <th>Sklep</th>
-                <th class="num">Stan</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of dashboard.lowStock(); track row.productId) {
+          @if (dashboard.lowStock().length > 0) {
+            <table class="table">
+              <thead>
                 <tr>
-                  <td>{{ row.productName }}</td>
-                  <td>{{ row.shop }}</td>
-                  <td class="num">
-                    <span class="badge badge--low">{{ row.stock }} / {{ row.threshold }}</span>
-                  </td>
+                  <th>Produkt</th>
+                  <th>Sklep</th>
+                  <th class="num">Stan</th>
                 </tr>
-              }
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @for (row of dashboard.lowStock(); track row.productId) {
+                  <tr>
+                    <td>{{ row.productName }}</td>
+                    <td>{{ row.shop }}</td>
+                    <td class="num">
+                      <span class="badge badge--low">{{ row.stock }} / {{ row.threshold }}</span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <p class="empty">Żaden produkt nie ma stanu poniżej progu.</p>
+          }
         </article>
 
         <article
@@ -279,24 +312,20 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         >
           <header class="panel__head">
             <h3 class="panel__title">Zamówienia dziennie</h3>
-            <p class="panel__placeholder-note">Line chart — ngx-charts po Phase 3.5</p>
           </header>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th class="num">Liczba</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of dashboard.dailyOrders(); track row.day) {
-                <tr>
-                  <td>{{ row.day }}</td>
-                  <td class="num">{{ row.count }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          @if (dailyOrdersSeries().length > 0 && dailyOrdersAxis().labels?.length) {
+            <div class="panel__chart">
+              <ais-line-chart
+                [series]="dailyOrdersSeries()"
+                [xAxis]="dailyOrdersAxis()"
+                [smooth]="true"
+                ariaLabel="Wykres liniowy dziennej liczby zamówień"
+                testId="chart-daily-orders"
+              />
+            </div>
+          } @else {
+            <p class="empty">Brak danych historycznych.</p>
+          }
         </article>
 
         <article
@@ -305,24 +334,19 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         >
           <header class="panel__head">
             <h3 class="panel__title">Mix kategorii</h3>
-            <p class="panel__placeholder-note">Donut — ngx-charts po Phase 3.5</p>
           </header>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Kategoria</th>
-                <th class="num">Liczba sztuk</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of dashboard.categoryMix(); track row.category) {
-                <tr>
-                  <td>{{ row.category }}</td>
-                  <td class="num">{{ row.count }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          @if (categorySlices().length > 0) {
+            <div class="panel__chart panel__chart--tall">
+              <ais-pie-chart
+                [slices]="categorySlices()"
+                variant="donut"
+                ariaLabel="Wykres pierścieniowy udziału kategorii"
+                testId="chart-category-mix"
+              />
+            </div>
+          } @else {
+            <p class="empty">Brak danych o kategoriach.</p>
+          }
         </article>
       </section>
     </main>
@@ -330,7 +354,11 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
 })
 export class DashboardPageComponent {
   protected readonly dashboard = inject(DashboardService);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly String = String;
+
+  /** Demo-only loading state, surfaced on initial visit and on every refresh click. */
+  protected readonly loading = signal(true);
 
   protected readonly totalRevenue = computed(() =>
     this.dashboard.revenue().reduce((sum, row) => sum + row.revenueCents, 0),
@@ -342,7 +370,78 @@ export class DashboardPageComponent {
 
   protected readonly topShopLabel = computed(() => this.dashboard.revenue()[0]?.label ?? '—');
 
+  // ── Chart-shape projections ─────────────────────────────────────────────
+
+  protected readonly revenueAxis = computed<ChartAxis>(() => ({
+    type: 'category',
+    labels: this.dashboard.revenue().map((row) => row.label),
+  }));
+
+  protected readonly revenueSeries = computed<readonly ChartSeries[]>(() => [
+    {
+      id: 'revenue',
+      label: 'Przychód (PLN)',
+      data: this.dashboard.revenue().map((row) => Math.round(row.revenueCents / 100)),
+      unit: 'zł',
+    },
+  ]);
+
+  protected readonly topProductsAxis = computed<ChartAxis>(() => ({
+    type: 'category',
+    // Horizontal bar: reverse so the highest seller sits at the top of the chart.
+    labels: [...this.dashboard.topProducts()].reverse().map((row) => row.productName),
+  }));
+
+  protected readonly topProductsSeries = computed<readonly ChartSeries[]>(() => [
+    {
+      id: 'units-sold',
+      label: 'Sprzedano',
+      data: [...this.dashboard.topProducts()].reverse().map((row) => row.unitsSold),
+      unit: 'szt.',
+    },
+  ]);
+
+  protected readonly dailyOrdersAxis = computed<ChartAxis>(() => ({
+    type: 'category',
+    labels: this.dashboard.dailyOrders().map((row) => row.day),
+  }));
+
+  protected readonly dailyOrdersSeries = computed<readonly ChartSeries[]>(() => [
+    {
+      id: 'orders',
+      label: 'Zamówienia',
+      data: this.dashboard.dailyOrders().map((row) => row.count),
+      kind: 'area',
+      unit: 'szt.',
+    },
+  ]);
+
+  protected readonly categorySlices = computed<readonly ChartSlice[]>(() =>
+    this.dashboard.categoryMix().map((row) => ({
+      id: row.category,
+      label: row.category,
+      value: row.count,
+    })),
+  );
+
+  constructor() {
+    this.simulateFetch();
+  }
+
+  protected onRefresh(): void {
+    this.dashboard.refresh();
+    this.simulateFetch();
+  }
+
   protected formatPln(cents: number): string {
     return PLN.format(cents / 100);
+  }
+
+  /** Flip `loading` true for 500 ms so the progress bar is visible during refreshes. */
+  private simulateFetch(): void {
+    this.loading.set(true);
+    timer(500)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.loading.set(false));
   }
 }

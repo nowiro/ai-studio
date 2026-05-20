@@ -35,6 +35,7 @@
     "paths": {
       "@ai-studio/business-wizard-data": ["./libs/business-wizard-data/src/index.ts"],
       "@ai-studio/business-wizard-feature": ["./libs/business-wizard-feature/src/index.ts"],
+      "@ai-studio/charts": ["./libs/charts/src/index.ts"],
       "@ai-studio/wizard-core": ["./libs/wizard-core/src/index.ts"],
       "@ai-studio/game-pong": ["./libs/game-pong/src/index.ts"],
       "@ai-studio/game-pong-ui": ["./libs/game-pong-ui/src/index.ts"],
