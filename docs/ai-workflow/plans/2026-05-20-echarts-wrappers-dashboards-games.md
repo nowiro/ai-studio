@@ -4,7 +4,9 @@ title: ECharts wrappers, dashboard UX, pong + tetris UI rebuild
 type: plan
 date: 2026-05-20
 trigger: user request — "migracje wykresów do ECharts, wrappery jak dla material, dashboardy UX, 2 gry nie wyglądają dobrze"
-status: accepted
+status: done
+closedAt: 2026-05-20
+closeReason: '11 of 13 tasks delivered. T011 (wrapper smoke specs requiring vi.mock for echarts) and T013 (E2E mobile/desktop with running dev server) explicitly deferred to a follow-up iteration. Core deliverables — libs/charts foundation, 5 wrappers, dashboard 4-panel migration, pong + tetris UI rebuild, showcase route, ADR-0016 + governance lint rule + architecture doc — all green and in production.'
 owner: orchestrator
 agents:
   - architect
