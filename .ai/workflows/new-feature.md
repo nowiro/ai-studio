@@ -102,3 +102,16 @@ Orchestrator emituje finalny blok `done:` do użytkownika z:
 - **Nie potrzebna nowa abstrakcja** → pomiń krok 2 (architect). Orchestrator zaznacza to jawnie i kontynuuje od kroku 4.
 - **Spike / throwaway** → uruchom tylko krok 4, label PR `spike`. Doc step zastąpiony one-line notką w issue.
 - **AI feature dotykający server keys** → obowiązkowy security-auditor pass nawet jeśli checklist conditions nie triggerują.
+
+## Escalation na quality gates (opcjonalne — z `spec-driven.md` v2.1.0)
+
+`new-feature.md` to **continuous flow** (jeden turn orchestratora). Gdy w trakcie pracy ujawnia się jeden z poniższych warunków, orchestrator **może promote** zadanie na high-assurance path z `spec-driven.md`:
+
+| Trigger                                                               | Promote do                        |
+| --------------------------------------------------------------------- | --------------------------------- |
+| Analyst widzi > 3 markery `[?]` w spec                                | `/clarify` (Faza 1.5 SDD)         |
+| Spec / plan / tasks drift po > 1 cyklu fix-back                       | `/analyze` (Faza 3.6 SDD) — audyt |
+| Wieloczęściowy refactor + nowe ADR + ≥ 2 nowe agent roles             | `/checklist` (Faza 3.5 SDD)       |
+| Cross-team visibility wymagana (regulatory, sponsor wymaga GH Issues) | `/taskstoissues` (Faza 5 SDD)     |
+
+Mechanika: orchestrator emituje blok `escalated:` zamiast `done:` z wyjaśnieniem powodu, użytkownik akceptuje promote, dalej idzie SDD high-assurance path. **Nie chowaj eskalacji za milczeniem** — zawsze jawnie zaznacz, że odeszliśmy z continuous flow.
