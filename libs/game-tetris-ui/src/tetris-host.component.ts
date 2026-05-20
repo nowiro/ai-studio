@@ -28,6 +28,7 @@ import {
   shapeCells,
   type TetrisConfig,
   type TetrisScore,
+  TetrisSettingsStore,
   TetrisState,
   type TetrisStatus,
   type TetrominoKind,
@@ -39,6 +40,7 @@ import { TetrisMenuOverlayComponent } from './menu-overlay.component.js';
 import { TetrisNextQueueComponent } from './next-queue.component.js';
 import { BLOCK_OUTLINE, GHOST_FILL, GHOST_OUTLINE, PIECE_COLOURS } from './palette.js';
 import { TetrisScoreComponent } from './score-display.component.js';
+import { TetrisSettingsOverlayComponent } from './settings-overlay.component.js';
 
 /** Pixels per cell — the canvas is `cols·CELL × rows·CELL`. */
 const CELL = 30;
@@ -52,6 +54,7 @@ const CELL = 30;
     TetrisMenuOverlayComponent,
     TetrisNextQueueComponent,
     TetrisScoreComponent,
+    TetrisSettingsOverlayComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block w-full h-full' },
@@ -84,12 +87,17 @@ const CELL = 30;
               [score]="score()"
               (restart)="onStart()"
             />
-          } @else if (status() === 'idle' || status() === 'paused') {
+          } @else if ((status() === 'idle' || status() === 'paused') && !settingsOpen()) {
             <ais-tetris-menu
               [status]="status()"
               (startRequested)="onStart()"
               (resumeRequested)="onResume()"
+              (settingsRequested)="settingsOpen.set(true)"
             />
+          }
+
+          @if (settingsOpen()) {
+            <ais-tetris-settings (closeRequested)="settingsOpen.set(false)" />
           }
         </div>
 
@@ -108,7 +116,10 @@ export class TetrisHostComponent implements AfterViewInit {
 
   private readonly boardRef = viewChild.required<ElementRef<HTMLCanvasElement>>('board');
   private readonly destroyRef = inject(DestroyRef);
+  private readonly settingsStore = inject(TetrisSettingsStore);
   private readonly state = new TetrisState(this.config);
+
+  protected readonly settingsOpen = signal<boolean>(false);
 
   // Snapshots driven by `TetrisState.subscribe`. The render loop reads these
   // straight off the state every frame (cheaper than diffing event-by-event).
@@ -157,6 +168,13 @@ export class TetrisHostComponent implements AfterViewInit {
 
   @HostListener('window:keydown', ['$event'])
   protected onKey(event: KeyboardEvent): void {
+    if (this.settingsOpen()) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        this.settingsOpen.set(false);
+      }
+      return;
+    }
     if (this.status() !== 'playing') {
       // Allow Enter / P / Escape to start/resume.
       if (event.key === 'Enter') {
@@ -216,7 +234,9 @@ export class TetrisHostComponent implements AfterViewInit {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     this.drawGrid(ctx);
     this.drawLockedCells(ctx, this.state.getBoard());
-    this.drawGhost(ctx);
+    if (this.settingsStore.settings().showGhost) {
+      this.drawGhost(ctx);
+    }
     this.drawActivePiece(ctx, this.state.getActivePiece());
   }
 

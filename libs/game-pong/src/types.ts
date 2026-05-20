@@ -73,6 +73,10 @@ export interface GameApi {
   readonly reset: () => void;
   /** Toggle audio mute. */
   readonly mute: (muted: boolean) => void;
+  /** Set audio volume (0..1). `0` is equivalent to muted. */
+  readonly setVolume: (volume: number) => void;
+  /** Runtime player paddle speed multiplier (1 = config default). */
+  readonly setPlayerSpeedMultiplier: (multiplier: number) => void;
   /** Subscribe to game events; returns the unsubscribe function. */
   readonly subscribe: (handler: PongEventHandler) => () => void;
   /** Read-only view of the current score. */

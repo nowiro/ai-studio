@@ -38,6 +38,12 @@ export class PongState {
   private status: PongStatus = 'idle';
   private score: PongScore = { player: 0, cpu: 0 };
   private playerInput: PlayerInput = 'idle';
+  /**
+   * Runtime scalar applied on top of {@link PongConfig.paddleSpeed} for the
+   * player paddle only. Set via {@link setPlayerSpeedMultiplier}; defaults
+   * to 1 (no scaling). The CPU paddle stays on the raw config speed.
+   */
+  private playerSpeedMultiplier = 1;
 
   private readonly ball: MutableBall;
   private readonly playerPaddle: MutablePaddle;
@@ -96,6 +102,15 @@ export class PongState {
     this.playerInput = input;
   }
 
+  /**
+   * Runtime multiplier for the player paddle speed (the CPU paddle is
+   * unaffected). Values below 0 are clamped to 0. Allows settings panels
+   * to switch the "slow / normal / fast" preset without recreating state.
+   */
+  setPlayerSpeedMultiplier(multiplier: number): void {
+    this.playerSpeedMultiplier = Number.isFinite(multiplier) ? Math.max(0, multiplier) : 1;
+  }
+
   subscribe(handler: PongEventHandler): () => void {
     this.handlers.add(handler);
     return () => this.handlers.delete(handler);
@@ -131,8 +146,8 @@ export class PongState {
     const dt = Math.max(0, dtMs) / 1000;
     let dirty = false;
 
-    // Player paddle
-    const pVy = playerVelocity(this.playerInput, this.config.paddleSpeed);
+    // Player paddle (runtime multiplier from settings — see setPlayerSpeedMultiplier)
+    const pVy = playerVelocity(this.playerInput, this.config.paddleSpeed * this.playerSpeedMultiplier);
     this.playerPaddle.vy = pVy;
     this.playerPaddle.y = this.clampPaddle(this.playerPaddle.y + pVy * dt);
 

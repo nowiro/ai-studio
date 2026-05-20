@@ -30,3 +30,4 @@ export {
 } from './tournament.js';
 export { LeaderboardStore } from './leaderboard-store.js';
 export { PongHighScoreStore } from './high-score-store.js';
+export { paddleSpeedMultiplier, type PongPaddleSpeed, type PongSettings, PongSettingsStore } from './settings-store.js';

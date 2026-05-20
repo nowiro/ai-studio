@@ -7,4 +7,5 @@ export { TetrisHostComponent } from './tetris-host.component.js';
 export { TetrisMenuOverlayComponent } from './menu-overlay.component.js';
 export { TetrisNextQueueComponent } from './next-queue.component.js';
 export { TetrisScoreComponent } from './score-display.component.js';
+export { TetrisSettingsOverlayComponent } from './settings-overlay.component.js';
 export { PIECE_COLOURS, BLOCK_OUTLINE, GHOST_FILL, GHOST_OUTLINE } from './palette.js';

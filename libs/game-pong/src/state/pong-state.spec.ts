@@ -161,6 +161,41 @@ describe('scoring → game over', () => {
   });
 });
 
+describe('setPlayerSpeedMultiplier', () => {
+  it('scales player paddle motion — fast moves further per tick than slow', () => {
+    const slow = new PongState(DEFAULT_PONG_CONFIG);
+    const fast = new PongState(DEFAULT_PONG_CONFIG);
+    slow.setPlayerSpeedMultiplier(0.7);
+    fast.setPlayerSpeedMultiplier(1.3);
+    slow.start();
+    fast.start();
+    slow.setPlayerInput('down');
+    fast.setPlayerInput('down');
+    for (let i = 0; i < 10; i++) {
+      slow.tick(16);
+      fast.tick(16);
+    }
+    const slowY = slow.getPaddles().player.y;
+    const fastY = fast.getPaddles().player.y;
+    expect(fastY).toBeGreaterThan(slowY);
+  });
+
+  it('clamps negative or NaN multipliers to safe defaults', () => {
+    state.setPlayerSpeedMultiplier(-5);
+    state.start();
+    state.setPlayerInput('down');
+    const startY = state.getPaddles().player.y;
+    state.tick(100);
+    // Multiplier 0 → no movement
+    expect(state.getPaddles().player.y).toBe(startY);
+
+    state.setPlayerSpeedMultiplier(Number.NaN);
+    state.tick(100);
+    // NaN falls back to 1, so paddle should move now
+    expect(state.getPaddles().player.y).toBeGreaterThan(startY);
+  });
+});
+
 describe('subscribe / unsubscribe', () => {
   it('returned function removes the handler', () => {
     state.start();

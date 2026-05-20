@@ -58,6 +58,14 @@ export function createGame(parent: HTMLElement, overrides: Partial<PongConfig> =
     mute: (muted: boolean) => {
       game.sound.mute = muted;
     },
+    setVolume: (volume: number) => {
+      const clamped = Number.isFinite(volume) ? Math.max(0, Math.min(1, volume)) : 0;
+      game.sound.volume = clamped;
+      game.sound.mute = clamped === 0;
+    },
+    setPlayerSpeedMultiplier: (multiplier: number) => {
+      state.setPlayerSpeedMultiplier(multiplier);
+    },
     subscribe: (handler: PongEventHandler) => {
       handlers.add(handler);
       return () => handlers.delete(handler);

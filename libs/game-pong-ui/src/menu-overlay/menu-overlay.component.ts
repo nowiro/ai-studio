@@ -1,5 +1,6 @@
 /**
- * Pre-game menu overlay. Emits `start` and `mute` events handled by the host.
+ * Pre-game menu overlay. Emits `start`, `mute`, and `openSettings` events
+ * handled by the host.
  * @see docs/analytical/specs/2026-05-08-pong-game/spec.md AC-1, AC-2, AC-9
  */
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
@@ -66,14 +67,25 @@ import { PongHighScoreStore } from '@ai-studio/game-pong';
         START
       </button>
 
-      <button
-        [attr.aria-label]="muted() ? 'Włącz dźwięk' : 'Wycisz'"
-        (click)="muteChange.emit(!muted())"
-        matIconButton
-        data-testid="mute-toggle"
-      >
-        <mat-icon>{{ muted() ? 'volume_off' : 'volume_up' }}</mat-icon>
-      </button>
+      <div class="gap-2 flex items-center">
+        <button
+          [attr.aria-label]="muted() ? 'Włącz dźwięk' : 'Wycisz'"
+          (click)="muteChange.emit(!muted())"
+          matIconButton
+          data-testid="mute-toggle"
+        >
+          <mat-icon>{{ muted() ? 'volume_off' : 'volume_up' }}</mat-icon>
+        </button>
+
+        <button
+          (click)="openSettings.emit()"
+          matIconButton
+          aria-label="Ustawienia"
+          data-testid="open-settings"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
+      </div>
     </div>
   `,
 })
@@ -81,6 +93,7 @@ export class MenuOverlayComponent {
   readonly muted = input<boolean>(false);
   readonly startGame = output<void>();
   readonly muteChange = output<boolean>();
+  readonly openSettings = output<void>();
 
   private readonly highScore = inject(PongHighScoreStore);
   protected readonly best = computed(() => this.highScore.best());

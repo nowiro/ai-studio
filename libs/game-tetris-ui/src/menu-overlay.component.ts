@@ -4,13 +4,14 @@
  */
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { TetrisHighScoreStore, type TetrisStatus } from '@ai-studio/game-tetris';
 
 @Component({
   selector: 'ais-tetris-menu',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },
   template: `
@@ -77,6 +78,15 @@ import { TetrisHighScoreStore, type TetrisStatus } from '@ai-studio/game-tetris'
             Start
           </button>
         }
+
+        <button
+          (click)="settingsRequested.emit()"
+          matIconButton
+          aria-label="Ustawienia"
+          data-testid="tetris-open-settings"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
       </div>
     </div>
   `,
@@ -99,6 +109,7 @@ export class TetrisMenuOverlayComponent {
   /** Renamed to avoid the angular-eslint `no-output-native` rule (collides with `start`/`resume` DOM events). */
   readonly startRequested = output<void>();
   readonly resumeRequested = output<void>();
+  readonly settingsRequested = output<void>();
 
   private readonly highScore = inject(TetrisHighScoreStore);
   protected readonly best = computed(() => this.highScore.best());
