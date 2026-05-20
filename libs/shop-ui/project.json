@@ -1,11 +1,19 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "shop-ui",
-  "$schema_comment": "Generic Angular components shared across every shop demo (product card, cart drawer, cart page, checkout, price tag, stars rating, empty state).",
+  "$schema_comment": "Generic Angular components shared across every shop demo (shop-shell, product card, cart drawer, cart page, checkout, breadcrumbs, search bar, hero, skeleton, empty states, price tag, stars rating).",
   "projectType": "library",
   "sourceRoot": "libs/shop-ui/src",
   "tags": ["scope:shared", "type:ui"],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/shop-ui"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/shop-ui"
+      }
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
