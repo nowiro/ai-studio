@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
+import { ShopHeroComponent } from '@ai-studio/shop-ui';
 import { CartService, CatalogueService, type Tire, TIRE_SORT_KEYS, type TireSortKey } from '@ai-studio/tire-data';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
@@ -27,8 +28,16 @@ const SORT_LABELS: Readonly<Record<TireSortKey, string>> = {
     MatSelectModule,
     FilterPanelComponent,
     ProductCardComponent,
+    ShopHeroComponent,
   ],
   template: `
+    <ais-shop-hero
+      [ctaLink]="['/']"
+      eyebrow="Pełna paleta marek"
+      title="Opony dopasowane do Twojego stylu jazdy"
+      subtitle="Letnie, zimowe, całoroczne — z etykietami efektywności paliwowej i gwarancją zwrotu w 30 dni."
+      ctaLabel="Zobacz katalog"
+    />
     <section class="gap-4 md:grid-cols-[18rem_1fr] p-4 grid">
       <ais-filter-panel />
       <div class="gap-3 flex flex-col">

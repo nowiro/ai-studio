@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { type Book, BookstoreCatalogueService } from '@ai-studio/bookstore-data';
 import { BASE_SORT_KEYS, type BaseSortKey, ShopCartService } from '@ai-studio/shop-core';
-import { EmptyResultsComponent, ProductCardComponent } from '@ai-studio/shop-ui';
+import { EmptyResultsComponent, ProductCardComponent, ShopHeroComponent } from '@ai-studio/shop-ui';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
 
@@ -29,8 +29,16 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
     MatFormFieldModule,
     MatSelectModule,
     ProductCardComponent,
+    ShopHeroComponent,
   ],
   template: `
+    <ais-shop-hero
+      [ctaLink]="['/']"
+      eyebrow="Tysiące tytułów"
+      title="Twoja kolejna ulubiona książka"
+      subtitle="Literatura, fantastyka, biografie, książki dla dzieci — wszystko z dostawą w 24 h."
+      ctaLabel="Zobacz katalog"
+    />
     <section class="gap-4 md:grid-cols-[18rem_1fr] p-4 grid">
       <ais-bookstore-filter-panel />
       <div class="gap-3 flex flex-col">

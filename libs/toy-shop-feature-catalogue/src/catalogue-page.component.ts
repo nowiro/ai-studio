@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { BASE_SORT_KEYS, type BaseSortKey, ShopCartService } from '@ai-studio/shop-core';
-import { EmptyResultsComponent, ProductCardComponent } from '@ai-studio/shop-ui';
+import { EmptyResultsComponent, ProductCardComponent, ShopHeroComponent } from '@ai-studio/shop-ui';
 import { type Toy, ToyShopCatalogueService } from '@ai-studio/toy-shop-data';
 
 import { FilterPanelComponent } from './filter-panel.component.js';
@@ -27,8 +27,16 @@ const SORT_LABELS: Readonly<Record<BaseSortKey, string>> = {
     MatFormFieldModule,
     MatSelectModule,
     ProductCardComponent,
+    ShopHeroComponent,
   ],
   template: `
+    <ais-shop-hero
+      [ctaLink]="['/']"
+      eyebrow="Bezpieczne i pełne radości"
+      title="Zabawki, które rosną z dzieckiem"
+      subtitle="Wszystkie produkty z certyfikatem CE — od pierwszych grzechotek po edukacyjne klocki dla nastolatków."
+      ctaLabel="Wybierz wiek"
+    />
     <section class="gap-4 md:grid-cols-[18rem_1fr] p-4 grid">
       <ais-toy-shop-filter-panel />
       <div class="gap-3 flex flex-col">
