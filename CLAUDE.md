@@ -1,152 +1,152 @@
-# CLAUDE.md — instructions for Claude Code in this repo
+# CLAUDE.md — instrukcje dla Claude Code w tym repo
 
-> Read this **first** in every session. Treat it as a thin pointer to the universal `.ai/` knowledge base.
+> Przeczytaj to **najpierw** w każdej sesji. Traktuj jako cienki wskaźnik na uniwersalną bazę wiedzy `.ai/`.
 
-## Identity
+## Tożsamość
 
-You are working inside **AI Studio** — an Angular Nx monorepo with a multi-agent AI workflow.
+Pracujesz wewnątrz **AI Studio** — monorepo Angular Nx z multi-agentowym workflow AI.
 
-## First-time setup
+## Pierwsze uruchomienie
 
 ```bash
 pnpm install
-pnpm bootstrap     # one-shot, idempotent — see README "Quickstart"
+pnpm bootstrap     # one-shot, idempotent — patrz README "Quickstart"
 ```
 
-## Language preference
+## Preferencje językowe
 
-**Chat language: Polish.** Respond to the user in Polish unless they switch.
-**Code, git, and tooling-readable surfaces: English.** See [`.ai/rules/language.md`](.ai/rules/language.md) for the full PL/EN split (docs PL · code EN · git EN · MCP tool descriptions EN).
+**Język czatu: polski.** Odpowiadaj użytkownikowi po polsku, dopóki nie poprosi inaczej.
+**Kod, git, MCP tool `description`, powierzchnie czytane przez tooling: angielski.** Pełny podział PL/EN: [`.ai/rules/language.md`](.ai/rules/language.md) (trinity baseline v2.0.0 — proza PL · kod EN · git EN · MCP descriptions EN).
 
-## Always do this on session start
+## Zawsze rób to na początku sesji
 
-1. Read [`.ai/README.md`](.ai/README.md) and [`.ai/architecture.md`](.ai/architecture.md) (canonical nowiro AI architecture reference — trinity baseline).
-2. Read every file in [`.ai/rules/`](.ai/rules/). They are non-negotiable. Especially [`core.md`](.ai/rules/core.md), [`principles.md`](.ai/rules/principles.md) (DRY, SOLID, KISS, YAGNI), [`production-readiness.md`](.ai/rules/production-readiness.md) (six must-haves before any agent feature ships), [`language.md`](.ai/rules/language.md) (PL/EN preference), and [`llm-optimization.md`](.ai/rules/llm-optimization.md) (token budgets and response shaping).
-3. If your task is non-trivial (≥ 3 steps, or touches ≥ 2 files), spawn the **orchestrator** subagent and let it plan.
-4. Use the MCP servers configured in `.claude/settings.json` and `.ai/mcp.json` (`context7`, `playwright`, `nx`, `angular-cli`, `memory`) before writing code that touches an external API.
-5. If you touch any [trinity baseline file](docs/architecture/nowiro-projects-map.md#cross-cutting-invariants), run `pnpm trinity:check` (also enforced on pre-push).
+1. Przeczytaj [`.ai/README.md`](.ai/README.md) i [`.ai/architecture.md`](.ai/architecture.md) (kanoniczna referencja architektury AI nowiro — trinity baseline).
+2. Przeczytaj każdy plik w [`.ai/rules/`](.ai/rules/). Są nienegocjowalne. Szczególnie [`core.md`](.ai/rules/core.md), [`principles.md`](.ai/rules/principles.md) (DRY, SOLID, KISS, YAGNI), [`production-readiness.md`](.ai/rules/production-readiness.md) (sześć must-haves przed wydaniem feature'a agentowego), [`language.md`](.ai/rules/language.md) (preferencje PL/EN) i [`llm-optimization.md`](.ai/rules/llm-optimization.md) (budżety tokenowe i kształt odpowiedzi).
+3. Jeśli zadanie jest nietrywialne (≥ 3 kroki lub dotyka ≥ 2 pliki), spawnuj subagenta **orchestrator** i pozwól mu zaplanować.
+4. Używaj serwerów MCP skonfigurowanych w `.claude/settings.json` i `.ai/mcp.json` (`context7`, `playwright`, `nx`, `angular-cli`, `memory`) zanim napiszesz kod dotykający external API.
+5. Jeśli dotykasz jakiegokolwiek [pliku baseline trinity](docs/architecture/nowiro-projects-map.md#cross-cutting-invariants), uruchom `pnpm trinity:check` (wymuszane też na pre-push).
 
-## Cross-tool note
+## Notatka cross-tool
 
-This repo supports **both Claude Code and GitHub Copilot** as first-class targets — different teams hold different licenses. The Copilot mirror lives under [`.github/copilot-instructions.md`](.github/copilot-instructions.md), [`.github/instructions/`](.github/instructions/), [`.github/prompts/`](.github/prompts/) and [`.github/chatmodes/`](.github/chatmodes/). When you change a `.ai/` rule or agent, update both wrappers — `pnpm ai:validate` checks parity.
+To repo wspiera **zarówno Claude Code jak i GitHub Copilot** jako first-class targety — różne zespoły mają różne licencje. Mirror Copilot żyje pod [`.github/copilot-instructions.md`](.github/copilot-instructions.md), [`.github/instructions/`](.github/instructions/), [`.github/prompts/`](.github/prompts/) i [`.github/chatmodes/`](.github/chatmodes/). Gdy zmieniasz regułę lub agenta w `.ai/`, zaktualizuj obu wrapperów — `pnpm ai:validate` sprawdza parytet.
 
-## External skills
+## Skille zewnętrzne
 
-Curated third-party skills from <https://skills.sh/> that complement our stack are catalogued in [`.ai/external-skills.md`](.ai/external-skills.md). **Nothing is installed by default** — the catalog gives `npx skillsadd <repo>` commands to install per-developer. Project rules in `.ai/rules/` always win when a skill conflicts.
+Kuratorowane skille third-party z <https://skills.sh/> komplementujące nasz stack są skatalogowane w [`.ai/external-skills.md`](.ai/external-skills.md). **Nic nie jest zainstalowane domyślnie** — katalog daje komendy `npx skillsadd <repo>` do instalacji per developer. Reguły projektu w `.ai/rules/` zawsze wygrywają gdy skill konfliktuje.
 
-## Default subagent
+## Domyślny subagent
 
-When the user gives a non-trivial request, do not implement directly — call:
+Gdy użytkownik daje nietrywialne żądanie, nie implementuj bezpośrednio — wywołaj:
 
 ```
 Agent({ subagent_type: "orchestrator", prompt: <user request + context> })
 ```
 
-The Orchestrator delegates to specialists. Specialist agents are defined under [`.claude/agents/`](.claude/agents/) and [`.ai/agents/`](.ai/agents/).
+Orchestrator deleguje do specjalistów. Agenci specjalistyczni są zdefiniowani pod [`.claude/agents/`](.claude/agents/) i [`.ai/agents/`](.ai/agents/).
 
-## Hard rules (mirror of `.ai/rules/core.md`)
+## Twarde reguły (mirror `.ai/rules/core.md`)
 
-- ✅ Read code before claiming knowledge of it.
-- ✅ Smallest reasonable change.
-- ✅ Definition of Done = lint + typecheck + test + e2e + build all green, plus docs/ADR if behaviour changed.
-- ✅ **Plan-first generation** — every code/doc/test/scenario generation goes through a markdown plan executed by multi-agent delegation (`.ai/rules/core.md` §7). Trivial single-file edits exempt.
-- ❌ Never invent file paths, function names, package versions.
-- ❌ Never bypass hooks (`--no-verify`).
-- ❌ Never put secrets in tracked files.
+- ✅ Czytaj kod zanim ogłosisz że go znasz.
+- ✅ Najmniejsza rozsądna zmiana.
+- ✅ Definition of Done = lint + typecheck + test + e2e + build wszystkie zielone, plus docs/ADR jeśli behaviour się zmienił.
+- ✅ **Plan-first generation** — każda generacja kodu/docs/testów/scenariuszy przechodzi przez plan markdown wykonywany multi-agent delegacją (`.ai/rules/core.md` §7). Trywialne single-file edits zwolnione.
+- ❌ Nigdy nie wymyślaj ścieżek plików, nazw funkcji, wersji pakietów.
+- ❌ Nigdy nie bypassuj hooków (`--no-verify`).
+- ❌ Nigdy nie umieszczaj sekretów w tracked files.
 
 ## Plan-first generation (`core.md` §7)
 
-For anything that touches ≥ 2 files OR changes behaviour, the **orchestrator** writes a plan markdown BEFORE delegating:
+Dla wszystkiego co dotyka ≥ 2 pliki LUB zmienia behaviour, **orchestrator** pisze plan markdown PRZED delegacją:
 
-| Task type                                             | Plan file                                       |
+| Typ zadania                                           | Plik planu                                      |
 | ----------------------------------------------------- | ----------------------------------------------- |
-| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`          |
-| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` |
+| Spec-driven (flow `/specify`)                         | `docs/analytical/specs/<slug>/plan.md`          |
+| Wszystko inne (bug, refactor, lib, docs, scenariusze) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` |
 
-Use [`docs/ai-workflow/plans/_template.md`](docs/ai-workflow/plans/_template.md) for the orchestrator-owned form. Specialists (frontend-developer, backend-developer, test-engineer, test-scenario-author, doc-writer) refuse delegations whose `delegate:` block lacks `plan:` + `task_id:` fields.
+Użyj [`docs/ai-workflow/plans/_template.md`](docs/ai-workflow/plans/_template.md) dla formy ownerowanej przez orchestratora. Specjaliści (frontend-developer, backend-developer, test-engineer, test-scenario-author, doc-writer) odrzucają delegacje których blok `delegate:` nie zawiera pól `plan:` + `task_id:`.
 
-## Angular conventions
+## Konwencje Angular
 
-Follow [`.ai/rules/angular.md`](.ai/rules/angular.md) — distilled from <https://angular.dev/ai>:
+Stosuj [`.ai/rules/angular.md`](.ai/rules/angular.md) — zdestylowane z <https://angular.dev/ai>:
 
 - Angular 21: standalone (implicit), OnPush, `inject()`, signal APIs.
 - Native control flow (`@if`, `@for`, `@switch`, `@defer`).
-- Reactive forms only.
-- `data-testid` on interactive elements.
-- Selector prefix `ais-` (components) / `ais` (directives).
-- No `*ngIf`, no `[ngClass]`, no `@HostBinding`, no `console.*`.
+- Wyłącznie reactive forms.
+- `data-testid` na elementach interaktywnych.
+- Prefix selektorów: `ais-` (komponenty) / `ais` (dyrektywy).
+- Bez `*ngIf`, bez `[ngClass]`, bez `@HostBinding`, bez `console.*`.
 
 ## Styling (Material 3 + Tailwind v4)
 
-Follow [`.ai/rules/styling.md`](.ai/rules/styling.md):
+Stosuj [`.ai/rules/styling.md`](.ai/rules/styling.md):
 
-- **Angular Material 3** components (`mat-button`, `mat-form-field`, `mat-card`, …).
-- **Tailwind v4 utilities** for layout / spacing / typography; colour utilities map to Material design tokens (`bg-primary`, `text-on-surface`, …).
-- No `tailwind.config.js` — config lives in `styles/tailwind.scss` under `@theme`.
-- No `::ng-deep`, no `[ngClass]`, no `[ngStyle]`.
+- Komponenty **Angular Material 3** (`mat-button`, `mat-form-field`, `mat-card`, …).
+- **Utility Tailwind v4** dla layoutu / spacing / typografii; utility kolorów mapują na Material design tokens (`bg-primary`, `text-on-surface`, …).
+- Bez `tailwind.config.js` — config żyje w `styles/tailwind.scss` pod `@theme`.
+- Bez `::ng-deep`, bez `[ngClass]`, bez `[ngStyle]`.
 
-## Nx conventions
+## Konwencje Nx
 
-Follow [`.ai/rules/nx.md`](.ai/rules/nx.md):
+Stosuj [`.ai/rules/nx.md`](.ai/rules/nx.md):
 
 - `apps/*`, `libs/{feature,ui,data,util,shared}/*`.
-- Tag every project; module-boundary lint enforces the layering.
-- Use generators (via the `nx` and `angular-cli` MCP servers).
-- Lib public API only via `src/index.ts`.
+- Taguj każdy projekt; module-boundary lint wymusza warstwowanie.
+- Używaj generatorów (przez serwery MCP `nx` i `angular-cli`).
+- Public API libów wyłącznie przez `src/index.ts`.
 
-## Testing
+## Testowanie
 
-Follow [`.ai/rules/testing.md`](.ai/rules/testing.md):
+Stosuj [`.ai/rules/testing.md`](.ai/rules/testing.md):
 
-- **Vitest via Angular 21's native `@angular/build:unit-test --runner=vitest`** — no `@analogjs/vitest-angular` needed. Adopt Analog only if you want it as a meta-framework.
-- Playwright for E2E (chromium/firefox/webkit + mobile).
-- Page-object pattern for E2E. `getByRole` ▶ `getByTestId` ▶ CSS.
+- **Vitest przez natywne Angular 21 `@angular/build:unit-test --runner=vitest`** — `@analogjs/vitest-angular` niepotrzebne. Adoptuj Analog tylko jeśli chcesz go jako meta-framework.
+- Playwright dla E2E (chromium/firefox/webkit + mobile).
+- Page-object pattern dla E2E. `getByRole` ▶ `getByTestId` ▶ CSS.
 
-## Security
+## Bezpieczeństwo
 
-Follow [`.ai/rules/security.md`](.ai/rules/security.md):
+Stosuj [`.ai/rules/security.md`](.ai/rules/security.md):
 
-- Never ship API keys to the client.
-- Treat all model outputs as untrusted text.
-- Tool calls that mutate state need human-in-the-loop confirmation.
+- Nigdy nie shipuj API keys do klienta.
+- Traktuj wszystkie outputy modelu jako untrusted text.
+- Tool calls mutujące stan wymagają potwierdzenia human-in-the-loop.
 
 ## Workflows
 
-Pick one of [`.ai/workflows/`](.ai/workflows/) when the task fits its trigger:
+Wybierz jeden z [`.ai/workflows/`](.ai/workflows/) gdy zadanie pasuje do jego triggera:
 
-- `new-feature.md` — full multi-agent flow.
-- `bug-fix.md` — failing test first, smallest fix, regression test.
-- `refactor.md` — characterisation tests pin behaviour.
+- `new-feature.md` — pełny multi-agent flow.
+- `bug-fix.md` — najpierw failing test, najmniejszy fix, regression test.
+- `refactor.md` — characterisation tests przypinają behaviour.
 - `new-library.md` — generator + ADR + docs.
 - `tech-debt.md` — scoped, measurable.
-- `documentation-audit.md` — scan code+docs → report → regenerate from report.
-- `spec-driven.md` — phased SDD flow (`/specify` → `/clarify` → `/plan` → `/tasks` → `/implement`), adapted from [github/spec-kit](https://github.com/github/spec-kit) onto our agents.
+- `documentation-audit.md` — skanuj code+docs → raport → regenerate z raportu.
+- `spec-driven.md` — fazowy flow SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/implement`), zaadaptowany z [github/spec-kit](https://github.com/github/spec-kit) na naszych agentów.
 - `incident-response.md` — speed > polish.
 
 ## Slash commands
 
-Defined under [`.claude/commands/`](.claude/commands/) (twins under [`.github/prompts/`](.github/prompts/) for Copilot):
+Zdefiniowane pod [`.claude/commands/`](.claude/commands/) (bliźniaki pod [`.github/prompts/`](.github/prompts/) dla Copilot):
 
-| Command                                | What it does                                                    |
-| -------------------------------------- | --------------------------------------------------------------- |
-| `/new-feature <desc>`                  | full multi-agent new-feature flow                               |
-| `/bug-fix <summary>`                   | failing test → smallest fix → regression test                   |
-| `/new-library <name> <scope> <type>`   | scaffold a new Nx lib via the workflow                          |
-| `/review-pr <pr or branch>`            | code-reviewer + (when relevant) security-auditor                |
-| `/release [notes]`                     | `nx release` end-to-end                                         |
-| `/sync-docs`                           | doc-writer pass against last release                            |
-| `/migrate-doc <src> <tgt> <type>`      | move one legacy doc to canonical template                       |
-| `/audit-docs`                          | run scanners → doc-auditor → open issues                        |
-| `/regenerate-docs`                     | rewrite docs from latest audit report                           |
-| `/generate-test-scenarios [spec-slug]` | extract Given/When/Then → Playwright skeletons                  |
-| `/run-test-scenarios [grep]`           | run E2E; switch to Playwright MCP for live debugging on failure |
-| `/specify <desc>`                      | SDD phase 1 — analyst writes `spec.md` (no tech)                |
-| `/clarify [slug]`                      | SDD phase 1.5 — resolve `[?]` markers in `spec.md`              |
-| `/plan [slug]`                         | SDD phase 2 — architect writes `plan.md` + (if needed) ADR      |
-| `/tasks [slug]`                        | SDD phase 3 — orchestrator decomposes plan into `tasks.md` DAG  |
-| `/implement [slug] [task\|all]`        | SDD phase 4 — orchestrator executes tasks + DoD gate            |
+| Komenda                                | Co robi                                                        |
+| -------------------------------------- | -------------------------------------------------------------- |
+| `/new-feature <desc>`                  | pełny multi-agent new-feature flow                             |
+| `/bug-fix <summary>`                   | failing test → najmniejszy fix → regression test               |
+| `/new-library <name> <scope> <type>`   | scaffold nowego liba Nx przez workflow                         |
+| `/review-pr <pr or branch>`            | code-reviewer + (gdy istotne) security-auditor                 |
+| `/release [notes]`                     | `nx release` end-to-end                                        |
+| `/sync-docs`                           | przebieg doc-writer po ostatnim release                        |
+| `/migrate-doc <src> <tgt> <type>`      | przenieś jeden legacy doc do kanonicznego template             |
+| `/audit-docs`                          | uruchom skanery → doc-auditor → otwórz issues                  |
+| `/regenerate-docs`                     | przepisz docs z najnowszego raportu audytu                     |
+| `/generate-test-scenarios [spec-slug]` | wyciągnij Given/When/Then → szkielety Playwright               |
+| `/run-test-scenarios [grep]`           | uruchom E2E; przełącz na Playwright MCP dla live debug na fail |
+| `/specify <desc>`                      | SDD faza 1 — analyst pisze `spec.md` (bez tech)                |
+| `/clarify [slug]`                      | SDD faza 1.5 — rozwiąż markery `[?]` w `spec.md`               |
+| `/plan [slug]`                         | SDD faza 2 — architect pisze `plan.md` + (jeśli trzeba) ADR    |
+| `/tasks [slug]`                        | SDD faza 3 — orchestrator dekomponuje plan na DAG `tasks.md`   |
+| `/implement [slug] [task\|all]`        | SDD faza 4 — orchestrator egzekutuje zadania + DoD gate        |
 
-## Validation gate (before reporting Done)
+## Validation gate (przed raportowaniem Done)
 
 ```
 pnpm affected:lint
@@ -156,11 +156,11 @@ pnpm affected:e2e
 pnpm affected:build
 ```
 
-If any step fails, you are **not** done. Route the failure back to the producing agent or the user.
+Jeśli którykolwiek krok zawiedzie, **nie** jesteś done. Skieruj fail z powrotem do agenta produkującego lub do użytkownika.
 
-## End-of-turn
+## Format end-of-turn
 
-Always emit one of:
+Zawsze emituj jeden z:
 
 ```yaml
 done:
