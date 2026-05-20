@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
-import { DashboardPageComponent } from '@ai-studio/dashboard-feature';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'ais-root',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DashboardPageComponent],
+  imports: [RouterOutlet],
   template: `
-    <ais-dashboard-page />
+    <router-outlet />
   `,
 })
 export class AppComponent {}

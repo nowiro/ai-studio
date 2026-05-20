@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   effect,
   ElementRef,
   inject,
@@ -43,7 +42,6 @@ export class ChartHostComponent implements AfterViewInit, OnDestroy {
   readonly ariaLabel = input<string | null>(null);
 
   private readonly themeBridge = inject(ChartThemeBridge);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly hostRef = viewChild.required<ElementRef<HTMLDivElement>>('host');
 
   private chart: EChartsInstance | null = null;

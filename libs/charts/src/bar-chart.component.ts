@@ -41,8 +41,8 @@ export class BarChartComponent {
     const legend = this.legend();
     const categoryAxisConfig = toEchartsAxis(this.categoryAxis(), snapshot.muted, snapshot.grid);
     const valueAxisConfig = toEchartsAxis(this.valueAxis() ?? { type: 'value' }, snapshot.muted, snapshot.grid);
-    return {
-      color: snapshot.palette,
+    const option: EChartsOption = {
+      color: [...snapshot.palette],
       tooltip: {
         show: this.tooltip()?.visible !== false,
         trigger: 'axis',
@@ -68,6 +68,7 @@ export class BarChartComponent {
         ...(s.color ? { itemStyle: { color: s.color } } : {}),
       })),
     };
+    return option;
   });
 }
 

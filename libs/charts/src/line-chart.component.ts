@@ -39,8 +39,8 @@ export class LineChartComponent {
     const snapshot = this.theme.snapshot();
     const series = this.series();
     const legend = this.legend();
-    return {
-      color: snapshot.palette,
+    const option: EChartsOption = {
+      color: [...snapshot.palette],
       tooltip: {
         show: this.tooltip()?.visible !== false,
         trigger: 'axis',
@@ -66,6 +66,7 @@ export class LineChartComponent {
         ...(s.color ? { itemStyle: { color: s.color } } : {}),
       })),
     };
+    return option;
   });
 }
 

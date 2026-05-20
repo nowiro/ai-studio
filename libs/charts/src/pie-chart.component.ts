@@ -36,8 +36,8 @@ export class PieChartComponent {
     const snapshot = this.theme.snapshot();
     const legend = this.legend();
     const isDonut = this.variant() === 'donut';
-    return {
-      color: snapshot.palette,
+    const option: EChartsOption = {
+      color: [...snapshot.palette],
       tooltip: {
         show: this.tooltip()?.visible !== false,
         trigger: 'item',
@@ -71,5 +71,6 @@ export class PieChartComponent {
         },
       ],
     };
+    return option;
   });
 }
