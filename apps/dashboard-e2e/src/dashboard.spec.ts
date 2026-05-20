@@ -19,9 +19,13 @@ test.describe('Dashboard — chart panels', () => {
       await expect(page.getByTestId(id)).toBeVisible();
     }
 
-    // At least one ECharts canvas reaches the DOM. ECharts mounts via
-    // requestAnimationFrame, so wait a tick before asserting.
-    await expect(page.locator('canvas').first()).toBeVisible({ timeout: 5_000 });
+    // Wait for the loading state to finish (panel data populates after the
+    // 500 ms simulated fetch, then the @if branch swaps from "empty" to chart)
+    // and the chart container actually has a non-zero height. Without the
+    // `:host` rules in `libs/charts/src/chart-host.component.ts`, the wrapper
+    // would collapse to 0 px even with the explicit panel `height: 18rem`.
+    await expect(page.getByTestId('chart-revenue')).toBeVisible({ timeout: 8_000 });
+    await expect(page.locator('canvas').first()).toBeVisible({ timeout: 8_000 });
   });
 
   test('refresh button does not crash the dashboard', async ({ page }) => {
@@ -35,12 +39,20 @@ test.describe('Dashboard — chart panels', () => {
 });
 
 test.describe('Dashboard — /charts/showcase route', () => {
-  test('lazy route loads and renders the 5 wrapper cards', async ({ page }) => {
+  test('lazy route loads and renders all 5 chart wrappers', async ({ page }) => {
     await page.goto('/charts/showcase');
 
     await expect(page.getByTestId('charts-showcase')).toBeVisible();
 
-    // Five chart wrappers — one canvas each (ECharts canvas renderer).
-    await expect(page.locator('canvas')).toHaveCount(5, { timeout: 8_000 });
+    // The showcase passes explicit testIds (`showcase-line`, `showcase-bar`, …)
+    // to each wrapper; the chart-host inner div carries them as `data-testid`.
+    const hostIds = ['showcase-line', 'showcase-bar', 'showcase-pie', 'showcase-gauge', 'showcase-heatmap'];
+    for (const id of hostIds) {
+      await expect(page.getByTestId(id)).toBeVisible({ timeout: 8_000 });
+    }
+
+    // Six canvases — five wrappers × one canvas each, plus the heatmap's
+    // visualMap layer which ECharts paints onto a second canvas.
+    await expect(page.locator('canvas')).toHaveCount(6, { timeout: 8_000 });
   });
 });

@@ -22,6 +22,7 @@ import type { ChartHeatCell } from './types.js';
     />
   `,
   host: { class: 'block h-full w-full' },
+  styles: [':host { display: block; width: 100%; height: 100%; }'],
 })
 export class HeatmapChartComponent {
   readonly rows = input.required<readonly string[]>();

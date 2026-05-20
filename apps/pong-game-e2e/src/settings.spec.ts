@@ -35,14 +35,16 @@ test.describe('Pong — settings overlay', () => {
     await page.goto('/');
     await page.getByTestId('open-settings').click();
 
-    // Click the "Szybko" toggle. The group renders as <button> children.
-    const group = page.getByTestId('pong-settings-paddle-speed');
-    await group.getByRole('button', { name: 'Szybko' }).click();
+    // `mat-button-toggle-group` in single-select mode renders as
+    // `role="group"` with children `role="radio"`. Match by accessible name.
+    const fastBefore = page.getByTestId('pong-settings-paddle-speed').getByRole('radio', { name: 'Szybko' });
+    await fastBefore.click();
+    await expect(fastBefore).toHaveAttribute('aria-checked', 'true');
 
     // Reload and re-open — the same toggle should still be selected.
     await page.reload();
     await page.getByTestId('open-settings').click();
-    const fast = page.getByTestId('pong-settings-paddle-speed').getByRole('button', { name: 'Szybko' });
-    await expect(fast).toHaveAttribute('aria-pressed', 'true');
+    const fastAfter = page.getByTestId('pong-settings-paddle-speed').getByRole('radio', { name: 'Szybko' });
+    await expect(fastAfter).toHaveAttribute('aria-checked', 'true');
   });
 });

@@ -85,7 +85,9 @@ test.describe('Pong — acceptance', () => {
     // The default config caps a full game at < 60 s of idle play.
     // We poll the overlay for up to 60 s.
     await expect(pong.gameOverOverlay).toBeVisible({ timeout: 60_000 });
-    await expect(pong.gameOverMessage).toContainText(/YOU WIN|CPU WINS/);
+    // Polish copy after the 2026-05-20 game-over overlay rebuild — winner is
+    // either "WYGRYWASZ" (player) or "CPU WYGRYWA".
+    await expect(pong.gameOverMessage).toContainText(/WYGRYWASZ|CPU WYGRYWA/);
     await expect(pong.playAgain).toBeVisible();
   });
 
@@ -105,12 +107,14 @@ test.describe('Pong — acceptance', () => {
     const pong = new PongPage(page);
     await pong.goto();
 
-    // Toggle from menu (mute icon button is visible there).
+    // Polish copy after the 2026-05-20 menu rebuild: "Wycisz" (unmuted, label
+    // says what the click will do) / "Włącz dźwięk" (currently muted).
+    await expect(pong.muteToggle).toHaveAttribute('aria-label', 'Wycisz');
     await pong.muteToggle.click();
-    await expect(pong.muteToggle).toHaveAttribute('aria-label', 'Unmute');
+    await expect(pong.muteToggle).toHaveAttribute('aria-label', 'Włącz dźwięk');
 
     await pong.muteToggle.click();
-    await expect(pong.muteToggle).toHaveAttribute('aria-label', 'Mute');
+    await expect(pong.muteToggle).toHaveAttribute('aria-label', 'Wycisz');
   });
 
   test('AC-10 — feature flag gates the route', async ({ page }) => {

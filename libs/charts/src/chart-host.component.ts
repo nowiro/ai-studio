@@ -35,6 +35,17 @@ import { ChartThemeBridge } from './theme.js';
       #host
     ></div>
   `,
+  // Tailwind's `h-full` on a custom-element host class doesn't reliably resolve
+  // (verified via DOM dump in the dashboard E2E — `ais-chart-host` reported
+  // `computedHeight: auto` even with `class="h-full"`). `:host` rule is plain
+  // shadow-emulated CSS — bulletproof. The `:host > div` rule covers the inner
+  // chart container (ECharts mounts inside it) for the same reason: relying
+  // on the `h-full` utility leaves it at 0 height in some builds, and ECharts
+  // then paints a canvas with `height="0"`.
+  styles: [
+    ':host { display: block; width: 100%; height: 100%; }',
+    ':host > div { display: block; width: 100%; height: 100%; }',
+  ],
 })
 export class ChartHostComponent implements AfterViewInit, OnDestroy {
   readonly option = input.required<EChartsOption>();
@@ -74,6 +85,16 @@ export class ChartHostComponent implements AfterViewInit, OnDestroy {
     if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
       this.themeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       this.themeMediaQuery.addEventListener('change', this.onThemeChange);
+    }
+
+    // Some environments (Playwright headless-shell, deferred Angular @if blocks
+    // that paint after ngAfterViewInit) compute the host element's layout one
+    // tick after init runs — `initChart` then reads `clientHeight === 0` and
+    // emits a canvas with `height="0"`. ResizeObserver eventually fires, but
+    // the next deferred resize is what guarantees a visible chart on the very
+    // first paint. Harmless on browsers that already had layout ready.
+    if (typeof requestAnimationFrame === 'function') {
+      requestAnimationFrame(() => resizeChart(this.chart));
     }
   }
 
