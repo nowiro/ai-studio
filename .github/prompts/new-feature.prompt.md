@@ -6,31 +6,31 @@ tools: ['editFiles', 'search', 'runCommands', 'runTasks', 'problems']
 
 # New feature
 
-Run the full multi-agent flow defined in [`.ai/workflows/new-feature.md`](../../.ai/workflows/new-feature.md).
+Uruchom pełny multi-agent flow zdefiniowany w [`.ai/workflows/new-feature.md`](../../.ai/workflows/new-feature.md).
 
 ## Inputs
 
-- `${input:feature:Describe the feature in one sentence}` — high-level goal
-- `${input:size:T-shirt size (XS/S/M/L/XL)}` — estimated effort
-- `${selection}` — optional code context
+- `${input:feature:Describe the feature in one sentence}` — high-level cel
+- `${input:size:T-shirt size (XS/S/M/L/XL)}` — szacowany effort
+- `${selection}` — opcjonalny code context
 
-## What to do
+## Co robić
 
-1. Switch to **orchestrator** chat mode (or follow the orchestrator's instructions inline if not available).
-2. Read all of `.ai/rules/`, the orchestrator role at `.ai/agents/orchestrator.md`, and the workflow at `.ai/workflows/new-feature.md`.
-3. Decompose the task using the `delegate:` YAML protocol from the orchestrator role file.
-4. Sequence specialists per the workflow:
+1. Przełącz na chat mode **orchestrator** (lub śledź instrukcje orchestratora inline, jeśli niedostępny).
+2. Przeczytaj wszystkie `.ai/rules/`, rolę orchestratora pod `.ai/agents/orchestrator.md`, i workflow pod `.ai/workflows/new-feature.md`.
+3. Zdekomponuj zadanie używając protokołu `delegate:` YAML z pliku roli orchestratora.
+4. Sekwencjonuj specjalistów wg workflow:
    1. analyst → spec
    2. architect → ADR + generator plan
-   3. nx + angular-cli generators
-   4. frontend-developer + (optional) backend-developer + test-engineer in parallel
-   5. code-reviewer + (when relevant) security-auditor
+   3. generatory nx + angular-cli
+   4. frontend-developer + (opcjonalnie) backend-developer + test-engineer równolegle
+   5. code-reviewer + (gdy relevant) security-auditor
    6. doc-writer
-5. Validate with `pnpm affected:lint && pnpm typecheck && pnpm affected:test && pnpm affected:e2e && pnpm affected:build && pnpm ai:validate`.
-6. End with the `done:` block from `core.md`.
+5. Validuj przez `pnpm affected:lint && pnpm typecheck && pnpm affected:test && pnpm affected:e2e && pnpm affected:build && pnpm ai:validate`.
+6. Zakończ blokiem `done:` z `core.md`.
 
-## Don't
+## Nie
 
-- Skip the analyst when scope is unclear.
-- Bundle unrelated cleanup into the PR.
-- Mark `done:` while any validator is red.
+- Pomijać analysta gdy scope jest unclear.
+- Bundlować unrelated cleanup do PR.
+- Markować `done:` gdy jakikolwiek validator jest czerwony.

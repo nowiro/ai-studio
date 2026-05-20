@@ -6,34 +6,34 @@ tools: ['editFiles', 'search', 'runCommands']
 
 # Migrate doc
 
-Convert one legacy document to the canonical template under `docs/` (or `.ai/`).
+Konwertuj jeden legacy document do kanonicznego templatu pod `docs/` (lub `.ai/`).
 
 ## Inputs
 
-- `${input:source:Path to the legacy doc}` — where the input lives
-- `${input:target:Target directory under docs/ or .ai/}` — where the new doc should land
+- `${input:source:Path to the legacy doc}` — gdzie żyje input
+- `${input:target:Target directory under docs/ or .ai/}` — gdzie ma wylądować nowy doc
 - `${input:type:Doc type (technical|analytical|programming|ai-workflow|adr|spec|rule|agent|workflow|prompt|context)}`
 
-## What to do
+## Co robić
 
-1. Load `.ai/agents/doc-auditor.md` (the migration agent).
-2. Read the source file. Extract:
-   - Intent (what is this doc for?)
+1. Załaduj `.ai/agents/doc-auditor.md` (agent migracji).
+2. Read source file. Wyekstraktuj:
+   - Intent (do czego jest ten doc?)
    - Audience (engineer / analyst / agent / reviewer)
-   - Concrete facts (file paths, commands, code snippets)
-   - Stale claims (anything that contradicts current code — flag, don't carry over)
-3. Pick the canonical template:
-   - Technical doc → see [`docs/technical/`](../../docs/technical/) skeletons.
-   - Analytical spec → [`.ai/agents/analyst.md`](../../.ai/agents/analyst.md) skeleton.
+   - Konkretne fakty (file paths, commands, code snippets)
+   - Stale claims (cokolwiek, co przeczy current code — flag, nie carry over)
+3. Wybierz kanoniczny template:
+   - Technical doc → patrz skeletony [`docs/technical/`](../../docs/technical/).
+   - Analytical spec → skeleton [`.ai/agents/analyst.md`](../../.ai/agents/analyst.md).
    - ADR → [`docs/adr/0000-template.md`](../../docs/adr/0000-template.md).
-   - Agent role → frontmatter + the role's standard sections (see existing files in `.ai/agents/`).
-   - Workflow / prompt / rule → mirror the closest existing file's structure.
-4. Produce the new file at `${target}` with proper frontmatter and the template skeleton populated.
-5. Add a one-line entry to the relevant index (`docs/README.md`, `.ai/README.md`, or analogous).
-6. Run `pnpm ai:validate` to confirm the new file is well-formed.
+   - Agent role → frontmatter + standardowe sekcje roli (patrz istniejące pliki w `.ai/agents/`).
+   - Workflow / prompt / rule → mirror strukturę najbliższego istniejącego pliku.
+4. Produkuj nowy plik pod `${target}` z proper frontmatter i wypełnionym template skeletonem.
+5. Dodaj one-line entry do relevant index (`docs/README.md`, `.ai/README.md`, lub analogiczne).
+6. Uruchom `pnpm ai:validate` żeby potwierdzić że nowy plik jest well-formed.
 
-## Don't
+## Nie
 
-- Carry stale facts forward without verifying them against current code.
-- Skip the frontmatter — the validator will fail.
-- Delete the source file (the human decides when to retire it).
+- Carry stale facts forward bez weryfikacji przeciw current code.
+- Pomijaj frontmatter — walidator zawiedzie.
+- Usuwaj source file (człowiek decyduje kiedy retire).

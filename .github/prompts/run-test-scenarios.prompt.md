@@ -6,33 +6,33 @@ tools: ['editFiles', 'search', 'runCommands', 'problems']
 
 # Run test scenarios
 
-## What to do
+## Co robić
 
-1. **Run them headless first** (the real validator):
+1. **Uruchom headless najpierw** (prawdziwy walidator):
 
    ```bash
    pnpm exec nx affected -t e2e --parallel=1
    ```
 
-   - Uploads HTML report + traces under `playwright-report/` and `test-results/`.
+   - Uploaduje HTML report + traces pod `playwright-report/` i `test-results/`.
 
-2. **For failing scenarios**, switch to live debugging via the **playwright** MCP server:
-   - Navigate to the failing route.
-   - Snapshot the page; verify selectors with `find` queries.
-   - Confirm the missing assertion or interaction.
-   - Patch the test file (or the page object) — the smallest change that turns the test green for the right reason.
+2. **Dla failujących scenariuszy**, przełącz na live debugging przez serwer **playwright** MCP:
+   - Navigate do failującej route.
+   - Snapshot strony; weryfikuj selektory przez queries `find`.
+   - Potwierdź brakującą assertion lub interakcję.
+   - Patch test file (lub page object) — najmniejsza zmiana zazieleniająca test z odpowiedniego powodu.
 
-3. Re-run the affected suite. Loop until green or until you have a `blocked:` reason.
+3. Re-run affected suite. Loop aż do zielonego lub aż masz powód `blocked:`.
 
-## Don't
+## Nie
 
-- Use the MCP browser to "fix" tests by loosening assertions. The test exists to catch a defect — debug the defect.
-- Disable failing tests. Either fix the test, fix the code, or open a bug-fix issue.
-- Run E2E in production. Always against the local dev server / preview env declared in `playwright.config.base.ts`.
+- Używaj MCP browsera do "fixowania" testów przez loosening assertions. Test istnieje żeby łapać defekt — debuguj defekt.
+- Wyłączaj failing testów. Albo fix test, albo fix kod, albo otwórz bug-fix issue.
+- Uruchamiaj E2E w produkcji. Zawsze przeciw local dev server / preview env zadeklarowanemu w `playwright.config.base.ts`.
 
 ## Reporting back
 
-End with:
+Zakończ:
 
 ```yaml
 e2e_run:

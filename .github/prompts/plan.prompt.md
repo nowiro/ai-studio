@@ -4,33 +4,33 @@ description: Phase 2 of spec-driven flow — architect writes plan.md (tech & ar
 tools: ['editFiles', 'search', 'runCommands', 'problems']
 ---
 
-# Plan (Phase 2 — SDD)
+# Plan (Faza 2 — SDD)
 
-Run **Phase 2** of [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
+Uruchom **Fazę 2** [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
 
 ## Inputs
 
 - `${input:slug:Feature slug, leave empty for most-recent}` — target spec dir
-- `${selection}` — optional code context
+- `${selection}` — opcjonalny code context
 
-## What to do
+## Co robić
 
-1. Switch to the **architect** persona (load `.ai/agents/architect.md`).
-2. Refuse if `spec.md` still has `[?]` markers — route the user to `/clarify` first.
-3. Load `.ai/rules/principles.md` + `.ai/rules/{angular,nx,security,testing}.md` + the spec.
-4. Inspect the current Nx graph; consult Angular docs for any unfamiliar API.
-5. Write `docs/analytical/specs/<slug>/plan.md` with:
-   - Tech additions (with ADR ref if non-trivial)
-   - Module taxonomy — apps + libs targets and tags
-   - Public API surface (`src/index.ts` exports)
-   - Data model + contracts (link `contracts/` subdir for API design)
+1. Przełącz na personę **architect** (załaduj `.ai/agents/architect.md`).
+2. Odmów jeśli `spec.md` nadal ma markery `[?]` — skieruj użytkownika do `/clarify` najpierw.
+3. Załaduj `.ai/rules/principles.md` + `.ai/rules/{angular,nx,security,testing}.md` + spec.
+4. Inspectuj aktualny Nx graph; konsultuj Angular docs dla każdego unfamiliar API.
+5. Napisz `docs/analytical/specs/<slug>/plan.md` z:
+   - Tech additions (z ADR ref jeśli non-trivial)
+   - Module taxonomy — apps + libs targets i tags
+   - Public API surface (eksporty `src/index.ts`)
+   - Data model + contracts (linkuj subdir `contracts/` dla API design)
    - Risks + mitigations
-   - Generator plan — exact `nx generate …` commands
-6. If the change warrants an ADR, draft `docs/adr/NNNN-<slug>.md` as `Status: proposed`.
+   - Generator plan — dokładne komendy `nx generate …`
+6. Jeśli zmiana zasługuje na ADR, draft `docs/adr/NNNN-<slug>.md` jako `Status: proposed`.
 
-## Don't
+## Nie
 
-- Decompose into tasks here — that's `/tasks`.
-- Skip the generator plan. Hand-edited `project.json` is forbidden.
+- Dekomponować na taski tutaj — to robota `/tasks`.
+- Pomijać generator plan. Hand-edytowany `project.json` jest zabroniony.
 
-End-of-turn: present a 5-bullet plan summary and ask the user to accept before moving to `/tasks`.
+End-of-turn: prezentuj 5-bullet plan summary i pytaj użytkownika o accept przed przejściem do `/tasks`.

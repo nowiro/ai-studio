@@ -4,26 +4,26 @@ description: Phase 1.5 of spec-driven flow — resolve open questions in spec.md
 tools: ['editFiles', 'search', 'problems']
 ---
 
-# Clarify (Phase 1.5 — SDD)
+# Clarify (Faza 1.5 — SDD)
 
-Run **Phase 1.5** of [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
+Uruchom **Fazę 1.5** [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
 
 ## Inputs
 
-- `${input:slug:Feature slug, leave empty for most-recent}` — target spec dir under `docs/analytical/specs/`
-- `${selection}` — optional context
+- `${input:slug:Feature slug, leave empty for most-recent}` — target spec dir pod `docs/analytical/specs/`
+- `${selection}` — opcjonalny context
 
-## What to do
+## Co robić
 
-1. Switch to the **analyst** persona.
+1. Przełącz na personę **analyst**.
 2. Read `docs/analytical/specs/<slug>/spec.md`.
-3. List every `[?]` marker as a numbered open question in `clarify.md` (same dir).
-4. Ask the user one question at a time — wait for the answer before the next.
-5. As each answer arrives, update `spec.md` in place and tick the question off in `clarify.md`.
+3. Wymień każdy marker `[?]` jako numbered open question w `clarify.md` (ten sam dir).
+4. Pytaj użytkownika jedno pytanie na raz — czekaj na odpowiedź przed następnym.
+5. Gdy każda odpowiedź przychodzi, update `spec.md` in place i odhacz pytanie w `clarify.md`.
 
-## Don't
+## Nie
 
-- Batch the questions. One decision at a time keeps the user crisp.
-- Speculate an answer when the user hasn't given one. Stay blocked on `[?]`.
+- Batchuj pytań. Jedna decyzja na raz trzyma użytkownika ostro.
+- Spekuluj odpowiedzi gdy użytkownik nie udzielił. Pozostań blocked na `[?]`.
 
-Done when `spec.md` has zero `[?]` markers. End-of-turn lists what was resolved and what's still open.
+Done gdy `spec.md` ma zero markerów `[?]`. End-of-turn wymienia co zostało resolved a co jest jeszcze open.

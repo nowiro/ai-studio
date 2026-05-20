@@ -6,22 +6,22 @@ tools: ['editFiles', 'search', 'runCommands', 'problems']
 
 # Bug fix
 
-Follow [`.ai/workflows/bug-fix.md`](../../.ai/workflows/bug-fix.md).
+Śledź [`.ai/workflows/bug-fix.md`](../../.ai/workflows/bug-fix.md).
 
 ## Inputs
 
-- `${input:bug:Bug summary or issue link}` — what's broken
+- `${input:bug:Bug summary or issue link}` — co jest zepsute
 
-## What to do
+## Co robić
 
-1. **Reproduce.** Test-engineer writes a failing test at the lowest reasonable layer (unit > integration > E2E). Confirm it fails for the right reason.
-2. **Fix.** Smallest possible diff. No drive-by refactors.
-3. **Verify.** Failing test now passes; add at least one regression test that covers the failure mode without depending on the fix's internal structure.
-4. **Review.** code-reviewer pass. security-auditor only if the bug was a security issue.
-5. **Document.** Doc-writer adds a `CHANGELOG.md` footer if user-visible.
+1. **Reprodukuj.** Test-engineer pisze failing test na najniższej rozsądnej warstwie (unit > integration > E2E). Potwierdź, że faili z odpowiedniego powodu.
+2. **Fix.** Najmniejszy możliwy diff. Żadnych drive-by refactorów.
+3. **Verify.** Failing test teraz przechodzi; dodaj przynajmniej jeden regression test pokrywający failure mode bez polegania na internal structure fixu.
+4. **Review.** code-reviewer pass. security-auditor tylko jeśli bug był security issue.
+5. **Document.** Doc-writer dodaje `CHANGELOG.md` footer jeśli user-visible.
 
-## Don't
+## Nie
 
-- Fix without a failing test first.
-- Bundle unrelated changes.
-- Close the issue before the regression test ships.
+- Fixuj bez failing testu najpierw.
+- Bundluj unrelated changes.
+- Zamykaj issue przed shipem regression testu.

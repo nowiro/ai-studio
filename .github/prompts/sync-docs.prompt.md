@@ -6,24 +6,24 @@ tools: ['editFiles', 'search', 'runCommands']
 
 # Sync docs
 
-Run a doc-writer pass against the diff between the current `main` and the last tagged release. The agent updates `docs/technical/`, `docs/programming/`, `docs/architecture/`, and `docs/ai-workflow/` to reflect the current code — without inventing facts.
+Uruchom doc-writer pass przeciw diff między aktualnym `main` a ostatnim tagged release. Agent aktualizuje `docs/technical/`, `docs/programming/`, `docs/architecture/`, i `docs/ai-workflow/` żeby odzwierciedlały aktualny kod — bez wymyślania faktów.
 
-## What to do
+## Co robić
 
-1. Switch to **doc-writer** chat mode (or follow the role inline). Load `.ai/agents/doc-writer.md`, `.ai/rules/language.md` (Polish for these surfaces), `.ai/rules/principles.md`.
-2. Compute the diff window: `git log --oneline $(git describe --tags --abbrev=0)..HEAD`.
-3. For each commit in scope, identify which doc surfaces it touches (per the doc-writer role's "Update triggers"):
+1. Przełącz na chat mode **doc-writer** (lub śledź rolę inline). Załaduj `.ai/agents/doc-writer.md`, `.ai/rules/language.md` (polski dla tych powierzchni), `.ai/rules/principles.md`.
+2. Oblicz diff window: `git log --oneline $(git describe --tags --abbrev=0)..HEAD`.
+3. Dla każdego commita w scope, identyfikuj które doc powierzchnie dotyka (per "Update triggers" roli doc-writer):
    - Public-API change (component selector, service method, route, schema) → update `docs/technical/`.
-   - Accepted ADR → turn it into a "How it works" entry in `docs/architecture/` or `docs/technical/`.
-   - New agent / workflow in `.ai/` → mirror summary in `docs/ai-workflow/`.
+   - Accepted ADR → turn it into "How it works" entry w `docs/architecture/` lub `docs/technical/`.
+   - Nowy agent / workflow w `.ai/` → mirror summary w `docs/ai-workflow/`.
    - Lint / link-check drift → fix in place.
-4. **Verify before rewriting** — open the touched code; trust the file, not the doc.
-5. Apply diffs (not rewrites) where the doc only drifted in part.
-6. Run `pnpm docs:lint` and `pnpm ai:validate` to confirm well-formedness.
-7. Open a single PR `docs: sync against vX.Y.Z` with a bullet list of changed docs.
+4. **Verify before rewriting** — open touched code; ufaj plikowi, nie docowi.
+5. Apply diffs (nie rewrites) gdzie doc tylko drift w części.
+6. Uruchom `pnpm docs:lint` i `pnpm ai:validate` żeby potwierdzić well-formedness.
+7. Otwórz pojedynczy PR `docs: sync against vX.Y.Z` z bullet listą zmienionych docs.
 
-## Don't
+## Nie
 
-- Invent facts. If a doc claims something that's not in the code, **delete the claim** rather than rewriting it.
-- Bundle structural changes (renamed sections, new pages) — those go through `regenerate-docs` after `audit-docs`.
-- Touch analytical specs (analyst owns those) or ADRs (architect owns those).
+- Wymyślać faktów. Jeśli doc twierdzi coś czego nie ma w kodzie, **usuń claim** zamiast go przepisywać.
+- Bundlować strukturalnych zmian (renamed sections, nowe pages) — te idą przez `regenerate-docs` po `audit-docs`.
+- Dotykać analytical specs (analyst jest właścicielem) ani ADRs (architect jest właścicielem).

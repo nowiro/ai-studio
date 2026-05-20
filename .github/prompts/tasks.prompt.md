@@ -4,27 +4,27 @@ description: Phase 3 of spec-driven flow — orchestrator decomposes plan.md int
 tools: ['editFiles', 'search', 'problems']
 ---
 
-# Tasks (Phase 3 — SDD)
+# Tasks (Faza 3 — SDD)
 
-Run **Phase 3** of [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
+Uruchom **Fazę 3** [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
 
 ## Inputs
 
 - `${input:slug:Feature slug, leave empty for most-recent}` — target spec dir
-- `${selection}` — optional context
+- `${selection}` — opcjonalny context
 
-## What to do
+## Co robić
 
-1. Switch to the **orchestrator** chat mode (or follow its role file inline).
-2. Refuse if `plan.md` is missing OR the ADR (if any) is not `Status: accepted`.
-3. Decompose the plan into atomic, ordered tasks in `docs/analytical/specs/<slug>/tasks.md`.
-4. Each task MUST have: `id` (T001, …), `title` (imperative), `agent` (`frontend-developer` / `backend-developer` / `test-engineer` / `doc-writer` / `architect` / `security-auditor`), `inputs`, `outputs`, `done_when`, `parallel_with` (optional), `blocked_by` (optional).
-5. Tasks should be 1-turn-sized. Split anything bigger.
-6. The whole task list MUST form a DAG (no cycles).
+1. Przełącz na chat mode **orchestrator** (lub śledź jego role file inline).
+2. Odmów jeśli `plan.md` brakuje LUB ADR (jeśli jest) nie jest `Status: accepted`.
+3. Zdekomponuj plan na atomic, ordered tasks w `docs/analytical/specs/<slug>/tasks.md`.
+4. Każdy task MUSI mieć: `id` (T001, …), `title` (imperatywne), `agent` (`frontend-developer` / `backend-developer` / `test-engineer` / `doc-writer` / `architect` / `security-auditor`), `inputs`, `outputs`, `done_when`, `parallel_with` (opcjonalne), `blocked_by` (opcjonalne).
+5. Taski powinny być 1-turn-sized. Rozbij cokolwiek większego.
+6. Cała lista tasków MUSI formować DAG (żadnych cykli).
 
-## Don't
+## Nie
 
-- Start implementing. Implementation is `/implement`.
-- Skip `done_when`. Tasks without explicit verification are not allowed.
+- Zaczynaj implementacji. Implementacja to `/implement`.
+- Pomijaj `done_when`. Taski bez jawnej weryfikacji nie są dozwolone.
 
-End-of-turn: print the task DAG as a tree and ask the user to accept before `/implement`.
+End-of-turn: print task DAG jako drzewo i pytaj użytkownika o accept przed `/implement`.

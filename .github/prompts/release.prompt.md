@@ -6,30 +6,30 @@ tools: ['editFiles', 'search', 'runCommands']
 
 # Release
 
-Run the release flow per [`.ai/agents/release-manager.md`](../../.ai/agents/release-manager.md).
+Uruchom release flow per [`.ai/agents/release-manager.md`](../../.ai/agents/release-manager.md).
 
 ## Inputs
 
-- `${input:notes:Optional release notes (markdown bullets)}` — extra context for the GitHub release body
+- `${input:notes:Optional release notes (markdown bullets)}` — extra context dla GitHub release body
 
-## What to do
+## Co robić
 
-1. Switch to **release-manager** chat mode (or follow the role inline). Load `.ai/agents/release-manager.md`.
+1. Przełącz na chat mode **release-manager** (lub śledź rolę inline). Załaduj `.ai/agents/release-manager.md`.
 2. **Pre-flight verification:**
-   - `main` is green (CI passing).
-   - All release-blocking PRs are merged.
-   - All accepted ADRs since the last release are reflected in `docs/`.
-   - `pnpm typecheck && pnpm test && pnpm e2e && pnpm build && pnpm ai:validate` runs green locally.
-3. **Cut the release:** `pnpm release` (drives `nx release` with Conventional Commits — bumps versions, generates `CHANGELOG.md`, tags, creates the GitHub release).
+   - `main` jest zielony (CI passing).
+   - Wszystkie release-blocking PRs są zmergowane.
+   - Wszystkie accepted ADRs od ostatniego release są odzwierciedlone w `docs/`.
+   - `pnpm typecheck && pnpm test && pnpm e2e && pnpm build && pnpm ai:validate` przechodzi zielono lokalnie.
+3. **Cut release:** `pnpm release` (napędza `nx release` z Conventional Commits — bumpuje wersje, generuje `CHANGELOG.md`, taguje, tworzy GitHub release).
 4. **Post-release:**
-   - Add an entry to `docs/ai-workflow/runs/` with version, tag, and changelog summary.
-   - Open a `chore(release): post-vX.Y.Z follow-ups` issue listing observations and known gaps.
+   - Dodaj entry do `docs/ai-workflow/runs/` z wersją, tagiem, summary changelog.
+   - Otwórz issue `chore(release): post-vX.Y.Z follow-ups` listujący obserwacje i znane gapy.
    - Notify stakeholders per `docs/programming/git-workflow.md`.
-5. End with the `release:` YAML block from the role file.
+5. Zakończ blokiem YAML `release:` z pliku roli.
 
-## Don't
+## Nie
 
-- Skip pre-release checks — the role forbids it.
-- Manually edit `CHANGELOG.md` — let `nx release` regenerate.
-- Release while CI is red.
-- Use `--no-verify` or `--force`.
+- Pomijaj pre-release checks — rola tego zabrania.
+- Manualnie edytuj `CHANGELOG.md` — pozwól `nx release` regenerować.
+- Release gdy CI jest czerwone.
+- Używaj `--no-verify` ani `--force`.

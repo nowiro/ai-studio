@@ -4,28 +4,28 @@ description: Phase 1 of spec-driven flow — analyst writes spec.md (what & why,
 tools: ['editFiles', 'search', 'problems']
 ---
 
-# Specify (Phase 1 — SDD)
+# Specify (Faza 1 — SDD)
 
-Run **Phase 1** of [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
+Uruchom **Fazę 1** [`.ai/workflows/spec-driven.md`](../../.ai/workflows/spec-driven.md).
 
 ## Inputs
 
-- `${input:feature:Describe the feature in one sentence}` — high-level goal
-- `${input:size:T-shirt size (XS/S/M/L/XL)}` — estimated effort
-- `${selection}` — optional code context
+- `${input:feature:Describe the feature in one sentence}` — high-level cel
+- `${input:size:T-shirt size (XS/S/M/L/XL)}` — szacowany effort
+- `${selection}` — opcjonalny code context
 
-## What to do
+## Co robić
 
-1. Switch to the **analyst** persona (load `.ai/agents/analyst.md`).
-2. Load `.ai/rules/principles.md` and `.ai/context/personas.md`.
-3. Pick a slug (`<YYYY-MM-DD>-<kebab-feature>`) and create `docs/analytical/specs/<slug>/spec.md`.
-4. Capture: user story, personas (cite ids from personas.md), acceptance criteria (Given/When/Then where useful), success metrics, non-goals, open questions.
-5. Mark every unresolved point with `[?]` so a `/clarify` pass can find them.
+1. Przełącz na personę **analyst** (załaduj `.ai/agents/analyst.md`).
+2. Załaduj `.ai/rules/principles.md` i `.ai/context/personas.md`.
+3. Wybierz slug (`<YYYY-MM-DD>-<kebab-feature>`) i stwórz `docs/analytical/specs/<slug>/spec.md`.
+4. Łap: user story, persony (cytuj ids z personas.md), acceptance criteria (Given/When/Then gdzie użyteczne), success metrics, non-goals, open questions.
+5. Markuj każdy nieresolved point z `[?]`, żeby `/clarify` pass mógł je znaleźć.
 
-## Don't
+## Nie
 
-- Pick a tech stack. No "use Angular signals", no library names, no framework versions — that's `/plan`.
-- Write more than ~1 page. Specs are crisp; details belong in plan.md.
-- Resolve open questions on your own. List them with `[?]`.
+- Pickuj tech stack. Żadnego "use Angular signals", żadnych nazw library, żadnych wersji framework — to robota `/plan`.
+- Piszesz więcej niż ~1 stronę. Specs są ostre; detale należą do plan.md.
+- Resolwuj open questions na własną rękę. Wymień je z `[?]`.
 
-End-of-turn: report the path to `spec.md` and whether `/clarify` is needed (any `[?]` markers left).
+End-of-turn: raportuj ścieżkę do `spec.md` i czy `/clarify` jest potrzebny (jakieś markery `[?]` pozostały).
