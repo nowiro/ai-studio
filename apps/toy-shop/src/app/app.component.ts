@@ -1,76 +1,82 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 import { ShopCartService } from '@ai-studio/shop-core';
-import { CartDrawerComponent } from '@ai-studio/shop-ui';
+import { CartDrawerComponent, type ShopFooterSection, type ShopNavLink, ShopShellComponent } from '@ai-studio/shop-ui';
+
+const NAV_LINKS: readonly ShopNavLink[] = [
+  { label: '0–3 lata', routerLink: ['/age/0-3'] },
+  { label: '3–6 lat', routerLink: ['/age/3-6'] },
+  { label: '6+ lat', routerLink: ['/age/6+'] },
+  { label: 'Edukacyjne', routerLink: ['/educational'] },
+  { label: 'Promocje', routerLink: ['/promotions'] },
+];
+
+const FOOTER_SECTIONS: readonly ShopFooterSection[] = [
+  {
+    title: 'Wybierz wiek',
+    links: [
+      { label: '0–3 lata', url: '#age-0-3' },
+      { label: '3–6 lat', url: '#age-3-6' },
+      { label: '6+ lat', url: '#age-6+' },
+    ],
+  },
+  {
+    title: 'Pomoc',
+    links: [
+      { label: 'Kontakt', url: '#contact' },
+      { label: 'Bezpieczeństwo zabawek', url: '#safety' },
+      { label: 'Dostawa i zwroty', url: '#shipping' },
+    ],
+  },
+  {
+    title: 'Polityki',
+    links: [
+      { label: 'Polityka prywatności', url: '#privacy' },
+      { label: 'Regulamin', url: '#terms' },
+      { label: 'Pliki cookies', url: '#cookies' },
+    ],
+  },
+  {
+    title: 'Dla rodziców',
+    links: [
+      { label: 'Blog rodzicielski', url: '#blog' },
+      { label: 'Newsletter', url: '#newsletter' },
+      { label: 'Karta podarunkowa', url: '#gift-card' },
+    ],
+  },
+];
 
 @Component({
   selector: 'ais-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CartDrawerComponent,
-    MatBadgeModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    RouterLink,
-    RouterOutlet,
-  ],
+  imports: [CartDrawerComponent, RouterOutlet, ShopShellComponent],
   host: { class: 'block min-h-screen' },
   template: `
-    <mat-sidenav-container class="min-h-screen">
-      <mat-sidenav-content>
-        <mat-toolbar
-          class="top-0 !sticky z-10"
-          color="primary"
-        >
-          <a
-            [routerLink]="['/']"
-            class="gap-2 flex items-center text-inherit no-underline"
-          >
-            <span class="material-symbols-outlined">toys</span>
-            <span class="font-semibold">Sklep z zabawkami</span>
-          </a>
-          <span class="flex-1"></span>
-          <button
-            (click)="openCart()"
-            matIconButton
-            aria-label="Otwórz koszyk"
-            data-testid="header-cart-button"
-          >
-            <span
-              [matBadge]="cartCount() || null"
-              class="material-symbols-outlined"
-              matBadgeColor="accent"
-              matBadgeSize="small"
-            >
-              shopping_cart
-            </span>
-          </button>
-        </mat-toolbar>
-        <main class="min-h-[calc(100vh-4rem)]">
-          <router-outlet />
-        </main>
-        <footer class="text-sm py-4 border-t border-outline-variant text-center text-on-surface-variant">
-          AI Studio · Demo sklepu z zabawkami · {{ currentYear }}
-        </footer>
-      </mat-sidenav-content>
-      <ais-shop-cart-drawer
-        [isOpen]="cartOpen()"
-        (closed)="closeCart()"
-      />
-    </mat-sidenav-container>
+    <ais-shop-shell
+      [navLinks]="navLinks"
+      [cartCount]="cartCount()"
+      [showSearch]="true"
+      [footerSections]="footerSections"
+      (cartOpenClick)="openCart()"
+      brandLabel="Sklep z zabawkami"
+      brandIcon="toys"
+      footerNote="AI Studio · Demo sklepu z zabawkami"
+    >
+      <router-outlet />
+    </ais-shop-shell>
+    <ais-shop-cart-drawer
+      [isOpen]="cartOpen()"
+      (closed)="closeCart()"
+    />
   `,
 })
 export class AppComponent {
   private readonly cart = inject(ShopCartService);
   protected readonly cartOpen = signal(false);
   protected readonly cartCount = computed(() => this.cart.count());
-  protected readonly currentYear = new Date().getFullYear();
+  protected readonly navLinks = NAV_LINKS;
+  protected readonly footerSections = FOOTER_SECTIONS;
 
   protected openCart(): void {
     this.cartOpen.set(true);

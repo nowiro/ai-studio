@@ -1,81 +1,90 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
+import { type ShopFooterSection, type ShopNavLink, ShopShellComponent } from '@ai-studio/shop-ui';
 import { CartService } from '@ai-studio/tire-data';
 import { CartDrawerComponent } from '@ai-studio/tire-feature-cart';
 
+const NAV_LINKS: readonly ShopNavLink[] = [
+  { label: 'Letnie', routerLink: ['/summer'] },
+  { label: 'Zimowe', routerLink: ['/winter'] },
+  { label: 'Całoroczne', routerLink: ['/all-season'] },
+  { label: 'Promocje', routerLink: ['/promotions'] },
+  { label: 'Kontakt', routerLink: ['/contact'] },
+];
+
+const FOOTER_SECTIONS: readonly ShopFooterSection[] = [
+  {
+    title: 'Sklep',
+    links: [
+      { label: 'Wszystkie opony', url: '#all' },
+      { label: 'Marki', url: '#brands' },
+      { label: 'Promocje', url: '#promos' },
+    ],
+  },
+  {
+    title: 'Pomoc',
+    links: [
+      { label: 'Dobór opon', url: '#picker' },
+      { label: 'Montaż i wyważanie', url: '#mounting' },
+      { label: 'Reklamacje', url: '#claims' },
+    ],
+  },
+  {
+    title: 'Polityki',
+    links: [
+      { label: 'Polityka prywatności', url: '#privacy' },
+      { label: 'Regulamin', url: '#terms' },
+      { label: 'Pliki cookies', url: '#cookies' },
+    ],
+  },
+  {
+    title: 'Kontakt',
+    links: [
+      { label: 'kontakt@tire-shop.example', url: 'mailto:kontakt@tire-shop.example' },
+      { label: '+48 22 000 00 00', url: 'tel:+48220000000' },
+      { label: 'pn–pt 8:00–17:00', url: '#hours' },
+    ],
+  },
+];
+
 /**
- * Root shell for the tire-shop app. Provides a top toolbar with the cart
- * badge, a slide-in cart drawer (right side) and the router outlet for
- * the page content.
+ * Root shell for the tire-shop app. Uses the shared `ais-shop-shell` layout
+ * and keeps the legacy `CartService` + `CartDrawerComponent` from
+ * `tire-feature-cart` for back-compat with `CartPageComponent` /
+ * `CheckoutComponent` (the additive `TireCartAdapter` migration is tracked
+ * as a follow-up).
  */
 @Component({
   selector: 'ais-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CartDrawerComponent,
-    MatBadgeModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    RouterLink,
-    RouterOutlet,
-  ],
+  imports: [CartDrawerComponent, RouterOutlet, ShopShellComponent],
   host: { class: 'block min-h-screen' },
   template: `
-    <mat-sidenav-container class="min-h-screen">
-      <mat-sidenav-content>
-        <mat-toolbar
-          class="top-0 !sticky z-10"
-          color="primary"
-        >
-          <a
-            [routerLink]="['/']"
-            class="gap-2 flex items-center text-inherit no-underline"
-          >
-            <span class="material-symbols-outlined">tire</span>
-            <span class="font-semibold">Sklep z oponami</span>
-          </a>
-          <span class="flex-1"></span>
-          <button
-            (click)="openCart()"
-            matIconButton
-            aria-label="Otwórz koszyk"
-            data-testid="header-cart-button"
-          >
-            <span
-              [matBadge]="cartCount() || null"
-              class="material-symbols-outlined"
-              matBadgeColor="accent"
-              matBadgeSize="small"
-            >
-              shopping_cart
-            </span>
-          </button>
-        </mat-toolbar>
-        <main class="min-h-[calc(100vh-4rem)]">
-          <router-outlet />
-        </main>
-        <footer class="text-sm py-4 border-t border-outline-variant text-center text-on-surface-variant">
-          AI Studio · Demo sklepu z oponami · {{ currentYear }}
-        </footer>
-      </mat-sidenav-content>
-      <ais-cart-drawer
-        [isOpen]="cartOpen()"
-        (closed)="closeCart()"
-      />
-    </mat-sidenav-container>
+    <ais-shop-shell
+      [navLinks]="navLinks"
+      [cartCount]="cartCount()"
+      [showSearch]="true"
+      [footerSections]="footerSections"
+      (cartOpenClick)="openCart()"
+      brandLabel="Sklep z oponami"
+      brandIcon="trip"
+      footerNote="AI Studio · Demo sklepu z oponami"
+    >
+      <router-outlet />
+    </ais-shop-shell>
+    <ais-cart-drawer
+      [isOpen]="cartOpen()"
+      (closed)="closeCart()"
+    />
   `,
 })
 export class AppComponent {
   private readonly cart = inject(CartService);
   protected readonly cartOpen = signal(false);
   protected readonly cartCount = computed(() => this.cart.count());
-  protected readonly currentYear = new Date().getFullYear();
+  protected readonly navLinks = NAV_LINKS;
+  protected readonly footerSections = FOOTER_SECTIONS;
 
   protected openCart(): void {
     this.cartOpen.set(true);

@@ -1,76 +1,81 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 import { ShopCartService } from '@ai-studio/shop-core';
-import { CartDrawerComponent } from '@ai-studio/shop-ui';
+import { CartDrawerComponent, type ShopFooterSection, type ShopNavLink, ShopShellComponent } from '@ai-studio/shop-ui';
+
+const NAV_LINKS: readonly ShopNavLink[] = [
+  { label: 'Katalog', routerLink: ['/'] },
+  { label: 'Nowości', routerLink: ['/new'] },
+  { label: 'Promocje', routerLink: ['/promotions'] },
+  { label: 'Kontakt', routerLink: ['/contact'] },
+];
+
+const FOOTER_SECTIONS: readonly ShopFooterSection[] = [
+  {
+    title: 'O nas',
+    links: [
+      { label: 'O sklepie', url: '#about' },
+      { label: 'Blog', url: '#blog' },
+      { label: 'Kariera', url: '#careers' },
+    ],
+  },
+  {
+    title: 'Pomoc',
+    links: [
+      { label: 'Kontakt', url: '#contact' },
+      { label: 'Najczęstsze pytania', url: '#faq' },
+      { label: 'Dostawa i zwroty', url: '#shipping' },
+    ],
+  },
+  {
+    title: 'Polityki',
+    links: [
+      { label: 'Polityka prywatności', url: '#privacy' },
+      { label: 'Regulamin', url: '#terms' },
+      { label: 'Pliki cookies', url: '#cookies' },
+    ],
+  },
+  {
+    title: 'Płatności',
+    links: [
+      { label: 'BLIK', url: '#blik' },
+      { label: 'Przelewy24', url: '#p24' },
+      { label: 'Visa / MasterCard', url: '#cards' },
+    ],
+  },
+];
 
 @Component({
   selector: 'ais-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CartDrawerComponent,
-    MatBadgeModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    RouterLink,
-    RouterOutlet,
-  ],
+  imports: [CartDrawerComponent, RouterOutlet, ShopShellComponent],
   host: { class: 'block min-h-screen' },
   template: `
-    <mat-sidenav-container class="min-h-screen">
-      <mat-sidenav-content>
-        <mat-toolbar
-          class="top-0 !sticky z-10"
-          color="primary"
-        >
-          <a
-            [routerLink]="['/']"
-            class="gap-2 flex items-center text-inherit no-underline"
-          >
-            <span class="material-symbols-outlined">menu_book</span>
-            <span class="font-semibold">Księgarnia</span>
-          </a>
-          <span class="flex-1"></span>
-          <button
-            (click)="openCart()"
-            matIconButton
-            aria-label="Otwórz koszyk"
-            data-testid="header-cart-button"
-          >
-            <span
-              [matBadge]="cartCount() || null"
-              class="material-symbols-outlined"
-              matBadgeColor="accent"
-              matBadgeSize="small"
-            >
-              shopping_cart
-            </span>
-          </button>
-        </mat-toolbar>
-        <main class="min-h-[calc(100vh-4rem)]">
-          <router-outlet />
-        </main>
-        <footer class="text-sm py-4 border-t border-outline-variant text-center text-on-surface-variant">
-          AI Studio · Demo księgarni · {{ currentYear }}
-        </footer>
-      </mat-sidenav-content>
-      <ais-shop-cart-drawer
-        [isOpen]="cartOpen()"
-        (closed)="closeCart()"
-      />
-    </mat-sidenav-container>
+    <ais-shop-shell
+      [navLinks]="navLinks"
+      [cartCount]="cartCount()"
+      [showSearch]="true"
+      [footerSections]="footerSections"
+      (cartOpenClick)="openCart()"
+      brandLabel="Księgarnia"
+      brandIcon="menu_book"
+      footerNote="AI Studio · Demo księgarni"
+    >
+      <router-outlet />
+    </ais-shop-shell>
+    <ais-shop-cart-drawer
+      [isOpen]="cartOpen()"
+      (closed)="closeCart()"
+    />
   `,
 })
 export class AppComponent {
   private readonly cart = inject(ShopCartService);
   protected readonly cartOpen = signal(false);
   protected readonly cartCount = computed(() => this.cart.count());
-  protected readonly currentYear = new Date().getFullYear();
+  protected readonly navLinks = NAV_LINKS;
+  protected readonly footerSections = FOOTER_SECTIONS;
 
   protected openCart(): void {
     this.cartOpen.set(true);
