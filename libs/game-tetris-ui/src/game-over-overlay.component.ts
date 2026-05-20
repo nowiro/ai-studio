@@ -15,7 +15,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-import { TetrisHighScoreStore, type TetrisScore } from '@ai-studio/game-tetris';
+import { TetrisHighScoreStore, TetrisLeaderboardStore, type TetrisScore } from '@ai-studio/game-tetris';
 
 @Component({
   selector: 'ais-tetris-game-over',
@@ -95,6 +95,7 @@ export class TetrisGameOverComponent {
   readonly restart = output<void>();
 
   private readonly highScore = inject(TetrisHighScoreStore);
+  private readonly leaderboard = inject(TetrisLeaderboardStore);
   protected readonly best = computed(() => this.highScore.best());
   protected readonly isNewRecord = computed(() => {
     const current = this.score().score;
@@ -106,6 +107,7 @@ export class TetrisGameOverComponent {
       const current = this.score();
       if (current.score > 0) {
         this.highScore.report({ score: current.score, lines: current.lines, level: current.level });
+        this.leaderboard.record({ score: current.score, lines: current.lines, level: current.level });
       }
     });
   }

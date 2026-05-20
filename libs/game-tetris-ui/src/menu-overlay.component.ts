@@ -5,13 +5,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 import { TetrisHighScoreStore, type TetrisStatus } from '@ai-studio/game-tetris';
 
 @Component({
   selector: 'ais-tetris-menu',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },
   template: `
@@ -78,6 +79,15 @@ import { TetrisHighScoreStore, type TetrisStatus } from '@ai-studio/game-tetris'
             Start
           </button>
         }
+
+        <a
+          routerLink="/leaderboard"
+          matIconButton
+          aria-label="Tabela wyników"
+          data-testid="tetris-open-leaderboard"
+        >
+          <mat-icon>leaderboard</mat-icon>
+        </a>
 
         <button
           (click)="settingsRequested.emit()"

@@ -35,4 +35,10 @@ export { msPerRow } from './logic/gravity.js';
 export { applyLineClear, applySoftDrop, applyHardDrop, initialScore } from './logic/scoring.js';
 export { SevenBag } from './logic/bag.js';
 export { TetrisHighScoreStore, type TetrisBest } from './high-score-store.js';
+export {
+  type TetrisLeaderboardEntry,
+  TETRIS_LEADERBOARD_LIMIT,
+  TetrisLeaderboardStore,
+  type TetrisRunSummary,
+} from './leaderboard-store.js';
 export { type TetrisSettings, TetrisSettingsStore } from './settings-store.js';
