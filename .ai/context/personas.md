@@ -2,55 +2,55 @@
 id: context.personas
 title: Personas
 type: context
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Personas
 
-Personas the Analyst MUST cite by id. Add new ones via PR.
+Persony, które Analyst MUSI cytować po id. Dodawaj nowe przez PR.
 
 ## P-001 — Engineering Lead
 
-- **Goal**: ship reliable Angular features fast, retain code quality, manage tech debt.
-- **Pain**: PRs blocked on unclear conventions; AI tools that ignore project standards.
-- **Tooling**: VS Code + JetBrains; values keyboard-first workflows.
-- **Reads**: ADRs, run logs.
+- **Cel**: shipuj reliable Angular features szybko, utrzymuj code quality, zarządzaj tech debt.
+- **Ból**: PR zablokowane na niejasnych konwencjach; AI narzędzia ignorujące project standards.
+- **Tooling**: VS Code + JetBrains; ceni keyboard-first workflows.
+- **Czyta**: ADRs, run logs.
 
 ## P-002 — Frontend Engineer
 
-- **Goal**: implement components without re-deriving conventions.
-- **Pain**: stale docs; AI suggesting forbidden APIs like `*ngIf` / `@HostBinding` (deprecated since Angular 17 — never use).
+- **Cel**: implementuj komponenty bez ponownego wyprowadzania konwencji.
+- **Ból**: stale docs; AI sugerujący forbidden APIs jak `*ngIf` / `@HostBinding` (deprecated od Angular 17 — nigdy nie używać).
 - **Tooling**: VS Code + Angular Language Service.
-- **Reads**: `.ai/rules/angular.md`, agent prompts.
+- **Czyta**: `.ai/rules/angular.md`, agent prompts.
 
 ## P-003 — QA / Test Engineer
 
-- **Goal**: confidence to ship. Stable cross-browser E2E suite.
-- **Pain**: flaky selectors, slow CI, brittle snapshots.
+- **Cel**: pewność żeby shipnąć. Stabilny cross-browser E2E suite.
+- **Ból**: flaky selectors, slow CI, brittle snapshots.
 - **Tooling**: Playwright UI mode, Vitest UI.
-- **Reads**: `.ai/rules/testing.md`, page-objects.
+- **Czyta**: `.ai/rules/testing.md`, page-objects.
 
 ## P-004 — Product Analyst
 
-- **Goal**: turn vague stakeholder asks into shippable specs.
-- **Pain**: re-doing intake when devs disagree on scope.
-- **Tooling**: Notion / Linear (mirrored to `docs/analytical/specs/`).
-- **Reads**: specs, glossary.
+- **Cel**: zamień mgliste prośby stakeholderów w shippable specs.
+- **Ból**: re-doing intake gdy devs nie zgadzają się na scope.
+- **Tooling**: Notion / Linear (mirrorowane do `docs/analytical/specs/`).
+- **Czyta**: specs, glossary.
 
 ## P-005 — Tech Writer / Doc Owner
 
-- **Goal**: docs that stay accurate as code changes.
-- **Pain**: docs drifting silently; broken links.
+- **Cel**: docs, które pozostają dokładne gdy kod się zmienia.
+- **Ból**: docs po cichu odpływające; broken links.
 - **Tooling**: VS Code + markdownlint.
-- **Reads**: `docs/`, especially `docs/technical/`.
+- **Czyta**: `docs/`, szczególnie `docs/technical/`.
 
 ## P-006 — Security Engineer
 
-- **Goal**: no leaked secrets, no unsafe AI surfaces.
-- **Pain**: model-generated code that bypasses sanitisation; new deps with CVEs.
+- **Cel**: żadnych zleakowanych sekretów, żadnych unsafe AI surfaces.
+- **Ból**: model-generated code obchodzący sanityzację; nowe deps z CVEs.
 - **Tooling**: dependency audit dashboards.
-- **Reads**: `.ai/rules/security.md`, audit logs.
+- **Czyta**: `.ai/rules/security.md`, audit logs.
 
 ## Extending
 
-When the product gains real users, replace these placeholders with real personas (interview-derived). Keep the id stable.
+Gdy produkt zyska realnych użytkowników, wymień te placeholdery na realne persony (interview-derived). Trzymaj id stabilnie.

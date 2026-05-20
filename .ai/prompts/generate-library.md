@@ -3,19 +3,19 @@ id: prompt.generate-library
 title: Generate library
 type: prompt
 target_agent: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Generate Library prompt
 
-Use this template when scaffolding a new Nx library, in lock-step with `.ai/workflows/new-library.md`.
+Używaj tego templatu gdy scaffoldujesz nowy Nx library, w lock-step z `.ai/workflows/new-library.md`.
 
 ## Variables
 
-- `{{NAME}}` — kebab-case (e.g. `billing`, `theme`, `feature-flags`).
+- `{{NAME}}` — kebab-case (np. `billing`, `theme`, `feature-flags`).
 - `{{SCOPE}}` — `feature | ui | data | util | shared`.
 - `{{TYPE}}` — `feature | ui | data-access | util`.
-- `{{DOMAIN}}` — optional domain tag (e.g. `billing`, `auth`).
+- `{{DOMAIN}}` — opcjonalny domain tag (np. `billing`, `auth`).
 
 ## Generator command
 
@@ -31,10 +31,10 @@ nx g @nx/angular:lib {{NAME}} \
   --unit-test-runner=vitest
 ```
 
-## Required edits after generation
+## Required edits po generacji
 
-1. `src/index.ts` — keep it as the single export surface (no deep imports).
-2. Add `README.md`:
+1. `src/index.ts` — trzymaj go jako single export surface (żadnych deep imports).
+2. Dodaj `README.md`:
 
    ```markdown
    # @ai-studio/{{SCOPE}}-{{NAME}}
@@ -51,12 +51,12 @@ nx g @nx/angular:lib {{NAME}} \
    - …
    ```
 
-3. Add the lib to `docs/architecture/dependencies.md`.
+3. Dodaj lib do `docs/architecture/dependencies.md`.
 
-4. Update CODEOWNERS with the relevant team.
+4. Update CODEOWNERS z odpowiednim zespołem.
 
 ## Verification
 
-- `nx show projects --affected` lists the new lib.
-- `nx graph` shows it under the right layer.
-- `pnpm affected:lint && pnpm affected:test` green.
+- `nx show projects --affected` listuje nowy lib.
+- `nx graph` pokazuje go pod prawą warstwą.
+- `pnpm affected:lint && pnpm affected:test` zielone.

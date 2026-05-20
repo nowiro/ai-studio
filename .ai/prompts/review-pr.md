@@ -3,34 +3,34 @@ id: prompt.review-pr
 title: Review PR
 type: prompt
 target_agent: code-reviewer
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Review PR prompt
 
-Use this when the Orchestrator hands a diff to the **code-reviewer**.
+Używaj tego gdy Orchestrator oddaje diff do **code-reviewer**.
 
 ## Inputs
 
-- `{{PR_URL}}` — link to the PR.
-- `{{ADR}}` — optional ADR id this PR implements.
+- `{{PR_URL}}` — link do PR.
+- `{{ADR}}` — opcjonalny ADR id, który ten PR implementuje.
 
 ## Task
 
-Run the full review checklist from `.ai/agents/code-reviewer.md`. Use the `review:` YAML format for the verdict.
+Uruchom pełny review checklist z `.ai/agents/code-reviewer.md`. Używaj formatu YAML `review:` dla verdict.
 
 ## Required tooling
 
-- Read the diff (`gh pr diff {{PR_URL}}`).
-- Run `pnpm affected:lint`, `pnpm affected:test`, `pnpm typecheck` locally if not already green.
-- Open `nx graph` (via the **nx** MCP server) before/after to spot graph changes.
-- Cross-check Angular APIs with the **context7** MCP server when in doubt.
+- Read diff (`gh pr diff {{PR_URL}}`).
+- Uruchom `pnpm affected:lint`, `pnpm affected:test`, `pnpm typecheck` lokalnie jeśli jeszcze nie zielone.
+- Otwórz `nx graph` (przez serwer **nx** MCP) before/after żeby spostrzec graph changes.
+- Cross-check Angular APIs z serwerem **context7** MCP gdy w wątpliwościach.
 
 ## Tone
 
-- Issues: actionable, not preachy.
+- Issues: actionable, nie preachy.
 - Praise: specific.
-- One bullet = one concern.
+- Jeden bullet = jeden concern.
 
 ## End with
 

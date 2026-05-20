@@ -3,29 +3,29 @@ id: prompt.generate-component
 title: Generate component
 type: prompt
 target_agent: frontend-developer
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Generate Component prompt
 
-Use this template when the Orchestrator delegates a component creation.
+Używaj tego templatu gdy Orchestrator deleguje component creation.
 
 ## Variables
 
-- `{{NAME}}` — kebab-case component name (no `-component` suffix).
-- `{{LIB}}` — target lib (e.g. `feature/billing`).
-- `{{SELECTOR}}` — `ais-{{NAME}}` by default.
-- `{{INPUTS}}` — list `{ name, type, default }`.
-- `{{OUTPUTS}}` — list `{ name, payload }`.
-- `{{BEHAVIOURS}}` — bullets of observable behaviours.
+- `{{NAME}}` — kebab-case nazwa komponentu (bez sufiksu `-component`).
+- `{{LIB}}` — target lib (np. `feature/billing`).
+- `{{SELECTOR}}` — `ais-{{NAME}}` domyślnie.
+- `{{INPUTS}}` — lista `{ name, type, default }`.
+- `{{OUTPUTS}}` — lista `{ name, payload }`.
+- `{{BEHAVIOURS}}` — bullets observable behaviours.
 
-## Task to the agent
+## Task do agenta
 
-You are the **frontend-developer**. Generate a new Angular standalone component `{{NAME}}` in `libs/{{LIB}}` that conforms to all rules in `.ai/rules/angular.md`.
+Jesteś **frontend-developer**. Generuj nowy Angular standalone component `{{NAME}}` w `libs/{{LIB}}`, który zgadza się ze wszystkimi regułami w `.ai/rules/angular.md`.
 
-Steps you must take, in order:
+Kroki, które musisz wykonać, w kolejności:
 
-1. Run via the **angular-cli** MCP server:
+1. Uruchom przez serwer **angular-cli** MCP:
 
    ```
    ng generate @nx/angular:component {{NAME}} \
@@ -36,23 +36,23 @@ Steps you must take, in order:
      --style=scss
    ```
 
-2. Edit the generated `*.component.ts` to:
+2. Edytuj generowany `*.component.ts` żeby:
    - Selector: `{{SELECTOR}}`
    - Inputs (signal API): `{{INPUTS}}`
    - Outputs (signal API): `{{OUTPUTS}}`
-   - Inject services with `inject()` only.
-   - Implement behaviours: `{{BEHAVIOURS}}`.
+   - Injectuj services tylko z `inject()`.
+   - Implementuj behaviours: `{{BEHAVIOURS}}`.
 
-3. Edit the template (`*.component.html`) to:
-   - Use `@if` / `@for` / `@switch`.
-   - Add `data-testid` to every interactive element.
-   - Use `NgOptimizedImage` for any static `<img>`.
+3. Edytuj template (`*.component.html`) żeby:
+   - Użyć `@if` / `@for` / `@switch`.
+   - Dodać `data-testid` do każdego interactive elementu.
+   - Użyć `NgOptimizedImage` dla każdego statycznego `<img>`.
 
-4. Re-export from the lib's `src/index.ts`.
+4. Re-export z `src/index.ts` lib.
 
-5. Run `pnpm format` on the diff and self-lint with `pnpm affected:lint`.
+5. Uruchom `pnpm format` na diff i self-lint z `pnpm affected:lint`.
 
-6. Hand off to **test-engineer** with this block:
+6. Hand off do **test-engineer** z tym blokiem:
 
    ```yaml
    test_targets:
@@ -62,4 +62,4 @@ Steps you must take, in order:
 
 ## Acceptance
 
-Output the diff only — no prose. The Orchestrator will review.
+Output tylko diff — żadnej prozy. Orchestrator zreviewuje.

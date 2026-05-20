@@ -2,12 +2,12 @@
 id: context.domain-model
 title: Domain model
 type: context
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Domain model
 
-> Replace this placeholder once the first real feature lands. Keep entities small and aligned with the database / API.
+> Wymień ten placeholder gdy wyląduje pierwszy realny feature. Trzymaj entities małe i zgodne z bazą / API.
 
 ## Bounded contexts
 
@@ -22,10 +22,10 @@ flowchart LR
 
 ## Entities
 
-| Entity    | Owner lib             | Notes                                         |
-| --------- | --------------------- | --------------------------------------------- |
-| Workspace | `libs/data/workspace` | Top-level container the user works in.        |
-| Project   | `libs/data/project`   | Belongs to a workspace.                       |
-| Run       | `libs/data/agent-run` | One execution of the orchestrator's workflow. |
+| Entity    | Owner lib             | Notes                                             |
+| --------- | --------------------- | ------------------------------------------------- |
+| Workspace | `libs/data/workspace` | Top-level container, w którym pracuje użytkownik. |
+| Project   | `libs/data/project`   | Należy do workspace.                              |
+| Run       | `libs/data/agent-run` | Jedno execution workflow orchestratora.           |
 
-> Adjust as the schema solidifies. Keep this in lock-step with `docs/architecture/data-model.md`.
+> Adjust, gdy schema się utrwala. Trzymaj w lock-step z `docs/architecture/data-model.md`.
