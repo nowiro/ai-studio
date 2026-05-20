@@ -25,6 +25,13 @@ export default defineConfig({
         launchOptions: { args: ['--use-gl=swiftshader'] },
       },
     },
+    {
+      name: 'mobile-chrome',
+      use: {
+        ...devices['Pixel 7'],
+        launchOptions: { args: ['--use-gl=swiftshader'] },
+      },
+    },
   ],
   webServer: process.env['CI']
     ? undefined
