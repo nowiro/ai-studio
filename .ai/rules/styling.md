@@ -129,3 +129,51 @@ Material's `mat.theme()` writes `--mat-sys-*` CSS custom properties onto `<html>
 - Tailwind v4 emits only what's used (content scanning is automatic).
 - Material requires `@angular/cdk` peer — already pinned in `package.json`.
 - Do **not** import the full Material module bundle — components are standalone; import only what the file uses.
+
+## 11. Charts (libs/charts wrappers)
+
+Backed by Apache ECharts 6, but the backend is an implementation detail — consumers only see the abstraction. See [`docs/architecture/charts.md`](../../docs/architecture/charts.md) for the wire-up walkthrough and [ADR-0016](../../docs/adr/0016-charts-abstraction-echarts.md) for the why.
+
+### Allowed imports
+
+```ts
+// ✅ wrappers + plain-shape inputs
+import {
+  BarChartComponent,
+  type ChartAxis,
+  type ChartSeries,
+  LineChartComponent,
+} from '@ai-studio/charts';
+```
+
+### Forbidden imports (enforced by ESLint `no-restricted-imports`)
+
+```ts
+// ❌ direct ECharts — fails CI
+import * as echarts from 'echarts';
+import type { EChartsOption } from 'echarts';
+import { BarChart } from 'echarts/charts';
+```
+
+The rule applies to every `libs/!(charts)/**` and `apps/**` file. The single exception is `libs/charts/**` itself, which owns the backend.
+
+### Theming contract
+
+Wrappers read Material 3 `--mat-sys-*` tokens at render time via `ChartThemeBridge`. **Never** hard-code chart colours; pass `color: '#…'` on a `ChartSeries` only when you genuinely override the M3 palette (e.g. a brand-specific accent on a single series).
+
+`prefers-color-scheme` changes automatically re-apply the theme — verified by the showcase route `/charts/showcase` in the dashboard app.
+
+### Available wrappers
+
+| Wrapper                                   | Use when                                                                |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| `<ais-line-chart>`                        | Time series, multi-series trend (set `kind: 'area'` for filled variant) |
+| `<ais-bar-chart>`                         | Discrete category comparison; `orientation="horizontal"` for "top N"    |
+| `<ais-pie-chart>`                         | Part-to-whole; `variant="donut"` for KPI-style                          |
+| `<ais-gauge-chart>`                       | Single value within a range (SLA %, stock %, capacity %)                |
+| `<ais-heatmap-chart>`                     | Two-dimensional intensity (hour × day, region × product)                |
+| `<ais-shop-product-card-skeleton>` (etc.) | Different concern — use shop-ui's skeleton primitives                   |
+
+### Spec contract
+
+Chart specs **mock** `libs/charts/src/echarts-import.ts` rather than booting the real renderer under jsdom. See `libs/charts/src/theme.spec.ts` for the pattern.

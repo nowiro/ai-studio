@@ -342,6 +342,31 @@ export default tseslint.config(
     },
   },
 
+  // ─── Charts abstraction boundary (ADR-0016) ─────────────────────
+  // Direct ECharts imports are restricted to libs/charts/** — every other
+  // consumer must go through the @ai-studio/charts wrappers so that a
+  // future backend swap (Chart.js, D3, Highcharts, …) stays a one-library
+  // change. This rule replaces the per-file 'off' default for affected
+  // sources and turns on a specific echarts pattern with a clear message.
+  {
+    files: ['libs/**/*.ts', 'apps/**/*.ts'],
+    ignores: ['libs/charts/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['echarts', 'echarts/*'],
+              message:
+                'Direct echarts imports are reserved for libs/charts. Import wrappers from @ai-studio/charts — see ADR-0016 (docs/adr/0016-charts-abstraction-echarts.md).',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   // ─── Prettier compat (must be last) ─────────────────────────────
   prettier,
 );
