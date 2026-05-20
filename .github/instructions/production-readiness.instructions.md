@@ -3,44 +3,44 @@ applyTo: '**'
 description: Six production-readiness must-haves before any agent feature ships
 ---
 
-# Production readiness (Copilot scope: every file; agent features in particular)
+# Production readiness (Copilot scope: każdy plik; szczególnie agent features)
 
-Full text: [`.ai/rules/production-readiness.md`](../../.ai/rules/production-readiness.md).
+Pełny tekst: [`.ai/rules/production-readiness.md`](../../.ai/rules/production-readiness.md).
 
-> Trinity baseline. Every agent-bearing feature in `ai-studio` / `ai-mcp-alm` / `ai-mcp-devtools` MUST satisfy these six controls before it touches a production-impacting system.
+> Trinity baseline. Każdy agent-bearing feature w `ai-studio` / `ai-mcp-alm` / `ai-mcp-devtools` MUSI spełniać te sześć kontroli zanim dotknie production-impacting system.
 
-## The six must-haves
+## Sześć must-haves
 
-| #   | Control                                   | Signals it is in place                                                                                                               |
-| --- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| 1   | **Permissions — least-privilege**         | Per-feature tokens; sandboxed FS access; allowlisted network; tokens read at use-time, never from repo.                              |
-| 2   | **Audit logs — who·what·when·why**        | Structured JSON to stderr; `timed(server, tool, fn)` wraps every mutating handler; secrets fingerprinted, never raw.                 |
-| 3   | **Monitoring — latency·errors·tokens**    | p50/p95/p99 per tool; error rate per tool; input + output tokens per invocation; tool fan-out per turn.                              |
-| 4   | **Cost control — budgets·alerts**         | Hard monthly ceiling per project; 50 / 80 / 100 % alerts; killswitch returns `BudgetExceededError` (-32013).                         |
-| 5   | **Human approval — high-risk checkpoint** | Mutating-action schema requires `confirm: true` (defaulted false); user-readable summary; approver logged.                           |
-| 6   | **Fallback paths — plan B**               | Each tool documents a fail-mode contract; retries ≤ 3 with backoff; circuit-breaker; user gets a clear message, never a stack trace. |
+| #   | Control                                   | Sygnały, że jest w miejscu                                                                                                                |
+| --- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Permissions — least-privilege**         | Per-feature tokens; sandboxed FS access; allowlisted network; tokeny czytane at use-time, nigdy z repo.                                   |
+| 2   | **Audit logs — kto·co·kiedy·po co**       | Structured JSON do stderr; `timed(server, tool, fn)` wrappuje każdy mutujący handler; sekrety fingerprinted, nigdy raw.                   |
+| 3   | **Monitoring — latency·errors·tokens**    | p50/p95/p99 per tool; error rate per tool; input + output tokens per invocation; tool fan-out per turn.                                   |
+| 4   | **Cost control — budgety·alerty**         | Twardy monthly sufit per project; alerty 50 / 80 / 100 %; killswitch zwraca `BudgetExceededError` (-32013).                               |
+| 5   | **Human approval — checkpoint high-risk** | Schema mutującej akcji wymaga `confirm: true` (defaulted false); user-readable summary; approver logged.                                  |
+| 6   | **Fallback paths — plan B**               | Każde narzędzie dokumentuje fail-mode contract; retries ≤ 3 z backoff; circuit-breaker; user dostaje czysty komunikat, nigdy stack trace. |
 
 ## High-risk predicates (control #5)
 
-Mutating actions that require explicit human confirmation:
+Mutujące akcje, które wymagają jawnego human confirmation:
 
-- Deleting or moving production data.
-- Sending external email / Slack / Teams on behalf of a user.
-- Posting public content (social media, public GitHub comments).
-- Spending money (purchase, refund, transaction).
-- Granting or revoking access.
-- Anything crossing a regulatory boundary (AI Act, GDPR, financial).
+- Usuwanie lub przenoszenie production data.
+- Wysyłanie external email / Slack / Teams w imieniu użytkownika.
+- Postowanie public content (social media, public GitHub comments).
+- Wydawanie pieniędzy (purchase, refund, transaction).
+- Przyznawanie lub odbieranie dostępu.
+- Cokolwiek przekraczające regulacyjną granicę (AI Act, GDPR, financial).
 
-## End-of-feature checklist (architect signs off)
+## End-of-feature checklist (architect zatwierdza)
 
-- [ ] Permissions — token scopes are minimal; FS + network access sandboxed.
-- [ ] Audit logs — every mutating call goes through `timed()`; secrets fingerprinted, not logged.
-- [ ] Monitoring — latency / error / token metrics visible on the dashboard.
-- [ ] Cost control — feature under a budget with at-thresholds alerts.
-- [ ] Human approval — all high-risk predicates require `confirm: true` + summary.
-- [ ] Fallback — each upstream has a documented fail-mode and circuit-breaker.
+- [ ] Permissions — scopes tokenów są minimalne; FS + network access sandboxed.
+- [ ] Audit logs — każde mutujące wywołanie idzie przez `timed()`; sekrety fingerprinted, nie logowane.
+- [ ] Monitoring — metryki latency / error / token widoczne na dashboardzie.
+- [ ] Cost control — feature pod budgetem z at-thresholds alerts.
+- [ ] Human approval — wszystkie high-risk predicates wymagają `confirm: true` + summary.
+- [ ] Fallback — każdy upstream ma udokumentowany fail-mode i circuit-breaker.
 
-This list extends the Definition of Done in `.ai/rules/core.md` whenever an agent feature is in scope.
+Ta lista rozszerza Definition of Done w `.ai/rules/core.md` gdy agent feature jest w scope.
 
 ## Cross-references
 

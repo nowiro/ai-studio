@@ -5,21 +5,21 @@ description: Nx monorepo conventions — taxonomy, tags, module boundaries, gene
 
 # Nx (Copilot scope: project.json, nx.json, tsconfig.base.json, eslint.config.mjs)
 
-Full text: [`.ai/rules/nx.md`](../../.ai/rules/nx.md).
+Pełny tekst: [`.ai/rules/nx.md`](../../.ai/rules/nx.md).
 
-## Project taxonomy
+## Taksonomia projektów
 
-| Folder            | What lives there                              | Tags                             |
+| Folder            | Co tam żyje                                   | Tags                             |
 | ----------------- | --------------------------------------------- | -------------------------------- |
-| `apps/<name>`     | Deployable Angular apps (one per binary)      | `scope:app`, `type:app`          |
-| `apps/<name>-e2e` | Playwright E2E suite for the app              | `scope:app`, `type:e2e`          |
+| `apps/<name>`     | Deployowalne Angular apps (jeden per binary)  | `scope:app`, `type:app`          |
+| `apps/<name>-e2e` | Playwright E2E suite dla app                  | `scope:app`, `type:e2e`          |
 | `libs/feature/*`  | Smart features (routes, container components) | `scope:feature`, `type:feature`  |
 | `libs/ui/*`       | Dumb / presentational components & primitives | `scope:ui`, `type:ui`            |
 | `libs/data/*`     | API clients, stores, adapters                 | `scope:data`, `type:data-access` |
 | `libs/util/*`     | Pure helpers, constants, schemas              | `scope:util`, `type:util`        |
 | `libs/shared/*`   | Cross-app primitives (auth, theming, i18n)    | `scope:shared`, `type:util`      |
 
-## Module boundaries (enforced by `@nx/enforce-module-boundaries`)
+## Module boundaries (wymuszane przez `@nx/enforce-module-boundaries`)
 
 ```
 type:app         → type:feature, type:ui, type:data-access, type:util
@@ -29,9 +29,9 @@ type:data-access → type:data-access, type:util
 type:util        → type:util
 ```
 
-Apps NEVER depend on apps. Lower layers NEVER depend on higher layers.
+Apps NIGDY nie zależą od apps. Niższe warstwy NIGDY nie zależą od wyższych.
 
-## Generators (always prefer over hand-edits)
+## Generatory (zawsze wybieraj zamiast hand-edits)
 
 ```bash
 nx g @nx/angular:app <name>
@@ -40,11 +40,11 @@ nx g @nx/angular:component <Name> --project=<lib> --change-detection=OnPush --st
 nx g @nx/angular:service <Name> --project=<lib>
 ```
 
-The orchestrator calls these via the **nx** MCP server, then adds tags. Never hand-edit `project.json` if a generator would do.
+Orchestrator wywołuje je przez serwer **nx** MCP, potem dodaje tagi. Nigdy nie hand-edytuj `project.json` jeśli generator załatwiłby sprawę.
 
-## Tagging policy
+## Polityka tagowania
 
-Every project carries at minimum `scope:<…>` + `type:<…>`. Optional: `domain:<billing|auth|admin|…>`, `platform:<browser|node|ssr>`.
+Każdy projekt nosi minimum `scope:<…>` + `type:<…>`. Opcjonalne: `domain:<billing|auth|admin|…>`, `platform:<browser|node|ssr>`.
 
 ## Affected commands
 
@@ -55,16 +55,16 @@ pnpm affected:build
 pnpm affected:e2e
 ```
 
-CI uses `--base=origin/main --head=HEAD`. Caching is on for every target in `nx.json#targetDefaults`.
+CI używa `--base=origin/main --head=HEAD`. Caching jest on dla każdego targetu w `nx.json#targetDefaults`.
 
-## Forbidden
+## Zabronione
 
-- Cross-importing internal files of another lib (`libs/foo/src/lib/internal.ts`) — use `@ai-studio/foo` only.
-- Adding global side-effects in lib `index.ts`.
-- Hand-editing the lockfile.
-- Skipping tags — lint will fail.
+- Cross-importing internal plików innego liba (`libs/foo/src/lib/internal.ts`) — używaj tylko `@ai-studio/foo`.
+- Dodawanie global side-effects w `index.ts` liba.
+- Hand-editowanie lockfile.
+- Pomijanie tagów — lint will fail.
 
 ## Cross-references
 
-- Angular conventions → [`angular.instructions.md`](angular.instructions.md)
+- Konwencje Angular → [`angular.instructions.md`](angular.instructions.md)
 - Testing → [`testing.instructions.md`](testing.instructions.md)

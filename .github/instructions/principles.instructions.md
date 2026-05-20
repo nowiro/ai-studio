@@ -3,37 +3,37 @@ applyTo: '**'
 description: Engineering principles — DRY, SOLID, KISS, YAGNI, composition over inheritance
 ---
 
-# Engineering principles (Copilot scope: every file)
+# Zasady inżynierskie (Copilot scope: każdy plik)
 
-Full text: [`.ai/rules/principles.md`](../../.ai/rules/principles.md).
+Pełny tekst: [`.ai/rules/principles.md`](../../.ai/rules/principles.md).
 
-## The short list
+## Krótka lista
 
-| Principle                         | Apply when                                                                                                             |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **DRY**                           | Same _knowledge_ duplicated in ≥ 3 places. (Lookalike code that changes for different reasons is **not** duplication.) |
-| **KISS**                          | The simplest solution that meets today's spec wins.                                                                    |
-| **YAGNI**                         | Don't build for hypothetical future needs. Add capability when the second real use case lands.                         |
-| **SRP**                           | One class / component / function = one reason to change.                                                               |
-| **OCP**                           | Extend via injection / strategy, not by editing growing switch statements.                                             |
-| **LSP**                           | A subtype must work everywhere the supertype works.                                                                    |
-| **ISP**                           | Many narrow interfaces beat one wide one.                                                                              |
-| **DIP**                           | Depend on abstractions where substitution is actually useful (TestBed, adapters).                                      |
-| **Composition over inheritance**  | Default. Inherit only when "is-a" truly holds.                                                                         |
-| **High cohesion, low coupling**   | Things that change together live together.                                                                             |
-| **Boy Scout rule**                | Small opportunistic improvements **scoped to the task** — never drive-by refactors.                                    |
-| **Least Astonishment**            | A function does what its name says, no more, no less.                                                                  |
-| **Fail fast**                     | Validate at the boundary (Zod). Don't silently coerce missing input.                                                   |
-| **Convention over configuration** | Pick once, document, enforce via lint.                                                                                 |
+| Principle                         | Stosuj gdy                                                                                                                |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **DRY**                           | Ta sama _wiedza_ duplikowana w ≥ 3 miejscach. (Lookalike kod, który zmienia się z różnych powodów to **nie** duplikacja.) |
+| **KISS**                          | Najprostsze rozwiązanie spełniające dzisiejszy spec wygrywa.                                                              |
+| **YAGNI**                         | Nie buduj dla hipotetycznych przyszłych potrzeb. Dodaj capability gdy wyląduje drugi realny use case.                     |
+| **SRP**                           | Jedna klasa / komponent / funkcja = jeden powód do zmiany.                                                                |
+| **OCP**                           | Rozszerzaj przez injection / strategy, nie przez edytowanie rosnących switch statements.                                  |
+| **LSP**                           | Subtyp musi działać wszędzie tam, gdzie działa supertyp.                                                                  |
+| **ISP**                           | Wiele wąskich interfejsów pokonuje jeden szeroki.                                                                         |
+| **DIP**                           | Zależ od abstrakcji gdzie substitution jest faktycznie użyteczna (TestBed, adaptery).                                     |
+| **Composition over inheritance**  | Default. Dziedzicz tylko gdy "is-a" naprawdę zachodzi.                                                                    |
+| **High cohesion, low coupling**   | Rzeczy, które zmieniają się razem, żyją razem.                                                                            |
+| **Boy Scout rule**                | Małe opportunistic ulepszenia **scoped do zadania** — nigdy drive-by refactory.                                           |
+| **Least Astonishment**            | Funkcja robi to, co mówi jej nazwa, nic więcej, nic mniej.                                                                |
+| **Fail fast**                     | Waliduj na granicy (Zod). Nie coerce po cichu missing inputu.                                                             |
+| **Convention over configuration** | Wybierz raz, udokumentuj, wymuszaj przez lint.                                                                            |
 
-When two principles conflict, **clarity wins**.
+Gdy dwie zasady konfliktują, **wygrywa klarowność**.
 
-## Citing in reviews
+## Cytowanie w reviews
 
-When you flag a violation, cite the principle id (`DRY`, `SRP`, `KISS`, …) — not vague "this seems wrong".
+Gdy flagujesz naruszenie, cytuj id zasady (`DRY`, `SRP`, `KISS`, …) — nie mgliste "to wygląda źle".
 
-## What this is NOT
+## Czym to NIE jest
 
-- A checklist for every PR.
-- Permission to refactor unrelated code.
-- A substitute for stack-specific rules ([`angular.md`](../../.ai/rules/angular.md), [`styling.md`](../../.ai/rules/styling.md), …).
+- Checklistą dla każdego PR.
+- Pozwoleniem na refactor nieskorelowanego kodu.
+- Substytutem stack-specific reguł ([`angular.md`](../../.ai/rules/angular.md), [`styling.md`](../../.ai/rules/styling.md), …).

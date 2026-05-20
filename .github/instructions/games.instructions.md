@@ -5,60 +5,60 @@ description: Phaser 3 inside Angular — scenes, bridge, performance, tests
 
 # Games (Copilot scope: `apps/*-game/`, `libs/game-*/`)
 
-Full text: [`.ai/rules/games.md`](../../.ai/rules/games.md). ADR: [`docs/adr/0004-phaser-as-default-game-library.md`](../../docs/adr/0004-phaser-as-default-game-library.md).
+Pełny tekst: [`.ai/rules/games.md`](../../.ai/rules/games.md). ADR: [`docs/adr/0004-phaser-as-default-game-library.md`](../../docs/adr/0004-phaser-as-default-game-library.md).
 
-> **Phaser 3** is the default 2D game framework. Use it for **actual games** — not as a fancy animation library.
+> **Phaser 3** jest domyślnym 2D game framework. Używaj go dla **rzeczywistych gier** — nie jako fancy animation library.
 
-## When to reach for Phaser
+## Kiedy sięgnąć po Phaser
 
-| Need                                                 | Use this                          |
+| Potrzeba                                             | Użyj                              |
 | ---------------------------------------------------- | --------------------------------- |
 | Sprite-based 2D game (puzzle, arcade, side-scroller) | **Phaser 3** scene + game lib     |
-| Interactive UI widget that _looks_ game-like         | Angular component + CSS animation |
-| 3D / WebGPU                                          | Out of scope — open an ADR        |
-| Visualisation / chart                                | D3 or Chart.js                    |
+| Interactive UI widget, który _wygląda_ game-like     | Angular component + CSS animation |
+| 3D / WebGPU                                          | Out of scope — otwórz ADR         |
+| Visualisation / chart                                | D3 lub Chart.js                   |
 
-## Project layout
+## Layout projektu
 
 ```
-apps/<game-name>-game/        # Angular shell hosting the canvas
+apps/<game-name>-game/        # Angular shell hostujący canvas
 libs/game-<name>/             # Phaser scenes + state (no Angular imports)
 libs/game-engine/             # shared boot, asset loader, audio bus, save adapter
 libs/game-<name>-ui/          # HUD components — Material + Tailwind
 ```
 
-The game lib is framework-agnostic — it exports `createGame(parent, config?): Phaser.Game`. The app mounts it via a thin host component that bridges signals ↔ Phaser events.
+Game lib jest framework-agnostic — eksportuje `createGame(parent, config?): Phaser.Game`. App montuje go przez cienki host komponent mostujący signals ↔ Phaser events.
 
-## Angular ↔ Phaser bridge
+## Most Angular ↔ Phaser
 
-- One scene per file: `<scene-name>.scene.ts`. Class extends `Phaser.Scene`. Constructor only sets the key.
-- Game lib exposes a typed `GameApi` (`pause()`, `resume()`, `setVolume()`, `score$`).
-- Angular side wraps `score$` with `toSignal()`; **never** subscribe Phaser to Angular change detection.
+- Jedna scena per plik: `<scene-name>.scene.ts`. Klasa extends `Phaser.Scene`. Konstruktor ustawia tylko klucz.
+- Game lib eksponuje typed `GameApi` (`pause()`, `resume()`, `setVolume()`, `score$`).
+- Strona Angular wrappuje `score$` z `toSignal()`; **nigdy** nie subskrybuj Phaser do Angular change detection.
 
 ## Performance
 
-- Target 60 fps on a mid-range laptop. Profile via `game.loop.actualFps`.
-- Use `arcade` physics for most games; `matter` only when needed.
-- Pool sprites for projectiles / enemies. Don't `new` per frame.
-- Atlas textures (`TexturePacker`) over loose images.
-- `setBlendMode` and shaders cost — measure first.
+- Target 60 fps na mid-range laptopie. Profiluj przez `game.loop.actualFps`.
+- Używaj `arcade` physics dla większości gier; `matter` tylko gdy potrzebne.
+- Pool sprites dla projectiles / enemies. Nie `new` per frame.
+- Atlas textures (`TexturePacker`) zamiast loose images.
+- `setBlendMode` i shaders kosztują — mierz najpierw.
 
 ## Testing
 
-- **Unit (Vitest)**: pure game-logic functions (collision, scoring, save serialisation). No `Phaser.Scene` needed.
-- **Integration (Vitest + jsdom)**: scene transitions with `type: Phaser.HEADLESS`.
-- **E2E (Playwright)**: load, key inputs, save/load round-trips. Use `data-testid="game-canvas"` for the host element.
+- **Unit (Vitest)**: pure game-logic functions (collision, scoring, save serialisation). Żadne `Phaser.Scene` niepotrzebne.
+- **Integration (Vitest + jsdom)**: scene transitions z `type: Phaser.HEADLESS`.
+- **E2E (Playwright)**: load, key inputs, save/load round-trips. Używaj `data-testid="game-canvas"` dla host element.
 
-## Forbidden
+## Zabronione
 
-- Tailwind classes inside the canvas — utilities are for HUD/Angular UI only.
-- Importing Angular APIs from `libs/game-*/` — keep the graph Angular-free there.
-- Assets > 1 MB in the lib — host via `assets/` and lazy-load.
-- Mutating Phaser's globals (`Phaser.GameObjects`, `Phaser.Scene` prototypes).
-- `console.*` in scenes — use the project `LoggerService` via the `GameApi.log` callback.
+- Klasy Tailwind wewnątrz canvas — utilities są tylko dla HUD/Angular UI.
+- Importowanie API Angulara z `libs/game-*/` — trzymaj graph Angular-free tam.
+- Assets > 1 MB w libie — hostuj przez `assets/` i lazy-load.
+- Mutowanie globali Phaser (`Phaser.GameObjects`, prototype `Phaser.Scene`).
+- `console.*` w scenes — używaj projektu `LoggerService` przez callback `GameApi.log`.
 
 ## Cross-references
 
-- Angular conventions → [`angular.instructions.md`](angular.instructions.md)
+- Konwencje Angular → [`angular.instructions.md`](angular.instructions.md)
 - Testing → [`testing.instructions.md`](testing.instructions.md)
 - Nx layout → [`nx.instructions.md`](nx.instructions.md)

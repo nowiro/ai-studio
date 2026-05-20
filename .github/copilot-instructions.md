@@ -1,96 +1,96 @@
-# GitHub Copilot — instructions for AI Studio
+# GitHub Copilot — instrukcje dla AI Studio
 
-> Read this **first** in every session. This is the Copilot-side mirror of [`CLAUDE.md`](../CLAUDE.md). Both point at the universal `.ai/` knowledge base — they never duplicate it.
+> Przeczytaj to **najpierw** w każdej sesji. To jest Copilot-side mirror [`CLAUDE.md`](../CLAUDE.md). Oba wskazują na uniwersalną bazę wiedzy `.ai/` — nigdy jej nie duplikują.
 
-## Identity
+## Tożsamość
 
-You are working inside **AI Studio** — an Angular 21 + Material 3 + Tailwind v4 Nx monorepo with a multi-agent AI workflow that supports both Claude Code and GitHub Copilot.
+Pracujesz wewnątrz **AI Studio** — monorepo Nx z Angular 21 + Material 3 + Tailwind v4 z multi-agentowym workflow AI, który wspiera zarówno Claude Code jak i GitHub Copilot.
 
-## Language preference
+## Preferencje językowe
 
-**Chat language: Polish.** Reply to the user in Polish unless they switch.
-**Code, git, MCP tool descriptions, and tooling-readable surfaces: English.** See [`.ai/rules/language.md`](../.ai/rules/language.md) for the full PL/EN split (docs PL · code EN · git EN).
+**Język czatu: polski.** Odpowiadaj użytkownikowi po polsku, dopóki nie poprosi inaczej.
+**Kod, git, MCP tool descriptions, powierzchnie czytane przez tooling: angielski.** Patrz [`.ai/rules/language.md`](../.ai/rules/language.md) dla pełnego podziału PL/EN (docs PL · code EN · git EN).
 
-## Always do this on session start
+## Zawsze rób to na początku sesji
 
-1. Read [`.ai/README.md`](../.ai/README.md) and [`.ai/architecture.md`](../.ai/architecture.md) (canonical nowiro AI architecture reference).
-2. Read every file in [`.ai/rules/`](../.ai/rules/). They are non-negotiable. Highlights:
-   - [`core.md`](../.ai/rules/core.md) — truth, smallest change, Definition of Done.
+1. Przeczytaj [`.ai/README.md`](../.ai/README.md) i [`.ai/architecture.md`](../.ai/architecture.md) (kanoniczna referencja architektury AI nowiro).
+2. Przeczytaj każdy plik w [`.ai/rules/`](../.ai/rules/). Są nienegocjowalne. Highlights:
+   - [`core.md`](../.ai/rules/core.md) — prawda, najmniejsza zmiana, Definition of Done.
    - [`principles.md`](../.ai/rules/principles.md) — DRY, SOLID, KISS, YAGNI.
-   - [`production-readiness.md`](../.ai/rules/production-readiness.md) — six must-haves before any agent feature ships.
-   - [`language.md`](../.ai/rules/language.md) — PL/EN preference.
-   - [`llm-optimization.md`](../.ai/rules/llm-optimization.md) — token budgets, response shaping.
+   - [`production-readiness.md`](../.ai/rules/production-readiness.md) — sześć must-haves zanim jakikolwiek agent feature shipnie.
+   - [`language.md`](../.ai/rules/language.md) — preferencje PL/EN.
+   - [`llm-optimization.md`](../.ai/rules/llm-optimization.md) — budżety tokenowe, response shaping.
    - [`angular.md`](../.ai/rules/angular.md), [`styling.md`](../.ai/rules/styling.md), [`testing.md`](../.ai/rules/testing.md), [`nx.md`](../.ai/rules/nx.md), [`security.md`](../.ai/rules/security.md).
-3. For non-trivial work (≥ 3 steps or ≥ 2 files), switch to the **orchestrator** chat mode (`.github/chatmodes/orchestrator.chatmode.md`) and let it plan.
-4. When generating code that touches an external API, look it up via the Copilot context tool that wraps `context7` (or open the upstream docs) before guessing.
+3. Dla nietrywialnej pracy (≥ 3 kroki lub ≥ 2 pliki), przełącz na chat mode **orchestrator** (`.github/chatmodes/orchestrator.chatmode.md`) i pozwól mu zaplanować.
+4. Gdy generujesz kod dotykający external API, wyszukaj go przez Copilot context tool wrappujące `context7` (lub otwórz upstream docs) zanim zgadniesz.
 
-## Hard rules (mirror of `.ai/rules/core.md`)
+## Twarde reguły (mirror `.ai/rules/core.md`)
 
-- ✅ Read code before claiming knowledge of it.
-- ✅ Smallest reasonable change.
-- ✅ Definition of Done = lint + typecheck + test + e2e + build all green, plus docs/ADR if behaviour changed.
-- ✅ **Plan-first generation** — every code/doc/test/scenario generation goes through a markdown plan executed by multi-agent delegation (`.ai/rules/core.md` §7). Trivial single-file edits exempt.
-- ❌ Never invent file paths, function names, package versions.
-- ❌ Never bypass hooks (`--no-verify`).
-- ❌ Never put secrets in tracked files.
+- ✅ Czytaj kod zanim ogłosisz że go znasz.
+- ✅ Najmniejsza rozsądna zmiana.
+- ✅ Definition of Done = lint + typecheck + test + e2e + build wszystkie zielone, plus docs/ADR jeśli behaviour się zmienił.
+- ✅ **Plan-first generation** — każda generacja kodu/docs/testów/scenariuszy przechodzi przez plan markdown wykonywany multi-agent delegacją (`.ai/rules/core.md` §7). Trywialne single-file edits zwolnione.
+- ❌ Nigdy nie wymyślaj ścieżek plików, nazw funkcji, wersji pakietów.
+- ❌ Nigdy nie bypassuj hooków (`--no-verify`).
+- ❌ Nigdy nie umieszczaj sekretów w tracked files.
 
 ## Plan-first generation
 
-For anything touching ≥ 2 files OR changing behaviour, the **orchestrator** writes a plan markdown BEFORE delegating:
+Dla wszystkiego co dotyka ≥ 2 pliki LUB zmienia behaviour, **orchestrator** pisze plan markdown PRZED delegacją:
 
-| Task type                                             | Plan file                                       |
+| Typ zadania                                           | Plik planu                                      |
 | ----------------------------------------------------- | ----------------------------------------------- |
-| Spec-driven (`/specify` flow)                         | `docs/analytical/specs/<slug>/plan.md`          |
-| Everything else (bug, refactor, lib, docs, scenarios) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` |
+| Spec-driven (flow `/specify`)                         | `docs/analytical/specs/<slug>/plan.md`          |
+| Wszystko inne (bug, refactor, lib, docs, scenariusze) | `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` |
 
-Use [`docs/ai-workflow/plans/_template.md`](../docs/ai-workflow/plans/_template.md) for the orchestrator-owned form. Specialists (frontend-developer, backend-developer, test-engineer, test-scenario-author, doc-writer) refuse delegations whose context lacks a `plan:` field + `task_id:`.
+Użyj [`docs/ai-workflow/plans/_template.md`](../docs/ai-workflow/plans/_template.md) dla formy ownerowanej przez orchestrator. Specjaliści (frontend-developer, backend-developer, test-engineer, test-scenario-author, doc-writer) odrzucają delegacje, których context nie zawiera pola `plan:` + `task_id:`.
 
-## Angular 21 conventions
+## Konwencje Angular 21
 
 - Standalone (implicit), OnPush, `inject()`, signal APIs.
 - Native control flow (`@if`, `@for`, `@switch`, `@defer`).
-- Reactive forms only.
-- `data-testid` on every interactive element.
-- Selector prefix `ais-` (components) / `ais` (directives).
-- No `*ngIf`, no `[ngClass]`, no `@HostBinding`, no `console.*`.
+- Tylko reactive forms.
+- `data-testid` na każdym interactive elemencie.
+- Prefix selektora `ais-` (komponenty) / `ais` (dyrektywy).
+- Bez `*ngIf`, bez `[ngClass]`, bez `@HostBinding`, bez `console.*`.
 
 ## Styling — Material 3 + Tailwind v4
 
-- **Material 3** components: `mat-button`, `mat-card`, `mat-form-field`, `mat-table`, …
-- **Tailwind v4 utilities** for layout / spacing / typography. Colour utilities map to Material design tokens (`bg-primary`, `text-on-surface`, …).
-- No `tailwind.config.js` — config lives in `styles/tailwind.scss` under `@theme`.
-- No `::ng-deep`, no `[ngClass]`, no `[ngStyle]`.
+- Komponenty **Material 3**: `mat-button`, `mat-card`, `mat-form-field`, `mat-table`, …
+- **Utility Tailwind v4** dla layoutu / spacing / typografii. Utility kolorów mapują na Material design tokens (`bg-primary`, `text-on-surface`, …).
+- Bez `tailwind.config.js` — config żyje w `styles/tailwind.scss` pod `@theme`.
+- Bez `::ng-deep`, bez `[ngClass]`, bez `[ngStyle]`.
 
-## Nx conventions
+## Konwencje Nx
 
 - `apps/*`, `libs/{feature,ui,data,util,shared}/*`.
-- Tag every project; module-boundary lint enforces the layering.
-- Use generators (`nx g @nx/angular:…`, `nx g @angular/material:…`).
-- Lib public API only via `src/index.ts`.
+- Taguj każdy projekt; module-boundary lint wymusza warstwowanie.
+- Używaj generatorów (`nx g @nx/angular:…`, `nx g @angular/material:…`).
+- Public API liba wyłącznie przez `src/index.ts`.
 
-## Testing
+## Testowanie
 
-- **Vitest via Angular 21's native `@angular/build:unit-test --runner=vitest`** — no `@analogjs/vitest-angular`.
-- Playwright for E2E (chromium/firefox/webkit + mobile).
+- **Vitest przez natywne Angular 21 `@angular/build:unit-test --runner=vitest`** — żadnego `@analogjs/vitest-angular`.
+- Playwright dla E2E (chromium/firefox/webkit + mobile).
 - Page-object pattern. `getByRole` ▶ `getByTestId` ▶ CSS.
 
-## Security
+## Bezpieczeństwo
 
-- Never ship API keys to the client.
-- Treat all model outputs as untrusted text.
-- Tool calls that mutate state need human-in-the-loop confirmation.
+- Nigdy nie shipuj API keys do klienta.
+- Traktuj wszystkie outputy modelu jako untrusted text.
+- Tool calls mutujące state potrzebują human-in-the-loop confirmation.
 
-## How Copilot is wired here
+## Jak Copilot jest wired tutaj
 
-Copilot reads, in this order of precedence:
+Copilot czyta, w tej kolejności precedensu:
 
-1. **This file** (`.github/copilot-instructions.md`) — repo-wide.
-2. **Scoped instructions** in [`.github/instructions/*.instructions.md`](instructions/) — applied automatically to files matching their `applyTo` glob.
-3. **Prompt files** in [`.github/prompts/*.prompt.md`](prompts/) — invoke via `/promptname` in Copilot Chat.
-4. **Chat modes** in [`.github/chatmodes/*.chatmode.md`](chatmodes/) — pick from the chat-mode dropdown (Agent / Ask / Edit / your custom).
-5. **The user prompt** — highest precedence.
+1. **Ten plik** (`.github/copilot-instructions.md`) — repo-wide.
+2. **Scoped instructions** w [`.github/instructions/*.instructions.md`](instructions/) — aplikowane automatycznie do plików pasujących do ich glob `applyTo`.
+3. **Prompt files** w [`.github/prompts/*.prompt.md`](prompts/) — wywoływane przez `/promptname` w Copilot Chat.
+4. **Chat modes** w [`.github/chatmodes/*.chatmode.md`](chatmodes/) — wybierz z dropdownu chat-mode (Agent / Ask / Edit / twój custom).
+5. **User prompt** — najwyższy precedens.
 
-VS Code must have these settings enabled (already in [`.vscode/settings.json`](../.vscode/settings.json)):
+VS Code musi mieć te settings włączone (już w [`.vscode/settings.json`](../.vscode/settings.json)):
 
 ```jsonc
 {
@@ -101,24 +101,24 @@ VS Code must have these settings enabled (already in [`.vscode/settings.json`](.
 
 ## Workflows
 
-When the task fits one of these flows, follow it exactly:
+Gdy zadanie pasuje do jednego z tych flowów, śledź go dokładnie:
 
-- `new-feature` — full multi-agent (analyst → architect → dev + test in parallel → review + audit → docs)
-- `bug-fix` — failing test first, smallest fix, regression test
-- `refactor` — characterisation tests pin behaviour
+- `new-feature` — pełny multi-agent (analyst → architect → dev + test równolegle → review + audit → docs)
+- `bug-fix` — najpierw failing test, najmniejszy fix, regression test
+- `refactor` — characterisation tests przypinają behaviour
 - `new-library` — generator + ADR + docs
 - `tech-debt` — scoped, measurable
 - `incident-response` — speed > polish
-- `documentation-audit` — scan code + docs, produce report, regenerate from report
-- `spec-driven` — phased SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/implement`), adapted from [github/spec-kit](https://github.com/github/spec-kit)
+- `documentation-audit` — skanuj code + docs, produkuj raport, regeneruj z raportu
+- `spec-driven` — fazowy SDD (`/specify` → `/clarify` → `/plan` → `/tasks` → `/implement`), zaadaptowany z [github/spec-kit](https://github.com/github/spec-kit)
 
-The full set lives in [`.ai/workflows/`](../.ai/workflows/).
+Pełny set żyje w [`.ai/workflows/`](../.ai/workflows/).
 
 ## External skills
 
-Curated third-party skills from <https://skills.sh/> that complement our stack are catalogued in [`.ai/external-skills.md`](../.ai/external-skills.md). **Nothing is installed by default**; install per-developer via `npx skillsadd <repo>`. Project rules in `.ai/rules/` always win when a skill conflicts.
+Kuratorowane third-party skille z <https://skills.sh/>, które komplementują nasz stack, są skatalogowane w [`.ai/external-skills.md`](../.ai/external-skills.md). **Nic nie jest zainstalowane domyślnie**; instaluj per-developer przez `npx skillsadd <repo>`. Reguły projektu w `.ai/rules/` zawsze wygrywają gdy skill konfliktuje.
 
-## Validation gate (before reporting Done)
+## Validation gate (przed raportowaniem Done)
 
 ```
 pnpm affected:lint
@@ -126,14 +126,14 @@ pnpm typecheck
 pnpm affected:test
 pnpm affected:e2e
 pnpm affected:build
-pnpm ai:validate      # checks .ai/, .claude/, .github/instructions, .github/prompts parity
+pnpm ai:validate      # sprawdza parytet .ai/, .claude/, .github/instructions, .github/prompts
 ```
 
-If any step fails, you are **not** done. Route the failure back to the producing agent or the user.
+Jeśli którykolwiek krok zawiedzie, **nie** jesteś done. Skieruj fail z powrotem do producing agent lub użytkownika.
 
 ## End-of-turn
 
-Always emit one of:
+Zawsze emituj jeden z:
 
 ```yaml
 done:

@@ -3,27 +3,27 @@ applyTo: '**'
 description: AI Studio core rules — applies to every file
 ---
 
-# Core rules (Copilot scope: every file)
+# Reguły core (Copilot scope: każdy plik)
 
-Full text: [`.ai/rules/core.md`](../../.ai/rules/core.md). Don't paraphrase from memory — open the file when in doubt.
+Pełny tekst: [`.ai/rules/core.md`](../../.ai/rules/core.md). Nie parafrazuj z pamięci — otwórz plik, gdy masz wątpliwości.
 
-## You MUST
+## MUSISZ
 
-1. Read the touched file before claiming knowledge of it.
-2. Make the smallest reasonable change.
-3. Cite files as `path:line`.
-4. Keep `.ai/`, `.claude/` and `.github/instructions|prompts|chatmodes` in sync — they're the universal-rules + thin-wrappers architecture.
-5. End every multi-step turn with a `done:` or `blocked:` block.
-6. **Plan-first generation** — for anything touching ≥ 2 files OR changing behaviour, the orchestrator writes a plan markdown (`docs/ai-workflow/plans/<date>-<slug>.md` or `docs/analytical/specs/<slug>/plan.md`) BEFORE the first specialist delegation. Specialists refuse delegations without `plan:` + `task_id:` (see `.ai/rules/core.md` §7).
+1. Przeczytać touched plik zanim ogłosisz że go znasz.
+2. Robić najmniejszą rozsądną zmianę.
+3. Cytować pliki jako `path:line`.
+4. Trzymać `.ai/`, `.claude/` i `.github/instructions|prompts|chatmodes` w sync — to architektura universal-rules + thin-wrappers.
+5. Zakańczać każdy multi-step turn blokiem `done:` lub `blocked:`.
+6. **Plan-first generation** — dla wszystkiego co dotyka ≥ 2 plików LUB zmienia behaviour, orchestrator pisze plan markdown (`docs/ai-workflow/plans/<date>-<slug>.md` lub `docs/analytical/specs/<slug>/plan.md`) PRZED pierwszą delegacją specjalisty. Specjaliści odrzucają delegacje bez `plan:` + `task_id:` (patrz `.ai/rules/core.md` §7).
 
-## You MUST NOT
+## NIE WOLNO
 
-- Invent file paths, function names, package versions or APIs.
-- Bypass git hooks (`--no-verify`).
-- Commit secrets to any tracked file (including `.ai/`, `.github/`, docs).
-- Mark a task done while any validator (lint, typecheck, test, e2e, build) is red.
-- Bundle a refactor with a feature or bug fix.
-- Generate code, docs, tests, or scenarios as a specialist without an orchestrator-owned plan markdown referenced in your delegation.
+- Wymyślać ścieżek plików, nazw funkcji, wersji pakietów ani API.
+- Bypassować git hooków (`--no-verify`).
+- Commitować sekretów do jakiegokolwiek tracked file (w tym `.ai/`, `.github/`, docs).
+- Markować taska jako done dopóki jakikolwiek walidator (lint, typecheck, test, e2e, build) jest czerwony.
+- Bundlować refactora z feature lub bug fixem.
+- Generować kodu, docs, testów ani scenariuszy jako specjalista bez orchestrator-owned plan markdown referencjonowanego w twojej delegacji.
 
 ## Definition of Done
 
@@ -36,4 +36,4 @@ pnpm affected:build
 pnpm ai:validate
 ```
 
-All green + docs/ADR updated where behaviour changed + Conventional Commit message.
+Wszystko zielone + docs/ADR zaktualizowane gdzie behaviour się zmienił + Conventional Commit message.

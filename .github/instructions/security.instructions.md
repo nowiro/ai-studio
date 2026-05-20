@@ -3,47 +3,47 @@ applyTo: '**'
 description: Security rules — secrets, sanitisation, AI surfaces
 ---
 
-# Security (Copilot scope: every file)
+# Security (Copilot scope: każdy plik)
 
-Full text: [`.ai/rules/security.md`](../../.ai/rules/security.md).
+Pełny tekst: [`.ai/rules/security.md`](../../.ai/rules/security.md).
 
-## Secrets
+## Sekrety
 
-- **Never** put API keys / OAuth secrets / service-account JSON in source, environment files shipped to client, `.ai/`, `.github/`, commit messages, ADRs or test fixtures.
-- Local secrets live in `.env.local` (gitignored). Production secrets live in the platform's secret manager.
-- Client-side AI calls go through a **server-side proxy** (Cloud Function / Genkit flow).
+- **Nigdy** nie umieszczaj API keys / OAuth secrets / service-account JSON w source, environment files shipowanych do klienta, `.ai/`, `.github/`, commit messages, ADRs ani test fixtures.
+- Sekrety lokalne żyją w `.env.local` (gitignored). Sekrety produkcyjne żyją w secret managerze platformy.
+- Client-side AI calls idą przez **server-side proxy** (Cloud Function / Genkit flow).
 
-## Input handling
+## Obsługa wejścia
 
-- Sanitise URLs with `DomSanitizer` before binding to `[innerHTML]`, `[src]`, `[href]`, `[style]`.
-- Validate every external payload with **Zod** at the boundary. Reject before it reaches stores.
-- File uploads: enforce MIME + size **on the server**.
-- Forms POST endpoints with CSRF protection (handled by HTTP interceptor).
+- Sanityzuj URLs przez `DomSanitizer` przed bindowaniem do `[innerHTML]`, `[src]`, `[href]`, `[style]`.
+- Waliduj każdy external payload przez **Zod** na granicy. Odrzucaj zanim dotrze do stores.
+- File uploads: wymuszaj MIME + size **na serwerze**.
+- Formy POSTują endpoints z ochroną CSRF (handled by HTTP interceptor).
 
-## Output handling
+## Obsługa wyjścia
 
-- No PII in logs. `LoggerService` redacts emails / tokens / GUIDs.
-- Generic user-facing error messages; details to server log.
-- No third-party `<script>` tags. Use Angular's resource APIs.
+- Żadnego PII w logach. `LoggerService` redactuje emails / tokens / GUIDs.
+- Generyczne user-facing error messages; detale do server log.
+- Żadnych third-party `<script>` tagów. Używaj resource APIs Angulara.
 
 ## AI-specific
 
-- Treat **every** model output as untrusted text. Render via interpolation, not `[innerHTML]`. Markdown output → sanitise via `DOMPurify`.
-- Tool calls that mutate state require **explicit user confirmation** in the UI.
-- Memory and context files are read-only for agents in production runs. Writes go through PRs.
+- Traktuj **każdy** output modelu jako untrusted text. Renderuj przez interpolację, nie `[innerHTML]`. Markdown output → sanityzuj przez `DOMPurify`.
+- Tool calls mutujące state wymagają **jawnego user confirmation** w UI.
+- Pliki memory i context są read-only dla agentów w production runs. Zapisy idą przez PR.
 
-## Dependencies
+## Zależności
 
-- `pnpm audit --prod` runs in CI. High/critical advisories block merge until triaged.
-- New dependencies need an entry in [`docs/architecture/dependencies.md`](../../docs/architecture/dependencies.md).
+- `pnpm audit --prod` uruchamia się w CI. High/critical advisories blokują merge do triażu.
+- Nowe zależności wymagają wpisu w [`docs/architecture/dependencies.md`](../../docs/architecture/dependencies.md).
 
-## When triggered (Copilot)
+## Kiedy triggerowane (Copilot)
 
-If you find yourself about to write code that:
+Jeśli łapiesz się na pisaniu kodu, który:
 
-- reads `process.env.*` in a file under `apps/<app>/src/`,
-- assigns to `[innerHTML]`,
-- imports a `<script>` tag,
-- adds a new dependency,
+- czyta `process.env.*` w pliku pod `apps/<app>/src/`,
+- przypisuje do `[innerHTML]`,
+- importuje `<script>` tag,
+- dodaje nową dependency,
 
-**stop and ask the user first**, citing this rule.
+**stop i pytaj użytkownika najpierw**, cytując tę regułę.
