@@ -2,14 +2,14 @@
 id: workflow.documentation-audit
 title: Documentation audit
 type: workflow
-trigger: 'scheduled (monthly) OR docs drift suspected OR `audit-docs` invoked'
+trigger: 'scheduled (monthly) OR docs drift suspected OR wywołane `audit-docs`'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: Documentation audit
 
-Closes the loop between code and docs. Produces a **report**, then optionally **regenerates** docs from the report and **derives E2E scenarios** from the affected specs.
+Zamyka loop między kodem a docs. Produkuje **raport**, potem opcjonalnie **regeneruje** docs z raportu i **wyprowadza** E2E scenariusze z affected specs.
 
 ```mermaid
 flowchart LR
@@ -27,77 +27,77 @@ flowchart LR
     O --> U([Done / Issues opened])
 ```
 
-## Steps
+## Kroki
 
 ### 0. Plan
 
-If the audit produces ≥ 1 must-fix or any regeneration is required, the Orchestrator creates `docs/ai-workflow/plans/<YYYY-MM-DD>-doc-audit-<slug>.md` from the template before delegating to doc-writer or test-scenario-author. The plan tasks reference the audit report path under `inputs:`. A read-only audit run (no regeneration) is exempt — the report itself is the deliverable.
+Jeśli audit produkuje ≥ 1 must-fix lub jakakolwiek regeneracja jest wymagana, Orchestrator tworzy `docs/ai-workflow/plans/<YYYY-MM-DD>-doc-audit-<slug>.md` z templatu zanim deleguje do doc-writer lub test-scenario-author. Plan tasks referencjonują audit report path pod `inputs:`. Read-only audit run (bez regeneracji) jest exempt — sam raport jest deliverablem.
 
 ### 1. Scan (deterministic, no LLM)
 
-Orchestrator runs:
+Orchestrator uruchamia:
 
 ```bash
-pnpm docs:scan       # → tmp/docs-scan.json     (every md file, frontmatter, headings, links)
-pnpm docs:api        # → tmp/public-api.json    (every export from libs/* and apps/*)
+pnpm docs:scan       # → tmp/docs-scan.json     (każdy md plik, frontmatter, headings, links)
+pnpm docs:api        # → tmp/public-api.json    (każdy export z libs/* i apps/*)
 pnpm docs:audit      # → tmp/doc-audit-<date>.md (combined report)
 ```
 
-Done when the three artefacts exist.
+Done gdy trzy artefakty istnieją.
 
 ### 2. Triage (Doc Auditor)
 
-Orchestrator delegates to **doc-auditor**. The auditor:
+Orchestrator deleguje do **doc-auditor**. Auditor:
 
 - Reads `tmp/doc-audit-<date>.md`.
-- Verifies must-fix findings against the touched code (no rewrite without verification).
-- Emits the `audit:` YAML block with classified findings.
+- Weryfikuje must-fix findings przeciw touched code (żadnego rewrite bez weryfikacji).
+- Emituje blok `audit:` YAML z klasyfikowanymi findings.
 
 ### 3. Decide
 
-Orchestrator inspects the verdict:
+Orchestrator inspectuje verdict:
 
-| Findings present                              | Next                                              |
-| --------------------------------------------- | ------------------------------------------------- |
-| Only nice-to-have                             | Open one issue tagged `type:docs`; close workflow |
-| Must-fix or should-fix                        | Continue to step 4                                |
-| Spec drift (AC reflected in spec but not E2E) | Also continue to step 5                           |
+| Findings present                                   | Dalej                                                 |
+| -------------------------------------------------- | ----------------------------------------------------- |
+| Tylko nice-to-have                                 | Otwórz jedno issue tagged `type:docs`; close workflow |
+| Must-fix lub should-fix                            | Continue do kroku 4                                   |
+| Spec drift (AC odzwierciedlone w spec ale nie E2E) | Też continue do kroku 5                               |
 
 ### 4. Regenerate (Doc Writer)
 
-Doc-writer rewrites the affected pages, citing the audit ids in the PR description. Doc-auditor re-runs `pnpm docs:audit` and confirms the delta.
+Doc-writer przepisuje affected pages, cytując audit ids w opisie PR. Doc-auditor re-runs `pnpm docs:audit` i potwierdza delta.
 
 ### 5. Refresh scenarios (Scenario Author + Test Engineer)
 
-If specs touched in step 4 contain Given/When/Then, run:
+Jeśli specs touched w kroku 4 zawierają Given/When/Then, uruchom:
 
 ```bash
 pnpm test:scenarios
 ```
 
-Scenario-author moves new skeletons into `apps/<app>-e2e/src/specs/`. Test-engineer fills in fixtures and assertions. Orchestrator runs `pnpm exec nx affected -t e2e`.
+Scenario-author przenosi nowe skeletons do `apps/<app>-e2e/src/specs/`. Test-engineer wypełnia fixtures i assertions. Orchestrator uruchamia `pnpm exec nx affected -t e2e`.
 
 ### 6. Review
 
-Code-reviewer pass on the docs+tests PR. No security-auditor needed unless the audit surfaced security-doc drift.
+Code-reviewer pass na docs+tests PR. Żaden security-auditor potrzebny chyba że audit ujawnił security-doc drift.
 
 ### 7. Wrap
 
-Orchestrator emits the final `done:` block with:
+Orchestrator emituje finalny blok `done:` z:
 
 - Audit report path.
-- Issues opened or PR merged (with delta).
+- Issues otwarte lub PR zmergowany (z delta).
 - New / updated scenarios run summary.
 
 ## Cadence
 
-- **Monthly** scheduled run (GitHub Actions cron — see `.github/workflows/docs-audit.yml`).
-- **Ad-hoc** via `audit-docs` slash command / Copilot prompt.
-- **On-demand** when the Orchestrator detects a doc lint failure on an unrelated PR.
+- **Monthly** scheduled run (GitHub Actions cron — patrz `.github/workflows/docs-audit.yml`).
+- **Ad-hoc** przez slash command `audit-docs` / Copilot prompt.
+- **On-demand** gdy Orchestrator wykryje doc lint failure na nieskorelowanym PR.
 
 ## Anti-patterns
 
-- ❌ Rewriting docs without first reading the touched code.
-- ❌ Bundling doc rewrites with feature work.
-- ❌ Generating dozens of micro-issues — group by area / library.
-- ❌ Deleting docs that turn out to be wrong — mark `Status: superseded` and link the replacement.
+- ❌ Przepisywanie docs bez najpierw przeczytania touched code.
+- ❌ Bundlowanie doc rewrites z feature work.
+- ❌ Generowanie dziesiątek micro-issues — grupuj wg area / library.
+- ❌ Usuwanie docs, które okażą się złe — oznacz `Status: superseded` i linkuj replacement.

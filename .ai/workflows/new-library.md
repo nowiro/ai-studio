@@ -2,38 +2,38 @@
 id: workflow.new-library
 title: New Library
 type: workflow
-trigger: 'new lib needed in the monorepo'
+trigger: 'nowy lib potrzebny w monorepo'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: New Library
 
-A library is added when an idea is needed by ≥ 2 consumers, or when a single consumer's surface is large enough that isolation is worth it.
+Library jest dodana, gdy idea jest potrzebna przez ≥ 2 konsumentów, lub gdy surface pojedynczego konsumenta jest na tyle duży, że izolacja jest warta.
 
 ## Decision matrix
 
-| Consumers | Surface (LOC) | Verdict                          |
-| --------- | ------------- | -------------------------------- |
-| 1         | < 200         | Don't extract; keep in consumer. |
-| 1         | ≥ 200         | Extract for isolation + testing. |
-| ≥ 2       | any           | Extract.                         |
+| Konsumenci | Surface (LOC) | Verdict                                |
+| ---------- | ------------- | -------------------------------------- |
+| 1          | < 200         | Nie ekstraktuj; trzymaj w konsumencie. |
+| 1          | ≥ 200         | Ekstraktuj dla izolacji + testowania.  |
+| ≥ 2        | any           | Ekstraktuj.                            |
 
-## Steps
+## Kroki
 
 ### 0. Plan
 
-Orchestrator creates `docs/ai-workflow/plans/<YYYY-MM-DD>-lib-<name>.md` from the template. Tasks: ADR (architect) → generate via Nx MCP → tag verification → CODEOWNERS update → first usage example → docs. Status `accepted` once the user confirms the lib placement and tags.
+Orchestrator tworzy `docs/ai-workflow/plans/<YYYY-MM-DD>-lib-<name>.md` z templatu. Tasks: ADR (architect) → generate przez Nx MCP → tag verification → CODEOWNERS update → first usage example → docs. Status `accepted` gdy użytkownik potwierdzi lib placement i tags.
 
 ### 1. ADR
 
-Architect produces an ADR with the lib's:
+Architect produkuje ADR z:
 
-- name,
+- nazwa,
 - scope tag (`scope:feature|ui|data|util|shared`),
 - type tag (`type:feature|ui|data-access|util`),
 - public API surface,
-- ownership (CODEOWNERS update).
+- ownership (update CODEOWNERS).
 
 ### 2. Generate
 
@@ -46,16 +46,16 @@ nx g @nx/angular:lib <name> \
   --buildable=false
 ```
 
-Library name pattern: `@ai-studio/<scope>-<area>` for ts paths; folder `libs/<scope>/<area>`.
+Library name pattern: `@ai-studio/<scope>-<area>` dla ts paths; folder `libs/<scope>/<area>`.
 
 ### 3. Skeleton
 
 ```
 libs/<scope>/<area>/
   src/
-    index.ts            ← public API, re-exports only
+    index.ts            ← public API, tylko re-exports
     lib/
-      <area>.module.ts  ← if needed; usually a `provideXxx()` function instead
+      <area>.module.ts  ← jeśli potrzebny; zwykle funkcja `provideXxx()` zamiast
       <area>.service.ts
       <area>.types.ts
   README.md
@@ -66,19 +66,19 @@ libs/<scope>/<area>/
 
 ### 4. Public API contract
 
-`src/index.ts` is the **only** entry point. Consumers must not deep-import.
+`src/index.ts` jest **jedynym** entry point. Konsumenci nie mogą deep-importować.
 
 ### 5. Tests
 
-Test-engineer adds:
+Test-engineer dodaje:
 
-- unit tests for every export,
-- one integration test per public consumer scenario.
+- unit testy dla każdego export,
+- jeden integration test per public consumer scenario.
 
 ### 6. Documentation
 
-Doc-writer adds a `README.md` to the lib (purpose, public API, usage example, ownership) and links it from `docs/architecture/dependencies.md`.
+Doc-writer dodaje `README.md` do lib (purpose, public API, usage example, ownership) i linkuje go z `docs/architecture/dependencies.md`.
 
 ### 7. Wire up
 
-If the lib replaces existing code, the migration is its own follow-up PR — not bundled.
+Jeśli lib zastępuje istniejący kod, migracja jest jej własnym follow-up PR — nie bundlowana.

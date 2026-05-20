@@ -4,7 +4,7 @@ title: Bug Fix
 type: workflow
 trigger: 'reproducible bug report'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: Bug Fix
@@ -12,56 +12,56 @@ version: 1.0.0
 ```mermaid
 flowchart LR
     R[Bug report] --> O[Orchestrator]
-    O --> TE1[Test Engineer: write failing test]
+    O --> TE1[Test Engineer: napisz failing test]
     TE1 -->|red| O
-    O --> FE[Developer: minimal fix]
+    O --> FE[Developer: minimalny fix]
     FE --> O
     O --> TE2[Test Engineer: confirm green + regression test]
     TE2 --> O
     O --> CR[Code Reviewer]
     CR --> O
-    O --> DW[Doc Writer: changelog only]
+    O --> DW[Doc Writer: tylko changelog]
     DW --> O
 ```
 
-## Steps
+## Kroki
 
 ### 0. Plan
 
-Orchestrator creates `docs/ai-workflow/plans/<YYYY-MM-DD>-<bug-slug>.md` from the template. The task table lists at minimum: `T001 reproduce` (test-engineer), `T002 fix` (frontend or backend), `T003 regression test` (test-engineer), `T004 review` (code-reviewer). For security bugs, add `T05 security audit`. Status `accepted` once the user confirms the bug is real.
+Orchestrator tworzy `docs/ai-workflow/plans/<YYYY-MM-DD>-<bug-slug>.md` z templatu. Task table wymienia minimum: `T001 reproduce` (test-engineer), `T002 fix` (frontend lub backend), `T003 regression test` (test-engineer), `T004 review` (code-reviewer). Dla security bugów, dodaj `T05 security audit`. Status `accepted` gdy użytkownik potwierdzi, że bug jest realny.
 
 ### 1. Reproduce
 
-Orchestrator delegates to **test-engineer** with the bug report. Test engineer:
+Orchestrator deleguje do **test-engineer** z bug report. Test engineer:
 
-- Writes a **failing test** at the lowest reasonable layer (unit > integration > E2E).
-- Confirms it reproduces the bug locally.
-- Hands the failing test back.
+- Pisze **failing test** na najniższej rozsądnej warstwie (unit > integration > E2E).
+- Potwierdza, że reprodukuje buga lokalnie.
+- Oddaje failing test wstecz.
 
-If the bug can't be reproduced, Orchestrator pushes back to the user with a request for steps.
+Jeśli bug nie da się zreprodukować, Orchestrator pushuje wstecz do użytkownika z requestem o kroki.
 
 ### 2. Fix
 
-Orchestrator delegates to the appropriate developer agent with:
+Orchestrator deleguje do odpowiedniego developer agent z:
 
-- the failing test,
-- the offending file(s):line(s) (from the test stack trace),
-- a strict instruction: **smallest possible diff**.
+- failing test,
+- offending file(s):line(s) (z test stack trace),
+- ścisłą instrukcją: **najmniejszy possible diff**.
 
 ### 3. Verify
 
-Test-engineer reruns the failing test (now green) plus the full affected test suite and adds at least one regression test that covers the original failure mode without depending on the fix's internal structure.
+Test-engineer reruns failing test (teraz green) plus full affected test suite i dodaje przynajmniej jeden regression test, który pokrywa oryginalny failure mode bez polegania na internal structure fixu.
 
 ### 4. Review
 
-Code-reviewer pass. Security-auditor only if the bug was a security issue.
+Code-reviewer pass. Security-auditor tylko jeśli bug był security issue.
 
 ### 5. Document
 
-Doc-writer adds an entry to `CHANGELOG.md` (via conventional commit footer); only updates docs if user-visible behaviour changed.
+Doc-writer dodaje wpis do `CHANGELOG.md` (przez conventional commit footer); aktualizuje docs tylko jeśli user-visible behaviour się zmienił.
 
 ## Anti-patterns
 
-- ❌ Fixing without a failing test first.
-- ❌ Drive-by refactors. Bug-fix PRs are scoped to the bug.
-- ❌ Closing the issue before the regression test ships.
+- ❌ Fixowanie bez failing test najpierw.
+- ❌ Drive-by refactory. Bug-fix PR są scoped do buga.
+- ❌ Zamykanie issue przed shipem regression test.

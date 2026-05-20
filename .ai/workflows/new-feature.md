@@ -2,9 +2,9 @@
 id: workflow.new-feature
 title: New Feature
 type: workflow
-trigger: "user asks to build a new capability that doesn't exist yet"
+trigger: 'użytkownik prosi o zbudowanie nowego capability, który jeszcze nie istnieje'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: New Feature
@@ -16,7 +16,7 @@ flowchart LR
     A -->|spec| O
     O --> AR[Architect]
     AR -->|ADR + generator plan| O
-    O -->|nx generate via MCP| O
+    O -->|nx generate przez MCP| O
     O -.parallel.-> FE[Frontend Dev]
     O -.parallel.-> BE[Backend Dev]
     O -.parallel.-> TE[Test Engineer]
@@ -29,40 +29,40 @@ flowchart LR
     O --> U
 ```
 
-## Steps
+## Kroki
 
 ### 0. Plan
 
-Orchestrator creates `docs/ai-workflow/plans/<YYYY-MM-DD>-<feature-slug>.md` from the template. Task rows for analyst/architect/developer/test-engineer/reviewer/auditor/doc-writer (parallel where independent). Set `status: accepted` once the user agrees with the plan. For larger greenfield work, prefer the dedicated SDD flow (`/specify` → `/plan` → `/tasks` → `/implement`) which already creates `docs/analytical/specs/<slug>/plan.md`.
+Orchestrator tworzy `docs/ai-workflow/plans/<YYYY-MM-DD>-<feature-slug>.md` z templatu. Task rows dla analyst/architect/developer/test-engineer/reviewer/auditor/doc-writer (parallel gdzie independent). Ustaw `status: accepted` gdy użytkownik zgodzi się z planem. Dla większych greenfield work, wybieraj dedicated SDD flow (`/specify` → `/plan` → `/tasks` → `/implement`), który już tworzy `docs/analytical/specs/<slug>/plan.md`.
 
 ### 1. Clarify
 
-Orchestrator delegates to **analyst**.
-Done when `docs/analytical/specs/<date>-<slug>.md` exists with measurable acceptance criteria.
+Orchestrator deleguje do **analyst**.
+Done gdy `docs/analytical/specs/<date>-<slug>.md` istnieje z measurable acceptance criteria.
 
 ### 2. Design
 
-Orchestrator delegates to **architect**.
-Done when `docs/adr/NNNN-<slug>.md` is `Status: accepted` and includes a generator plan.
+Orchestrator deleguje do **architect**.
+Done gdy `docs/adr/NNNN-<slug>.md` jest `Status: accepted` i zawiera generator plan.
 
 ### 3. Scaffold
 
-Orchestrator runs the generator plan via **nx** + **angular-cli** MCP servers. No hand-edits to `project.json`.
-Done when `nx graph` shows the new project(s) with the right tags.
+Orchestrator uruchamia generator plan przez serwery **nx** + **angular-cli** MCP. Żadnych hand-edits do `project.json`.
+Done gdy `nx graph` pokazuje nowe projekty z poprawnymi tagami.
 
 ### 4. Implement (parallel)
 
-Two delegations in the same turn:
+Dwie delegacje w tym samym turn:
 
-- **frontend-developer** — UI + integration with services.
-- **backend-developer** — server routes / Genkit flows (only if the spec needs them).
-- **test-engineer** — write tests against the developer's hand-off block (runs in parallel after the dev hand-off).
+- **frontend-developer** — UI + integracja z services.
+- **backend-developer** — server routes / Genkit flows (tylko jeśli spec ich potrzebuje).
+- **test-engineer** — pisze testy przeciw developer hand-off block (uruchamia się równolegle po dev hand-off).
 
-Done when each developer's hand-off block declares tests are needed and test-engineer reports `verdict: pass`.
+Done gdy każdego developer hand-off block deklaruje że testy są potrzebne i test-engineer raportuje `verdict: pass`.
 
 ### 5. Validate
 
-Orchestrator runs:
+Orchestrator uruchamia:
 
 ```bash
 pnpm affected:lint
@@ -72,33 +72,33 @@ pnpm affected:e2e
 pnpm typecheck
 ```
 
-Failures route back to the responsible agent.
+Failures route wstecz do responsible agent.
 
 ### 6. Review
 
-Two delegations in parallel:
+Dwie delegacje równolegle:
 
 - **code-reviewer** — convention + correctness.
-- **security-auditor** — only if the change touches auth / input / output / deps / CSP / AI surfaces.
+- **security-auditor** — tylko jeśli zmiana dotyka auth / input / output / deps / CSP / AI surfaces.
 
-Done when both verdicts are `approved` / `pass`.
+Done gdy oba verdicts są `approved` / `pass`.
 
 ### 7. Document
 
-Orchestrator delegates to **doc-writer** for any public-API or behaviour change.
-Done when the relevant `docs/technical/*.md` is updated and the run log entry exists.
+Orchestrator deleguje do **doc-writer** dla każdej public-API lub behaviour change.
+Done gdy odpowiedni `docs/technical/*.md` jest zaktualizowany i run log entry istnieje.
 
 ### 8. Wrap
 
-Orchestrator emits the final `done:` block to the user with:
+Orchestrator emituje finalny blok `done:` do użytkownika z:
 
-- list of changed files (with paths),
+- lista zmienionych plików (z paths),
 - coverage delta,
-- link to the ADR,
-- next steps if any (e.g. release).
+- link do ADR,
+- next steps jeśli są (np. release).
 
 ## Common deviations
 
-- **No new abstraction needed** → skip step 2 (architect). Orchestrator notes this explicitly and continues from step 4.
-- **Spike / throwaway** → run step 4 only, label PR `spike`. Doc step replaced by a one-line note in the issue.
-- **AI feature touching server keys** → mandatory security-auditor pass even if checklist conditions don't trigger.
+- **Nie potrzebna nowa abstrakcja** → pomiń krok 2 (architect). Orchestrator zaznacza to jawnie i kontynuuje od kroku 4.
+- **Spike / throwaway** → uruchom tylko krok 4, label PR `spike`. Doc step zastąpiony one-line notką w issue.
+- **AI feature dotykający server keys** → obowiązkowy security-auditor pass nawet jeśli checklist conditions nie triggerują.

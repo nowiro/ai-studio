@@ -2,47 +2,47 @@
 id: workflow.tech-debt
 title: Tech Debt
 type: workflow
-trigger: 'issue tagged tech-debt or refactor opportunity surfaced by audit'
+trigger: 'issue tagged tech-debt lub refactor opportunity ujawniony przez audit'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: Tech Debt
 
-Tech debt PRs are scoped, measurable, and never bundled with feature work.
+Tech debt PR są scoped, measurable, i nigdy bundlowane z feature work.
 
-## Steps
+## Kroki
 
 ### 0. Plan
 
-Orchestrator creates `docs/ai-workflow/plans/<YYYY-MM-DD>-debt-<slug>.md` from the template before any code change. Tasks: triage → quantify (architect or orchestrator) → execute one PR at a time (developer + test-engineer + reviewer per PR row in the task table). Status `accepted` once the user confirms the debt is worth paying down now.
+Orchestrator tworzy `docs/ai-workflow/plans/<YYYY-MM-DD>-debt-<slug>.md` z templatu przed jakąkolwiek zmianą kodu. Tasks: triage → quantify (architect lub orchestrator) → execute jeden PR at a time (developer + test-engineer + reviewer per PR row w task table). Status `accepted` gdy użytkownik potwierdzi, że debt jest wart spłaty teraz.
 
 ### 1. Triage
 
-Orchestrator pulls the debt entry from `docs/architecture/tech-debt.md` and confirms it still applies. Stale entries are closed without code changes.
+Orchestrator ciągnie debt entry z `docs/architecture/tech-debt.md` i potwierdza, że nadal się stosuje. Stale entries są zamykane bez zmian kodu.
 
 ### 2. Quantify
 
-Architect (or Orchestrator if trivial) writes a 1-pager that answers:
+Architect (lub Orchestrator jeśli trywialne) pisze 1-pager, który odpowiada na:
 
-- What costs us today? (concrete examples + numbers if possible.)
-- What's the cheapest fix? Cost in agent-hours / risk.
-- What do we give up by **not** fixing? (let it ride, sometimes valid.)
+- Co kosztuje nas dzisiaj? (konkretne przykłady + liczby jeśli możliwe.)
+- Co jest najtańszym fixem? Koszt w agent-hours / risk.
+- Co tracimy **nie** fixując? (let it ride, czasem valid.)
 
 ### 3. Sequence
 
-If the fix takes > 1 PR, list the PRs in order in the 1-pager. Each PR keeps the system green.
+Jeśli fix bierze > 1 PR, wymień PR w kolejności w 1-pager. Każdy PR trzyma system zielony.
 
 ### 4. Execute
 
-Standard developer + test-engineer + reviewer chain, one PR at a time.
+Standard developer + test-engineer + reviewer chain, jeden PR at a time.
 
 ### 5. Close
 
-Update `docs/architecture/tech-debt.md`: move the entry to "resolved" with a link to the PRs.
+Update `docs/architecture/tech-debt.md`: przenieś entry do "resolved" z linkiem do PR.
 
 ## Don'ts
 
-- ❌ Mixing debt cleanup with feature delivery in one PR.
-- ❌ Refactors without a tech-debt entry to point to.
-- ❌ Letting debt PRs sit open longer than 5 working days.
+- ❌ Mieszanie debt cleanup z feature delivery w jednym PR.
+- ❌ Refactory bez tech-debt entry do wskazania.
+- ❌ Pozwalanie debt PR siedzieć otwartym dłużej niż 5 working days.

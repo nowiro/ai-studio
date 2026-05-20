@@ -2,14 +2,14 @@
 id: workflow.refactor
 title: Refactor
 type: workflow
-trigger: 'non-behavioural code change for readability, cohesion or performance'
+trigger: 'non-behavioural code change dla readability, cohesion lub performance'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: Refactor
 
-A refactor changes structure without changing observable behaviour.
+Refactor zmienia strukturę bez zmiany observable behaviour.
 
 ```mermaid
 flowchart LR
@@ -22,39 +22,39 @@ flowchart LR
     CR --> O
 ```
 
-## Steps
+## Kroki
 
 ### 0. Plan
 
-Orchestrator creates `docs/ai-workflow/plans/<YYYY-MM-DD>-refactor-<slug>.md` from the template. Tasks: characterisation tests (test-engineer) → refactor (developer) → re-validate tests (test-engineer) → review. Status `accepted` once the user agrees the change is in-scope (no behaviour drift).
+Orchestrator tworzy `docs/ai-workflow/plans/<YYYY-MM-DD>-refactor-<slug>.md` z templatu. Tasks: characterisation tests (test-engineer) → refactor (developer) → re-validate tests (test-engineer) → review. Status `accepted` gdy użytkownik zgodzi się że zmiana jest in-scope (żaden behaviour drift).
 
 ### 1. Decide scope
 
-If the refactor crosses lib boundaries → **architect** writes an ADR. Otherwise skip.
+Jeśli refactor przekracza lib boundaries → **architect** pisze ADR. W przeciwnym razie pomiń.
 
 ### 2. Pin behaviour
 
-Test-engineer adds **characterisation tests** for any behaviour not yet covered, run before the refactor lands. These tests must pass on the pre-refactor code first.
+Test-engineer dodaje **characterisation tests** dla każdego behaviour nie pokrytego, uruchomione przed wylądowaniem refactora. Te testy muszą przejść na pre-refactor code najpierw.
 
 ### 3. Refactor
 
-Developer makes the change. Diff should:
+Developer robi zmianę. Diff powinien:
 
-- not modify any test (other than rename/move),
-- not modify any public API (selectors, exports, route paths),
-- compile and pass all tests on the first try.
+- nie modyfikować żadnego testu (poza rename/move),
+- nie modyfikować żadnego public API (selectors, exports, route paths),
+- skompilować się i przejść wszystkie testy za pierwszym razem.
 
 ### 4. Validate
 
-Orchestrator runs the full affected suite plus `nx graph` diff to confirm no boundary changes.
+Orchestrator uruchamia pełen affected suite plus `nx graph` diff żeby potwierdzić brak boundary changes.
 
 ### 5. Review
 
-Code-reviewer checks that the diff is genuinely behaviour-preserving. Any test change is a red flag.
+Code-reviewer sprawdza, że diff jest genuinely behaviour-preserving. Każda zmiana testu to red flag.
 
 ## Definition of Done
 
-- Public API unchanged (or change is documented in an ADR).
-- All previously-passing tests still pass.
-- Coverage doesn't drop.
-- `nx graph` is the same shape (or strictly simpler).
+- Public API niezmieniony (lub zmiana udokumentowana w ADR).
+- Wszystkie poprzednio-przechodzące testy nadal przechodzą.
+- Coverage nie spada.
+- `nx graph` ma ten sam kształt (lub strictly simpler).
