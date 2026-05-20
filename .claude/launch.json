@@ -1,11 +1,90 @@
 {
+  "$schema": "https://json.schemastore.org/launch.json",
   "version": "0.0.1",
   "configurations": [
+    {
+      "name": "nowiro",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "nowiro:serve"],
+      "port": 4200
+    },
+    {
+      "name": "union-vault",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "union-vault:serve"],
+      "port": 4201
+    },
+    {
+      "name": "pong-game",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "pong-game:serve"],
+      "port": 4202
+    },
     {
       "name": "individual-wizard",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["exec", "nx", "run", "individual-wizard:serve"],
-      "port": 4200
+      "port": 4203
+    },
+    {
+      "name": "tetris-game",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "tetris-game:serve"],
+      "port": 4204
+    },
+    {
+      "name": "tire-shop",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "tire-shop:serve"],
+      "port": 4205
+    },
+    {
+      "name": "library",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "library:serve"],
+      "port": 4206
+    },
+    {
+      "name": "school-journal",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "school-journal:serve"],
+      "port": 4207
+    },
+    {
+      "name": "bookstore",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "bookstore:serve"],
+      "port": 4208
+    },
+    {
+      "name": "tools-shop",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "tools-shop:serve"],
+      "port": 4209
+    },
+    {
+      "name": "toy-shop",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "toy-shop:serve"],
+      "port": 4210
+    },
+    {
+      "name": "dashboard",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "dashboard:serve"],
+      "port": 4211
+    },
+    {
+      "name": "business-wizard",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "business-wizard:serve"],
+      "port": 4212
+    },
+    {
+      "name": "portal",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "portal:serve"],
+      "port": 4220
     }
   ]
 }
