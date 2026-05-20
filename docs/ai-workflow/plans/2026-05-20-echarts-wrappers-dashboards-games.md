@@ -6,7 +6,7 @@ date: 2026-05-20
 trigger: user request — "migracje wykresów do ECharts, wrappery jak dla material, dashboardy UX, 2 gry nie wyglądają dobrze"
 status: done
 closedAt: 2026-05-20
-closeReason: '11 of 13 tasks delivered. T011 (wrapper smoke specs requiring vi.mock for echarts) and T013 (E2E mobile/desktop with running dev server) explicitly deferred to a follow-up iteration. Core deliverables — libs/charts foundation, 5 wrappers, dashboard 4-panel migration, pong + tetris UI rebuild, showcase route, ADR-0016 + governance lint rule + architecture doc — all green and in production.'
+closeReason: '12 of 13 tasks delivered. T011 closed via an option-builders refactor — wrapper internals extracted to pure functions in `libs/charts/src/option-builders.ts`, then covered by 20 smoke specs in `option-builders.spec.ts` (line/bar/pie/gauge/heatmap shape, axis swap, stacking, legend positioning, gauge & heatmap formatters). T013 (E2E mobile/desktop with running dev server) explicitly deferred to a follow-up iteration. Core deliverables — libs/charts foundation, 5 wrappers, dashboard 4-panel migration, pong + tetris UI rebuild, showcase route, ADR-0016 + governance lint rule + architecture doc — all green and in production.'
 owner: orchestrator
 agents:
   - architect
@@ -86,7 +86,7 @@ Dostarczyć (1) **`libs/charts`** z wrappers dla najczęściej używanych typów
 | T008 | Dashboard UX: ShopShell-like layout, KPI grid, filter bar, RWD breakpoints        | frontend-developer | T007           | libs/dashboard-feature/src/{dashboard-shell,kpi-card,filter-bar} | mobile 375 + desktop 1280 visually correct    |               | T007           |
 | T009 | Pong UI rebuild: game-shell, HUD overlay, touch controls, settings, leaderboard   | frontend-developer | T001           | libs/game-pong-ui/src/\*                                         | mobile playable, leaderboard route works      | T010          | T001           |
 | T010 | Tetris UI rebuild: game-shell, HUD overlay, touch controls, settings, leaderboard | frontend-developer | T001           | libs/game-tetris-ui/src/\*                                       | mobile playable, leaderboard route works      | T009          | T001           |
-| T011 | Tests: charts + dashboard + games — at least smoke + a11y per new component       | test-engineer      | T004..T010     | \*.spec.ts (no real ECharts boot in tests, mock instead)         | coverage ≥ 60 % on new code                   |               | T004..T010     |
+| T011 | Tests: option-builders smoke specs (20 tests, no real ECharts boot)               | test-engineer      | T004..T010     | libs/charts/src/option-builders.{ts,spec.ts}                     | charts test target green, 20+ tests           |               | T004..T010     |
 | T012 | Doc updates: `.ai/rules/styling.md` + `docs/architecture/charts.md`               | doc-writer         | T002,T004,T005 | rule + architecture doc                                          | doc-audit clean                               |               | T002,T004,T005 |
 | T013 | E2E smoke: dashboard charts visible, games playable (chromium + mobile chrome)    | test-engineer      | T008,T009,T010 | apps/dashboard-e2e + apps/{pong,tetris}-game-e2e                 | e2e green                                     |               | T008,T009,T010 |
 

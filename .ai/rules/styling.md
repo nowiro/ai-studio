@@ -176,4 +176,4 @@ Wrappers read Material 3 `--mat-sys-*` tokens at render time via `ChartThemeBrid
 
 ### Spec contract
 
-Chart specs **mock** `libs/charts/src/echarts-import.ts` rather than booting the real renderer under jsdom. See `libs/charts/src/theme.spec.ts` for the pattern.
+Each wrapper delegates option building to a pure function in `libs/charts/src/option-builders.ts`. Unit tests target those builders directly (`option-builders.spec.ts`) — no TestBed, no jsdom signal-input quirks. The theme bridge has its own spec (`theme.spec.ts`).

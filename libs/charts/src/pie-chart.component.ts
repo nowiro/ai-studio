@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 
 import { ChartHostComponent } from './chart-host.component.js';
 import type { EChartsOption } from './echarts-import.js';
+import { toPieOption } from './option-builders.js';
 import { ChartThemeBridge } from './theme.js';
 import type { ChartLegend, ChartSlice, ChartTooltip } from './types.js';
 
@@ -32,45 +33,13 @@ export class PieChartComponent {
 
   private readonly theme = inject(ChartThemeBridge);
 
-  protected readonly option = computed<EChartsOption>(() => {
-    const snapshot = this.theme.snapshot();
-    const legend = this.legend();
-    const isDonut = this.variant() === 'donut';
-    const option: EChartsOption = {
-      color: [...snapshot.palette],
-      tooltip: {
-        show: this.tooltip()?.visible !== false,
-        trigger: 'item',
-        backgroundColor: snapshot.background,
-        textStyle: { color: snapshot.foreground, fontFamily: snapshot.fontFamily },
-        formatter: '{b}: {c} ({d}%)',
-      },
-      legend: {
-        show: legend?.visible !== false,
-        orient: legend?.position === 'left' || legend?.position === 'right' ? 'vertical' : 'horizontal',
-        bottom: legend?.position === 'bottom' || !legend?.position ? 0 : undefined,
-        top: legend?.position === 'top' ? 0 : undefined,
-        left: legend?.position === 'left' ? 0 : undefined,
-        right: legend?.position === 'right' ? 0 : undefined,
-        textStyle: { color: snapshot.muted },
-      },
-      series: [
-        {
-          type: 'pie' as const,
-          radius: isDonut ? ['52%', '76%'] : '76%',
-          center: ['50%', '50%'],
-          avoidLabelOverlap: true,
-          label: { show: !isDonut, color: snapshot.muted },
-          labelLine: { show: !isDonut },
-          data: this.slices().map((s) => ({
-            id: s.id,
-            name: s.label,
-            value: s.value,
-            ...(s.color ? { itemStyle: { color: s.color } } : {}),
-          })),
-        },
-      ],
-    };
-    return option;
-  });
+  protected readonly option = computed<EChartsOption>(() =>
+    toPieOption({
+      slices: this.slices(),
+      variant: this.variant(),
+      legend: this.legend(),
+      tooltip: this.tooltip(),
+      theme: this.theme.snapshot(),
+    }),
+  );
 }

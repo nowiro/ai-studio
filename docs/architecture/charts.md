@@ -23,7 +23,14 @@ links:
                       │ plain TS shapes (ChartSeries, ChartAxis, …)
 ┌─────────────────────▼────────────────────────────────────────────┐
 │ libs/charts/src/{line,bar,pie,gauge,heatmap}-chart.component.ts  │
-│  consume signal inputs → compute EChartsOption → push to host    │
+│  thin shims — read signal inputs, delegate to option-builders.ts │
+└─────────────────────┬────────────────────────────────────────────┘
+                      │ args: {…inputs, theme: ChartTheme}
+┌─────────────────────▼────────────────────────────────────────────┐
+│ libs/charts/src/option-builders.ts                               │
+│  PURE functions — toLineOption, toBarOption, toPieOption,        │
+│  toGaugeOption, toHeatmapOption. The ONLY place that knows the   │
+│  ECharts option vocabulary. Unit-tested in isolation.            │
 └─────────────────────┬────────────────────────────────────────────┘
                       │ EChartsOption (internal type, never leaked)
 ┌─────────────────────▼────────────────────────────────────────────┐
@@ -104,22 +111,24 @@ Both are within ADR-0016's budget. Adding a new chart type means adding it to th
 ## How to add a new chart type
 
 1. Pick the new ECharts chart name (e.g. `RadarChart`) and add it to `echarts-import.ts` (`core.use([..., RadarChart])`).
-2. Create `libs/charts/src/radar-chart.component.ts` mirroring the pattern in `pie-chart.component.ts`: signal inputs in plain shapes → `computed<EChartsOption>` → `<ais-chart-host>`.
-3. Export from `libs/charts/src/index.ts`.
-4. Add a smoke spec (mock the import; assert the option shape).
-5. Add a card to `/charts/showcase` so designers can see it.
+2. Add a `toRadarOption(args)` builder in `option-builders.ts` next to the other five. Take `{...inputs, theme: ChartTheme}` and return `EChartsOption`.
+3. Create `libs/charts/src/radar-chart.component.ts` mirroring `pie-chart.component.ts`: signal inputs in plain shapes → `computed(() => toRadarOption({...}))` → `<ais-chart-host>`.
+4. Export the component from `libs/charts/src/index.ts`.
+5. Add a smoke spec block in `option-builders.spec.ts` for `toRadarOption` — assert the option shape with a fixed `TEST_THEME`. No TestBed needed.
+6. Add a card to `/charts/showcase` so designers can see it.
 
 ## How to swap the backend later
 
 ADR-0016's whole point. The ordered checklist:
 
-1. Replace **`libs/charts/src/echarts-import.ts`** with the new backend's init / dispose / resize / option-set primitives. Keep `EChartsInstance` and `EChartsOption` exported under the same names (or rename + update the wrapper imports — single file).
-2. Rewrite the body of each wrapper's `computed(() => …)` to produce the new backend's option object. Public input shapes (`ChartSeries`, `ChartAxis`, `ChartSlice`, `ChartHeatCell`) stay unchanged.
-3. Update `ChartThemeBridge` mapping if the new backend wants a different theme object shape. Consumers don't change.
-4. Bump the ECharts dependency to the new package in `package.json`.
-5. Update the ESLint `no-restricted-imports` pattern in `eslint.config.mjs` to fence off the new backend instead of `echarts/*`.
+1. Replace **`libs/charts/src/echarts-import.ts`** with the new backend's init / dispose / resize / option-set primitives. Keep `EChartsInstance` and `EChartsOption` exported under the same names (or rename + update the option-builders imports — single file).
+2. Rewrite each builder body in **`libs/charts/src/option-builders.ts`** (`toLineOption`, `toBarOption`, `toPieOption`, `toGaugeOption`, `toHeatmapOption`) to emit the new backend's option object. Public arg shapes (`ChartSeries`, `ChartAxis`, `ChartSlice`, `ChartHeatCell`) stay unchanged. `option-builders.spec.ts` guides the rewrite — green specs = behaviour preserved.
+3. The wrapper components (`*-chart.component.ts`) stay untouched — they only forward signal inputs into the builders.
+4. Update `ChartThemeBridge` mapping if the new backend wants a different theme object shape. Consumers don't change.
+5. Bump the ECharts dependency to the new package in `package.json`.
+6. Update the ESLint `no-restricted-imports` pattern in `eslint.config.mjs` to fence off the new backend instead of `echarts/*`.
 
-That's it — **zero consumer changes**. Verified by the fact that the dashboard and the showcase route both import only from `@ai-studio/charts`.
+That's it — **zero consumer changes, zero wrapper changes**. Verified by the fact that the dashboard and the showcase route both import only from `@ai-studio/charts`.
 
 ## Showcase route
 
@@ -127,4 +136,8 @@ That's it — **zero consumer changes**. Verified by the fact that the dashboard
 
 ## Specs
 
-Component specs **mock** `libs/charts/src/echarts-import.ts` rather than booting the real renderer under jsdom (ECharts wants a real canvas). The current spec (`libs/charts/src/theme.spec.ts`) covers the theme bridge contract; wrapper-level smoke specs are tracked as a follow-up (T011 in the plan).
+The wrapper components are deliberately thin — every meaningful mapping lives in `option-builders.ts`, which is a set of pure functions. Specs target the builders directly (`option-builders.spec.ts`, 20 tests covering line / bar / pie / gauge / heatmap shape, axis swap, stacking, legend positioning, formatters). No TestBed, no ECharts boot, no jsdom signal-input quirks.
+
+The theme bridge has its own spec (`theme.spec.ts`) that locks in the fallback contract when no `--mat-sys-*` variables are present (SSR, tests).
+
+If a future wrapper needs full integration testing (template + change detection), reach for Playwright via the showcase route at `/charts/showcase` rather than fighting `TestBed.componentRef.setInput` under jsdom — that path is known unreliable for required signal inputs.

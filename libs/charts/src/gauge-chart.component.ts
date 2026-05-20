@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 
 import { ChartHostComponent } from './chart-host.component.js';
 import type { EChartsOption } from './echarts-import.js';
+import { toGaugeOption } from './option-builders.js';
 import { ChartThemeBridge } from './theme.js';
 
 /**
@@ -33,37 +34,14 @@ export class GaugeChartComponent {
 
   private readonly theme = inject(ChartThemeBridge);
 
-  protected readonly option = computed<EChartsOption>(() => {
-    const snapshot = this.theme.snapshot();
-    const primary = snapshot.palette[0] ?? '#4f46e5';
-    return {
-      series: [
-        {
-          type: 'gauge' as const,
-          startAngle: 210,
-          endAngle: -30,
-          min: this.min(),
-          max: this.max(),
-          radius: '90%',
-          progress: { show: true, width: 14, itemStyle: { color: primary } },
-          axisLine: { lineStyle: { width: 14, color: [[1, snapshot.grid]] } },
-          axisTick: { show: false },
-          splitLine: { distance: -22, length: 8, lineStyle: { color: snapshot.muted } },
-          axisLabel: { color: snapshot.muted, distance: 18 },
-          pointer: { show: false },
-          anchor: { show: false },
-          title: { show: false },
-          detail: {
-            valueAnimation: true,
-            formatter: (v: number) => `${Math.round(v)}${this.unit()}`,
-            color: snapshot.foreground,
-            fontSize: 28,
-            fontFamily: snapshot.fontFamily,
-            offsetCenter: [0, '20%'],
-          },
-          data: [{ value: this.value(), name: this.label() }],
-        },
-      ],
-    };
-  });
+  protected readonly option = computed<EChartsOption>(() =>
+    toGaugeOption({
+      value: this.value(),
+      label: this.label(),
+      min: this.min(),
+      max: this.max(),
+      unit: this.unit(),
+      theme: this.theme.snapshot(),
+    }),
+  );
 }
