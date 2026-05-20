@@ -40,8 +40,8 @@ const BASELINE = [
 // Names listed are the trinity-wide expectation for agent parity across Claude Code + Copilot wrappers.
 const CLAUDE_MIRROR_DIRS = ['agents'];
 
-// Sibling repo names — the trinity, minus self.
-const SIBLINGS = ['ai-studio', 'ai-mcp-alm', 'ai-mcp-devtools'];
+// Sibling repo names — the trinity (now 4 with ai-workspace), minus self.
+const SIBLINGS = ['ai-studio', 'ai-mcp-alm', 'ai-mcp-devtools', 'ai-workspace'];
 
 async function hash(filePath) {
   if (!existsSync(filePath)) return null;
