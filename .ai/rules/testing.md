@@ -1,66 +1,66 @@
 ---
 id: rules.testing
-title: Testing rules — Vitest + Playwright
+title: Reguły testowania — Vitest + Playwright
 type: rules
 scope: testing
 priority: 2
-version: 1.0.0
+version: 2.0.0
 ---
 
-# Testing rules
+# Reguły testowania
 
-## 1. Pyramid
+## 1. Piramida
 
 ```
-       ▲   E2E (Playwright)        — golden-path user flows, ~5 % of total tests
+       ▲   E2E (Playwright)        — golden-path user flows, ~5 % wszystkich testów
       / \
      /───\ Integration (Vitest)    — multi-component / service contracts, ~25 %
     /─────\
    /───────\ Unit (Vitest)         — pure logic & single component, ~70 %
 ```
 
-## 2. Naming
+## 2. Nazewnictwo
 
-- **Files**: `<subject>.spec.ts` (unit/integration), `<flow>.e2e.ts` (Playwright).
+- **Pliki**: `<subject>.spec.ts` (unit/integration), `<flow>.e2e.ts` (Playwright).
 - **Suites**: `describe('<Subject>', () => …)`.
 - **Cases**: `it('does X when Y', …)` — third person, no "should".
-- **Fixtures**: under `__fixtures__/` next to the test that owns them.
+- **Fixtures**: pod `__fixtures__/` obok testu, który jest ich właścicielem.
 
 ## 3. Vitest (unit / integration)
 
-- **Angular 21 native Vitest support.** The test runner is `@angular/build:unit-test` with `runner: "vitest"` in `project.json`. **Do not** install or import `@analogjs/vitest-angular` — Analog is only needed when you adopt Analog as a meta-framework (file routing, server endpoints).
-- `TestBed`, signals, and zoneless components work out of the box via the Angular runner. Tests live next to source as `*.spec.ts`.
-- Prefer **`provideXxx()` over module imports** in `TestBed.configureTestingModule`.
-- Don't mock what you own. Mock the network (MSW) and the clock (`vi.useFakeTimers()`); inject real services.
-- Snapshot tests are last-resort — only for stable, low-noise structures (e.g. ICS export).
-- `vi.spyOn(target, 'fn')`, never `vi.fn()` reassignment of object props.
-- Coverage gate: 80 % statements / 75 % branches on touched files. CI fails below that.
+- **Native Vitest support Angular 21.** Test runner to `@angular/build:unit-test` z `runner: "vitest"` w `project.json`. **Nie** instaluj ani importuj `@analogjs/vitest-angular` — Analog jest potrzebny tylko gdy adoptujesz Analog jako meta-framework (file routing, server endpoints).
+- `TestBed`, signals, zoneless components działają out of the box przez runner Angulara. Testy żyją obok source jako `*.spec.ts`.
+- Wybieraj **`provideXxx()` zamiast module imports** w `TestBed.configureTestingModule`.
+- Nie mockuj tego, co posiadasz. Mockuj sieć (MSW) i zegar (`vi.useFakeTimers()`); injectuj realne services.
+- Snapshot tests są last-resort — tylko dla stabilnych, low-noise structures (np. ICS export).
+- `vi.spyOn(target, 'fn')`, nigdy `vi.fn()` reassignment obj props.
+- Coverage gate: 80 % statements / 75 % branches na touched files. CI fails poniżej tego.
 
 ## 4. Playwright (E2E)
 
-- Use the **page-object** pattern. Every page object lives in `apps/<app>-e2e/src/pages/`.
-- Selectors:
-  1. `getByRole(...)` (preferred — exercises a11y).
-  2. `getByTestId('kebab-case-id')` (use `data-testid`, never CSS classes).
-  3. CSS / XPath only as last resort.
-- Network: `page.route()` for stubbing; `page.waitForResponse()` for assertions on backend contracts.
-- Use the **`Playwright` MCP server** during agent debugging to inspect the DOM live — agents must not invent selectors.
+- Używaj **page-object** pattern. Każdy page object żyje w `apps/<app>-e2e/src/pages/`.
+- Selektory:
+  1. `getByRole(...)` (preferowany — ćwiczy a11y).
+  2. `getByTestId('kebab-case-id')` (użyj `data-testid`, nigdy CSS classes).
+  3. CSS / XPath tylko jako last resort.
+- Network: `page.route()` do stubbingu; `page.waitForResponse()` dla assertions na backend contracts.
+- Używaj serwera **`Playwright` MCP** podczas agent debugging żeby inspect DOM live — agenci nie mogą wymyślać selektorów.
 - Trace + screenshot retained on failure (`trace: 'on-first-retry'`, `screenshot: 'only-on-failure'`).
-- Run cross-browser (chromium, firefox, webkit) in CI; chromium-only on local dev.
+- Uruchamiaj cross-browser (chromium, firefox, webkit) w CI; chromium-only na local dev.
 
 ## 5. AI-generated tests
 
-- Every AI-generated test **must** assert a behaviour, not the implementation. Reject "calls method X" tests.
-- Tests must be runnable in isolation. No reliance on test order.
-- The `test-engineer` agent generates tests; `code-reviewer` blocks merge if coverage drops or tests are tautological.
+- Każdy AI-generated test **musi** assertować behaviour, nie implementację. Odrzucaj testy "calls method X".
+- Testy muszą być runnable w izolacji. Żadnego polegania na test order.
+- Agent `test-engineer` generuje testy; `code-reviewer` blokuje merge jeśli coverage spada lub testy są tautologiczne.
 
 ## 6. Performance
 
-- E2E suite per app: < 5 minutes wall-clock in CI.
+- E2E suite per app: < 5 minut wall-clock w CI.
 - Unit suite per project: < 30 s.
-- Use `nx affected -t test` to keep CI under budget.
+- Używaj `nx affected -t test` żeby utrzymać CI pod budżetem.
 
 ## 7. Accessibility
 
-- Run `axe-core/playwright` on every E2E suite. New `serious`/`critical` violations fail CI.
-- Component-level a11y assertions go in unit tests with `@testing-library/jest-dom` matchers (via Vitest compat).
+- Uruchamiaj `axe-core/playwright` na każdym E2E suite. Nowe `serious`/`critical` violations fail CI.
+- Component-level a11y assertions idą w unit testach z `@testing-library/jest-dom` matchers (przez Vitest compat).

@@ -1,27 +1,27 @@
 ---
 id: rules.nx
-title: Nx monorepo rules
+title: Reguły monorepo Nx
 type: rules
 scope: nx
 priority: 2
-version: 1.0.0
+version: 2.0.0
 ---
 
-# Nx rules
+# Reguły Nx
 
-## 1. Project taxonomy
+## 1. Taksonomia projektów
 
-| Folder            | What lives there                              | Tags                             |
+| Folder            | Co tam żyje                                   | Tagi                             |
 | ----------------- | --------------------------------------------- | -------------------------------- |
-| `apps/<name>`     | Deployable Angular apps (one per binary)      | `scope:app`, `type:app`          |
-| `apps/<name>-e2e` | Playwright E2E suite for the app              | `scope:app`, `type:e2e`          |
+| `apps/<name>`     | Deployowalne Angular apps (jeden per binary)  | `scope:app`, `type:app`          |
+| `apps/<name>-e2e` | Playwright E2E suite dla app                  | `scope:app`, `type:e2e`          |
 | `libs/feature/*`  | Smart features (routes, container components) | `scope:feature`, `type:feature`  |
 | `libs/ui/*`       | Dumb / presentational components & primitives | `scope:ui`, `type:ui`            |
 | `libs/data/*`     | API clients, stores, adapters                 | `scope:data`, `type:data-access` |
 | `libs/util/*`     | Pure helpers, constants, schemas              | `scope:util`, `type:util`        |
 | `libs/shared/*`   | Cross-app primitives (auth, theming, i18n)    | `scope:shared`, `type:util`      |
 
-## 2. Module boundaries (enforced by ESLint)
+## 2. Module boundaries (wymuszane przez ESLint)
 
 ```
 type:app   → type:feature, type:ui, type:data-access, type:util
@@ -31,9 +31,9 @@ type:data-access → type:data-access, type:util
 type:util  → type:util
 ```
 
-Apps NEVER depend on apps. Lower layers NEVER depend on higher layers.
+Apps NIGDY nie zależą od apps. Niższe warstwy NIGDY nie zależą od wyższych.
 
-## 3. Generators (always prefer over hand-written scaffolding)
+## 3. Generatory (zawsze wybieraj zamiast hand-written scaffolding)
 
 ```bash
 nx g @nx/angular:app <name>             # new app
@@ -42,11 +42,11 @@ nx g @nx/angular:component <Name> --project=<lib> --change-detection=OnPush --st
 nx g @nx/angular:service <Name> --project=<lib>
 ```
 
-The Orchestrator MUST call generators via the **nx** MCP server, then add the project tags listed above. Never hand-edit `project.json` if a generator would do.
+Orchestrator MUSI wywoływać generatory przez serwer **nx** MCP, potem dodawać project tags wymienione powyżej. Nigdy nie hand-edytuj `project.json` jeśli generator załatwiłby sprawę.
 
-## 4. Tagging policy
+## 4. Polityka tagowania
 
-Every project has at minimum:
+Każdy projekt ma minimum:
 
 ```jsonc
 // project.json
@@ -55,9 +55,9 @@ Every project has at minimum:
 }
 ```
 
-Optional add-ons:
+Opcjonalne add-ons:
 
-- `domain:<billing|auth|admin|…>` — group by business domain.
+- `domain:<billing|auth|admin|…>` — grupuj wg business domain.
 - `platform:<browser|node|ssr>` — runtime constraint.
 
 ## 5. Affected commands
@@ -71,16 +71,16 @@ pnpm affected:build
 pnpm affected:e2e
 ```
 
-CI runs the same with `--base=origin/main --head=HEAD`. Caching is on for every target listed in `nx.json#targetDefaults`.
+CI uruchamia to samo z `--base=origin/main --head=HEAD`. Caching jest on dla każdego targetu wymienionego w `nx.json#targetDefaults`.
 
 ## 6. Project graph
 
-- **Always** consult `nx graph` (or the `nx` MCP server) before refactoring across libraries — it shows hidden coupling.
-- Architectural changes that alter the graph require an ADR.
+- **Zawsze** konsultuj `nx graph` (lub serwer `nx` MCP) przed refactorem cross-library — pokazuje ukryte sprzężenie.
+- Zmiany architektoniczne, które zmieniają graph, wymagają ADR.
 
-## 7. Don't
+## 7. Nie
 
-- ❌ Cross-importing internal files of another lib (`libs/foo/src/lib/internal.ts`). Use `import { … } from '@ai-studio/foo'` only.
-- ❌ Adding global side-effects in lib `index.ts`.
-- ❌ Hand-editing the lockfile.
-- ❌ Skipping tags — lint will fail.
+- ❌ Cross-importing internal plików innego liba (`libs/foo/src/lib/internal.ts`). Używaj tylko `import { … } from '@ai-studio/foo'`.
+- ❌ Dodawanie global side-effects w `index.ts` liba.
+- ❌ Hand-edytowanie lockfile.
+- ❌ Pomijanie tagów — lint will fail.
