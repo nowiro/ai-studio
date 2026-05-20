@@ -1,36 +1,36 @@
 ---
 id: architecture.reference
-title: nowiro AI Architecture — canonical reference
+title: Architektura nowiro AI — kanoniczna referencja
 type: rules
 scope: trinity
 priority: 1
-version: 1.0.0
-last-updated: 2026-05-09
+version: 2.0.0
+last-updated: 2026-05-20
 trinity-baseline: true
-source: 'authored 2026-05-09 from the nowiro AI Architecture full reference (HTML)'
+source: 'authored 2026-05-09 from the nowiro AI Architecture full reference (HTML); retranslated to Polish prose 2026-05-20 (v2.0.0)'
 ---
 
-# nowiro AI Architecture — canonical reference
+# Architektura nowiro AI — kanoniczna referencja
 
-> Single source of truth for the conceptual architecture every project in the nowiro trinity (`ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools`) follows. **This file is a trinity baseline** — byte-identical in all three repos, enforced by `pnpm trinity:check`.
+> Single source of truth dla konceptualnej architektury, którą stosuje każdy projekt w trinity nowiro (`ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools`). **Ten plik jest trinity baseline** — byte-identical w trzech repo, wymuszane przez `pnpm trinity:check`.
 
 ---
 
-## 1. Three primitives — Tool · MCP · Skill
+## 1. Trzy prymitywy — Tool · MCP · Skill
 
-The three concepts people most often confuse. They live at different levels of abstraction and **stack**, they do not replace each other.
+Trzy koncepty, które ludzie najczęściej mylą. Żyją na różnych poziomach abstrakcji i **stackują się**, nie zastępują nawzajem.
 
-| Primitive        | What it is                              | What it answers                                                       | When to reach for it                                                           |
-| ---------------- | --------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| **Tool calling** | A function with a JSON schema           | "Which function should the model call right now?"                     | Lowest level. One process owns the function and its schema.                    |
-| **MCP**          | A protocol / contract over stdio        | "Where does the capability live and how do I discover it at runtime?" | Build the capability once; every MCP-aware client (Claude, Cursor, …) gets it. |
-| **Skill**        | A bundle: `SKILL.md` + scripts + assets | "How well do we want this kind of task done?"                         | Encodes expert workflow — code review, deployment checklist, scaffolding.      |
+| Prymityw         | Co to jest                              | Na co odpowiada                                                       | Kiedy po nie sięgnąć                                                             |
+| ---------------- | --------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Tool calling** | Funkcja z JSON schemą                   | "Którą funkcję model powinien zawołać teraz?"                         | Najniższy poziom. Jeden proces jest właścicielem funkcji i jej schemy.           |
+| **MCP**          | Protokół / kontrakt nad stdio           | "Gdzie żyje capability i jak ją odkryć at runtime?"                   | Zbuduj capability raz; każdy MCP-aware klient (Claude, Cursor, …) go dostaje.    |
+| **Skill**        | Bundle: `SKILL.md` + skrypty + assets   | "Jak dobrze chcemy żeby ten rodzaj zadania był zrobiony?"             | Koduje expert workflow — code review, deployment checklist, scaffolding.         |
 
 ```mermaid
 flowchart LR
-  T["Tool — a function<br/>JSON schema in-process"]
-  M["MCP — a contract<br/>discoverable over stdio"]
-  S["Skill — a playbook<br/>SKILL.md + scripts"]
+  T["Tool — funkcja<br/>JSON schema in-process"]
+  M["MCP — kontrakt<br/>discoverable nad stdio"]
+  S["Skill — playbook<br/>SKILL.md + skrypty"]
 
   T -- 'wrap reusably' --> M
   M -- 'codify expertise' --> S
@@ -43,28 +43,28 @@ flowchart LR
   class S s
 ```
 
-**Rule of thumb:** Tool = function · MCP = contract · Skill = playbook. Use them together, not as alternatives.
+**Reguła kciuka:** Tool = funkcja · MCP = kontrakt · Skill = playbook. Używaj ich razem, nie jako alternatyw.
 
-### What MCP is **not**
+### Czym MCP **nie jest**
 
-MCP is **not** a planner — it does not decide what to do next. MCP is **not** memory — it does not retain context across sessions. MCP is **not** an autonomous executor. _MCP enables action; it does not decide._ Planners and memory belong to the agent layer (§2).
+MCP **nie jest** plannerem — nie decyduje co robić dalej. MCP **nie jest** pamięcią — nie zachowuje kontekstu między sesjami. MCP **nie jest** autonomicznym executorem. _MCP umożliwia akcję; nie decyduje._ Plannery i pamięć należą do warstwy agenta (§2).
 
 ---
 
-## 2. Three layers — Knowledge · Connection · Execution
+## 2. Trzy warstwy — Knowledge · Connection · Execution
 
-A complete system has three complementary layers — they collaborate; they do not compete.
+Kompletny system ma trzy komplementarne warstwy — kolaborują; nie konkurują.
 
 ```mermaid
 flowchart TB
   subgraph EXEC["3 · Execution — AI Agents"]
-    AGENT["plan · decide · act<br/>orchestrates RAG + MCP"]
+    AGENT["plan · decyduj · działaj<br/>orkiestruje RAG + MCP"]
   end
   subgraph CONN["2 · Connection — MCP"]
-    SERVERS["model ↔ tools / DBs / APIs / SaaS<br/>one standard, every client"]
+    SERVERS["model ↔ tools / DBs / APIs / SaaS<br/>jeden standard, każdy klient"]
   end
   subgraph KNOW["1 · Knowledge — RAG"]
-    RAG["right info · right context<br/>fewer hallucinations"]
+    RAG["właściwa info · właściwy kontekst<br/>mniej halucynacji"]
   end
   AGENT --> SERVERS --> RAG
 
@@ -76,20 +76,20 @@ flowchart TB
   class AGENT,EXEC exec
 ```
 
-| Layer        | Owns                                                         | Picks up when                                                              |
-| ------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------- |
-| **RAG**      | Domain knowledge, citations, freshness                       | Data changes faster than the model is retrained, or you need exact quotes. |
-| **MCP**      | Connectivity to systems and APIs                             | The model needs to _do_ something in the real world.                       |
-| **AI Agent** | Planning, decisions, multi-step follow-through, side-effects | The job has more than one step and needs autonomous orchestration.         |
+| Warstwa      | Posiada                                                       | Wchodzi gdy                                                                  |
+| ------------ | ------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| **RAG**      | Domain knowledge, cytaty, świeżość                            | Dane zmieniają się szybciej niż model jest retrenowany, lub potrzebujesz exact quotes. |
+| **MCP**      | Łączność do systemów i API                                    | Model musi _zrobić_ coś w realnym świecie.                                   |
+| **AI Agent** | Planowanie, decyzje, multi-step follow-through, side-effects  | Praca ma więcej niż jeden krok i wymaga autonomicznej orkiestracji.          |
 
 ### Worked example — IT helpdesk copilot
 
 ```mermaid
 flowchart LR
-  U["👤 'Reset VPN'"] --> AG["Agent plans"]
-  AG --> R["RAG · pull policy"]
+  U["👤 'Reset VPN'"] --> AG["Agent planuje"]
+  AG --> R["RAG · ciągnij policy"]
   AG --> M["MCP · identity provider"]
-  R --> AG2["Agent acts"]
+  R --> AG2["Agent działa"]
   M --> AG2
   AG2 --> D["✅ done"]
 
@@ -101,36 +101,36 @@ flowchart LR
   class AG,AG2 exec
 ```
 
-RAG supplies the knowledge · MCP supplies the access · the agent supplies the execution.
+RAG dostarcza wiedzę · MCP dostarcza dostęp · agent dostarcza execution.
 
-### RAG details (not visible from the screenshots)
+### Detale RAG (niewidoczne ze screenshotów)
 
 - **Pipeline:** docs → chunks → embeddings → vector store → semantic retrieval → LLM context.
-- **Fit:** private docs, frequently changing data, when citations / "show me the source" is required, when hallucinations must be eliminated.
-- **Stack options:** LangChain / LlamaIndex (frameworks); Pinecone / Weaviate / Chroma (vector DBs); OpenAI / Cohere embeddings; Anthropic + an in-house retriever exposed over MCP.
-- **In nowiro:** Phaser game docs, ADR history, customer specs, release-notes corpus.
+- **Fit:** private docs, często zmieniające się dane, gdy wymagane są cytaty / "pokaż mi źródło", gdy halucynacje muszą być wyeliminowane.
+- **Stack options:** LangChain / LlamaIndex (frameworks); Pinecone / Weaviate / Chroma (vector DBs); OpenAI / Cohere embeddings; Anthropic + in-house retriever wystawiony przez MCP.
+- **W nowiro:** docs gier Phaser, historia ADR, customer specs, korpus release-notes.
 
 ---
 
-## 3. MCP vs A2A — two orchestration protocols
+## 3. MCP vs A2A — dwa protokoły orkiestracji
 
-Both are protocols for agent systems, but they live on **different layers**. Same scenario — completely different architecture.
+Oba to protokoły dla agent systems, ale żyją na **różnych warstwach**. Ten sam scenariusz — kompletnie różna architektura.
 
 ```mermaid
 flowchart LR
-  subgraph MCP["MCP · one LLM, many tools"]
+  subgraph MCP["MCP · jeden LLM, wiele tooli"]
     direction TB
     UMCP[User] --> LLM[LLM] --> CLIENT[MCP Client]
     CLIENT --> S1[Server A] --> A1[API A]
     CLIENT --> S2[Server B] --> A2[API B]
   end
-  subgraph A2A["A2A · autonomous agents"]
+  subgraph A2A["A2A · autonomiczni agenci"]
     direction TB
     UA2A[User] --> ORCH[Orchestrator]
     ORCH --> AG_A[Agent A]
     ORCH --> AG_B[Agent B]
-    AG_A -- own tools + memory --> AG_A
-    AG_B -- own tools + memory --> AG_B
+    AG_A -- 'własne tools + memory' --> AG_A
+    AG_B -- 'własne tools + memory' --> AG_B
   end
 
   classDef mcp fill:#e3f0fb,stroke:#1565c0,color:#1a3a5c;
@@ -139,83 +139,83 @@ flowchart LR
   class UA2A,ORCH,AG_A,AG_B,A2A a2a
 ```
 
-| Aspect            | MCP                                  | A2A                                                |
+| Aspekt            | MCP                                  | A2A                                                |
 | ----------------- | ------------------------------------ | -------------------------------------------------- |
-| Control           | One LLM stays in charge              | Each agent is autonomous; orchestrator coordinates |
-| Execution         | Sequential tool calls                | Parallel work across agents                        |
-| Context isolation | Single context window (size-limited) | Per-agent context — scales across domains          |
-| Debugging         | Easier — one trace                   | Harder — many traces, eventual consistency         |
-| Sweet spot        | Single app, single domain            | Many apps / many domains / heterogeneous tooling   |
+| Kontrola          | Jeden LLM trzyma stery               | Każdy agent autonomiczny; orchestrator koordynuje  |
+| Execution         | Sequential tool calls                | Praca równoległa między agentami                   |
+| Context isolation | Single context window (size-limited) | Per-agent context — skaluje się między domenami    |
+| Debugging         | Łatwiejsze — jeden trace             | Trudniejsze — wiele trace, eventual consistency    |
+| Sweet spot        | Jedna app, jedna domena              | Wiele app / wiele domen / heterogeneous tooling    |
 
-> **When NOT to use A2A:** if the workload is one app and tasks run sequentially, MCP wins on simplicity. A2A is overhead for the simple case.
+> **Kiedy NIE używać A2A:** jeśli workload to jedna app i zadania uruchamiają się sekwencyjnie, MCP wygrywa prostotą. A2A to overhead dla prostego przypadku.
 
 ---
 
-## 4. The MCP power stack — seven recommended servers
+## 4. MCP power stack — siedem rekomendowanych serwerów
 
-The seven MCP servers that, taken together, give an LLM enterprise-class capabilities. Each solves one specific problem.
+Siedem serwerów MCP, które wzięte razem dają LLM enterprise-class capabilities. Każdy rozwiązuje jeden konkretny problem.
 
-| #   | Server         | Category   | What it solves                                                                                                                                            |
-| --- | -------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 01  | **Figma MCP**  | Design     | Design → code in seconds. Reads Figma components, emits production code.                                                                                  |
-| 02  | **Memory MCP** | Memory     | Persistent knowledge graph (entities + relations + observations). Cross-session persistence — context survives between conversations. Anthropic-official. |
-| 03  | **Zapier MCP** | Automation | 30 000 actions across 8 000 apps (Gmail, Slack, GitHub, Notion, CRMs). One MCP, every automation lane.                                                    |
-| 04  | **Sentry MCP** | Debugging  | Identifies prod-error root cause, opens a fix PR. Great for `ai-mcp-devtools`.                                                                            |
-| 05  | **Tavily MCP** | Research   | Real-time web with structured results — kills "facts hallucinated from training data".                                                                    |
-| 06  | **Context7**   | Docs       | Version-specific, always-fresh framework docs (React 19, Angular 21, Vue 4 …). Already wired here.                                                        |
-| 07  | **Playwright** | E2E        | Browser automation via accessibility tree (no screenshots). Already wired here.                                                                           |
+| #   | Server         | Kategoria  | Co rozwiązuje                                                                                                                                            |
+| --- | -------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 01  | **Figma MCP**  | Design     | Design → code w sekundach. Czyta komponenty Figma, emituje production code.                                                                              |
+| 02  | **Memory MCP** | Memory     | Persistent knowledge graph (entities + relations + observations). Cross-session persistence — kontekst przeżywa między konwersacjami. Anthropic-official. |
+| 03  | **Zapier MCP** | Automation | 30 000 akcji między 8 000 app (Gmail, Slack, GitHub, Notion, CRMs). Jeden MCP, każdy automation lane.                                                    |
+| 04  | **Sentry MCP** | Debugging  | Identyfikuje root cause prod-errora, otwiera fix PR. Świetny dla `ai-mcp-devtools`.                                                                      |
+| 05  | **Tavily MCP** | Research   | Real-time web z structured results — zabija "facts hallucinated from training data".                                                                     |
+| 06  | **Context7**   | Docs       | Version-specific, zawsze-świeże docs frameworków (React 19, Angular 21, Vue 4 …). Już wired tutaj.                                                       |
+| 07  | **Playwright** | E2E        | Browser automation via accessibility tree (no screenshots). Już wired tutaj.                                                                             |
 
-Recommendations for the trinity:
+Rekomendacje dla trinity:
 
-| Trinity repo      | Already wired                            | Worth adding                                             |
+| Repo trinity      | Już wired                                | Warto dodać                                              |
 | ----------------- | ---------------------------------------- | -------------------------------------------------------- |
 | `ai-studio`       | context7 · playwright · nx · angular-cli | Memory (cross-session orchestrator state)                |
-| `ai-mcp-alm`      | (none — repo _is_ a set of MCP servers)  | Zapier (broad automation surface for ALM workflows)      |
-| `ai-mcp-devtools` | (none — repo _is_ a set of MCP servers)  | Sentry (auto-fix prod errors); Tavily (research surface) |
+| `ai-mcp-alm`      | (żaden — repo _jest_ zestawem MCP serwerów) | Zapier (broad automation surface dla ALM workflows)   |
+| `ai-mcp-devtools` | (żaden — repo _jest_ zestawem MCP serwerów) | Sentry (auto-fix prod errors); Tavily (research surface) |
 
-The actual `mcp.json` registry is per-repo (`.ai/mcp.json`); this file documents the _recommended_ set — wiring is an operator decision.
+Aktualny rejestr `mcp.json` jest per-repo (`.ai/mcp.json`); ten plik dokumentuje _rekomendowany_ zestaw — wiring to operator decision.
 
 ---
 
-## 5. Claude Code mechanics — how this repo uses them
+## 5. Mechanika Claude Code — jak to repo z niej korzysta
 
-Cheat sheet of the Claude Code primitives the trinity relies on. The same mechanics map to `/promptname` workflows in GitHub Copilot Chat (the trinity supports **only** Claude Code and GitHub Copilot — see `.ai/README.md`).
+Cheat sheet prymitywów Claude Code, na których polega trinity. Te same mechaniki mapują się na `/promptname` workflows w GitHub Copilot Chat (trinity wspiera **tylko** Claude Code i GitHub Copilot — patrz `.ai/README.md`).
 
-| Primitive   | Where it lives in this repo                                       | Purpose                                                                              |
+| Prymityw    | Gdzie żyje w tym repo                                             | Cel                                                                                  |
 | ----------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `CLAUDE.md` | repo root (≤ 150 lines)                                           | Project rulebook; loaded before every task.                                          |
-| `/skills`   | `.claude/skills/` (and `.github/skills/` for the Copilot mirror)  | Reusable markdown playbooks for code review, scaffolding, releases.                  |
-| `/MCP`      | `.ai/mcp.json` + `.vscode/mcp.json`                               | Registry of MCP servers the agent may attach.                                        |
-| `/agents`   | `.claude/agents/` (and `.ai/agents/` as the SoT)                  | Specialist subagents (analyst, architect, frontend-dev, …) used by the orchestrator. |
-| `/plan`     | `docs/ai-workflow/plans/`, `docs/analytical/specs/<slug>/plan.md` | Plan-first generation per `core.md` §7.                                              |
-| `/compact`  | runtime                                                           | Compresses history before context bloats. Run at ~70 % context.                      |
-| `/memory`   | runtime                                                           | View / edit per-project notes that survive the session.                              |
-| Hooks       | `.claude/hooks/`, husky                                           | Auto-lint / auto-format after edits; pre-commit + pre-push validation.               |
+| `CLAUDE.md` | repo root (≤ 150 lines)                                           | Project rulebook; ładowany przed każdym zadaniem.                                    |
+| `/skills`   | `.claude/skills/` (i `.github/skills/` dla mirroru Copilot)       | Reusable markdown playbooks dla code review, scaffolding, releases.                  |
+| `/MCP`      | `.ai/mcp.json` + `.vscode/mcp.json`                               | Rejestr serwerów MCP, które agent może podłączyć.                                    |
+| `/agents`   | `.claude/agents/` (i `.ai/agents/` jako SoT)                      | Specialist subagents (analyst, architect, frontend-dev, …) używani przez orchestrator. |
+| `/plan`     | `docs/ai-workflow/plans/`, `docs/analytical/specs/<slug>/plan.md` | Plan-first generation wg `core.md` §7.                                               |
+| `/compact`  | runtime                                                           | Kompresuje historię zanim context się rozdmie. Uruchom przy ~70 % kontekstu.         |
+| `/memory`   | runtime                                                           | View / edit per-project notes, które przeżywają sesję.                                |
+| Hooks       | `.claude/hooks/`, husky                                           | Auto-lint / auto-format po edycjach; pre-commit + pre-push validation.               |
 
 ---
 
-## 6. Decision guide — when to reach for what
+## 6. Decision guide — kiedy po co sięgnąć
 
-**The rule:** _use the smallest stack that solves the job safely._ Each layer adds operational cost.
+**Reguła:** _użyj najmniejszego stacku, który bezpiecznie rozwiązuje pracę._ Każda warstwa dodaje operational cost.
 
-| Need                                      | RAG      | MCP              | AI Agent | A2A | Skill |
+| Potrzeba                                  | RAG      | MCP              | AI Agent | A2A | Skill |
 | ----------------------------------------- | -------- | ---------------- | -------- | --- | ----- |
-| Accurate answers grounded in private docs | ✅       | —                | —        | —   | —     |
-| Reach into business systems / APIs        | —        | ✅               | —        | —   | —     |
-| Multi-step task with follow-through       | —        | supports         | ✅       | —   | —     |
-| Many apps in parallel (monorepo)          | —        | ✅ (Nx affected) | optional | ✅  | ✅    |
+| Dokładne odpowiedzi z private docs        | ✅       | —                | —        | —   | —     |
+| Sięganie do business systems / API        | —        | ✅               | —        | —   | —     |
+| Multi-step zadanie z follow-through       | —        | supports         | ✅       | —   | —     |
+| Wiele app równolegle (monorepo)           | —        | ✅ (Nx affected) | optional | ✅  | ✅    |
 | Code standards / best practices           | —        | —                | —        | —   | ✅    |
 | Debug production errors                   | —        | ✅ (Sentry)      | ✅       | —   | —     |
 | Automated E2E testing                     | —        | ✅ (Playwright)  | optional | —   | ✅    |
 | ALM / lifecycle management                | optional | ✅               | ✅       | ✅  | ✅    |
 | Real-time web research                    | —        | ✅ (Tavily)      | —        | —   | —     |
-| Always-fresh framework docs               | —        | ✅ (Context7)    | —        | —   | —     |
+| Zawsze-świeże docs frameworków            | —        | ✅ (Context7)    | —        | —   | —     |
 
-### Recommended build order
+### Rekomendowana kolejność budowy
 
 ```mermaid
 flowchart LR
-  S1["1 · pick one<br/>concrete use-case"] --> S2["2 · add RAG<br/>trusted knowledge"] --> S3["3 · add MCP<br/>secure system access"] --> S4["4 · add agents<br/>only when workflow automation is proven"] --> S5["5 · add guardrails<br/>logs · evals · human review"]
+  S1["1 · wybierz jeden<br/>konkretny use-case"] --> S2["2 · dodaj RAG<br/>trusted knowledge"] --> S3["3 · dodaj MCP<br/>secure system access"] --> S4["4 · dodaj agentów<br/>tylko gdy workflow automation jest proven"] --> S5["5 · dodaj guardrails<br/>logi · evals · human review"]
 
   classDef step fill:#faf8f3,stroke:#d4a847,color:#1a1a14;
   class S1,S2,S3,S4,S5 step
@@ -223,31 +223,31 @@ flowchart LR
 
 ### Production must-haves
 
-Operationalised in [`.ai/rules/production-readiness.md`](rules/production-readiness.md): permissions, audit logs, monitoring, cost control, human approval, fallback paths.
+Zoperacjonalizowane w [`.ai/rules/production-readiness.md`](rules/production-readiness.md): permissions, audit logs, monitoring, cost control, human approval, fallback paths.
 
-> **Best systems are: Grounded (RAG) · Connected (MCP) · Controlled (guardrails + human review).**
+> **Najlepsze systemy są: Grounded (RAG) · Connected (MCP) · Controlled (guardrails + human review).**
 
 ---
 
-## 7. nowiro project map
+## 7. Mapa projektów nowiro
 
-The map of how the four logical projects compose. Three of them currently share two git repos (`ai-studio` hosts both the workspace tier and the dashboard tier — splitting them is a future ADR; see `docs/architecture/nowiro-projects-map.md` for per-repo specifics).
+Mapa jak cztery logiczne projekty się komponują. Trzy z nich obecnie dzielą dwa git repa (`ai-studio` hostuje zarówno workspace tier jak i dashboard tier — splitting ich to future ADR; patrz `docs/architecture/nowiro-projects-map.md` dla per-repo specifics).
 
-| Logical project           | Where it lives                           | RAG          | MCP                                | Skills           | Agent        | A2A                  |
+| Logiczny projekt          | Gdzie żyje                               | RAG          | MCP                                | Skills           | Agent        | A2A                  |
 | ------------------------- | ---------------------------------------- | ------------ | ---------------------------------- | ---------------- | ------------ | -------------------- |
-| **studio-workspace**      | `ai-studio` repo (Nx + Angular + Phaser) | docs (light) | Nx · Angular · GitHub · Playwright | SKILL.md per lib | optional     | —                    |
-| **ai-studio (dashboard)** | future apps under `ai-studio` repo       | history      | Memory · Monitor                   | yes              | Orchestrator | yes — multi-agent UI |
-| **ai-mcp-devtools**       | `ai-mcp-devtools` repo                   | —            | core product (server bundle)       | yes              | —            | —                    |
-| **ai-mcp-alm**            | `ai-mcp-alm` repo                        | spec corpus  | GitHub · Jira · Confluence · CI/CD | yes              | yes          | consider             |
+| **studio-workspace**      | repo `ai-studio` (Nx + Angular + Phaser) | docs (lekkie) | Nx · Angular · GitHub · Playwright | SKILL.md per lib | optional     | —                    |
+| **ai-studio (dashboard)** | future apps pod repo `ai-studio`         | historia     | Memory · Monitor                   | yes              | Orchestrator | yes — multi-agent UI |
+| **ai-mcp-devtools**       | repo `ai-mcp-devtools`                   | —            | core product (server bundle)       | yes              | —            | —                    |
+| **ai-mcp-alm**            | repo `ai-mcp-alm`                        | spec corpus  | GitHub · Jira · Confluence · CI/CD | yes              | yes          | consider             |
 
-**Target nowiro architecture:** the dashboard tier of `ai-studio` is the orchestrator (A2A) → it delegates to per-project specialist agents → each specialist consumes MCP servers from `ai-mcp-devtools` + `ai-mcp-alm` → Skills are the shared standards layer → RAG runs over the documentation and decision history.
+**Target nowiro architecture:** dashboard tier `ai-studio` to orchestrator (A2A) → deleguje do per-project specialist agents → każdy specialist konsumuje serwery MCP z `ai-mcp-devtools` + `ai-mcp-alm` → Skills są shared standards layer → RAG biega po dokumentacji i historii decyzji.
 
 ---
 
-## Trinity invariants (do not violate)
+## Trinity invariants (nie naruszaj)
 
-1. This file is byte-identical across `ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools` (`pnpm trinity:check`).
-2. Diagrams are mermaid only — no ASCII art, no embedded images.
-3. References to repository names use the **current** repo names (`ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools`); the _logical_ `studio-workspace` / dashboard split is conceptual only until split via ADR.
-4. The MCP recommendation table is informational — operators wire servers per-repo in `.ai/mcp.json`.
-5. Tooling references stay limited to **Claude Code** and **GitHub Copilot**. No other AI tool wrappers may appear here.
+1. Ten plik jest byte-identical między `ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools` (`pnpm trinity:check`).
+2. Diagramy są wyłącznie mermaid — żadnego ASCII art, żadnych embedded images.
+3. Referencje do nazw repozytoriów używają **aktualnych** nazw repo (`ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools`); _logiczny_ split `studio-workspace` / dashboard jest konceptualny tylko, do czasu split przez ADR.
+4. Tabela rekomendacji MCP jest informational — operators wirują serwery per-repo w `.ai/mcp.json`.
+5. Tooling references zostają limitowane do **Claude Code** i **GitHub Copilot**. Żadne inne wrappery AI tool nie mogą się tu pojawić.

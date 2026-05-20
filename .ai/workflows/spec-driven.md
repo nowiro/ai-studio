@@ -2,151 +2,151 @@
 id: workflow.spec-driven
 title: Spec-Driven Development (SDD)
 type: workflow
-trigger: 'user asks to build a feature with a non-trivial spec, OR explicitly types /specify'
+trigger: 'użytkownik prosi o zbudowanie feature z nietrywialnym spec, LUB jawnie wpisuje /specify'
 owner: orchestrator
-version: 1.0.0
+version: 2.0.0
 ---
 
 # Workflow: Spec-Driven Development
 
-> Adapted from GitHub's [spec-kit](https://github.com/github/spec-kit) methodology, mapped onto our agents.
-> Same 4-phase rhythm — **Specify → Plan → Tasks → Implement** — but reusing our analyst, architect, and orchestrator instead of a parallel CLI.
+> Zaadaptowane z metodologii GitHub [spec-kit](https://github.com/github/spec-kit), zmapowane na naszych agentów.
+> Ten sam 4-fazowy rytm — **Specify → Plan → Tasks → Implement** — ale reusuje naszych analyst, architect i orchestrator zamiast parallel CLI.
 
-## Why this exists alongside `new-feature.md`
+## Dlaczego istnieje obok `new-feature.md`
 
-Both workflows produce features. The difference is **rhythm**:
+Oba workflows produkują features. Różnica to **rytm**:
 
-| Aspect           | `new-feature.md`                     | `spec-driven.md`                                            |
+| Aspekt           | `new-feature.md`                     | `spec-driven.md`                                            |
 | ---------------- | ------------------------------------ | ----------------------------------------------------------- |
-| Cadence          | Continuous — one orchestrator turn   | Phased — checkpoint between each phase                      |
-| Best for         | Incremental work, well-scoped change | Greenfield, large features, legacy modernisation            |
+| Cadence          | Continuous — jeden turn orchestratora | Phased — checkpoint między każdą fazą                       |
+| Najlepszy dla    | Incremental work, well-scoped change | Greenfield, duże features, legacy modernisation             |
 | Output artefacts | Spec + ADR + code + docs             | `spec.md` + `plan.md` + `tasks.md` + code + docs            |
-| User involvement | Approve at end                       | Approve at every phase boundary                             |
+| User involvement | Zatwierdza na końcu                  | Zatwierdza na każdej granicy fazy                           |
 | Slash commands   | `/new-feature`                       | `/specify` → `/clarify` → `/plan` → `/tasks` → `/implement` |
 
-Use SDD when you want the user to review the spec _before_ the architect plans, and the plan _before_ tasks decompose. For routine features, `/new-feature` is faster.
+Używaj SDD gdy chcesz, żeby użytkownik zreviewował spec _zanim_ architect planuje, i plan _zanim_ tasks zostaną zdekomponowane. Dla rutynowych features, `/new-feature` jest szybsze.
 
-## The constitution = `.ai/rules/principles.md`
+## Konstytucja = `.ai/rules/principles.md`
 
-Spec-kit calls this the _constitution_. We already have one — golden engineering rules (DRY, SOLID, KISS, YAGNI, …) live in [`.ai/rules/principles.md`](../rules/principles.md). Every phase below loads it.
+Spec-kit nazywa to _constitution_. My już mamy taką — złote reguły inżynierskie (DRY, SOLID, KISS, YAGNI, …) żyją w [`.ai/rules/principles.md`](../rules/principles.md). Każda faza poniżej je ładuje.
 
 ## Directory layout
 
-Specs live alongside our existing analytical specs:
+Specs żyją obok naszych istniejących analytical specs:
 
 ```
 docs/analytical/specs/
 └── <YYYY-MM-DD>-<feature-slug>/
-    ├── spec.md       # Phase 1 — what & why (analyst)
-    ├── clarify.md    # Phase 1.5 — open questions + answers (analyst, optional)
-    ├── process.bpmn  # Phase 1.5b — BPMN 2.0 (analyst, optional — see ADR-0015)
-    ├── plan.md       # Phase 2 — how (architect)
-    ├── tasks.md      # Phase 3 — ordered work units (orchestrator)
-    └── runs/         # Phase 4 — implementation logs per task (auto-appended)
+    ├── spec.md       # Faza 1 — co i dlaczego (analyst)
+    ├── clarify.md    # Faza 1.5 — open questions + odpowiedzi (analyst, opcjonalne)
+    ├── process.bpmn  # Faza 1.5b — BPMN 2.0 (analyst, opcjonalne — patrz ADR-0015)
+    ├── plan.md       # Faza 2 — jak (architect)
+    ├── tasks.md      # Faza 3 — ordered work units (orchestrator)
+    └── runs/         # Faza 4 — implementation logs per task (auto-appended)
 ```
 
-Cross-cutting BPMN (reusable across features) lives in `docs/bpmn/<slug>.bpmn` instead.
+Cross-cutting BPMN (reusable między features) żyje w `docs/bpmn/<slug>.bpmn` zamiast.
 
-This is consistent with where `tools/scripts/scenarios-from-specs.mjs` already looks for specs.
+To jest spójne z miejscem, gdzie `tools/scripts/scenarios-from-specs.mjs` już szuka specs.
 
-## Phases
+## Fazy
 
-### Phase 1 — Specify (`/specify <description>`)
+### Faza 1 — Specify (`/specify <description>`)
 
-Orchestrator delegates to **analyst**. Output: `docs/analytical/specs/<slug>/spec.md`.
+Orchestrator deleguje do **analyst**. Output: `docs/analytical/specs/<slug>/spec.md`.
 
-The spec captures:
+Spec łapie:
 
 - User story / problem statement
-- Personas affected (cite ids from `.ai/context/personas.md`)
-- Acceptance criteria — Given/When/Then where useful
-- Success metrics (how do we know it worked)
-- Non-goals (explicit out-of-scope)
-- Open questions (feeds Phase 1.5)
+- Persony dotknięte (cytuj ids z `.ai/context/personas.md`)
+- Acceptance criteria — Given/When/Then gdzie użyteczne
+- Success metrics (jak wiemy że zadziałało)
+- Non-goals (jawnie out-of-scope)
+- Open questions (feeduje Fazę 1.5)
 
-**No tech choices yet.** If the analyst writes "use signals" — that's the architect's job.
+**Żadnych tech choices jeszcze.** Jeśli analyst napisze "use signals" — to jest robota architekta.
 
-Done when: `spec.md` exists; user says "looks good" OR moves to `/clarify`.
+Done gdy: `spec.md` istnieje; użytkownik mówi "looks good" LUB przechodzi do `/clarify`.
 
-### Phase 1.5 — Clarify (`/clarify` — optional)
+### Faza 1.5 — Clarify (`/clarify` — opcjonalna)
 
-Skip if the spec is already crisp. Otherwise the analyst re-interviews the user on each open question and updates `spec.md`. Open questions log lives in `clarify.md`.
+Pomiń, jeśli spec jest już ostry. W przeciwnym razie analyst re-interviewuje użytkownika na każdym open question i aktualizuje `spec.md`. Open questions log żyje w `clarify.md`.
 
-Done when: `spec.md` has zero `[?]` markers.
+Done gdy: `spec.md` ma zero markerów `[?]`.
 
-### Phase 1.5b — BPMN (optional — see ADR-0015)
+### Faza 1.5b — BPMN (opcjonalna — patrz ADR-0015)
 
-When the spec describes a process with > 3 user-decision points (XOR gateways), parallel work (parallel gateway), timer event (daily batch, retry), or cross-cutting reusability, the **analyst** produces a BPMN 2.0 diagram next to the spec:
+Gdy spec opisuje proces z > 3 user-decision points (XOR gateways), parallel work (parallel gateway), timer event (daily batch, retry), lub cross-cutting reusability, **analyst** produkuje diagram BPMN 2.0 obok specu:
 
 - Per-spec one-off process: `docs/analytical/specs/<slug>/process.bpmn`.
-- Cross-cutting reusable process: `docs/bpmn/<slug>.bpmn` (see `docs/bpmn/README.md`).
+- Cross-cutting reusable process: `docs/bpmn/<slug>.bpmn` (patrz `docs/bpmn/README.md`).
 
-The diagram is validated by `pnpm bpmn:lint` (pre-commit + CI). Architect (Phase 2) maps the BPMN onto the technical plan; the BPMN identifiers (`Task_*`, `Gateway_*`) should align with real service/method names in `plan.md`.
+Diagram jest walidowany przez `pnpm bpmn:lint` (pre-commit + CI). Architect (Faza 2) mapuje BPMN na technical plan; identyfikatory BPMN (`Task_*`, `Gateway_*`) powinny zgadzać się z realnymi nazwami service/method w `plan.md`.
 
-Skip this phase for CRUD work and trivial flows. Required only when the spec passes the gateway criteria above.
+Pomiń tę fazę dla CRUD work i trivial flows. Wymagana tylko gdy spec przechodzi gateway criteria powyżej.
 
-Done when: `process.bpmn` exists and `pnpm bpmn:lint` is clean.
+Done gdy: `process.bpmn` istnieje i `pnpm bpmn:lint` jest czysty.
 
-### Phase 2 — Plan (`/plan`)
+### Faza 2 — Plan (`/plan`)
 
-Orchestrator delegates to **architect**. Loads `spec.md` + `.ai/rules/principles.md` + relevant `.ai/rules/{angular,nx,security}.md`. Output: `docs/analytical/specs/<slug>/plan.md`.
+Orchestrator deleguje do **architect**. Ładuje `spec.md` + `.ai/rules/principles.md` + relevant `.ai/rules/{angular,nx,security}.md`. Output: `docs/analytical/specs/<slug>/plan.md`.
 
-The plan captures:
+Plan łapie:
 
-- Tech stack additions (with ADR ref if the change is non-trivial)
-- Module taxonomy — which `apps/` and `libs/{feature,ui,data,util,shared}/` to touch
-- Public API surface (`src/index.ts` exports)
-- Data model + contracts (link to `contracts/` subdir if API design needed)
+- Tech stack additions (z ADR ref jeśli zmiana jest non-trivial)
+- Module taxonomy — które `apps/` i `libs/{feature,ui,data,util,shared}/` dotknąć
+- Public API surface (eksporty `src/index.ts`)
+- Data model + contracts (linkuj do subdir `contracts/` jeśli API design jest potrzebny)
 - Risks + mitigations
-- Generator plan — exact `nx generate` commands to scaffold
+- Generator plan — dokładne komendy `nx generate` do scaffold
 
-If the change warrants an ADR, the architect also writes `docs/adr/NNNN-<slug>.md` with `Status: proposed`.
+Jeśli zmiana zasługuje na ADR, architect pisze też `docs/adr/NNNN-<slug>.md` z `Status: proposed`.
 
-Done when: user accepts plan; `plan.md` is complete; ADR (if any) is `accepted`.
+Done gdy: użytkownik akceptuje plan; `plan.md` jest kompletny; ADR (jeśli jest) jest `accepted`.
 
-### Phase 3 — Tasks (`/tasks`)
+### Faza 3 — Tasks (`/tasks`)
 
-Orchestrator decomposes the plan into ordered, atomic work units. Output: `docs/analytical/specs/<slug>/tasks.md`.
+Orchestrator dekomponuje plan na ordered, atomic work units. Output: `docs/analytical/specs/<slug>/tasks.md`.
 
-Each task has:
+Każdy task ma:
 
 - `id` — `T001`, `T002`, …
-- `title` — imperative ("Create UserService with `find()`")
-- `agent` — which specialist owns it (`frontend-developer`, `backend-developer`, `test-engineer`, …)
-- `inputs` — files/artefacts it depends on
-- `outputs` — files it creates/modifies
-- `done_when` — explicit verification (test passes, contract satisfies schema, etc.)
-- `parallel_with` — optional list of task ids that can run concurrently
-- `blocked_by` — optional list of task ids that must finish first
+- `title` — imperatywne ("Create UserService with `find()`")
+- `agent` — który specjalista jest właścicielem (`frontend-developer`, `backend-developer`, `test-engineer`, …)
+- `inputs` — pliki/artefakty od których zależy
+- `outputs` — pliki, które tworzy/modyfikuje
+- `done_when` — jawna weryfikacja (test passes, contract satisfies schema, etc.)
+- `parallel_with` — opcjonalna lista task ids, które mogą biec równolegle
+- `blocked_by` — opcjonalna lista task ids, które muszą się zakończyć najpierw
 
-Tasks should be small enough that a specialist agent can complete one in a single turn. If a task feels >1 turn, split it.
+Taski powinny być małe na tyle, żeby agent specjalista mógł skończyć jeden w jednym turn. Jeśli task czuje się >1 turn, rozbij go.
 
-Done when: every leaf of the plan maps to ≥1 task; tasks form a DAG.
+Done gdy: każdy leaf planu mapuje się na ≥1 task; taski formują DAG.
 
-### Phase 4 — Implement (`/implement [task-id|all]`)
+### Faza 4 — Implement (`/implement [task-id|all]`)
 
-Orchestrator iterates the task DAG. For each task:
+Orchestrator iteruje task DAG. Dla każdego taska:
 
-1. Delegate to the named `agent` with `inputs` and `done_when`.
-2. Validate against `done_when`.
-3. Append a one-line entry to `runs/<task-id>.log`.
-4. On failure: route back to the producing agent with the failure context. Three failures escalate to the user.
-5. Move to next task (parallel where `parallel_with` allows).
+1. Deleguj do nazwanego `agent` z `inputs` i `done_when`.
+2. Waliduj przeciw `done_when`.
+3. Dopisz one-line wpis do `runs/<task-id>.log`.
+4. On failure: route z powrotem do producing agent z failure context. Trzy failures eskalują do użytkownika.
+5. Move to next task (parallel gdzie `parallel_with` pozwala).
 
-After all tasks: run the standard validation gate (`pnpm affected:lint` etc.). Code-reviewer + security-auditor (if needed) run as the final gate.
+Po wszystkich taskach: uruchom standard validation gate (`pnpm affected:lint` etc.). Code-reviewer + security-auditor (jeśli potrzebny) biegnie jako final gate.
 
-Done when: all tasks `status: done` AND validators green AND reviewers approved.
+Done gdy: wszystkie taski `status: done` AND validators zielone AND reviewers zaakceptowali.
 
-## Optional: full spec-kit CLI
+## Opcjonalnie: pełny CLI spec-kit
 
-If a team wants the official spec-kit machinery (with its own `.specify/` dir, `constitution.md`, and Python CLI), run:
+Jeśli zespół chce official spec-kit machinery (z własnym dir `.specify/`, `constitution.md`, i Python CLI), uruchom:
 
 ```bash
 uvx --from git+https://github.com/github/spec-kit.git specify init . --integration claude
-# or --integration copilot
+# lub --integration copilot
 ```
 
-⚠ Spec-kit will write into `.claude/commands/` and `.github/prompts/` — overlapping with files we already maintain. Most teams will prefer this workflow (which already implements the same methodology) over running the CLI in-tree. If you do run the CLI, gitignore `.specify/` to keep it personal-tooling.
+⚠ Spec-kit będzie zapisywał do `.claude/commands/` i `.github/prompts/` — overlapping z plikami które już utrzymujemy. Większość zespołów preferuje ten workflow (który już implementuje tę samą metodologię) zamiast uruchamiania CLI in-tree. Jeśli uruchamiasz CLI, gitignore `.specify/` żeby trzymać go jako personal-tooling.
 
 ## Mermaid
 
@@ -154,7 +154,7 @@ uvx --from git+https://github.com/github/spec-kit.git specify init . --integrati
 flowchart LR
     U[User: /specify desc] --> O1[Orchestrator]
     O1 --> A1[Analyst → spec.md]
-    A1 --> Q{Crisp?}
+    A1 --> Q{Ostry?}
     Q -- no --> CL[Analyst → clarify.md]
     CL --> A1
     Q -- yes --> O2[/plan/]

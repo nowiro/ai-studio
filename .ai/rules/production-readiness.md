@@ -1,27 +1,27 @@
 ---
 id: rules.production-readiness
-title: Production readiness — six must-haves
+title: Production readiness — sześć must-haves
 type: rules
 scope: trinity
 priority: 2
-version: 1.0.0
-last-updated: 2026-05-09
+version: 2.0.0
+last-updated: 2026-05-20
 trinity-baseline: true
 ---
 
-# Production readiness — six must-haves
+# Production readiness — sześć must-haves
 
-> Trinity baseline. Every agent-bearing feature in `ai-studio` / `ai-mcp-alm` / `ai-mcp-devtools` MUST satisfy these six controls **before** it touches a production-impacting system.
+> Trinity baseline. Każdy agent-bearing feature w `ai-studio` / `ai-mcp-alm` / `ai-mcp-devtools` MUSI spełnić te sześć kontroli **zanim** dotknie production-impacting system.
 
-These rules expand on [`.ai/rules/security.md`](security.md) (data and authn) with the **operations** controls that turn a working agent into a safe one. See also [`.ai/architecture.md`](../architecture.md) §6 for context.
+Te reguły rozszerzają [`.ai/rules/security.md`](security.md) (dane i authn) o **operations** kontrole, które zamieniają działającego agenta w bezpiecznego. Patrz też [`.ai/architecture.md`](../architecture.md) §6 dla kontekstu.
 
 ```mermaid
 flowchart TB
   PERMS["1 · Permissions<br/>least-privilege"]
-  AUDIT["2 · Audit logs<br/>who · what · when · why"]
+  AUDIT["2 · Audit logs<br/>kto · co · kiedy · po co"]
   MON["3 · Monitoring<br/>latency · errors · tokens"]
-  COST["4 · Cost control<br/>budgets · alerts"]
-  HUM["5 · Human approval<br/>checkpoint for high-risk"]
+  COST["4 · Cost control<br/>budgety · alerty"]
+  HUM["5 · Human approval<br/>checkpoint dla high-risk"]
   FB["6 · Fallback paths<br/>plan B"]
 
   PERMS --> AUDIT --> MON --> COST --> HUM --> FB
@@ -34,118 +34,118 @@ flowchart TB
 
 ## 1. Permissions — least-privilege
 
-**What.** Every agent gets only the scopes / API tokens / file paths it needs for the current task — nothing more.
+**Co.** Każdy agent dostaje tylko te scopes / API tokens / file paths, których potrzebuje do aktualnego zadania — nic więcej.
 
-**Why.** The blast radius of a compromised agent equals the union of its permissions.
+**Po co.** Blast radius skompromitowanego agenta równa się unii jego uprawnień.
 
-**Signals it is in place:**
+**Sygnały, że jest w miejscu:**
 
-- Tokens are **per-feature**, not per-user-everything. (e.g. `ai-mcp-alm`'s Jira write-token has `write:issue` only — not `admin`.)
-- File-system access is sandboxed to `PROJECT_ROOT` (already enforced in `ai-mcp-devtools` — see `src/server.ts`).
-- Network calls are allowlisted (already enforced in `ai-mcp-devtools/read-docs`).
-- Tokens are read **at use-time** from the environment or the user-profile config, never from the repo.
+- Tokeny są **per-feature**, nie per-user-everything. (Np. write-token Jira w `ai-mcp-alm` ma tylko `write:issue` — nie `admin`.)
+- Dostęp do file-system jest sandboxed do `PROJECT_ROOT` (już wymuszone w `ai-mcp-devtools` — patrz `src/server.ts`).
+- Calls sieciowe są allowlisted (już wymuszone w `ai-mcp-devtools/read-docs`).
+- Tokeny są czytane **at use-time** z environment lub user-profile config, nigdy z repo.
 
-**Trinity hook:** `assertWriteAllowed()` in `ai-mcp-alm` is the canonical guard. Any new mutating tool wraps `assertWriteAllowed()` before the side-effect.
+**Trinity hook:** `assertWriteAllowed()` w `ai-mcp-alm` to canonical guard. Każde nowe mutujące narzędzie wrappuje `assertWriteAllowed()` przed side-effectem.
 
 ---
 
-## 2. Audit logs — who · what · when · why
+## 2. Audit logs — kto · co · kiedy · po co
 
-**What.** Every state-mutating action is logged with: actor, tool/agent name, input fingerprint, outcome, timestamp, correlation id.
+**Co.** Każda state-mutating akcja jest logowana z: actor, nazwa narzędzia/agenta, input fingerprint, outcome, timestamp, correlation id.
 
-**Why.** Post-incident forensics is impossible without it. Compliance frameworks (SOC 2, ISO 27001, AI Act) require it.
+**Po co.** Post-incident forensics jest niemożliwe bez tego. Compliance frameworks (SOC 2, ISO 27001, AI Act) tego wymagają.
 
-**Signals it is in place:**
+**Sygnały, że jest w miejscu:**
 
-- A `log()` helper writes structured JSON to **stderr** (never stdout — MCP servers use stdout for protocol).
-- Every tool's `handle()` wraps work in `timed(server, tool, fn)` (see `ai-mcp-alm/src/shared/log.ts`).
-- Inputs containing secrets are **fingerprinted** (sha256 prefix), never logged raw.
-- A central log shipper picks up the stderr stream; logs are retained ≥ 90 days.
+- Helper `log()` zapisuje structured JSON do **stderr** (nigdy stdout — serwery MCP używają stdout do protokołu).
+- Każde `handle()` narzędzia wrappuje pracę w `timed(server, tool, fn)` (patrz `ai-mcp-alm/src/shared/log.ts`).
+- Inputy zawierające sekrety są **fingerprinted** (sha256 prefix), nigdy logowane raw.
+- Centralny log shipper zbiera stream stderr; logi są retained ≥ 90 dni.
 
-**Anti-patterns:** `console.log(token)`, swallowing exceptions silently, logging full request bodies.
+**Anti-patterns:** `console.log(token)`, silent swallowing exceptions, logowanie pełnych request bodies.
 
 ---
 
 ## 3. Monitoring — latency · errors · tokens
 
-**What.** Real-time dashboards on the four numbers that matter:
+**Co.** Real-time dashboardy na czterech liczbach, które się liczą:
 
 - **Latency** — p50/p95/p99 per tool.
 - **Error rate** — per tool, per upstream system.
 - **Token usage** — input + output tokens per tool invocation.
-- **Tool fan-out** — how many tools the orchestrator calls per turn.
+- **Tool fan-out** — ile narzędzi orchestrator wywołuje per turn.
 
-**Why.** A silent regression that doubles latency or token cost goes undetected for weeks otherwise.
+**Po co.** Silent regression, który podwaja latency lub token cost, inaczej zostaje niewykryty przez tygodnie.
 
-**Signals it is in place:**
+**Sygnały, że jest w miejscu:**
 
-- Metrics are emitted alongside log entries (or extracted from them).
-- An on-call runbook exists for each red threshold.
-- Dashboard panels are versioned in the repo.
-
----
-
-## 4. Cost control — budgets · alerts
-
-**What.** A hard ceiling on monthly spend per project + alerts at 50 / 80 / 100 % of budget.
-
-**Why.** LLM spend scales superlinearly with bad prompts, runaway loops, and forgotten background jobs.
-
-**Signals it is in place:**
-
-- Budgets are configured at the API-key level (Anthropic, OpenAI, Sentry, …).
-- A killswitch exists — when budget is exhausted, the orchestrator returns a "budget exceeded" error code (`BudgetExceededError = -32013` in trinity error codes).
-- Cost is attributed per repo / per feature so the owner of the spike is unambiguous.
+- Metryki są emitowane obok log entries (lub ekstrahowane z nich).
+- On-call runbook istnieje dla każdego red threshold.
+- Panele dashboarda są wersjonowane w repo.
 
 ---
 
-## 5. Human approval — checkpoint for high-risk actions
+## 4. Cost control — budgety · alerty
 
-**What.** Mutating actions that meet a "high-risk" predicate must surface a confirmation step that a human (not the agent) clears.
+**Co.** Twardy sufit na monthly spend per project + alerty na 50 / 80 / 100 % budżetu.
 
-**Why.** _MCP enables action; it does not decide._ Some decisions must remain human.
+**Po co.** LLM spend skaluje się superlinearnie ze złymi promptami, runaway loops i zapomnianymi background jobs.
+
+**Sygnały, że jest w miejscu:**
+
+- Budgety są skonfigurowane na poziomie API-key (Anthropic, OpenAI, Sentry, …).
+- Killswitch istnieje — gdy budget jest wyczerpany, orchestrator zwraca error code "budget exceeded" (`BudgetExceededError = -32013` w trinity error codes).
+- Cost jest atrybuowany per repo / per feature, żeby właściciel spike był jednoznaczny.
+
+---
+
+## 5. Human approval — checkpoint dla high-risk akcji
+
+**Co.** Mutujące akcje, które spełniają "high-risk" predicate, muszą wystawić confirmation step, który człowiek (nie agent) clearuje.
+
+**Po co.** _MCP umożliwia akcję; nie decyduje._ Niektóre decyzje muszą pozostać ludzkie.
 
 **High-risk predicates (non-exhaustive):**
 
-- Deleting or moving production data.
-- Sending external email / Slack / Teams messages on behalf of a user.
-- Posting public content (social media, public GitHub comments).
-- Spending money (purchase, refund, transaction).
-- Granting or revoking access.
-- Anything that crosses a regulatory boundary (AI Act, GDPR, financial).
+- Usuwanie lub przenoszenie production data.
+- Wysyłanie external email / Slack / Teams messages w imieniu użytkownika.
+- Postowanie public content (social media, public GitHub comments).
+- Wydawanie pieniędzy (purchase, refund, transaction).
+- Przyznawanie lub odbieranie dostępu.
+- Cokolwiek, co przekracza regulacyjną granicę (AI Act, GDPR, financial).
 
-**Signals it is in place:**
+**Sygnały, że jest w miejscu:**
 
-- The mutating tool's input schema requires an explicit `confirm: true` flag, defaulted to `false`.
-- A human-readable summary of "what is about to change" is shown before the action.
-- The audit log captures the approver's identity.
+- Input schema mutującego narzędzia wymaga jawnej flagi `confirm: true`, defaulted do `false`.
+- Human-readable podsumowanie "co się ma zmienić" jest pokazane przed akcją.
+- Audit log łapie tożsamość zatwierdzającego.
 
 ---
 
 ## 6. Fallback paths — plan B
 
-**What.** Every agent flow has a documented degraded mode for when an external system fails.
+**Co.** Każdy agent flow ma udokumentowany degraded mode na wypadek failu external system.
 
-**Why.** "Sentry is down" / "the model returns 5xx" / "Jira API rate-limited" — the orchestrator must not crash; it must fall back gracefully.
+**Po co.** "Sentry jest down" / "model zwraca 5xx" / "Jira API rate-limited" — orchestrator nie może crashować; musi spaść z gracją.
 
-**Signals it is in place:**
+**Sygnały, że jest w miejscu:**
 
-- Each MCP tool documents its **fail-mode contract**: what does it return if the upstream is down?
-- Retries are bounded (≤ 3 attempts with exponential backoff) and logged.
-- A circuit-breaker trips on repeated failure (open for ≥ 30 s before half-open retry).
-- The end user gets a clear message: "X is unavailable; try again in Y minutes." — never a stack trace.
+- Każde narzędzie MCP dokumentuje swój **fail-mode contract**: co zwraca jeśli upstream jest down?
+- Retries są bounded (≤ 3 próby z exponential backoff) i logowane.
+- Circuit-breaker tripuje na repeated failure (open dla ≥ 30 s przed half-open retry).
+- End user dostaje czysty komunikat: "X jest niedostępne; spróbuj ponownie za Y minut." — nigdy stack trace.
 
 ---
 
 ## End-of-feature checklist
 
-Before any feature crosses the "production-impacting" line, the architect signs off the following:
+Zanim jakikolwiek feature przekroczy linię "production-impacting", architect zatwierdza następujące:
 
-- [ ] **Permissions** — token scopes are minimal; file-system + network access are sandboxed.
-- [ ] **Audit logs** — every mutating call goes through `timed()`; secrets are fingerprinted, not logged.
-- [ ] **Monitoring** — latency / error / token metrics are visible on the dashboard.
-- [ ] **Cost control** — feature is under a budget with at-thresholds alerts.
-- [ ] **Human approval** — all high-risk predicates require explicit `confirm: true` + summary.
-- [ ] **Fallback** — each upstream has a documented fail-mode and circuit-breaker.
+- [ ] **Permissions** — scopes tokenów są minimalne; dostęp file-system + network jest sandboxed.
+- [ ] **Audit logs** — każde mutujące wywołanie idzie przez `timed()`; sekrety są fingerprinted, nie logowane.
+- [ ] **Monitoring** — metryki latency / error / token są widoczne na dashboardzie.
+- [ ] **Cost control** — feature jest pod budgetem z at-thresholds alerts.
+- [ ] **Human approval** — wszystkie high-risk predicates wymagają jawnego `confirm: true` + summary.
+- [ ] **Fallback** — każdy upstream ma udokumentowany fail-mode i circuit-breaker.
 
-This checklist appears in the orchestrator's "Definition of Done" gate alongside lint / test / build.
+Ta checklista pojawia się w orchestrator's "Definition of Done" gate obok lint / test / build.

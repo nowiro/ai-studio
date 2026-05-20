@@ -1,178 +1,178 @@
 ---
 id: rules.principles
-title: Engineering principles — DRY, SOLID, KISS, YAGNI
+title: Zasady inżynierskie — DRY, SOLID, KISS, YAGNI
 type: rules
 scope: global
 priority: 1
-version: 1.0.0
+version: 2.0.0
 ---
 
-# Engineering principles
+# Zasady inżynierskie
 
-These are the **golden rules** every agent and contributor leans on when in doubt. They sit alongside [`core.md`](core.md) at the top of the priority chain. They don't replace specific stack rules (Angular, styling, testing, security) — they're the meta-rules those rules embody.
+To **złote reguły**, na których opiera się każdy agent i kontrybutor gdy nie ma pewności. Siedzą obok [`core.md`](core.md) na szczycie łańcucha priorytetu. Nie zastępują specyficznych reguł stacka (Angular, styling, testing, security) — są meta-regułami, które te reguły wcielają.
 
-When two principles conflict, **clarity wins**. Write code humans want to maintain.
+Gdy dwie zasady konfliktują, **wygrywa klarowność**. Pisz kod, który ludzie chcą utrzymywać.
 
 ## 1. DRY — Don't Repeat Yourself
 
-Each piece of knowledge has a single, authoritative representation.
+Każdy kawałek wiedzy ma jedną, autorytatywną reprezentację.
 
-- Same intent appearing in three or more places → extract.
-- **But**: don't deduplicate code that _looks_ similar but represents _different_ concerns. Three identical-looking lines of unrelated logic are not a duplication; abstracting them couples futures that should stay independent.
-- Heuristic: deduplicate **knowledge**, not **lines**. If both copies must change for the same reason, they were duplicated; if they change for different reasons, they're not.
+- Ten sam intent pojawia się w trzech lub więcej miejscach → wyekstraktuj.
+- **Ale**: nie deduplikuj kodu, który _wygląda_ podobnie, ale reprezentuje _różne_ concerns. Trzy identyczne linie nieskorelowanej logiki to nie duplikacja; abstrahowanie ich sprzęga futures, które powinny pozostać niezależne.
+- Heurystyka: deduplikuj **wiedzę**, nie **linie**. Jeśli obie kopie muszą się zmienić z tego samego powodu, były duplikacją; jeśli zmieniają się z różnych powodów, nie są.
 
-| Good                                                           | Bad                                     |
-| -------------------------------------------------------------- | --------------------------------------- |
-| One Zod schema in `libs/util/schemas` reused by API + form     | Same schema duplicated in 3 components  |
-| One `LoggerService` everyone injects                           | Five `console.log` wrappers across libs |
-| One Tailwind token (`bg-primary`) sourcing Material design var | Hard-coded `#6750a4` in 12 components   |
+| Dobrze                                                            | Źle                                       |
+| ----------------------------------------------------------------- | ----------------------------------------- |
+| Jeden Zod schema w `libs/util/schemas` reused przez API + form    | Ten sam schema duplikowany w 3 komponentach |
+| Jeden `LoggerService` który wszyscy injectują                     | Pięć wrapperów `console.log` po libach    |
+| Jeden Tailwind token (`bg-primary`) źródłujący Material design var | Hardcoded `#6750a4` w 12 komponentach     |
 
 ## 2. KISS — Keep It Simple
 
-Pick the simplest solution that solves the problem **as it exists today**. Cleverness that future-you can't read at a glance is a bug.
+Wybierz najprostsze rozwiązanie, które rozwiązuje problem **taki jaki istnieje dziś**. Sprytność, której future-you nie potrafi przeczytać na pierwszy rzut oka, to bug.
 
-- Prefer plain functions over classes when no state is needed.
-- Prefer signals over RxJS when no stream semantics are needed.
-- Prefer Material's built-in components over hand-rolled.
-- Prefer `@if` / `@for` over building a custom directive.
-- Avoid metaprogramming (decorators-creating-decorators, dynamic class generation) unless there's a measured win.
+- Wybieraj plain functions zamiast klas, gdy stan nie jest potrzebny.
+- Wybieraj signals zamiast RxJS, gdy stream semantics nie są potrzebne.
+- Wybieraj built-in komponenty Material zamiast hand-rolled.
+- Wybieraj `@if` / `@for` zamiast budowy custom dyrektywy.
+- Unikaj metaprogramowania (decorators-creating-decorators, dynamic class generation) chyba że jest zmierzona wygrana.
 
-If you find yourself writing comments to explain _what_ the code does, the code is not simple.
+Jeśli łapiesz się na pisaniu komentarzy, żeby wyjaśnić _co_ kod robi, kod nie jest prosty.
 
 ## 3. YAGNI — You Aren't Gonna Need It
 
-Don't add capability the current task doesn't require.
+Nie dodawaj capability, której aktualne zadanie nie wymaga.
 
-- No "future-proof" abstractions. Add them when the second concrete use case lands.
-- No config flags for behaviour nobody is asking for.
-- No backwards-compatibility layers for code that hasn't been released.
-- No dead code "just in case".
+- Żadnych "future-proof" abstrakcji. Dodaj je gdy wyląduje drugi konkretny use case.
+- Żadnych config flags dla behaviour którego nikt nie pyta.
+- Żadnych backwards-compatibility layers dla kodu, który nie został wydany.
+- Żadnego dead code "just in case".
 
-If a contributor argues "we might need X later" — they get to add X **later**, with a real spec.
+Jeśli kontrybutor argumentuje "być może będziemy potrzebować X później" — dostaje dodać X **później**, z prawdziwym spec.
 
 ## 4. SOLID
 
-For object-oriented and signal-oriented code alike. Angular services, components and directives are the typical "objects" here.
+Dla object-oriented i signal-oriented kodu jednakowo. Angular services, components i directives są tu typowymi "obiektami".
 
 ### S — Single Responsibility
 
-A class / component / function has **one reason to change**.
+Klasa / komponent / funkcja ma **jeden powód do zmiany**.
 
-- A component that fetches data **and** renders **and** dispatches analytics has three reasons. Split.
-- A service that handles auth **and** caching **and** logging has three reasons. Split.
+- Komponent który fetchuje dane **i** renderuje **i** dispatchuje analytics ma trzy powody. Rozdziel.
+- Service który obsługuje auth **i** caching **i** logging ma trzy powody. Rozdziel.
 
 ### O — Open / Closed
 
-Code is open for extension, closed for modification.
+Kod jest otwarty na rozszerzenie, zamknięty na modyfikację.
 
-- Add new behaviour by passing a strategy / signal / function, not by editing a switch statement that grows linearly.
-- Use signal-driven configuration (`provideXxx({ adapter })`) over inheritance.
+- Dodawaj nowy behaviour przekazując strategy / signal / function, nie edytując switch statement, który rośnie liniowo.
+- Używaj signal-driven configuration (`provideXxx({ adapter })`) zamiast dziedziczenia.
 
 ### L — Liskov Substitution
 
-If `B extends A`, `B` must work everywhere `A` works without surprising callers.
+Jeśli `B extends A`, `B` musi działać wszędzie tam gdzie działa `A` bez zaskakiwania callerów.
 
-- Don't override a method to throw, return `null`, or change its contract.
-- Prefer composition; inherit only when the "is-a" relation truly holds.
+- Nie overridee metody żeby rzuciła, zwróciła `null`, lub zmieniła swój kontrakt.
+- Wybieraj kompozycję; dziedzicz tylko gdy relacja "is-a" naprawdę zachodzi.
 
 ### I — Interface Segregation
 
-Many narrow interfaces beat one wide one.
+Wiele wąskich interfaces pokonuje jeden szeroki.
 
-- A consumer that only needs `read()` shouldn't depend on a type that also exposes `write()` and `delete()`.
-- Use Angular's `inject(MY_TOKEN)` with a small interface token, not the full service class.
+- Konsument, który potrzebuje tylko `read()`, nie powinien zależeć od typu, który eksponuje też `write()` i `delete()`.
+- Używaj Angular `inject(MY_TOKEN)` z małym interface tokenem, nie pełną klasą service.
 
 ### D — Dependency Inversion
 
-Depend on abstractions, not on concretions — but only where substitution is actually useful.
+Zależ od abstrakcji, nie od konkretów — ale tylko gdzie substytucja jest faktycznie użyteczna.
 
-- High-level features depend on a `BillingPort` interface; low-level adapters implement it.
-- This is **not** a license to wrap every service in an interface "for testability". TestBed already handles substitution.
+- High-level features zależą od interface `BillingPort`; low-level adapters go implementują.
+- To **nie** licencja na wrapowanie każdego service w interface "dla testability". TestBed już obsługuje substytucję.
 
 ## 5. Composition over inheritance
 
-Inheritance creates rigid hierarchies. Composition creates Lego.
+Dziedziczenie tworzy sztywne hierarchie. Kompozycja tworzy Lego.
 
-- In Angular: prefer multiple small standalone components composed in a template over one big component with subclasses.
-- In services: prefer injecting collaborators over inheriting behaviour.
-- Mixins and abstract classes are last resorts.
+- W Angular: wybieraj wiele małych standalone komponentów komponowanych w template zamiast jednego dużego komponentu z subclasses.
+- W services: wybieraj injectowanie kolaboratorów zamiast dziedziczenia behaviour.
+- Mixins i abstract classes są ostatnimi resortami.
 
 ## 6. High cohesion, low coupling
 
-Things that change together live together. Things that change independently stay separate.
+Rzeczy, które zmieniają się razem, żyją razem. Rzeczy, które zmieniają się niezależnie, pozostają osobno.
 
-- A feature library has the route container + smart components + feature-local services. They change together.
-- A UI library has dumb presentational components. They don't know about features.
-- Coupling between libraries is enforced by `@nx/enforce-module-boundaries` (see [`nx.md`](nx.md)).
+- Feature library ma route container + smart komponenty + feature-local services. Zmieniają się razem.
+- UI library ma dumb presentational komponenty. Nie wiedzą o features.
+- Sprzężenie między libami wymuszane przez `@nx/enforce-module-boundaries` (patrz [`nx.md`](nx.md)).
 
 ## 7. Boy Scout Rule
 
-Leave the code a little better than you found it — but **scoped to the task**.
+Zostaw kod trochę lepszym niż go zastałeś — ale **scoped do zadania**.
 
-- Bug-fix PR: rename a confusingly-named local variable. ✅
-- Bug-fix PR: refactor a 200-line service. ❌ (open a separate tech-debt issue).
+- Bug-fix PR: zmień nazwę zmyleniającej local variable. ✅
+- Bug-fix PR: refactor 200-linowego service. ❌ (otwórz osobny tech-debt issue).
 
-This rule is about **small, opportunistic** improvements, not unsolicited rewrites.
+Ta reguła jest o **małych, opportunistic** ulepszeniach, nie o unsolicited rewrites.
 
 ## 8. Principle of Least Astonishment
 
-Code should do what its name suggests, no more, no less.
+Kod powinien robić to, co sugeruje jego nazwa, ni mniej, ni więcej.
 
-- A function called `getInvoices()` does not also send analytics events.
-- A signal called `total()` does not return a formatted string.
-- A component selector `ais-button` does not render a `<div>`.
+- Funkcja `getInvoices()` nie wysyła też analytics events.
+- Signal `total()` nie zwraca formatted string.
+- Selektor komponentu `ais-button` nie renderuje `<div>`.
 
-If you must surprise the reader, the comment is required.
+Jeśli musisz zaskoczyć czytelnika, komentarz jest wymagany.
 
 ## 9. Fail fast, fail loud
 
-Errors at the boundary, not deep in the code.
+Błędy na granicy, nie głęboko w kodzie.
 
-- Validate every external payload at the HTTP boundary (Zod). Reject early.
-- Don't silently coerce `null` into defaults — surface the missing input.
-- AI model output: schema-bound (Zod) — never parse free text into business decisions.
+- Waliduj każdy external payload na granicy HTTP (Zod). Odrzucaj wcześnie.
+- Nie coerce po cichu `null` na defaulty — ujawnij brakujący input.
+- Output modelu AI: schema-bound (Zod) — nigdy nie parse free text na business decisions.
 
 ## 10. Convention over configuration
 
-Pick a convention, document it once, follow it everywhere.
+Wybierz konwencję, udokumentuj ją raz, stosuj wszędzie.
 
-- File names: `kebab-case` (Angular convention).
-- Selectors: `ais-*`.
-- Module boundaries: enforced by Nx tags.
+- Nazwy plików: `kebab-case` (konwencja Angular).
+- Selektory: `ais-*`.
+- Module boundaries: wymuszane przez Nx tags.
 - Commits: Conventional Commits.
 
-When a new contributor (human or AI) asks "where should X go?", the answer should already be in `.ai/` or `docs/programming/`.
+Gdy nowy kontrybutor (człowiek lub AI) pyta "gdzie powinien iść X?", odpowiedź powinna już być w `.ai/` lub `docs/programming/`.
 
-## 11. Reversibility — small, safe steps
+## 11. Reversibility — małe, bezpieczne kroki
 
-Big changes are scary. Many small changes are routine.
+Duże zmiany są straszne. Wiele małych zmian to rutyna.
 
-- One concern per PR. Reviewer-able in one sitting.
-- Generators (Nx, Angular CLI, Material schematics) over hand-edits.
-- Feature flags / `@defer` blocks for risky launches.
-- ADRs for decisions that are hard to reverse.
+- Jeden concern na PR. Reviewable w jednym posiedzeniu.
+- Generatory (Nx, Angular CLI, Material schematics) zamiast hand-edits.
+- Feature flags / `@defer` bloki dla ryzykownych launches.
+- ADRs dla decyzji trudnych do odwrócenia.
 
-## 12. Code is read more than written
+## 12. Kod jest czytany więcej niż pisany
 
-Optimise for the next reader, not the current writer.
+Optymalizuj dla następnego czytelnika, nie aktualnego writera.
 
-- Names over comments.
-- Explicit types over inferred ones at API boundaries.
-- One sentence per markdown line for clean diffs.
-- Examples in agent role files and prompts so new tools onboard fast.
+- Nazwy zamiast komentarzy.
+- Explicit types zamiast inferred na granicach API.
+- Jedno zdanie na linię markdown dla czystych diffów.
+- Przykłady w plikach ról agentów i promptach żeby nowe narzędzia szybko się onboardowały.
 
-## How agents apply these
+## Jak agenci to stosują
 
-Every agent loads this file at the start of its task. When two competing approaches both satisfy the immediate spec, the agent picks the one closer to these principles and notes the trade-off in its hand-off block. A code reviewer who spots a violation cites the **principle id** (e.g. _SRP_, _KISS_) — not vague "this seems wrong".
+Każdy agent ładuje ten plik na początku swojego zadania. Gdy dwa konkurujące podejścia oba spełniają immediate spec, agent wybiera to bliższe tym zasadom i notuje trade-off w swoim hand-off bloku. Code reviewer, który spostrzega naruszenie, cytuje **id zasady** (np. _SRP_, _KISS_) — nie mgliste "to wygląda źle".
 
-## What these are NOT
+## Czym te NIE są
 
-- **Not a checklist.** A PR doesn't need to demonstrate every principle.
-- **Not commandments.** Real code sometimes violates a principle for a measured reason. Document the reason.
-- **Not a substitute for spec rules.** Angular conventions, security rules and Nx boundaries are still binding.
+- **Nie checklistą.** PR nie musi demonstrować każdej zasady.
+- **Nie przykazaniami.** Realny kod czasem narusza zasadę z zmierzonego powodu. Udokumentuj powód.
+- **Nie substytutem dla spec rules.** Konwencje Angular, reguły security i Nx boundaries nadal obowiązują.
 
-## See also
+## Zobacz też
 
-- [`core.md`](core.md) — non-negotiable cross-cutting rules.
+- [`core.md`](core.md) — nienegocjowalne cross-cutting reguły.
 - [`angular.md`](angular.md), [`styling.md`](styling.md), [`testing.md`](testing.md), [`nx.md`](nx.md), [`security.md`](security.md) — stack-specific.
-- [`docs/programming/coding-standards.md`](../../docs/programming/coding-standards.md) — concrete recipes.
+- [`docs/programming/coding-standards.md`](../../docs/programming/coding-standards.md) — konkretne przepisy.

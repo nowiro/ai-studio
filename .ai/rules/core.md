@@ -1,86 +1,86 @@
 ---
 id: rules.core
-title: Core rules — every agent, every task
+title: Reguły core — każdy agent, każde zadanie
 type: rules
 scope: global
 priority: 1
-version: 1.0.0
+version: 2.0.0
 ---
 
-# Core rules
+# Reguły core
 
-These rules are non-negotiable. They override anything else **except** an explicit user instruction in the chat. Lower-priority files (other rules, agent prompts, workflows) extend but never weaken them.
+Te reguły są nienegocjowalne. Nadpisują wszystko inne **z wyjątkiem** jawnej instrukcji użytkownika w czacie. Pliki niższego priorytetu (inne reguły, prompty agentów, workflows) rozszerzają je, ale nigdy nie osłabiają.
 
-This file pairs with [`principles.md`](principles.md) — those are the _engineering_ principles (DRY, SOLID, KISS, YAGNI). Both load at priority 1.
+Ten plik pracuje w parze z [`principles.md`](principles.md) — tam są _inżynierskie_ zasady (DRY, SOLID, KISS, YAGNI). Oba ładują się na priority 1.
 
-## 1. Truth before action
+## 1. Prawda przed akcją
 
-1.1 Read the relevant code before claiming knowledge of it. Never invent file paths, function names, package versions or APIs.
-1.2 When unsure, use the **context7** MCP server to fetch current upstream docs (Angular, Nx, RxJS, Vitest, Playwright). Cite the source in the response.
-1.3 If a fact comes from `.ai/context/*.md`, link to the file. Memory ≠ ground truth — verify against the repo first.
+1.1 Przeczytaj odpowiedni kod zanim ogłosisz, że go znasz. Nigdy nie wymyślaj ścieżek plików, nazw funkcji, wersji pakietów ani API.
+1.2 Gdy nie masz pewności, użyj serwera MCP **context7** żeby ściągnąć aktualne docs upstream (Angular, Nx, RxJS, Vitest, Playwright). Cytuj źródło w odpowiedzi.
+1.3 Jeśli fakt pochodzi z `.ai/context/*.md`, linkuj do pliku. Pamięć ≠ ground truth — najpierw weryfikuj przeciw repo.
 
-## 2. Smallest reasonable change
+## 2. Najmniejsza rozsądna zmiana
 
-2.1 A bug fix changes only what's needed for the bug. No drive-by refactors.
-2.2 A new feature uses existing primitives before introducing new ones.
-2.3 Three similar lines are better than a premature abstraction.
-2.4 No half-finished implementations. If a step can't complete, surface the blocker and stop — don't paper over it.
+2.1 Bug fix zmienia tylko to, co potrzebne dla buga. Żadnych drive-by refactorów.
+2.2 Nowy feature używa istniejących prymitywów zanim wprowadzi nowe.
+2.3 Trzy podobne linie są lepsze niż przedwczesna abstrakcja.
+2.4 Żadnych pół-skończonych implementacji. Jeśli krok nie może się zakończyć, ujawnij blocker i zatrzymaj się — nie zaklejaj go.
 
-## 3. Reversibility & blast radius
+## 3. Odwracalność i blast radius
 
-3.1 Always-safe: editing files in `apps/`, `libs/`, `docs/`; running tests, lint, typecheck, `nx graph`.
-3.2 Confirm first: deleting files, force-pushing, dropping migrations, mutating shared infra, publishing packages.
-3.3 Forbidden without explicit per-action user approval: `--no-verify`, `git reset --hard`, history rewrites, secret writes, opening PRs against `main` with red CI.
+3.1 Zawsze bezpieczne: edycja plików w `apps/`, `libs/`, `docs/`; uruchamianie testów, lint, typecheck, `nx graph`.
+3.2 Najpierw potwierdź: usuwanie plików, force-push, drop migracji, mutowanie shared infra, publikowanie pakietów.
+3.3 Zabronione bez jawnej per-action zgody użytkownika: `--no-verify`, `git reset --hard`, history rewrites, zapis sekretów, otwieranie PR przeciw `main` z czerwonym CI.
 
 ## 4. Definition of Done
 
-A task is **done** only when:
+Zadanie jest **done** tylko gdy:
 
-- ✅ Lint passes (`pnpm affected:lint`)
-- ✅ Type-check passes (`pnpm typecheck`)
-- ✅ Unit tests pass with ≥80 % statement coverage on touched code (`pnpm affected:test`)
-- ✅ E2E smoke green for affected apps (`pnpm affected:e2e`)
-- ✅ Build succeeds (`pnpm affected:build`)
-- ✅ Docs/ADR updated when behavior changes
+- ✅ Lint przechodzi (`pnpm affected:lint`)
+- ✅ Type-check przechodzi (`pnpm typecheck`)
+- ✅ Unit testy przechodzą z ≥80 % statement coverage na touched code (`pnpm affected:test`)
+- ✅ E2E smoke zielony dla affected apps (`pnpm affected:e2e`)
+- ✅ Build się udaje (`pnpm affected:build`)
+- ✅ Docs/ADR zaktualizowane gdy behaviour się zmienia
 - ✅ Conventional commit + scoped PR description
 
-The Orchestrator MUST NOT mark `done` while any item is missing.
+Orchestrator NIE MOŻE oznaczyć `done` dopóki którykolwiek punkt nie jest spełniony.
 
-## 5. Communication
+## 5. Komunikacja
 
-5.1 Be concise. State results and decisions; skip narration.
-5.2 Quote file paths as `path/to/file.ts:42` so users can click through.
-5.3 Surface uncertainty — say "I don't know, here's how to find out" before guessing.
-5.4 At end-of-turn: one sentence on what changed, one on what's next.
+5.1 Bądź zwięzły. Stwierdzaj wyniki i decyzje; pomijaj narrację.
+5.2 Cytuj ścieżki plików jako `path/to/file.ts:42` żeby użytkownik mógł kliknąć.
+5.3 Ujawniaj niepewność — powiedz "nie wiem, oto jak się dowiedzieć" zanim zgadniesz.
+5.4 Na końcu tury: jedno zdanie co się zmieniło, jedno co dalej.
 
-## 6. Logs of record
+## 6. Logi of record
 
-6.1 Every multi-agent run produces an entry under `docs/ai-workflow/runs/YYYY-MM-DD-<slug>.md` summarising: requesting agent, delegations, MCP calls, files touched, validation outcome.
-6.2 Architectural decisions go in `docs/adr/NNNN-<slug>.md` (MADR template).
-6.3 If memory contradicts the repo, trust the repo and update memory.
+6.1 Każdy multi-agent run produkuje wpis pod `docs/ai-workflow/runs/YYYY-MM-DD-<slug>.md` podsumowujący: requesting agent, delegations, MCP calls, files touched, validation outcome.
+6.2 Decyzje architektoniczne idą do `docs/adr/NNNN-<slug>.md` (template MADR).
+6.3 Jeśli pamięć przeczy repo, ufaj repo i aktualizuj pamięć.
 
 ## 7. Plan-first generation (HARD RULE)
 
-7.1 **No code, doc, scenario, or test is generated without a written plan in markdown.** This applies to features, bug fixes, refactors, library scaffolding, doc regeneration, and test-scenario authoring.
-7.2 **Plan locations** (pick one — pre-existing slot wins):
+7.1 **Żaden kod, dok, scenariusz ani test nie jest generowany bez pisemnego planu w markdown.** Dotyczy to features, bug fixów, refactorów, library scaffolding, regeneracji docs i pisania test-scenarios.
+7.2 **Lokacje planów** (wybierz jedną — istniejący slot wygrywa):
 
-- SDD work → `docs/analytical/specs/<slug>/plan.md` (architect-owned).
-- Everything else → `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` (orchestrator-owned). Use [`_template.md`](../../docs/ai-workflow/plans/_template.md).
-- ADR-worthy changes also produce `docs/adr/NNNN-<slug>.md`.
-  7.3 **Multi-agent execution.** The Orchestrator owns the plan and delegates each task to a specialist (analyst, architect, frontend/backend developer, test-engineer, test-scenario-author, doc-writer, code-reviewer, security-auditor, doc-auditor, release-manager). Specialists MUST refuse a delegation that doesn't cite a plan path.
-  7.4 **Trivial-change exemption.** A single-file edit that doesn't change behaviour (typo, comment, formatting) doesn't need a plan. Anything that touches ≥ 2 files OR adds/changes behaviour requires a plan.
-  7.5 **Plan status lifecycle.** `draft` → `accepted` → `in-progress` → `done` (or `aborted`). The Orchestrator must update the status field and append a one-liner to `docs/ai-workflow/runs/` when each phase closes.
+- Praca SDD → `docs/analytical/specs/<slug>/plan.md` (architect-owned).
+- Wszystko inne → `docs/ai-workflow/plans/<YYYY-MM-DD>-<slug>.md` (orchestrator-owned). Użyj [`_template.md`](../../docs/ai-workflow/plans/_template.md).
+- Zmiany warte ADR również produkują `docs/adr/NNNN-<slug>.md`.
+  7.3 **Multi-agent execution.** Orchestrator jest właścicielem planu i deleguje każde zadanie do specjalisty (analyst, architect, frontend/backend developer, test-engineer, test-scenario-author, doc-writer, code-reviewer, security-auditor, doc-auditor, release-manager). Specjaliści MUSZĄ odmówić delegacji, która nie cytuje ścieżki planu.
+  7.4 **Wyjątek trivial-change.** Single-file edit który nie zmienia behaviour (typo, komentarz, formatting) nie potrzebuje planu. Cokolwiek dotyka ≥ 2 plików LUB dodaje/zmienia behaviour wymaga planu.
+  7.5 **Cykl życia statusu planu.** `draft` → `accepted` → `in-progress` → `done` (lub `aborted`). Orchestrator musi aktualizować pole status i dopisywać one-liner do `docs/ai-workflow/runs/` gdy każda faza się zamyka.
 
 ## 8. Forbidden patterns
 
-- ❌ API keys / secrets in source, comments, commit messages, or `.ai/` files.
-- ❌ `any` (TypeScript) outside justified, commented exceptions.
-- ❌ `console.log` in committed code (use the logger service).
-- ❌ Default exports outside config files.
-- ❌ Skipping the **Definition of Done** because the change "looks small".
-- ❌ Generating code/docs/tests without a plan markdown referenced in the delegation (see §7).
-- ❌ A specialist working solo on a multi-file change without an Orchestrator-owned plan.
+- ❌ API keys / sekrety w source, komentarzach, commit messages, plikach `.ai/`.
+- ❌ `any` (TypeScript) poza uzasadnionymi, skomentowanymi wyjątkami.
+- ❌ `console.log` w committed code (używaj logger service).
+- ❌ Default exports poza plikami config.
+- ❌ Pomijanie **Definition of Done** bo zmiana "wygląda mała".
+- ❌ Generowanie kodu/docs/testów bez planu markdown cytowanego w delegacji (patrz §7).
+- ❌ Specjalista pracujący solo nad multi-file change bez orchestrator-owned plan.
 
 ---
 
-_Source: built on top of `angular.dev/ai` recommendations and Anthropic prompt-engineering guidance._
+_Źródło: zbudowane na bazie rekomendacji `angular.dev/ai` i wytycznych prompt-engineering Anthropic._

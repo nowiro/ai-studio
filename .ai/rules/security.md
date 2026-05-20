@@ -1,65 +1,65 @@
 ---
 id: rules.security
-title: Security rules
+title: Reguły security
 type: rules
 scope: security
 priority: 1
-version: 1.0.0
+version: 2.0.0
 ---
 
-# Security rules
+# Reguły security
 
-## 1. Secrets
+## 1. Sekrety
 
-- **Never** put API keys, OAuth secrets or service account JSON in:
+- **Nigdy** nie umieszczaj API keys, OAuth secrets ani service account JSON w:
   - source code (`*.ts`, `*.html`, `*.scss`),
-  - environment files shipped to the client (`environments/*.ts`),
-  - `.ai/` or `.claude/` configuration,
-  - commit messages, PR descriptions, ADRs,
+  - plikach environment shipowanych do klienta (`environments/*.ts`),
+  - konfiguracji `.ai/` lub `.claude/`,
+  - commit messages, opisach PR, ADR,
   - test fixtures.
-- Local secrets live in `.env.local` (gitignored).
-- Production secrets live in the platform's secret manager (Firebase secrets, AWS SM, GCP Secret Manager, …).
-- Client-side AI calls **must** go through a server-side proxy (Cloud Function / Genkit flow) that holds the key.
+- Sekrety lokalne żyją w `.env.local` (gitignored).
+- Sekrety produkcyjne żyją w secret managerze platformy (Firebase secrets, AWS SM, GCP Secret Manager, …).
+- Client-side AI calls **muszą** iść przez server-side proxy (Cloud Function / Genkit flow), który trzyma klucz.
 
-## 2. Input handling
+## 2. Obsługa wejścia
 
-- Sanitise every URL with `DomSanitizer` before passing to `[innerHTML]`, `[src]`, `[href]`, `[style]`.
-- Validate every external payload with a schema (Zod / Valibot). Reject before it reaches the store.
-- File uploads: enforce MIME + size on the server; client checks are UX-only.
-- All forms post to endpoints that require CSRF protection (handled by HTTP interceptor).
+- Sanityzuj każdy URL przez `DomSanitizer` zanim przekażesz do `[innerHTML]`, `[src]`, `[href]`, `[style]`.
+- Waliduj każdy external payload schemą (Zod / Valibot). Odrzucaj zanim dotrze do store.
+- File uploads: wymuszaj MIME + size na serwerze; client checks są tylko UX-owe.
+- Wszystkie formy postują do endpointów wymagających ochrony CSRF (obsługa w HTTP interceptor).
 
-## 3. Output handling
+## 3. Obsługa wyjścia
 
-- No PII in logs. The `LoggerService` redacts emails, tokens, GUIDs by default.
-- Error messages shown to the user are generic; details go to the server log.
-- No third-party scripts via `<script>`. Use Angular's resource APIs.
+- Żadnego PII w logach. `LoggerService` redactuje emails, tokens, GUIDs domyślnie.
+- Komunikaty błędów pokazywane użytkownikowi są generyczne; detale idą do server log.
+- Żadnych third-party scriptów przez `<script>`. Używaj resource APIs Angulara.
 
 ## 4. AI-specific
 
-- Treat **every** model output as untrusted text:
-  - Render through `[textContent]` / interpolation, not `[innerHTML]`.
-  - If the output is meant to be rendered as Markdown, sanitise via `DOMPurify` first.
-- Tool calls triggered by an LLM that mutate state require **explicit user confirmation** in the UI.
-- Memory and context files are read-only for agents in production runs. Writes go through PRs.
+- Traktuj **każdy** output modelu jako untrusted text:
+  - Renderuj przez `[textContent]` / interpolation, nie `[innerHTML]`.
+  - Jeśli output ma być renderowany jako Markdown, sanityzuj przez `DOMPurify` najpierw.
+- Tool calls triggerowane przez LLM, które mutują stan, wymagają **jawnego user confirmation** w UI.
+- Pliki memory i context są read-only dla agentów w production runs. Zapisy idą przez PRy.
 
-## 5. Dependencies
+## 5. Zależności
 
-- `pnpm audit --prod` runs in CI; high/critical advisories block merge until triaged.
-- New dependencies require an entry in `docs/architecture/dependencies.md` (why this lib, alternatives considered).
-- Lock down peer ranges in `package.json`; renovate/dependabot proposes updates.
+- `pnpm audit --prod` uruchamia się w CI; high/critical advisories blokują merge do triażu.
+- Nowe zależności wymagają wpisu w `docs/architecture/dependencies.md` (czemu ta lib, alternatywy considered).
+- Lock peer ranges w `package.json`; renovate/dependabot proponuje aktualizacje.
 
-## 6. Auth flows (when added)
+## 6. Auth flows (gdy dodane)
 
-- Use OIDC + PKCE; never the deprecated implicit flow.
-- Tokens stored in **httpOnly, SameSite=Strict** cookies — not `localStorage`.
-- Logout invalidates server-side; client just discards.
+- Używaj OIDC + PKCE; nigdy deprecated implicit flow.
+- Tokeny przechowywane w **httpOnly, SameSite=Strict** cookies — nie `localStorage`.
+- Logout invaliduje server-side; klient po prostu odrzuca.
 
 ## 7. CSP
 
-- Production responses serve a strict Content-Security-Policy: `default-src 'self'; script-src 'self'; ...`.
-- No `'unsafe-inline'`. Use Angular's `provideCSPNonce` or hash-based CSP.
+- Production responses serwują ścisły Content-Security-Policy: `default-src 'self'; script-src 'self'; ...`.
+- Żadnego `'unsafe-inline'`. Używaj `provideCSPNonce` Angulara lub hash-based CSP.
 
-## 8. Reporting
+## 8. Zgłaszanie
 
-- Suspected vulnerability → `SECURITY.md` instructions (private disclosure).
-- The `security-auditor` agent runs against every PR touching auth, sanitisation, dependencies, or CSP.
+- Podejrzewana podatność → instrukcje z `SECURITY.md` (private disclosure).
+- Agent `security-auditor` uruchamia się przeciw każdemu PR dotykającemu auth, sanityzacji, zależności lub CSP.
