@@ -4,7 +4,7 @@ title: Spec-Driven Development (SDD)
 type: workflow
 trigger: 'użytkownik prosi o zbudowanie feature z nietrywialnym spec, LUB jawnie wpisuje /specify'
 owner: orchestrator
-version: 2.1.0
+version: 2.2.0
 ---
 
 # Workflow: Spec-Driven Development
@@ -211,15 +211,19 @@ Done gdy: `analysis.md` istnieje, all `FAIL` findings są addressed (fix artefak
 
 Orchestrator iteruje task DAG. Dla każdego taska:
 
-1. Deleguj do nazwanego `agent` z `inputs` i `done_when`.
-2. Waliduj przeciw `done_when`.
-3. Dopisz one-line wpis do `runs/<task-id>.log`.
-4. On failure: route z powrotem do producing agent z failure context. Trzy failures eskalują do użytkownika.
-5. Move to next task (parallel gdzie `parallel_with` pozwala).
+1. **Load constitution** — agent ładuje `.ai/rules/principles.md` + odpowiednie reguły stacka (`.ai/rules/{angular,nx,security,styling,llm-optimization}.md`) **przed** wykonaniem.
+2. Deleguj do nazwanego `agent` z `inputs` i `done_when`.
+3. Agent **cytuje ≥ 1 rule id** w hand-off block (np. "Applied SOLID-D + styling.md §12 ui-kit wrapper"). Bez citation = blocked, route back. Adaptacja z github/spec-kit PR #2460 (constitution loading w `/speckit.implement`).
+4. Waliduj przeciw `done_when`.
+5. Dopisz one-line wpis do `runs/<task-id>.log` zawierający cited rule ids.
+6. On failure: route z powrotem do producing agent z failure context. Trzy failures eskalują do użytkownika.
+7. Move to next task (parallel gdzie `parallel_with` pozwala).
 
-Po wszystkich taskach: uruchom standard validation gate (`pnpm affected:lint` etc.). Code-reviewer + security-auditor (jeśli potrzebny) biegnie jako final gate.
+Po wszystkich taskach: uruchom standard validation gate (`pnpm affected:lint` etc.) plus **`pnpm rules:check`** (skanuje commit messages / runs/*.log za rule citations — patrz `tools/scripts/check-rule-citations.mjs`). Code-reviewer + security-auditor (jeśli potrzebny) biegnie jako final gate.
 
-Done gdy: wszystkie taski `status: done` AND validators zielone AND reviewers zaakceptowali.
+**Code-reviewer reject criterion:** PR description / commit body bez citation z `principles.md` lub `.ai/rules/<stack>.md`. Wyjątek: trivial change (typo, format-only, dependency bump bez API change) — flag `[trivial]` w commit subject pomija check.
+
+Done gdy: wszystkie taski `status: done` AND validators zielone AND `rules:check` zielony AND reviewers zaakceptowali.
 
 ### Faza 5 — TasksToIssues (`/taskstoissues` — opcjonalna)
 

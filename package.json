@@ -57,6 +57,8 @@
     "docs:audit": "node tools/scripts/doc-audit.mjs",
     "test:scenarios": "node tools/scripts/scenarios-from-specs.mjs",
     "trinity:check": "node tools/scripts/check-trinity.mjs",
+    "rules:check": "node tools/scripts/check-rule-citations.mjs",
+    "features:list": "node tools/scripts/feature-versions.mjs",
     "docs:lint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#dist\" \"#coverage\" \"#.nx\"",
     "docs:linkcheck": "lychee --config lychee.toml --no-progress \"./**/*.md\"",
     "bpmn:lint": "bpmnlint docs/bpmn/**/*.bpmn",

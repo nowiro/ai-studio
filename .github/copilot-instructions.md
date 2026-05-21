@@ -149,3 +149,12 @@ blocked:
   needs:
     - <user decision | external service | missing input>
 ```
+
+## Cloud Agent integration (opcjonalne)
+
+GitHub Cloud Agent (od maja 2026) potrafi auto-apply suggested fixes z code review comments. Jeśli używasz Cloud Agent na PR-ach tego repo:
+
+- **Code review pipeline kolejność**: code-reviewer agent → human ack → Cloud Agent auto-apply (jeśli włączony).
+- **Co Cloud Agent może autosym**: prettier reformat, simple lint fixes, typo w docs, single-line guard clauses, attrs ordering.
+- **Czego Cloud Agent NIE robi (escalate do human)**: zmiany w `libs/ui-kit/` lub `libs/charts/` (wymagają wrap policy check per ADR-0011/0016), nowe Material primitives bez wrappera, refactor `apps/*` shells, signal-store API changes.
+- **Trigger**: dodaj `@copilot apply` w komentarzu PR żeby Cloud Agent zaaplikował akceptowane suggestions. Patrz [github.blog/changelog 2026-05-19](https://github.blog/changelog/label/copilot/).
