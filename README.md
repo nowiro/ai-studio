@@ -28,7 +28,7 @@ Starter który klonujesz gdy chcesz:
 ## Quickstart — jedna komenda po clone
 
 ```bash
-git clone https://github.com/nowiro/ai-studio.git
+git clone https://github.com/<your-org>/ai-studio.git
 cd ai-studio
 pnpm install                          # zainstaluj deps żeby bootstrap mógł uruchomić
 pnpm bootstrap                        # → idempotent, cross-platform setup
@@ -136,8 +136,8 @@ Pełny obraz: [`docs/ai-workflow/multi-agent-flow.md`](docs/ai-workflow/multi-ag
 | Formatting       | **Prettier 3** + sort-imports + organize-attributes + tailwindcss |
 | Hooks            | **Husky 9** + `lint-staged`                                       |
 | Commity          | **Commitizen** + **Commitlint** (Conventional)                    |
-| Package manager  | **pnpm 9**                                                        |
-| Node             | **20.19+ LTS**                                                    |
+| Package manager  | **pnpm 11.1.3**                                                   |
+| Node             | **22+ LTS** (matches `.nvmrc`)                                    |
 | Serwery MCP      | context7, playwright, nx, angular-cli                             |
 
 Uzasadnienie: [`docs/technical/tech-stack.md`](docs/technical/tech-stack.md).
