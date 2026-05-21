@@ -8,11 +8,19 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
+import { BusinessFormFillStrategy } from '@ai-studio/business-wizard-data';
 import { bootstrapApp } from '@ai-studio/shared-app-shell';
+import { FORM_FILL_STRATEGY } from '@ai-studio/wizard-form-fill';
 
 import { AppComponent } from './app/app.component.js';
 import { APP_ROUTES } from './app/app.routes.js';
 
+// FORM_FILL_STRATEGY wires the dev-tools FAB (from `@ai-studio/wizard-form-fill`)
+// into the business-wizard's form shape — see ADR-0011 §wrap before consume.
 bootstrapApp(AppComponent, {
-  providers: [provideRouter(APP_ROUTES, withComponentInputBinding()), provideHttpClient(withFetch())],
+  providers: [
+    provideRouter(APP_ROUTES, withComponentInputBinding()),
+    provideHttpClient(withFetch()),
+    { provide: FORM_FILL_STRATEGY, useExisting: BusinessFormFillStrategy },
+  ],
 });

@@ -61,6 +61,7 @@ export {
   regonValidator,
   websiteUrlValidator,
 } from './validators.js';
+export { BusinessFormFillStrategy } from './business-form-fill.strategy.js';
 export { BusinessWizardFormFactory } from './wizard-form.factory.js';
 export { BusinessWizardFormService } from './wizard-form.service.js';
 export { BusinessWizardNav, BusinessWizardPath } from './wizard-routes.js';

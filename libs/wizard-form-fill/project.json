@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "wizard-form-fill",
+  "projectType": "library",
+  "sourceRoot": "libs/wizard-form-fill/src",
+  "tags": ["scope:wizard", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/wizard-form-fill"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/wizard-form-fill"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/wizard-form-fill/tsconfig.json --noEmit"
+      }
+    }
+  }
+}

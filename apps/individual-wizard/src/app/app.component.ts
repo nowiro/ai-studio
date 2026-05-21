@@ -19,7 +19,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { WizardFormService } from '@ai-studio/individual-wizard-data';
-import { DevFabComponent } from '@ai-studio/individual-wizard-dev-tools';
+import { DevFabComponent } from '@ai-studio/wizard-form-fill';
 
 @Component({
   selector: 'ais-root',

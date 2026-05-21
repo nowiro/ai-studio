@@ -1,17 +1,17 @@
 /**
  * Floating, draggable dev-tools panel. Anchored to the right edge of the viewport,
- * can be dragged vertically (CDK DragDrop on a dedicated grip strip — separate from the
- * clickable toggle so the button's `click` event isn't swallowed by the drag handler)
- * and flipped to the left side with a single click.
+ * can be dragged vertically (CDK DragDrop on a dedicated grip strip — separate from
+ * the clickable toggle so the button's `click` event isn't swallowed by the drag
+ * handler) and flipped to the left side with a single click.
  *
  * Exposes three actions:
- *  - "Tylko wymagane"  — fills only `Validators.required` leaves
- *  - "Wszystkie pola"  — fills every visible leaf (all 5 steps)
- *  - "Maksymalne zagnieżdżenia" — forces PhD + IT + thesis + self-employed cascade,
- *     adds extra phone/address/language/keyword/contract rows, then fills everything
+ *  - "Tylko wymagane"   — fills only `Validators.required` leaves
+ *  - "Wszystkie pola"   — fills every visible leaf
+ *  - "Maksymalne zagnieżdżenia" — runs the Strategy's expand hook then fills all
  *
- * All three delegate to {@link DevFormFillerService}, which only touches controls
+ * All three delegate to {@link FormFillerService}, which only touches controls
  * currently in the form tree (disabled and out-of-tree controls are skipped).
+ * The walker is wizard-agnostic — see `form-fill-strategy.ts` for the contract.
  */
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { DevFormFillerService } from './dev-form-filler.service.js';
+import { FormFillerService } from './form-filler.service.js';
 
 type Side = 'right' | 'left';
 
@@ -29,7 +29,11 @@ type Side = 'right' | 'left';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DragDropModule, MatButtonModule, MatIconModule, MatTooltipModule],
-  host: { class: 'block', '[class.side-right]': "side() === 'right'", '[class.side-left]': "side() === 'left'" },
+  host: {
+    class: 'block',
+    '[class.side-right]': "side() === 'right'",
+    '[class.side-left]': "side() === 'left'",
+  },
   styles: [
     `
       :host {
@@ -231,7 +235,7 @@ type Side = 'right' | 'left';
             mat-stroked-button
             type="button"
             data-testid="dev-fill-full-demo"
-            matTooltip="Wymusza PhD + IT + praca dyplomowa, samozatrudnienie, dodatkowe adresy i języki"
+            matTooltip="Wymusza maksymalne zagnieżdżenia: dodatkowe wiersze i wszystkie sekcje warunkowe"
           >
             <mat-icon>account_tree</mat-icon>
             Maksymalne zagnieżdżenia
@@ -250,7 +254,7 @@ type Side = 'right' | 'left';
   `,
 })
 export class DevFabComponent {
-  private readonly filler = inject(DevFormFillerService);
+  private readonly filler = inject(FormFillerService);
 
   readonly rootForm = input.required<FormGroup>();
 

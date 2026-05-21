@@ -66,6 +66,7 @@ export type {
 export { EN_MESSAGES, MESSAGES_BY_LOCALE, PL_MESSAGES, getMessages } from './i18n.js';
 export type { Locale, Messages } from './i18n.js';
 export { LOCALE_STORAGE_KEY, LocaleStore } from './locale-store.js';
+export { IndividualFormFillStrategy } from './individual-form-fill.strategy.js';
 export { WizardFormFactory } from './wizard-form.factory.js';
 export { WizardFormService } from './wizard-form.service.js';
 export { WizardNav, WizardPath } from './wizard-routes.js';

@@ -1,10 +1,16 @@
 /* eslint-disable sonarjs/pseudo-random --
- * Math.random() is intentional here: this module produces *fake* test data for the
- * dev-fill panel. No security boundary, no cryptographic guarantee needed.
+ * Math.random() is intentional here: this module produces *fake* test data for
+ * the dev-fill panel. No security boundary, no cryptographic guarantee needed.
  */
 /**
- * Polish-flavoured fake data for the dev-fill panel. Kept as pure functions so the
- * filling service stays free of Angular DI when generating values.
+ * Polish-flavoured fake-data generators for the dev-fill panel.
+ *
+ * Pure functions — no Angular DI, no async, no side effects beyond
+ * `Math.random()`. Both `IndividualFormFillStrategy` (in
+ * `libs/individual-wizard-data`) and `BusinessFormFillStrategy` (in
+ * `libs/business-wizard-data`) import from here so the data corpus stays
+ * shared. Polish-specific (PESEL, NIP, REGON, KRS) — if a non-PL wizard
+ * appears later, mirror this module under a different locale name.
  */
 
 const FIRST_NAMES_F = ['Anna', 'Maria', 'Katarzyna', 'Magdalena', 'Agnieszka', 'Joanna', 'Małgorzata'];
@@ -179,10 +185,22 @@ export function randomMonthlyGross(): number {
   return pickInt(5_000, 30_000);
 }
 
+export function randomFoundingYear(): number {
+  const now = new Date();
+  return now.getUTCFullYear() - pickInt(2, 35);
+}
+
+export function randomWebsiteUrl(): string {
+  const slug = pick(['company', 'corp', 'group', 'tech', 'studio']);
+  return `https://${slug}-${pickInt(100, 9999)}.example.com`;
+}
+
 // ── Polish identifiers — checksum-correct ────────────────────────────────────
 
 const PESEL_WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
 const NIP_WEIGHTS = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+// REGON 9-digit checksum weights (per GUS spec).
+const REGON_WEIGHTS_9 = [8, 9, 2, 3, 4, 5, 6, 7];
 
 /** Builds a valid PESEL for a given birth date and gender. */
 export function generateValidPesel(birth: Date = randomAdultBirthDate(), gender: 'female' | 'male' = 'female'): string {
@@ -228,4 +246,34 @@ export function generateValidNip(): string {
   }
   // Fallback: deterministic known-good NIP.
   return '5270103391';
+}
+
+/**
+ * Builds a valid 9-digit REGON. Used by business-wizard. Algorithm per GUS:
+ * weights [8,9,2,3,4,5,6,7] applied to first 8 digits, modulo 11, with 10
+ * remainder retried (rare).
+ */
+export function generateValidRegon(): string {
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const digits: number[] = [];
+    for (let i = 0; i < 8; i++) digits.push(pickInt(0, 9));
+    let sum = 0;
+    for (let i = 0; i < 8; i++) sum += (digits[i] ?? 0) * (REGON_WEIGHTS_9[i] ?? 0);
+    const check = sum % 11;
+    if (check === 10) continue;
+    return `${digits.join('')}${check}`;
+  }
+  // Fallback: deterministic known-good REGON.
+  return '012345674';
+}
+
+/**
+ * Builds a syntactically valid KRS — 10 digits, leading zeros allowed.
+ * KRS has no checksum in the public spec — we just generate a 10-digit
+ * numeric string. Business-wizard's `krsValidator()` accepts this shape.
+ */
+export function generateValidKrs(): string {
+  let s = '';
+  for (let i = 0; i < 10; i++) s += String(pickInt(0, 9));
+  return s;
 }
