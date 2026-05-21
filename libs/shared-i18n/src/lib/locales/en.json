@@ -1,0 +1,22 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "error": "An error occurred",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "empty": "No data"
+  },
+  "language": {
+    "label": "Language",
+    "switch": "Switch language",
+    "pl": "Polski",
+    "en": "English"
+  }
+}

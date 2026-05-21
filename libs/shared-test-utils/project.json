@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "shared-test-utils",
+  "projectType": "library",
+  "sourceRoot": "libs/shared-test-utils/src",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/shared-test-utils/tsconfig.json --noEmit"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/shared-test-utils"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/shared-test-utils"
+      }
+    }
+  }
+}

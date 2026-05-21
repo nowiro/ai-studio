@@ -472,3 +472,76 @@ body {
 ```
 
 `md:hidden` chowa trigger gdy sidenav jest `mode="side"` (desktop).
+
+## 18. i18n (Transloco wrapper)
+
+Apps które potrzebują wielu języków konsumują wyłącznie `@ai-studio/shared-i18n` —
+nigdy `@jsverse/transloco` bezpośrednio (per ADR-0017 §wrap-before-consume,
+analog do ADR-0011 / ADR-0016).
+
+**Bootstrap (raz na app):**
+
+```ts
+// app.config.ts
+import { provideI18n } from '@ai-studio/shared-i18n';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideI18n({ defaultLang: 'pl', availableLangs: ['pl', 'en'] }),
+    // ... pozostałe providery
+  ],
+};
+```
+
+Dictionaries: `apps/<name>/public/assets/i18n/{pl,en}.json` (HTTP-loaded lazy).
+
+**Template pattern:**
+
+```html
+<!-- Tekst widoczny: pipe interpolacja -->
+<h1>{{ 'home.welcome' | t }}</h1>
+
+<!-- A11y attributes: pipe też w property binding -->
+<mat-label>{{ 'form.email' | t }}</mat-label>
+<button
+  [attr.aria-label]="'actions.save' | t"
+  mat-icon-button
+>
+  <mat-icon>save</mat-icon>
+</button>
+```
+
+**Nie wolno** wstawiać HTML do translation values jeśli wartość trafia w
+`aria-label` / `matTooltip` / `mat-label` — screen readery czytają plain text.
+Jeśli potrzebujesz HTML (np. bold w paragrafie), użyj `[innerHTML]` z trusted
+dictionary i osobno text wersji dla a11y attrybutów.
+
+**Language switching (signal-based via LocalizationApi):**
+
+```ts
+import { inject } from '@angular/core';
+
+import { LocalizationApi } from '@ai-studio/shared-i18n';
+
+export class LangSwitcher {
+  private readonly i18n = inject(LocalizationApi);
+  readonly current = this.i18n.currentLang; // Signal<string>
+  readonly available = this.i18n.availableLangs; // Signal<readonly string[]>
+
+  switch(lang: string): void {
+    this.i18n.setLang(lang);
+  }
+}
+```
+
+**Per-feature namespace (scope) lazy-loading** — dodaj w komponencie / lazy route:
+
+```ts
+// W lazy-loaded feature module
+providers: [
+  { provide: TRANSLOCO_SCOPE, useValue: 'wizard' }, // wymaga import z @ai-studio/shared-i18n (TODO: re-export)
+],
+```
+
+Dictionaries dla scope leżą w `apps/<name>/public/assets/i18n/wizard/{pl,en}.json`.
+Transloco automatycznie composuje path z global `assetsBasePath` + scope name.

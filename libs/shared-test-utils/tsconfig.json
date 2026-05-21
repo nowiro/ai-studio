@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "declaration": true,
+    "types": ["node", "vitest/globals"],
+    "moduleResolution": "bundler",
+    "module": "preserve",
+    "target": "es2022",
+    "strict": true
+  },
+  "files": [],
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
+}

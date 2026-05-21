@@ -52,6 +52,7 @@
     "ai:context": "node tools/scripts/build-ai-context.mjs",
     "ai:validate": "node tools/scripts/validate-ai-config.mjs",
     "a11y:check": "node tools/scripts/a11y-check.mjs",
+    "a11y:test": "nx test shared-test-utils",
     "scaffold:wrapper": "node tools/scripts/scaffold-wrapper.mjs",
     "docs:scan": "node tools/scripts/scan-docs.mjs",
     "docs:api": "node tools/scripts/scan-public-api.mjs",
@@ -75,6 +76,7 @@
     "@angular/material": "^21.2.12",
     "@angular/platform-browser": "^21.2.14",
     "@angular/router": "^21.2.14",
+    "@jsverse/transloco": "^8.3.0",
     "echarts": "^6.1.0",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
@@ -86,6 +88,7 @@
   "devDependencies": {
     "@angular/build": "^21.2.12",
     "@angular/cli": "^21.2.12",
+    "axe-core": "^4.11.4",
     "@angular/compiler-cli": "^21.2.14",
     "@angular/language-service": "^21.2.14",
     "@commitlint/cli": "^21.0.1",

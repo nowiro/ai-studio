@@ -1,0 +1,14 @@
+{
+  "common": {
+    "loading": "Ładowanie…",
+    "error": "Wystąpił błąd",
+    "retry": "Spróbuj ponownie",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "search": "Szukaj"
+  },
+  "nowiro": {
+    "tagline": "AI-first studio",
+    "languageSwitcher": "Wybierz język"
+  }
+}

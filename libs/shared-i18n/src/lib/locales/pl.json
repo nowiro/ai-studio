@@ -1,0 +1,22 @@
+{
+  "common": {
+    "loading": "Ładowanie…",
+    "error": "Wystąpił błąd",
+    "retry": "Spróbuj ponownie",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "close": "Zamknij",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "search": "Szukaj",
+    "empty": "Brak danych"
+  },
+  "language": {
+    "label": "Język",
+    "switch": "Zmień język",
+    "pl": "Polski",
+    "en": "English"
+  }
+}

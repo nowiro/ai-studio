@@ -62,5 +62,32 @@ version: 2.0.0
 
 ## 7. Accessibility
 
-- Uruchamiaj `axe-core/playwright` na każdym E2E suite. Nowe `serious`/`critical` violations fail CI.
-- Component-level a11y assertions idą w unit testach z `@testing-library/jest-dom` matchers (przez Vitest compat).
+Trzy warstwy testów dostępności (jedna nie zastępuje innej):
+
+1. **Static scan (regex)** — `pnpm a11y:check` (skrypt `tools/scripts/a11y-check.mjs`).
+   Wykrywa 6 anti-patterns na poziomie templatów (img bez alt, mat-form-field bez mat-label,
+   `(click)=` na div, button mat-icon-button bez aria-label, `outline: none` bez focus-visible,
+   hard-coded hex colors). Łapie ~80% issues bez uruchamiania DOM. Patrz `.claude/skills/accessibility-a11y/SKILL.md §14`.
+
+2. **Component a11y (axe-core w Vitest)** — helper `expectNoA11yViolations()` z
+   `@ai-studio/shared-test-utils` (libka `libs/shared-test-utils`). Uruchamia axe-core
+   na rendered `ComponentFixture.nativeElement` w jsdom. Łapie contrast ratios,
+   label-input associations, role consistency — issues których regex nie widzi.
+
+   ```ts
+   import { expectNoA11yViolations } from '@ai-studio/shared-test-utils';
+
+   it('button has no a11y violations', async () => {
+     const fixture = TestBed.createComponent(MyButtonComponent);
+     fixture.detectChanges();
+     await expectNoA11yViolations(fixture.nativeElement);
+   });
+   ```
+
+   Domyślny preset WCAG 2.1 AA (project baseline). Dla widoków high-stakes użyj `{ rules: WCAG_AAA_RULES }`.
+
+3. **E2E a11y (axe-core/playwright)** — uruchamia się na każdym E2E suite.
+   Nowe `serious`/`critical` violations fail CI. Łapie issues które pojawiają się
+   dopiero w pełnym ssr / routing / data-loaded kontekście.
+
+Dodatkowo: component-level matchers dostępne przez `@testing-library/jest-dom` (Vitest compat).

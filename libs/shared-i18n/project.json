@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "shared-i18n",
+  "projectType": "library",
+  "sourceRoot": "libs/shared-i18n/src",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p libs/shared-i18n/tsconfig.json --noEmit"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/shared-i18n"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "libs/shared-i18n"
+      }
+    }
+  }
+}
