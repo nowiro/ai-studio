@@ -545,3 +545,104 @@ providers: [
 
 Dictionaries dla scope leżą w `apps/<name>/public/assets/i18n/wizard/{pl,en}.json`.
 Transloco automatycznie composuje path z global `assetsBasePath` + scope name.
+
+## 19. Design tokens hierarchy (token cascade)
+
+Po refaktorze DS-1 (2026-05-21) całe repo używa jednej hierarchii tokenów —
+żadnych hard-coded kolorów / radii / shadows / motion w komponentach.
+
+**Hierarchia (od ogólnego do specyficznego):**
+
+1. **Material 3 system tokens** (`--mat-sys-*`) — pochodzą z `mat.theme()` w
+   `apps/<app>/src/styles.scss`. To źródło prawdy dla kolorów, type scale,
+   corner roles, elevation. Apps nie definiują własnych palet — palette
+   zmieniasz przez `mat.theme((color: ...))`.
+
+2. **Tailwind v4 `@theme` alias layer** (`styles/tailwind.scss`) — most
+   między Materialem a utility classes Tailwinda. `--color-primary` to
+   `var(--mat-sys-primary)`, `--radius-lg` to `var(--mat-sys-corner-large, 16px)`
+   itd. Apps używają utility (`bg-primary`, `rounded-lg`) lub raw var.
+
+3. **Project bespoke tokens** (też w `styles/tailwind.scss`):
+   - `--shadow-card-rest|hover` — softer elevation niż M3 level1/2 dla
+     marketing surfaces (hero-adjacent tiles).
+   - `--duration-*` + `--ease-*` — pełna M3 motion spec (short1..long2,
+     standard / emphasized).
+   - `--blur-glass`, `--color-glass-light*` — frosted-glass headers.
+
+4. **Brand tokens** (`--color-brand-*`) — najwyżej specyficzne, "swap one
+   variable swap the brand". Domyślnie Nowiro identity (dark hero + warm
+   red accent). Inne apps mogą je nadpisać w `src/styles.scss`:
+   ```scss
+   :root {
+     --color-brand-hero-from: #0a3d62;
+     --color-brand-accent: #06d6a0;
+   }
+   ```
+
+**Lista tokenów (skrót — pełna w `styles/tailwind.scss`):**
+
+| Kategoria  | Token                                                  | Materiał?                |
+| ---------- | ------------------------------------------------------ | ------------------------ |
+| Color      | `--color-{primary,secondary,tertiary,...}`             | Tak (`--mat-sys-*`)      |
+| Color      | `--color-surface{-container{-low,...}}`                | Tak                      |
+| Color      | `--color-brand-{hero-from,accent,...}`                 | Nie (bespoke)            |
+| Color      | `--color-glass-light{-scrolled}`                       | Nie                      |
+| Radius     | `--radius-{xs,sm,md,lg,xl}` (4/8/12/16/28)             | Tak (`corner-*`)         |
+| Shadow     | `--shadow-{sm,md,lg}`                                  | Tak (`--mat-sys-level*`) |
+| Shadow     | `--shadow-card-{rest,hover}`                           | Nie (bespoke)            |
+| Duration   | `--duration-{short1..4,medium1..4,long1,2}`            | Tak (M3 spec)            |
+| Easing     | `--ease-{standard*,emphasized*}`                       | Tak (M3 spec)            |
+| Blur       | `--blur-glass`                                         | Nie                      |
+| Font       | `--font-{sans,display,mono}`                           | Tak                      |
+| Typography | `var(--mat-sys-{display,headline,title,body,label}-*)` | Tak (raw mat-sys)        |
+
+**Zasada DRY/SRP**: jeden plik (`styles/tailwind.scss`) definiuje WSZYSTKO,
+komponenty TYLKO konsumują. Hard-coded literals łapane przez `pnpm a11y:check`
+(reguła A6 — obecnie `info`, planowany promote na `warn` gdy ≥ 7/14 apps
+zrefaktorowanych. Po DS-1 z 224 hits → ~200 z tym że nowiro już clean).
+
+**Anti-patterny (CI fail po DS-1):**
+
+```scss
+/* ❌ hard-coded color  */
+.x {
+  color: #1565c0;
+}
+/* ❌ hard-coded radius — sprawdź `--radius-*` lub `--mat-sys-corner-*` */
+.x {
+  border-radius: 16px;
+}
+/* ❌ custom shadow — sprawdź `--shadow-*` */
+.x {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+/* ❌ raw transition timing — sprawdź `--duration-*` + `--ease-*` */
+.x {
+  transition: all 0.2s ease;
+}
+```
+
+```scss
+/* ✅ token-driven */
+.x {
+  color: var(--mat-sys-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card-rest);
+  transition: transform var(--duration-short4) var(--ease-emphasized);
+}
+```
+
+**Material component overrides** — używaj MDC custom properties zamiast
+`::ng-deep` / `!important`:
+
+```scss
+button[mat-flat-button] {
+  --mdc-filled-button-container-color: var(--color-brand-accent);
+  --mdc-filled-button-label-text-color: var(--color-brand-on-hero);
+  --mdc-filled-button-container-shape: var(--radius-sm);
+}
+```
+
+Reguła: jeśli nie istnieje MDC custom property, NIE override'uj —
+prawdopodobnie próbujesz złamać a11y (focus ring, ripple, density).

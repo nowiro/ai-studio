@@ -1,6 +1,9 @@
+/* Footer — dark surface mirroring the hero brand identity.
+ * Reuses `--color-brand-hero-*` so footer and hero share a coherent dark band. */
+
 footer {
-  background: #1a1a2e;
-  color: #e5e7eb;
+  background: var(--color-brand-hero-from);
+  color: var(--color-brand-on-hero-muted);
   padding: 48px 24px;
 }
 
@@ -10,6 +13,8 @@ footer {
   align-items: center;
   text-align: center;
   gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -19,28 +24,28 @@ footer {
 }
 
 .footer-logo {
-  font-size: 1.25rem;
+  font: var(--mat-sys-title-medium);
   font-weight: 700;
-  letter-spacing: 2px;
-  color: #fff;
+  letter-spacing: 0.15em;
+  color: var(--color-brand-on-hero);
 }
 
 .footer-tagline {
-  font-size: 0.85rem;
-  color: #9ca3af;
+  font: var(--mat-sys-label-medium);
+  color: var(--color-brand-on-hero-muted);
   margin-top: 4px;
 }
 
 .footer-meta {
   p {
-    font-size: 0.85rem;
-    color: #9ca3af;
+    font: var(--mat-sys-label-medium);
+    color: var(--color-brand-on-hero-muted);
     line-height: 1.6;
   }
 }
 
 .footer-legal {
-  font-size: 0.8rem !important;
-  color: #6b7280 !important;
+  font: var(--mat-sys-label-small);
+  color: var(--color-brand-on-hero-faint);
   margin-top: 4px;
 }

@@ -1,5 +1,14 @@
+@use 'sass:meta';
+
+/* Services section — feature card grid.
+ *
+ * Tokens used: `--mat-sys-surface-container-low` (neutral grey bg),
+ * `--radius-lg` (16px corners), `--shadow-card-rest|hover` (elevation tier),
+ * `--duration-*` + `--ease-emphasized` (Material 3 motion).
+ * Per `.ai/rules/styling.md §19` design-tokens hierarchy. */
+
 section {
-  background: #fafbfc;
+  background: var(--mat-sys-surface-container-low);
 }
 
 .services-grid {
@@ -16,16 +25,19 @@ section {
   }
 }
 
+/* `mat-card` already provides default radius via mat-sys-corner tokens.
+ * We just lift its hover state — no `!important`, no DOM piercing.            */
 .service-card {
-  border-radius: 16px !important;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  --mdc-elevated-card-container-shape: var(--radius-lg);
+  box-shadow: var(--shadow-card-rest);
   cursor: default;
+  transition:
+    transform var(--duration-short4) var(--ease-emphasized),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
 
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card-hover);
   }
 
   mat-card-content {
@@ -36,30 +48,34 @@ section {
 .service-icon-wrapper {
   width: 56px;
   height: 56px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border-radius: var(--radius-md);
+  background: var(--mat-sys-primary-container);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  transition: transform var(--duration-medium2) var(--ease-emphasized);
+
+  .service-card:hover & {
+    transform: scale(1.06) rotate(-2deg);
+  }
 }
 
 .service-icon {
   font-size: 28px;
   width: 28px;
   height: 28px;
-  color: #6366f1;
+  color: var(--mat-sys-on-primary-container);
 }
 
 .service-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  font: var(--mat-sys-title-large);
+  color: var(--mat-sys-on-surface);
   margin-bottom: 12px;
 }
 
 .service-description {
-  font-size: 0.95rem;
+  font: var(--mat-sys-body-medium);
   line-height: 1.7;
-  color: #6b7280;
+  color: var(--mat-sys-on-surface-variant);
 }

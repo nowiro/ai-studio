@@ -104,6 +104,57 @@
   --shadow-sm: var(--mat-sys-level1);
   --shadow-md: var(--mat-sys-level2);
   --shadow-lg: var(--mat-sys-level3);
+  /* Bespoke "lifted card" elevation — softer + longer offset than M3 level2.
+   * Use sparingly: marketing cards, hero-adjacent tiles. Per `.ai/rules/styling.md §19`. */
+  --shadow-card-hover: 0 12px 28px rgb(0 0 0 / 0.08);
+  --shadow-card-rest: 0 4px 12px rgb(0 0 0 / 0.04);
+
+  /* ── Motion — Material 3 motion tokens ──────────────────────────────────
+   * https://m3.material.io/styles/motion/easing-and-duration                */
+  --duration-short1: 50ms;
+  --duration-short2: 100ms;
+  --duration-short3: 150ms;
+  --duration-short4: 200ms;
+  --duration-medium1: 250ms;
+  --duration-medium2: 300ms;
+  --duration-medium3: 350ms;
+  --duration-medium4: 400ms;
+  --duration-long1: 450ms;
+  --duration-long2: 500ms;
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-standard-decel: cubic-bezier(0, 0, 0, 1);
+  --ease-standard-accel: cubic-bezier(0.3, 0, 1, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized-decel: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-emphasized-accel: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* ── Brand — project-specific tokens (override per-app via CSS cascade) ──
+   * Defaults reflect Nowiro marketing identity (dark hero + warm accent).
+   * Apps that don't want the brand simply leave these unused — they are inert
+   * unless referenced via `var(--color-brand-*)` or `bg-brand-*` utility.    */
+  --color-brand-hero-from: #1b1b1b;
+  --color-brand-hero-to: #333333;
+  --color-brand-accent: #e53935;
+  --color-brand-accent-warm: #ff8f00;
+  --color-brand-on-hero: #ffffff;
+  --color-brand-on-hero-muted: rgb(255 255 255 / 0.75);
+  --color-brand-on-hero-faint: rgb(255 255 255 / 0.4);
+
+  /* ── Glass / blur — backdrop-filter shorthand for sticky headers ──────── */
+  --blur-glass: blur(12px);
+  --color-glass-light: rgb(255 255 255 / 0.9);
+  --color-glass-light-scrolled: rgb(255 255 255 / 0.98);
+}
+
+@layer base {
+  /* Single global motion default — apps inherit this via the cascade.
+   * Components override per-property when they need different timing.
+   * Honours `prefers-reduced-motion` automatically via `_a11y.scss`.        */
+  :where(button, a, .clickable, .interactive) {
+    transition-duration: var(--duration-short4);
+    transition-timing-function: var(--ease-standard);
+  }
 }
 
 @layer utilities {

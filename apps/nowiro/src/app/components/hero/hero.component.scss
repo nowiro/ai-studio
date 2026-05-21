@@ -1,11 +1,18 @@
+@use 'sass:meta';
+
 :host {
   display: block;
 }
 
+/* Hero — Nowiro marketing landing surface.
+ *
+ * Visual identity uses the `--color-brand-*` tokens from `styles/tailwind.scss`
+ * (dark gradient + warm red accent). Swap one CSS variable, swap the brand.
+ * Material 3 `--mat-sys-*` tokens cover the everyday surface/contrast roles. */
 .hero {
-  background: linear-gradient(135deg, #1b1b1b 0%, #333 100%);
-  color: #fff;
-  padding: 140px 24px 80px;
+  background: linear-gradient(135deg, var(--color-brand-hero-from) 0%, var(--color-brand-hero-to) 100%);
+  color: var(--color-brand-on-hero);
+  padding: clamp(80px, 12vh, 140px) clamp(16px, 4vw, 24px) clamp(48px, 8vh, 80px);
   min-height: 90vh;
   display: flex;
   align-items: center;
@@ -16,6 +23,9 @@
   grid-template-columns: 1fr;
   gap: 48px;
   align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
 
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr;
@@ -24,33 +34,35 @@
 }
 
 .hero-tag {
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+  font: var(--mat-sys-label-large);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #e53935;
+  color: var(--color-brand-accent);
   margin-bottom: 16px;
 }
 
 .hero-title {
+  /* Fluid override of mat-sys-display-large for marketing impact at scale. */
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
   line-height: 1.1;
+  letter-spacing: -0.02em;
   margin-bottom: 24px;
-  color: #fff;
+  color: var(--color-brand-on-hero);
 }
 
 .highlight {
-  background: linear-gradient(90deg, #e53935 0%, #ff8f00 100%);
+  background: linear-gradient(90deg, var(--color-brand-accent) 0%, var(--color-brand-accent-warm) 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .hero-description {
   font-size: 1.1rem;
   line-height: 1.75;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-brand-on-hero-muted);
   margin-bottom: 36px;
   max-width: 480px;
 }
@@ -60,22 +72,38 @@
   gap: 16px;
   flex-wrap: wrap;
 
+  /* Material 3 button overrides via MDC custom properties — keeps focus ring,
+   * ripple, density, and a11y behaviour intact while branding the surface.
+   * No `::ng-deep`, no `!important`. */
   button[mat-flat-button] {
-    background: #e53935;
-    color: #fff;
+    --mdc-filled-button-container-color: var(--color-brand-accent);
+    --mdc-filled-button-label-text-color: var(--color-brand-on-hero);
+    --mdc-filled-button-container-shape: var(--radius-sm);
     font-weight: 600;
     padding: 0 28px;
     height: 48px;
-    border-radius: 6px;
+    transition:
+      transform var(--duration-short4) var(--ease-emphasized),
+      box-shadow var(--duration-short4) var(--ease-emphasized);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+    }
   }
 
   button[mat-stroked-button] {
-    border-color: rgba(255, 255, 255, 0.4);
-    color: #fff;
+    --mdc-outlined-button-outline-color: var(--color-brand-on-hero-faint);
+    --mdc-outlined-button-label-text-color: var(--color-brand-on-hero);
+    --mdc-outlined-button-container-shape: var(--radius-sm);
     font-weight: 600;
     padding: 0 24px;
     height: 48px;
-    border-radius: 6px;
+    transition: border-color var(--duration-short4) var(--ease-standard);
+
+    &:hover {
+      --mdc-outlined-button-outline-color: var(--color-brand-on-hero);
+    }
   }
 }
 
@@ -89,4 +117,9 @@
   width: clamp(180px, 30vw, 280px);
   opacity: 0.9;
   filter: brightness(0) invert(1);
+  transition: opacity var(--duration-medium2) var(--ease-emphasized-decel);
+
+  &:hover {
+    opacity: 1;
+  }
 }

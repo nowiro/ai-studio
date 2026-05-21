@@ -1,5 +1,9 @@
+/* About section — text + KPI stats grid.
+ * Tokens: `--mat-sys-surface` (page bg), `--mat-sys-on-surface-variant` (body),
+ * `--radius-lg` (cards), `--shadow-card-*` (lift), motion tokens. */
+
 section {
-  background: #fff;
+  background: var(--mat-sys-surface);
 }
 
 .about-grid {
@@ -15,13 +19,14 @@ section {
 
 .about-text {
   p {
-    font-size: 1.05rem;
+    font: var(--mat-sys-body-large);
     line-height: 1.8;
-    color: #4b5563;
+    color: var(--mat-sys-on-surface-variant);
     margin-bottom: 20px;
 
     strong {
-      color: #1a1a2e;
+      color: var(--mat-sys-on-surface);
+      font-weight: 700;
     }
   }
 }
@@ -33,16 +38,17 @@ section {
 }
 
 .stat-card {
+  --mdc-elevated-card-container-shape: var(--radius-lg);
   text-align: center;
   padding: 8px;
-  border-radius: 16px !important;
+  box-shadow: var(--shadow-card-rest);
   transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+    transform var(--duration-short4) var(--ease-emphasized),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card-hover);
   }
 
   mat-card-content {
@@ -58,17 +64,16 @@ section {
   font-size: 28px;
   width: 28px;
   height: 28px;
-  color: #6366f1;
+  color: var(--mat-sys-primary);
 }
 
 .stat-value {
-  font-size: 2rem;
+  font: var(--mat-sys-display-small);
   font-weight: 800;
-  color: #1a1a2e;
+  color: var(--mat-sys-on-surface);
 }
 
 .stat-label {
-  font-size: 0.85rem;
-  color: #6b7280;
-  font-weight: 500;
+  font: var(--mat-sys-label-medium);
+  color: var(--mat-sys-on-surface-variant);
 }

@@ -1,5 +1,8 @@
+/* Contact section — split: contact info + company card.
+ * Tokens cascade per `.ai/rules/styling.md §19`. */
+
 section {
-  background: #fafbfc;
+  background: var(--mat-sys-surface-container-low);
 }
 
 .contact-grid {
@@ -30,36 +33,43 @@ section {
   font-size: 28px;
   width: 28px;
   height: 28px;
-  color: #6366f1;
+  color: var(--mat-sys-primary);
   margin-top: 2px;
 }
 
 .contact-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #9ca3af;
+  font: var(--mat-sys-label-medium);
+  color: var(--mat-sys-on-surface-variant);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
   margin-bottom: 4px;
 }
 
 .contact-value {
-  font-size: 1.1rem;
+  font: var(--mat-sys-body-large);
   font-weight: 500;
-  color: #1a1a2e;
+  color: var(--mat-sys-on-surface);
 }
 
 a.contact-value {
-  color: #6366f1;
-  transition: color 0.2s;
+  color: var(--mat-sys-primary);
+  transition: color var(--duration-short3) var(--ease-standard);
+  text-decoration: none;
 
   &:hover {
-    color: #4f46e5;
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
   }
 }
 
 .company-card {
-  border-radius: 16px !important;
+  --mdc-elevated-card-container-shape: var(--radius-lg);
+  box-shadow: var(--shadow-card-rest);
 
   mat-card-content {
     padding: 32px;
@@ -67,9 +77,8 @@ a.contact-value {
 }
 
 .company-card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  font: var(--mat-sys-title-large);
+  color: var(--mat-sys-on-surface);
   margin-bottom: 16px;
 }
 
@@ -91,14 +100,14 @@ mat-divider {
 }
 
 .detail-label {
-  font-size: 0.9rem;
-  color: #9ca3af;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
   font-weight: 500;
 }
 
 .detail-value {
-  font-size: 0.95rem;
+  font: var(--mat-sys-body-medium);
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--mat-sys-on-surface);
   text-align: right;
 }
