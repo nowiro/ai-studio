@@ -1,12 +1,18 @@
-<section id="services">
+<section
+  id="services"
+  class="reveal-section"
+  aisRevealOnScroll
+>
   <div class="container">
     <h2 class="section-title">{{ t().services.sectionTitle }}</h2>
     <p class="section-subtitle">{{ t().services.sectionSubtitle }}</p>
 
     <div class="services-grid">
-      @for (service of t().services.items; track service.title) {
+      @for (service of t().services.items; track service.title; let i = $index) {
         <mat-card
-          class="service-card"
+          [style.--reveal-delay.ms]="i * 80"
+          class="service-card reveal-card"
+          aisRevealOnScroll
           appearance="outlined"
         >
           <mat-card-content>

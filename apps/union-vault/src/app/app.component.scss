@@ -11,20 +11,20 @@
 }
 
 .app-footer {
-  background-color: #263238;
-  color: #b0bec5;
+  background: var(--mat-sys-inverse-surface);
+  color: var(--mat-sys-inverse-on-surface);
   padding: 24px;
   text-align: center;
 
   p {
     margin: 0;
-    font-size: 0.875rem;
+    font: var(--mat-sys-body-medium);
   }
 
   .footer-version {
     margin-left: 8px;
-    color: #ffcc00;
-    font-size: 0.75rem;
+    color: var(--mat-sys-tertiary);
+    font: var(--mat-sys-label-small);
     font-weight: 500;
     opacity: 0.9;
   }

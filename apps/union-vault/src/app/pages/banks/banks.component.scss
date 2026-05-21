@@ -41,9 +41,12 @@
   font-size: 0.9rem;
 }
 
+/* Accent tag — gold/amber accent uses tertiary (the conventional
+ * "warm accent" slot in Material 3). Apps that need a true gold can
+ * override `--mat-sys-tertiary` palette in styles.scss. */
 .offer-tag--accent {
-  background: rgba(240, 180, 0, 0.2);
-  color: #6b4f00;
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
 }
 
 .overview-section,

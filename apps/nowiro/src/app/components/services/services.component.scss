@@ -11,6 +11,38 @@ section {
   background: var(--mat-sys-surface-container-low);
 }
 
+/* Reveal-on-scroll section: fades in + slides up when 15% visible.
+ * Class `.reveal-on-scroll` added by `aisRevealOnScroll` directive.
+ * `prefers-reduced-motion` is honoured via _a11y.scss global override. */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--duration-long1) var(--ease-emphasized-decel),
+    transform var(--duration-long1) var(--ease-emphasized-decel);
+
+  &.reveal-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Per-card stagger via `--reveal-delay` set in template. Cards within the
+ * services-grid reveal in waves (80ms apart). */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--duration-medium4) var(--ease-emphasized-decel) var(--reveal-delay, 0ms),
+    transform var(--duration-medium4) var(--ease-emphasized-decel) var(--reveal-delay, 0ms),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
+
+  &.reveal-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .services-grid {
   display: grid;
   grid-template-columns: 1fr;

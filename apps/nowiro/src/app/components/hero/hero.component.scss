@@ -16,6 +16,46 @@
   min-height: 90vh;
   display: flex;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  /* Subtle parallax — hero content drifts up at ~50% scroll speed. Uses
+   * scroll-driven animations (Chrome 115+, Firefox 121+); browsers without
+   * support get static content (no parallax, no breakage). */
+  @supports (animation-timeline: scroll()) {
+    .hero-content {
+      animation: hero-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 80vh;
+    }
+
+    .hero-logo {
+      animation: hero-logo-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 80vh;
+    }
+  }
+}
+
+@keyframes hero-parallax {
+  to {
+    transform: translateY(-40px);
+    opacity: 0.7;
+  }
+}
+
+@keyframes hero-logo-parallax {
+  to {
+    transform: translateY(-24px) scale(0.95);
+  }
+}
+
+/* prefers-reduced-motion users get static content. */
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-content,
+  .hero .hero-logo {
+    animation: none !important;
+  }
 }
 
 .hero-content {

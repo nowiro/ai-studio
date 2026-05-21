@@ -246,19 +246,22 @@
   }
 }
 
+/* Trend indicators — semantic colors. Success uses tertiary container
+ * (Material 3 doesn't ship a "success" role; tertiary is the conventional
+ * proxy). Error/flat map to error/neutral roles. */
 .trend-up {
-  color: #0a7a34;
-  background: rgba(10, 122, 52, 0.12);
+  color: var(--mat-sys-on-tertiary-container);
+  background: var(--mat-sys-tertiary-container);
 }
 
 .trend-down {
-  color: #b3261e;
-  background: rgba(179, 38, 30, 0.12);
+  color: var(--mat-sys-on-error-container);
+  background: var(--mat-sys-error-container);
 }
 
 .trend-flat {
-  color: #5f6368;
-  background: rgba(95, 99, 104, 0.12);
+  color: var(--mat-sys-on-surface-variant);
+  background: var(--mat-sys-surface-container);
 }
 
 .chart-wrapper {
@@ -302,7 +305,7 @@
 }
 
 .chart-point {
-  stroke: #ffffff;
+  stroke: var(--mat-sys-surface);
   stroke-width: 2;
 }
 

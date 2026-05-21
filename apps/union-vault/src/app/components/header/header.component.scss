@@ -1,3 +1,7 @@
+/* App header — Union Vault.
+ * Tokens cascade per `.ai/rules/styling.md §19`. EU navy accent kept via
+ * `--mat-sys-primary` (apps configure their palette in styles.scss). */
+
 // =============================================================
 // Header — Mobile First
 // =============================================================
@@ -7,10 +11,10 @@
   top: 0;
   z-index: 100;
   gap: 8px;
-  background-color: #ffffff !important;
-  color: #212121 !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-  border-bottom: 3px solid #003399; // EU navy accent
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 3px solid var(--mat-sys-primary); // EU navy accent
 }
 
 // Logo / Brand
@@ -24,7 +28,7 @@
   .toolbar-logo-full {
     height: 44px;
     width: auto;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: block;
 
     @media (max-width: 600px) {
@@ -58,24 +62,29 @@
   }
 
   .nav-button {
-    color: #212121;
+    color: var(--mat-sys-on-surface);
     opacity: 0.85;
-    font-size: 0.875rem;
+    font: var(--mat-sys-label-large);
+    transition:
+      color var(--duration-short3) var(--ease-standard),
+      background var(--duration-short3) var(--ease-standard),
+      opacity var(--duration-short3) var(--ease-standard);
 
     &:hover:not([disabled]) {
       opacity: 1;
-      background-color: rgba(0, 51, 153, 0.07);
-      color: #003399;
+      background: rgb(from var(--mat-sys-primary) r g b / 0.07);
+      color: var(--mat-sys-primary);
     }
 
     &.active-link {
-      color: #003399;
+      color: var(--mat-sys-primary);
       font-weight: 600;
     }
 
     &.disabled {
-      color: rgba(0, 0, 0, 0.35);
+      color: var(--mat-sys-on-surface-variant);
       cursor: default;
+      opacity: 0.5;
     }
 
     mat-icon {
@@ -104,7 +113,7 @@
 
 // Hamburger (mobile only)
 .hamburger-button {
-  color: #212121;
+  color: var(--mat-sys-on-surface);
   display: none;
 
   @media (max-width: 900px) {
@@ -112,19 +121,15 @@
   }
 }
 
-// Override selector-button colors inside the white header
-// (both country-selector and language-switcher use color: white by default)
-::ng-deep .app-toolbar app-country-selector .selector-button,
-::ng-deep .app-toolbar app-language-switcher .selector-button {
-  color: #212121 !important;
-
-  mat-icon {
-    color: #212121 !important;
-  }
-
-  .label {
-    color: #212121 !important;
-  }
+// Override selector-button colors inside the light header.
+// Uses Material 3 child-component `--mat-sys-on-surface` cascade —
+// no `::ng-deep`, no `!important`. The selectors expose CSS vars in
+// their own components (see country-selector.component.scss).
+.app-toolbar app-country-selector,
+.app-toolbar app-language-switcher {
+  --selector-color: var(--mat-sys-on-surface);
+  --selector-icon-color: var(--mat-sys-on-surface);
+  --selector-label-color: var(--mat-sys-on-surface);
 }
 
 // Mobile Menu styles
@@ -136,13 +141,13 @@
 
   .mobile-brand {
     font-weight: 700;
-    font-size: 1rem;
-    color: #003399;
+    font: var(--mat-sys-title-medium);
+    color: var(--mat-sys-primary);
   }
 
   .mobile-country {
-    font-size: 0.875rem;
-    color: #616161;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface-variant);
     margin-top: 4px;
     display: flex;
     align-items: center;
@@ -161,10 +166,10 @@
 }
 
 .soon-badge {
-  font-size: 0.6875rem;
-  background-color: #e3f2fd;
-  color: #1565c0;
-  border-radius: 10px;
+  font: var(--mat-sys-label-small);
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  border-radius: var(--radius-md);
   padding: 2px 8px;
   margin-left: auto;
   font-weight: 500;

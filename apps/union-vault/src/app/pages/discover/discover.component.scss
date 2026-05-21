@@ -1,3 +1,7 @@
+/* Discover page — Union Vault.
+ * Tokens cascade per `.ai/rules/styling.md §19`. Material 3 surface roles +
+ * project radii/shadows/motion. No hard-coded hex outside this comment. */
+
 .discover-hero,
 .discover-shell {
   max-width: 1200px;
@@ -22,35 +26,34 @@
 
   &__copy,
   &__stats {
-    border-radius: 28px;
+    border-radius: var(--radius-xl);
     padding: 28px;
     background:
-      radial-gradient(circle at top right, rgb(21 101 192 / 0.18), transparent 34%),
-      linear-gradient(135deg, #ffffff, #f6f9ff);
-    border: 1px solid rgb(21 101 192 / 0.12);
+      radial-gradient(circle at top right, rgb(from var(--mat-sys-primary) r g b / 0.18), transparent 34%),
+      linear-gradient(135deg, var(--mat-sys-surface), var(--mat-sys-surface-container-low));
+    border: 1px solid var(--mat-sys-outline-variant);
   }
 
   &__badge {
     margin: 0 0 12px;
-    color: #1565c0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    color: var(--mat-sys-primary);
+    font: var(--mat-sys-label-large);
     letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   h1 {
     margin: 0 0 12px;
     font-size: clamp(2rem, 5vw, 3rem);
     line-height: 1.1;
-    color: #0d1b2a;
+    color: var(--mat-sys-on-surface);
   }
 
   &__description {
     margin: 0;
-    color: #516074;
+    color: var(--mat-sys-on-surface-variant);
     line-height: 1.7;
-    font-size: 1rem;
+    font: var(--mat-sys-body-large);
   }
 
   mat-chip-set {
@@ -89,28 +92,33 @@
   justify-content: center;
   gap: 10px;
   min-height: 56px;
-  border: 1px solid rgb(21 101 192 / 0.12);
-  border-radius: 18px;
-  background: #fff;
-  color: #24425f;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
   transition:
-    transform 0.16s ease,
-    box-shadow 0.16s ease,
-    border-color 0.16s ease;
+    transform var(--duration-short4) var(--ease-emphasized),
+    box-shadow var(--duration-short4) var(--ease-emphasized),
+    border-color var(--duration-short4) var(--ease-emphasized);
 
   &:hover,
   &--active {
     transform: translateY(-1px);
-    border-color: rgb(21 101 192 / 0.35);
-    box-shadow: 0 14px 28px rgb(21 101 192 / 0.12);
+    border-color: var(--mat-sys-primary);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
   }
 }
 
 .discover-panel {
-  border-radius: 28px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
 
   mat-card-content {
@@ -131,13 +139,13 @@
 
     h2 {
       margin: 0 0 8px;
-      color: #0d1b2a;
-      font-size: 1.75rem;
+      color: var(--mat-sys-on-surface);
+      font: var(--mat-sys-headline-medium);
     }
 
     p {
       margin: 0;
-      color: #516074;
+      color: var(--mat-sys-on-surface-variant);
       line-height: 1.6;
     }
   }
@@ -148,21 +156,30 @@
   flex-direction: column;
   gap: 8px;
   min-width: min(360px, 100%);
-  color: #24425f;
+  color: var(--mat-sys-on-surface);
   font-weight: 600;
 
   input {
     width: 100%;
     min-height: 48px;
-    border-radius: 14px;
-    border: 1px solid rgb(21 101 192 / 0.18);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--mat-sys-outline-variant);
     padding: 0 14px;
     font: inherit;
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
     outline: none;
+    transition:
+      border-color var(--duration-short3) var(--ease-standard),
+      box-shadow var(--duration-short3) var(--ease-standard);
+
+    &::placeholder {
+      color: var(--mat-sys-on-surface-variant);
+    }
 
     &:focus-visible {
-      border-color: #1565c0;
-      box-shadow: 0 0 0 4px rgb(21 101 192 / 0.12);
+      border-color: var(--mat-sys-primary);
+      box-shadow: 0 0 0 4px rgb(from var(--mat-sys-primary) r g b / 0.12);
       outline: 2px solid transparent; // a11y: keyboard-only focus ring via box-shadow above
       outline-offset: 2px;
     }
@@ -176,8 +193,17 @@
 }
 
 .discover-card {
-  border-radius: 22px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-card-rest);
+  transition:
+    transform var(--duration-short4) var(--ease-emphasized),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
 
   mat-card-content {
     display: flex;
@@ -191,22 +217,21 @@
   }
 
   strong {
-    color: #0d1b2a;
-    font-size: 1.05rem;
+    color: var(--mat-sys-on-surface);
+    font: var(--mat-sys-title-medium);
   }
 
   p {
     margin: 0;
-    color: #516074;
+    color: var(--mat-sys-on-surface-variant);
     line-height: 1.55;
   }
 
   &__metric {
-    color: #1565c0 !important;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    color: var(--mat-sys-primary);
+    font: var(--mat-sys-label-large);
     letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 }
 
@@ -216,17 +241,17 @@
   place-items: center;
   gap: 8px;
   text-align: center;
-  color: #516074;
+  color: var(--mat-sys-on-surface-variant);
 
   mat-icon {
-    color: #1565c0;
+    color: var(--mat-sys-primary);
     font-size: 42px;
     width: 42px;
     height: 42px;
   }
 
   strong {
-    color: #0d1b2a;
-    font-size: 1.05rem;
+    color: var(--mat-sys-on-surface);
+    font: var(--mat-sys-title-medium);
   }
 }

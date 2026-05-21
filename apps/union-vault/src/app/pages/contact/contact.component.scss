@@ -1,3 +1,7 @@
+/* Contact page — Union Vault.
+ * Tokens cascade per `.ai/rules/styling.md §19`. Material 3 surface/primary
+ * roles + project radii/shadows/motion. Banners use error/secondary roles. */
+
 :host {
   display: block;
 }
@@ -10,10 +14,10 @@
 
 .page-header,
 .section-card {
-  border: 1px solid rgba(0, 51, 153, 0.12);
-  border-radius: 1.5rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 255, 0.96));
-  box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.06);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, var(--mat-sys-surface), var(--mat-sys-surface-container-low));
+  box-shadow: var(--shadow-card-rest);
 }
 
 .page-header {
@@ -23,8 +27,8 @@
 .eyebrow,
 .section-label {
   margin: 0 0 0.5rem;
-  color: #003399;
-  font-weight: 700;
+  color: var(--mat-sys-primary);
+  font: var(--mat-sys-label-large);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -32,7 +36,7 @@
 h1,
 h2,
 h3 {
-  color: #10233f;
+  color: var(--mat-sys-on-surface);
   line-height: 1.2;
 }
 
@@ -48,13 +52,13 @@ h1 {
 .field-hint,
 .legal-details dd,
 .channel-meta dd {
-  color: #42526b;
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .page-subtitle {
   max-width: 60rem;
   margin: 1rem 0 0;
-  font-size: 1.05rem;
+  font: var(--mat-sys-body-large);
 }
 
 .contact-layout {
@@ -95,9 +99,14 @@ h1 {
   display: grid;
   gap: 0.75rem;
   padding: 1rem;
-  border: 1px solid rgba(0, 51, 153, 0.1);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--mat-sys-surface);
+  transition: box-shadow var(--duration-short4) var(--ease-emphasized);
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
 }
 
 .channel-card h3,
@@ -122,21 +131,21 @@ h1 {
 
 .channel-meta dt,
 .legal-details dt {
-  color: #0b5fff;
+  color: var(--mat-sys-primary);
   font-weight: 700;
 }
 
 .channel-meta a,
 .legal-details a,
 .secondary-action {
-  color: #003399;
+  color: var(--mat-sys-primary);
   font-weight: 600;
 }
 
 .status-banner {
   margin-bottom: 1.5rem;
   padding: 1rem 1.25rem;
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
 }
 
 .status-banner h3,
@@ -153,16 +162,19 @@ h1 {
   margin-top: 0.35rem;
 }
 
+/* Success banner — tertiary-container ≈ green semantic per M3 spec.
+ * Apps that need actual green for status feedback can override
+ * `--mat-sys-tertiary` palette in their styles.scss. */
 .status-banner--success {
-  border: 1px solid rgba(4, 120, 87, 0.3);
-  background: rgba(236, 253, 245, 0.95);
-  color: #065f46;
+  border: 1px solid var(--mat-sys-tertiary);
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
 }
 
 .status-banner--error {
-  border: 1px solid rgba(220, 38, 38, 0.22);
-  background: rgba(254, 242, 242, 0.96);
-  color: #991b1b;
+  border: 1px solid var(--mat-sys-error);
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
 }
 
 .contact-form {
@@ -178,9 +190,8 @@ fieldset {
 
 legend {
   margin-bottom: 1rem;
-  color: #10233f;
-  font-size: 1.05rem;
-  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-title-medium);
 }
 
 .form-grid {
@@ -195,13 +206,13 @@ legend {
 
 .form-field label,
 .checkbox-field {
-  color: #10233f;
+  color: var(--mat-sys-on-surface);
   font-weight: 600;
 }
 
 .form-field label span {
   font-weight: 400;
-  color: #55657e;
+  color: var(--mat-sys-on-surface-variant);
 }
 
 input,
@@ -217,13 +228,13 @@ select,
 textarea {
   width: 100%;
   padding: 0.9rem 1rem;
-  border: 1px solid #b6c1d1;
-  border-radius: 0.9rem;
-  background: #fff;
-  color: #10233f;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: var(--radius-md);
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--duration-short3) var(--ease-standard),
+    box-shadow var(--duration-short3) var(--ease-standard);
 }
 
 input:focus-visible,
@@ -232,14 +243,14 @@ textarea:focus-visible,
 .primary-action:focus-visible,
 .secondary-action:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgba(11, 95, 255, 0.28);
+  outline: 3px solid rgb(from var(--mat-sys-primary) r g b / 0.28);
   outline-offset: 2px;
 }
 
 input[aria-invalid='true'],
 select[aria-invalid='true'],
 textarea[aria-invalid='true'] {
-  border-color: #b91c1c;
+  border-color: var(--mat-sys-error);
 }
 
 .field-footer {
@@ -253,21 +264,21 @@ textarea[aria-invalid='true'] {
 .field-count,
 .field-error {
   margin: 0;
-  font-size: 0.95rem;
+  font: var(--mat-sys-body-small);
 }
 
 .field-count {
   white-space: nowrap;
-  color: #55657e;
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .field-count--warning {
-  color: #9a3412;
+  color: var(--mat-sys-error);
   font-weight: 700;
 }
 
 .field-error {
-  color: #b91c1c;
+  color: var(--mat-sys-error);
   font-weight: 600;
 }
 
@@ -300,19 +311,27 @@ textarea[aria-invalid='true'] {
   padding: 0.85rem 1.35rem;
   border-radius: 999px;
   text-decoration: none;
+  transition:
+    transform var(--duration-short4) var(--ease-emphasized),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
 }
 
 .primary-action {
   border: 0;
-  background: linear-gradient(135deg, #003399, #0b5fff);
-  color: #fff;
+  background: linear-gradient(135deg, var(--mat-sys-primary), var(--mat-sys-primary-container));
+  color: var(--mat-sys-on-primary);
   font-weight: 700;
   cursor: pointer;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card-hover);
+  }
 }
 
 .secondary-action {
-  border: 1px solid rgba(0, 51, 153, 0.2);
-  background: #fff;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface);
 }
 
 .contact-sidebar {
@@ -330,8 +349,8 @@ textarea[aria-invalid='true'] {
   width: fit-content;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background: rgba(11, 95, 255, 0.1);
-  color: #003399;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
   font-weight: 700;
 }
 

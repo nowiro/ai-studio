@@ -6,6 +6,35 @@ section {
   background: var(--mat-sys-surface);
 }
 
+/* Reveal-on-scroll section + stagger cards — see services.component.scss
+ * for canonical pattern. Honours prefers-reduced-motion. */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--duration-long1) var(--ease-emphasized-decel),
+    transform var(--duration-long1) var(--ease-emphasized-decel);
+
+  &.reveal-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-card {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--duration-medium4) var(--ease-emphasized-decel) var(--reveal-delay, 0ms),
+    transform var(--duration-medium4) var(--ease-emphasized-decel) var(--reveal-delay, 0ms),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
+
+  &.reveal-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;

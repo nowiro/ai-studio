@@ -1,12 +1,18 @@
-<section id="experience">
+<section
+  id="experience"
+  class="reveal-section"
+  aisRevealOnScroll
+>
   <div class="container">
     <h2 class="section-title">{{ t().experience.sectionTitle }}</h2>
     <p class="section-subtitle">{{ t().experience.sectionSubtitle }}</p>
 
     <div class="timeline">
-      @for (item of t().experience.items; track item.period) {
+      @for (item of t().experience.items; track item.period; let i = $index) {
         <mat-card
-          class="timeline-card"
+          [style.--reveal-delay.ms]="i * 120"
+          class="timeline-card reveal-card"
+          aisRevealOnScroll
           appearance="outlined"
         >
           <mat-card-content>

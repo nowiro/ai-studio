@@ -1,7 +1,16 @@
+/* Home page — Union Vault landing.
+ * Tokens cascade per `.ai/rules/styling.md §19`. Material 3 primary gradient
+ * for hero (azure family) + neutral surface for modules. */
+
 // Hero
 .hero-section {
-  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 50%, #01579b 100%);
-  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--mat-sys-primary) 0%,
+    var(--mat-sys-primary-container) 50%,
+    var(--mat-sys-tertiary-container) 100%
+  );
+  color: var(--mat-sys-on-primary);
   padding: 64px 24px;
   text-align: center;
 
@@ -37,7 +46,7 @@
   }
 
   .hero-description {
-    font-size: 1.125rem;
+    font: var(--mat-sys-body-large);
     line-height: 1.6;
     margin: 0 0 16px;
     opacity: 0.85;
@@ -48,7 +57,7 @@
   }
 
   .hero-country {
-    font-size: 0.9375rem;
+    font: var(--mat-sys-label-large);
     margin: 0;
     opacity: 0.8;
 
@@ -75,7 +84,7 @@
   padding: 32px 24px;
   display: flex;
   justify-content: center;
-  background-color: #fff;
+  background: var(--mat-sys-surface);
 
   mat-chip-set {
     display: flex;
@@ -99,10 +108,9 @@
 
   .section-title {
     text-align: center;
-    font-size: 1.75rem;
-    font-weight: 500;
+    font: var(--mat-sys-headline-medium);
     margin: 0 0 32px;
-    color: #212121;
+    color: var(--mat-sys-on-surface);
   }
 
   .modules-grid {
@@ -119,16 +127,25 @@
   .module-card {
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-card-rest);
+    transition:
+      transform var(--duration-short4) var(--ease-emphasized),
+      box-shadow var(--duration-short4) var(--ease-emphasized);
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card-hover);
+    }
 
     .module-icon {
-      color: #1565c0;
+      color: var(--mat-sys-primary);
       font-size: 40px;
       width: 40px;
       height: 40px;
     }
 
     mat-card-content p {
-      color: #616161;
+      color: var(--mat-sys-on-surface-variant);
       line-height: 1.5;
     }
 
@@ -165,16 +182,15 @@
 
   &__eyebrow {
     margin: 0 0 8px;
-    color: #1565c0;
-    font-weight: 700;
+    color: var(--mat-sys-primary);
+    font: var(--mat-sys-label-large);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 0.75rem;
   }
 
   &__description {
     margin: 8px 0 0;
-    color: #616161;
+    color: var(--mat-sys-on-surface-variant);
     line-height: 1.6;
     max-width: 760px;
   }
@@ -187,8 +203,17 @@
 }
 
 .discover-card {
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-card-rest);
+  transition:
+    transform var(--duration-short4) var(--ease-emphasized),
+    box-shadow var(--duration-short4) var(--ease-emphasized);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card-hover);
+  }
 
   mat-card-content {
     display: flex;
@@ -197,22 +222,22 @@
     padding: 24px;
     min-height: 184px;
     background:
-      radial-gradient(circle at top right, rgb(21 101 192 / 0.12), transparent 35%),
-      linear-gradient(180deg, #fff, #f8fbff);
+      radial-gradient(circle at top right, rgb(from var(--mat-sys-primary) r g b / 0.12), transparent 35%),
+      linear-gradient(180deg, var(--mat-sys-surface), var(--mat-sys-surface-container-low));
   }
 
   mat-icon {
-    color: #1565c0;
+    color: var(--mat-sys-primary);
   }
 
   strong {
-    color: #212121;
-    font-size: 1rem;
+    color: var(--mat-sys-on-surface);
+    font: var(--mat-sys-title-medium);
   }
 
   p {
     margin: 0;
-    color: #616161;
+    color: var(--mat-sys-on-surface-variant);
     line-height: 1.5;
   }
 }
@@ -246,7 +271,7 @@
     align-items: flex-start;
 
     mat-icon {
-      color: #1565c0;
+      color: var(--mat-sys-primary);
       flex-shrink: 0;
       margin-top: 2px;
     }
@@ -254,13 +279,13 @@
     strong {
       display: block;
       margin-bottom: 4px;
-      color: #212121;
+      color: var(--mat-sys-on-surface);
     }
 
     p {
       margin: 0;
-      color: #616161;
-      font-size: 0.875rem;
+      color: var(--mat-sys-on-surface-variant);
+      font: var(--mat-sys-body-medium);
       line-height: 1.4;
     }
   }

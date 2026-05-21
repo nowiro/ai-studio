@@ -1,27 +1,35 @@
+/* Country selector — Union Vault.
+ * Tokens cascade per `.ai/rules/styling.md §19`. Variables exposed via
+ * --selector-*  so the parent header can recolour the button without
+ * `::ng-deep`. */
+
 :host {
   display: inline-flex;
   align-items: center;
+  --selector-color: var(--mat-sys-on-surface);
+  --selector-icon-color: var(--mat-sys-on-surface);
+  --selector-label-color: var(--mat-sys-on-surface);
 }
 
 .selector-button {
-  color: #212121;
+  color: var(--selector-color);
   min-width: 88px;
   min-height: 40px;
-  padding-inline: 12px !important;
+  padding-inline: 12px;
   border-radius: 999px;
   transition:
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    color 160ms ease;
+    background-color var(--duration-short3) var(--ease-standard),
+    box-shadow var(--duration-short3) var(--ease-standard),
+    color var(--duration-short3) var(--ease-standard);
 
   &:hover {
-    background-color: rgba(0, 51, 153, 0.06);
+    background: rgb(from var(--mat-sys-primary) r g b / 0.06);
   }
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.18);
-    background-color: rgba(227, 242, 253, 0.9);
+    box-shadow: 0 0 0 3px rgb(from var(--mat-sys-primary) r g b / 0.18);
+    background: var(--mat-sys-primary-container);
   }
 
   .selector-trigger {
@@ -42,16 +50,15 @@
   }
 
   .label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    font: var(--mat-sys-label-large);
+    color: var(--selector-label-color);
   }
 
   .selector-caret {
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: #5f6368;
+    color: var(--mat-sys-on-surface-variant);
   }
 }
 
@@ -60,17 +67,16 @@
   align-items: center;
   gap: 10px;
   padding: 14px 16px 12px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #616161;
-  border-bottom: 1px solid #e0e0e0;
+  font: var(--mat-sys-label-large);
+  color: var(--mat-sys-on-surface-variant);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
   pointer-events: none;
 
   mat-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: #1565c0;
+    color: var(--mat-sys-primary);
   }
 }
 
@@ -88,32 +94,31 @@
 }
 
 .country-item {
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 12px !important;
-  height: auto !important;
+  padding: 10px 12px;
   min-height: 52px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   transition:
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    color 160ms ease;
+    background-color var(--duration-short3) var(--ease-standard),
+    box-shadow var(--duration-short3) var(--ease-standard),
+    color var(--duration-short3) var(--ease-standard);
 
   &:hover {
-    background-color: #f5f9ff;
+    background: var(--mat-sys-surface-container-low);
   }
 
   &:focus-visible {
     outline: none;
-    box-shadow: inset 0 0 0 2px rgba(21, 101, 192, 0.22);
-    background-color: #eef6ff;
+    box-shadow: inset 0 0 0 2px rgb(from var(--mat-sys-primary) r g b / 0.22);
+    background: var(--mat-sys-surface-container);
   }
 
   &.active {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
 
     .country-name {
       font-weight: 600;
@@ -145,23 +150,23 @@
   }
 
   .country-name {
-    font-size: 0.875rem;
+    font: var(--mat-sys-body-medium);
     line-height: 1.2;
   }
 
   .country-code {
-    font-size: 0.75rem;
-    color: #6b7280;
+    font: var(--mat-sys-label-small);
+    color: var(--mat-sys-on-surface-variant);
     letter-spacing: 0.08em;
   }
 
   .country-currency {
-    font-size: 0.75rem;
-    color: #616161;
+    font: var(--mat-sys-label-small);
+    color: var(--mat-sys-on-surface-variant);
     flex-shrink: 0;
     padding: 4px 8px;
     border-radius: 999px;
-    background-color: #f1f5f9;
+    background: var(--mat-sys-surface-container);
     font-weight: 600;
   }
 }
