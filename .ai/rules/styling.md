@@ -180,20 +180,99 @@ Każdy wrapper deleguje option building do pure function w `libs/charts/src/opti
 
 ## 12. UI primitives (wrappery libs/ui-kit)
 
-Backed by Angular Material 3, ale backend jest implementation detail — konsumenci widzą tylko abstrakcję `<ais-*>`. Patrz [ADR-0011](../../docs/adr/0011-ui-kit-wrapper-strategy.md) dla "po co" i [`docs/architecture/ui-kit.md`](../../docs/architecture/ui-kit.md) (jeśli istnieje) dla wire-up. Wzorzec uogólniony w trinity baseline [`.ai/rules/principles.md`](principles.md) §13.
+Backed by Angular Material 3, ale backend jest implementation detail — konsumenci widzą tylko abstrakcję `<ais-*>`. Patrz [ADR-0011](../../docs/adr/0011-ui-kit-wrapper-strategy.md) dla "po co". Wzorzec uogólniony w trinity baseline [`.ai/rules/principles.md`](principles.md) §13.
+
+### Dwie warstwy
+
+| Warstwa                      | Cel                                                                                                              | Status                                                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Layout primitives**        | Powtarzające się layout patterns (hero, section, card grids, KPI tiles) — kolapsują ~60 lines markup w jeden tag | ✅ 5 komponentów (`<ais-hero>`, `<ais-section>`, `<ais-feature-card>`, `<ais-stat-tile>`, `<ais-cta-button>`) |
+| **Atomic Material wrappers** | 1:1 wrap nad `<mat-button>` / `<mat-card>` / `<mat-form-field>` etc. — jeden seam dla future Material → X swap   | 🚧 Roadmap (ADR-0011) — dodawaj per-need gdy konsument repeats 3+ razy                                        |
+
+### Layout primitives — w użyciu
+
+| Primitive            | Inputs                                                                         | Konsumenci dziś         |
+| -------------------- | ------------------------------------------------------------------------------ | ----------------------- |
+| `<ais-hero>`         | `title`, `subtitle?`, `eyebrow?`, `theme?='brand'\|'primary'`, `hasVisual?`    | (roadmap: nowiro hero)  |
+| `<ais-section>`      | `title?`, `subtitle?`, `eyebrow?`, `tone?='surface'\|'surface-low'\|'inverse'` | nowiro: services, about |
+| `<ais-feature-card>` | `icon`, `title`, `description`, `revealDelay?=0`                               | nowiro: services        |
+| `<ais-stat-tile>`    | `icon`, `value`, `label`, `revealDelay?=0`                                     | nowiro: about           |
+| `<ais-cta-button>`   | `variant?='filled'\|'outlined'\|'tonal'`, `icon?`, `disabled?`                 | (roadmap)               |
+
+Każdy primitive automatycznie stosuje: tokens cascade z `styles/tailwind.scss §19`, `RevealOnScrollDirective` (jeśli card-like), Material 3 surface roles, prefers-reduced-motion honour.
 
 ### Allowed imports
 
 ```ts
-// ✅ wrappery + stable contract
+// ✅ Layout primitives
 import {
-  ButtonComponent,
-  type ButtonVariant,
-  CardComponent,
-  FormFieldComponent,
-  InputComponent,
+  AisCtaButtonComponent,
+  AisFeatureCardComponent,
+  AisHeroComponent,
+  AisSectionComponent,
+  AisStatTileComponent,
 } from '@ai-studio/ui-kit';
 ```
+
+### Przykład — nowiro services (before / after)
+
+**Before** (60+ lines: HTML + SCSS):
+
+```html
+<section
+  id="services"
+  class="reveal-section"
+  aisRevealOnScroll
+>
+  <div class="container">
+    <h2 class="section-title">{{ title }}</h2>
+    <p class="section-subtitle">{{ subtitle }}</p>
+    <div class="services-grid">
+      @for (s of items; track s.title; let i = $index) {
+      <mat-card
+        [style.--reveal-delay.ms]="i * 80"
+        class="service-card reveal-card"
+        aisRevealOnScroll
+        appearance="outlined"
+      >
+        <mat-card-content>
+          <div class="service-icon-wrapper">
+            <mat-icon class="service-icon">{{ s.icon }}</mat-icon>
+          </div>
+          <h3 class="service-title">{{ s.title }}</h3>
+          <p class="service-description">{{ s.description }}</p>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+  </div>
+</section>
+```
+
+plus 80 linii SCSS (reveal, hover lift, icon wrapper, tokens).
+
+**After** (14 lines, zero SCSS dla cards):
+
+```html
+<ais-section
+  [title]="title"
+  [subtitle]="subtitle"
+  tone="surface-low"
+>
+  <div class="services-grid">
+    @for (s of items; track s.title; let i = $index) {
+    <ais-feature-card
+      [icon]="s.icon"
+      [title]="s.title"
+      [description]="s.description"
+      [revealDelay]="i * 80"
+    />
+    }
+  </div>
+</ais-section>
+```
+
+Same layout-grid CSS zostaje per-app. Visual identity migruje raz do `libs/ui-kit`.
 
 ### Forbidden imports (wymuszane przez ESLint `no-restricted-imports`)
 

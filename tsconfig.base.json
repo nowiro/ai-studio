@@ -61,6 +61,7 @@
       "@ai-studio/library-feature-catalogue": ["./libs/library-feature-catalogue/src/index.ts"],
       "@ai-studio/library-feature-librarian": ["./libs/library-feature-librarian/src/index.ts"],
       "@ai-studio/library-ui": ["./libs/library-ui/src/index.ts"],
+      "@ai-studio/ui-kit": ["./libs/ui-kit/src/index.ts"],
       "@ai-studio/wizard-form-fill": ["./libs/wizard-form-fill/src/index.ts"],
       "@ai-studio/shared-i18n": ["./libs/shared-i18n/src/index.ts"],
       "@ai-studio/shared-language": ["./libs/shared-language/src/index.ts"],

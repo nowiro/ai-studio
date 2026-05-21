@@ -1,29 +1,17 @@
-<section
+<ais-section
   id="services"
-  class="reveal-section"
-  aisRevealOnScroll
+  [subtitle]="t().services.sectionSubtitle"
+  [title]="t().services.sectionTitle"
+  tone="surface-low"
 >
-  <div class="container">
-    <h2 class="section-title">{{ t().services.sectionTitle }}</h2>
-    <p class="section-subtitle">{{ t().services.sectionSubtitle }}</p>
-
-    <div class="services-grid">
-      @for (service of t().services.items; track service.title; let i = $index) {
-        <mat-card
-          [style.--reveal-delay.ms]="i * 80"
-          class="service-card reveal-card"
-          aisRevealOnScroll
-          appearance="outlined"
-        >
-          <mat-card-content>
-            <div class="service-icon-wrapper">
-              <mat-icon class="service-icon">{{ service.icon }}</mat-icon>
-            </div>
-            <h3 class="service-title">{{ service.title }}</h3>
-            <p class="service-description">{{ service.description }}</p>
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
+  <div class="services-grid">
+    @for (service of t().services.items; track service.title; let i = $index) {
+      <ais-feature-card
+        [description]="service.description"
+        [icon]="service.icon"
+        [revealDelay]="i * 80"
+        [title]="service.title"
+      />
+    }
   </div>
-</section>
+</ais-section>

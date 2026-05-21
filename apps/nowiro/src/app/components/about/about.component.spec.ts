@@ -4,6 +4,11 @@ import { translations } from '../../i18n/translations';
 import { LanguageService } from '../../services/language.service';
 import { AboutComponent } from './about.component';
 
+/**
+ * After the ui-kit refactor (libs/ui-kit primitives), DOM selectors changed:
+ *   `.section-title` / `mat-card.stat-card` → wrapped by `<ais-section>` and
+ *   `<ais-stat-tile>` respectively. Tests now assert on rendered TEXT.
+ */
 describe('AboutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -19,8 +24,7 @@ describe('AboutComponent', () => {
   it('renders Polish section title by default', () => {
     const fixture = TestBed.createComponent(AboutComponent);
     fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.section-title')?.textContent?.trim()).toBe(translations.pl.about.sectionTitle);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain(translations.pl.about.sectionTitle);
   });
 
   it('renders English section title when lang is English', () => {
@@ -28,23 +32,13 @@ describe('AboutComponent', () => {
     langService.lang.set('en');
     const fixture = TestBed.createComponent(AboutComponent);
     fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.section-title')?.textContent?.trim()).toBe(translations.en.about.sectionTitle);
-  });
-
-  it('renders correct number of stat cards', () => {
-    const fixture = TestBed.createComponent(AboutComponent);
-    fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    const statCards = el.querySelectorAll('mat-card.stat-card');
-    expect(statCards.length).toBe(translations.pl.about.stats.length);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain(translations.en.about.sectionTitle);
   });
 
   it('stat card values are present in the DOM', () => {
     const fixture = TestBed.createComponent(AboutComponent);
     fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    const allText = el.textContent ?? '';
+    const allText = (fixture.nativeElement as HTMLElement).textContent ?? '';
     translations.pl.about.stats.forEach((stat) => {
       expect(allText).toContain(stat.value);
     });

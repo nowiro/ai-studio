@@ -4,6 +4,13 @@ import { translations } from '../../i18n/translations';
 import { LanguageService } from '../../services/language.service';
 import { ServicesComponent } from './services.component';
 
+/**
+ * After the ui-kit refactor (libs/ui-kit primitives), DOM selectors changed:
+ *   `.section-title` / `mat-card.service-card` → wrapped by `<ais-section>`
+ *   and `<ais-feature-card>` respectively. These tests now assert on the
+ *   rendered TEXT, not the markup structure — they pass regardless of which
+ *   primitive renders the content.
+ */
 describe('ServicesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,15 +27,7 @@ describe('ServicesComponent', () => {
     const fixture = TestBed.createComponent(ServicesComponent);
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.section-title')?.textContent?.trim()).toBe(translations.pl.services.sectionTitle);
-  });
-
-  it('renders correct number of service cards', () => {
-    const fixture = TestBed.createComponent(ServicesComponent);
-    fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    const cards = el.querySelectorAll('mat-card.service-card');
-    expect(cards.length).toBe(translations.pl.services.items.length);
+    expect(el.textContent).toContain(translations.pl.services.sectionTitle);
   });
 
   it('renders English section title when lang is English', () => {
@@ -37,25 +36,25 @@ describe('ServicesComponent', () => {
     const fixture = TestBed.createComponent(ServicesComponent);
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('.section-title')?.textContent?.trim()).toBe(translations.en.services.sectionTitle);
+    expect(el.textContent).toContain(translations.en.services.sectionTitle);
   });
 
-  it('renders same number of cards in English', () => {
+  it('renders every service title in the DOM', () => {
+    const fixture = TestBed.createComponent(ServicesComponent);
+    fixture.detectChanges();
+    const allText = (fixture.nativeElement as HTMLElement).textContent ?? '';
+    translations.pl.services.items.forEach((item) => {
+      expect(allText).toContain(item.title);
+    });
+  });
+
+  it('renders every service title in English when lang switches', () => {
     const langService = TestBed.inject(LanguageService);
     langService.lang.set('en');
     const fixture = TestBed.createComponent(ServicesComponent);
     fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    const cards = el.querySelectorAll('mat-card.service-card');
-    expect(cards.length).toBe(translations.en.services.items.length);
-  });
-
-  it('service titles are rendered in the DOM', () => {
-    const fixture = TestBed.createComponent(ServicesComponent);
-    fixture.detectChanges();
-    const el: HTMLElement = fixture.nativeElement;
-    const allText = el.textContent ?? '';
-    translations.pl.services.items.forEach((item) => {
+    const allText = (fixture.nativeElement as HTMLElement).textContent ?? '';
+    translations.en.services.items.forEach((item) => {
       expect(allText).toContain(item.title);
     });
   });

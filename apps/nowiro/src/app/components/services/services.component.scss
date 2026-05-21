@@ -1,47 +1,6 @@
-@use 'sass:meta';
-
-/* Services section — feature card grid.
- *
- * Tokens used: `--mat-sys-surface-container-low` (neutral grey bg),
- * `--radius-lg` (16px corners), `--shadow-card-rest|hover` (elevation tier),
- * `--duration-*` + `--ease-emphasized` (Material 3 motion).
- * Per `.ai/rules/styling.md §19` design-tokens hierarchy. */
-
-section {
-  background: var(--mat-sys-surface-container-low);
-}
-
-/* Reveal-on-scroll section: fades in + slides up when 15% visible.
- * Class `.reveal-on-scroll` added by `aisRevealOnScroll` directive.
- * `prefers-reduced-motion` is honoured via _a11y.scss global override. */
-.reveal-section {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity var(--duration-long1) var(--ease-emphasized-decel),
-    transform var(--duration-long1) var(--ease-emphasized-decel);
-
-  &.reveal-on-scroll {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Per-card stagger via `--reveal-delay` set in template. Cards within the
- * services-grid reveal in waves (80ms apart). */
-.reveal-card {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity var(--duration-medium4) var(--ease-emphasized-decel) var(--reveal-delay, 0ms),
-    transform var(--duration-medium4) var(--ease-emphasized-decel) var(--reveal-delay, 0ms),
-    box-shadow var(--duration-short4) var(--ease-emphasized);
-
-  &.reveal-on-scroll {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Services section — layout grid only. Visual identity (background, card
+ * style, reveal motion, hover lift) lives in `<ais-feature-card>` and
+ * `<ais-section>` primitives from `@ai-studio/ui-kit`. */
 
 .services-grid {
   display: grid;
@@ -55,59 +14,4 @@ section {
   @media (min-width: 960px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
-}
-
-/* `mat-card` already provides default radius via mat-sys-corner tokens.
- * We just lift its hover state — no `!important`, no DOM piercing.            */
-.service-card {
-  --mdc-elevated-card-container-shape: var(--radius-lg);
-  box-shadow: var(--shadow-card-rest);
-  cursor: default;
-  transition:
-    transform var(--duration-short4) var(--ease-emphasized),
-    box-shadow var(--duration-short4) var(--ease-emphasized);
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-card-hover);
-  }
-
-  mat-card-content {
-    padding: 32px 24px;
-  }
-}
-
-.service-icon-wrapper {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-md);
-  background: var(--mat-sys-primary-container);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  transition: transform var(--duration-medium2) var(--ease-emphasized);
-
-  .service-card:hover & {
-    transform: scale(1.06) rotate(-2deg);
-  }
-}
-
-.service-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
-  color: var(--mat-sys-on-primary-container);
-}
-
-.service-title {
-  font: var(--mat-sys-title-large);
-  color: var(--mat-sys-on-surface);
-  margin-bottom: 12px;
-}
-
-.service-description {
-  font: var(--mat-sys-body-medium);
-  line-height: 1.7;
-  color: var(--mat-sys-on-surface-variant);
 }
