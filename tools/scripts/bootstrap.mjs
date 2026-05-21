@@ -97,7 +97,41 @@ if (pnpmCheck.status !== 0) {
   log(c.err('✗ pnpm not on PATH.') + ' Install: ' + c.bold('npm install -g pnpm@9'));
   process.exit(1);
 }
-log(c.ok(`✓ pnpm ${pnpmCheck.stdout.toString().trim()}`));
+const pnpmVersion = pnpmCheck.stdout.toString().trim();
+log(c.ok(`✓ pnpm ${pnpmVersion}`));
+
+// If `packageManager` in package.json pins a specific pnpm version (Corepack
+// spec — exact pin only, no ranges), and the active pnpm differs, prepare
+// the pinned version via Corepack. This makes fresh-clone setup on a second
+// machine a one-shot affair: bootstrap reconciles the version itself instead
+// of failing with a confusing "version mismatch" message from Corepack.
+try {
+  const pkgPath = join(ROOT, 'package.json');
+  const pkg = existsSync(pkgPath) ? JSON.parse(readFileSync(pkgPath, 'utf8')) : {};
+  const declared = pkg.packageManager;
+  if (typeof declared === 'string' && declared.startsWith('pnpm@')) {
+    const declaredVersion = declared.slice('pnpm@'.length);
+    if (declaredVersion && declaredVersion !== pnpmVersion) {
+      log(c.warn(`⚠ packageManager pins pnpm@${declaredVersion} but ${pnpmVersion} is active.`));
+      const corepack = shell('corepack', ['--version'], { silent: true });
+      if (corepack.status === 0) {
+        log(c.dim(`  → corepack prepare pnpm@${declaredVersion} --activate`));
+        const prep = shell('corepack', ['prepare', `pnpm@${declaredVersion}`, '--activate']);
+        if (prep.status === 0) {
+          log(c.ok(`✓ pnpm@${declaredVersion} activated via Corepack`));
+        } else {
+          log(c.warn('  Corepack prepare failed; continuing with active pnpm.'));
+          record('warn', `pnpm version mismatch (have ${pnpmVersion}, want ${declaredVersion})`);
+        }
+      } else {
+        log(c.dim('  Corepack not available — run manually: ') + c.bold(`corepack enable && corepack prepare pnpm@${declaredVersion} --activate`));
+        record('warn', `pnpm version mismatch (have ${pnpmVersion}, want ${declaredVersion})`);
+      }
+    }
+  }
+} catch {
+  // Best-effort — never block bootstrap on this check.
+}
 
 // ─── 3. Install deps ────────────────────────────────────────────────────────
 step('Install dependencies');
