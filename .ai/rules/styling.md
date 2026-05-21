@@ -177,3 +177,83 @@ Zmiany `prefers-color-scheme` automatycznie re-applyują theme — zweryfikowane
 ### Spec contract
 
 Każdy wrapper deleguje option building do pure function w `libs/charts/src/option-builders.ts`. Unit testy targetują te buildery wprost (`option-builders.spec.ts`) — żadnego TestBed, żadnych jsdom signal-input quirków. Theme bridge ma własny spec (`theme.spec.ts`).
+
+## 12. UI primitives (wrappery libs/ui-kit)
+
+Backed by Angular Material 3, ale backend jest implementation detail — konsumenci widzą tylko abstrakcję `<ais-*>`. Patrz [ADR-0011](../../docs/adr/0011-ui-kit-wrapper-strategy.md) dla "po co" i [`docs/architecture/ui-kit.md`](../../docs/architecture/ui-kit.md) (jeśli istnieje) dla wire-up. Wzorzec uogólniony w trinity baseline [`.ai/rules/principles.md`](principles.md) §13.
+
+### Allowed imports
+
+```ts
+// ✅ wrappery + stable contract
+import {
+  ButtonComponent,
+  type ButtonVariant,
+  CardComponent,
+  FormFieldComponent,
+  InputComponent,
+} from '@ai-studio/ui-kit';
+```
+
+### Forbidden imports (wymuszane przez ESLint `no-restricted-imports`)
+
+```ts
+// ❌ direct Material — fails CI
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import type { MatFormFieldAppearance } from '@angular/material/form-field';
+```
+
+Reguła stosuje się do każdego pliku `libs/!(ui-kit)/**` i `apps/**`. Jedyny wyjątek to `libs/ui-kit/**` sam, który jest właścicielem backendu Material.
+
+### Theming contract
+
+Wrappery używają Material 3 tokens (`--mat-sys-*`) przez `@include mat.theme(...)` w `styles.scss` per app (§2). **Nigdy** nie hard-code'uj kolorów; przekaż `color: 'primary' | 'accent' | 'warn'` jako input wrapper'a.
+
+Dark / light mode cascade'uje automatycznie z `color-scheme: light dark` (§2) + Material 3 CSS variables.
+
+### Available wrappers (z ADR-0011)
+
+| Wrapper                     | Wraps                                   | Użyj gdy                                               |
+| --------------------------- | --------------------------------------- | ------------------------------------------------------ |
+| `<ais-button>`              | `<button matButton>`                    | filled / outlined / tonal / text variants              |
+| `<ais-icon-button>`         | `<button mat-icon-button>`              | icon-only actions                                      |
+| `<ais-card>`                | `<mat-card>` + header / actions slots   | content container                                      |
+| `<ais-form-field>`          | `<mat-form-field appearance="outline">` | dowolny `<input>` / `<select>` / `<textarea>`          |
+| `[aisInput]` (directive)    | `<input matInput>`                      | text inputs (z `subscriptSizing="dynamic"` z M3 skill) |
+| `<ais-select>`              | `<mat-select>`                          | dropdown selection                                     |
+| `<ais-chip>`                | `<mat-chip>`                            | tagi / filter chips                                    |
+| `<ais-divider>`             | `<mat-divider>`                         | horyzontalny separator                                 |
+| `<ais-tabs>`                | `<mat-tab-group>`                       | navigation tabs                                        |
+| `<ais-stepper>`             | `<mat-stepper>`                         | multi-step forms / wizards                             |
+| `<ais-table>`               | `<mat-table>`                           | tabelaryczne dane                                      |
+| `<ais-paginator>`           | `<mat-paginator>`                       | paging dla `<ais-table>` lub list                      |
+| `<ais-expansion-panel>`     | `<mat-expansion-panel>`                 | collapsible content                                    |
+| `[aisTooltip]` (directive)  | `[matTooltip]`                          | hover hints                                            |
+| `[aisBadge]` (directive)    | `[matBadge]`                            | counter badges                                         |
+| `<ais-toolbar>`             | `<mat-toolbar>`                         | app bar / header                                       |
+| `<ais-sidenav>`             | `<mat-sidenav-container>`               | side navigation drawer                                 |
+| `<ais-radio-group>`         | `<mat-radio-group>`                     | exclusive option selection                             |
+| `<ais-checkbox>`            | `<mat-checkbox>`                        | boolean toggle                                         |
+| `<ais-button-toggle-group>` | `<mat-button-toggle-group>`             | segmented control                                      |
+
+### Spec contract
+
+Każdy wrapper ma własny `*.spec.ts` w `libs/ui-kit/src/<name>/` testujący:
+
+- Render + projection content (`<ng-content>`)
+- Input signal binding (signal-based, NIE `@Input()`)
+- A11y forward'owanie ARIA attrs przez host bindings
+- OnPush detection strategy (default per `.ai/rules/angular.md`)
+
+Brak TestBed dla statycznych checków — pure function helpers w `libs/ui-kit/src/utils.ts` testowane bezpośrednio.
+
+### Tworzenie nowego wrapper'a
+
+**Nie pisz ręcznie.** Użyj deterministycznego skryptu (per §10 llm-optimization.md):
+
+```bash
+pnpm scaffold:wrapper --name=dialog --kind=ui --wraps=mat-dialog
+```
+
+Generuje: `libs/ui-kit/src/dialog/{dialog.component.ts,dialog.component.spec.ts,index.ts}` + dopisanie do `libs/ui-kit/src/index.ts` exports + linka w tej tabeli. Patrz `tools/scripts/scaffold-wrapper.mjs`.

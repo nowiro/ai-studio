@@ -19,6 +19,19 @@ Library jest dodana, gdy idea jest potrzebna przez ≥ 2 konsumentów, lub gdy s
 | 1          | ≥ 200         | Ekstraktuj dla izolacji + testowania.  |
 | ≥ 2        | any           | Ekstraktuj.                            |
 
+## Wrapper-vs-feature decision
+
+Przed scaffoldem nowej biblioteki — **czy to wrapper external dep, czy feature?**
+
+| Library type                        | Wraps external            | Lokalizacja                      | Skrypt                                          |
+| ----------------------------------- | ------------------------- | -------------------------------- | ----------------------------------------------- |
+| **UI wrapper** (Material primitive) | `@angular/material/*`     | `libs/ui-kit/src/<name>/`        | `pnpm scaffold:wrapper --kind=ui`               |
+| **Chart wrapper**                   | `echarts` lub future swap | `libs/charts/src/<name>/`        | `pnpm scaffold:wrapper --kind=chart`            |
+| **Data adapter**                    | REST / SDK / MCP konektor | `libs/<domain>-data/`            | `nx g @nx/angular:lib <domain>-data`            |
+| **Domain feature**                  | nic external              | `libs/<domain>-feature-<slice>/` | `nx g @nx/angular:lib <domain>-feature-<slice>` |
+
+Reguła: `.ai/rules/principles.md` §13 — **NIGDY** nie konsumuj external dep bezpośrednio z feature lib. Wymuszane przez ESLint `no-restricted-imports` w `eslint.config.mjs` per ADR-0011 (Material) i ADR-0016 (charts).
+
 ## Kroki
 
 ### 0. Plan

@@ -15,6 +15,40 @@ description: |
 >
 > - `tailwindcss@4` + the `mat.theme(...)` mixin in `styles/tailwind.scss`.
 
+## 0. Wrap before consume (mandatory) — `libs/ui-kit`
+
+**This skill teaches the Material 3 patterns; `libs/ui-kit` owns the consumption.**
+
+Direct `mat-*` imports in `libs/!(ui-kit)/**` and `apps/**` are **compile-time errors**
+(ESLint `no-restricted-imports` per [ADR-0011](../../../docs/adr/0011-ui-kit-wrapper-strategy.md)
+and [`.ai/rules/styling.md`](../../../.ai/rules/styling.md) §12). All consumer code uses
+the `<ais-*>` thin wrappers in `libs/ui-kit/`.
+
+**Order of operations when you reach for a Material primitive:**
+
+1. **Is the wrapper in `libs/ui-kit/` already?** Check `.ai/rules/styling.md §12 Available
+wrappers`. If yes — `import { ButtonComponent } from '@ai-studio/ui-kit'` and consume.
+2. **If wrapper missing** — generate one with the deterministic script **before** writing
+   feature code:
+
+   ```bash
+   pnpm scaffold:wrapper --name=dialog --kind=ui --wraps=mat-dialog
+   ```
+
+   The script writes `libs/ui-kit/src/dialog/{dialog.component.ts,dialog.component.spec.ts,index.ts}`,
+   updates the public barrel, and appends a row to the §12 wrapper table. Specialist agents
+   refuse delegations that consume `mat-*` directly from feature code.
+
+3. **Patterns below (form-field rules, stepper, layout shells, …) live IN the wrapper
+   implementation** — `libs/ui-kit/src/form-field/form-field.component.ts` applies
+   `subscriptSizing="dynamic"` once; consumers just write `<ais-form-field>`.
+
+**Why this matters** (uogólniona reguła w [`.ai/rules/principles.md`](../../../.ai/rules/principles.md) §13):
+
+- Material → Spartan / Headless UI swap = single-lib diff (`libs/ui-kit/`), not 200 templates.
+- Theming + a11y wired in one place.
+- Tests mock `<ais-button>` not `MatButton`.
+
 ## 1. Theme & global styles
 
 Pin the colour scheme to keep Material's surface tokens and the page background in lockstep.

@@ -163,6 +163,56 @@ Optymalizuj dla następnego czytelnika, nie aktualnego writera.
 - Jedno zdanie na linię markdown dla czystych diffów.
 - Przykłady w plikach ról agentów i promptach żeby nowe narzędzia szybko się onboardowały.
 
+## 13. Wrap external UI / chart / data deps
+
+Każda **zewnętrzna biblioteka UI** (Angular Material, Tailwind UI, PrimeNG, Spartan), **chart engine** (ECharts, Chart.js, D3, ApexCharts) i **data adapter** (REST client, GraphQL, MCP konektor, SDK SaaS) musi żyć za **adapter / wrapper layer** w repo, **nie być importowana bezpośrednio z aplikacji / feature lib**.
+
+Wariant SOLID-D (Dependency Inversion) zaaplikowany do third-party deps: konsumenci zależą od stabilnego in-repo kontraktu (`<ais-button>`, `<ChartSeries>`, `JiraClient`), nigdy od ABI biblioteki.
+
+**Dlaczego:**
+
+- **Reversibility** (§11): swap biblioteki = single-lib diff, nie touch'uje N feature lib.
+- **Stable API surface**: refactor `mat-button` → `spartan-button` nie wymaga zmiany 200 templates.
+- **Theming i token contract** w jednym miejscu (np. `libs/charts/src/theme.ts` mapuje `--mat-sys-*` na backend; future swap zachowuje contract).
+- **Testowanie**: mockować ABI biblioteki = boilerplate na każdym specu. Mockować nasz wrapper = pojedynczy spec z `provideMock`.
+- **Bundle hygiene**: wrapper jest opt-in import (tree-shake friendly); direct deep imports bywają trudne do prune'owania.
+
+**Lokalizacja per profil:**
+
+| Profil | Gdzie żyje wrapper | Forbidden import w consumerach |
+| ------ | ------------------ | ------------------------------ |
+| **Nx monorepo** | `libs/ui-kit/`, `libs/charts/`, `libs/<domain>-data/` (per-domena dla REST/MCP) | `@angular/material/*`, `echarts/*`, raw `fetch` do upstream |
+| **MCP server (multi-connector)** | `src/shared/<provider>-reshape.ts` + `src/shared/http-client.ts` (jeden HTTP layer dla 6 konektorów) | bezpośredni `axios` / `node-fetch`; raw REST response shape |
+| **MCP server (single-tool)** | `src/shared/<tool>-client.ts` per integracja | direct SDK calls poza shared layer |
+
+**Wymuszanie** (per repo, gdy dotyczy):
+
+- **ESLint `no-restricted-imports`** dla zakazanych ścieżek (np. `@angular/material/*` poza `libs/ui-kit/**`). Lint = compile-time error w CI.
+- **Skrypt deterministyczny** `tools/scripts/scaffold-wrapper.mjs` generuje nowy wrapper z component + spec + index export wg ADR-0011/0016 wzoru (patrz §10 llm-optimization.md — deterministyczne skrypty zamiast ad-hoc prompts).
+- **Workflow checkpoint** (`new-feature.md`, `new-library.md`): plan-first markdown musi explicite odpowiedzieć "czy task konsumuje external UI/chart/data — wrap PRZED konsumpcją".
+
+**Anti-patterns (compile-time fail):**
+
+- ❌ `import { MatButtonModule } from '@angular/material/button'` w `libs/feature-foo/`
+- ❌ `import * as echarts from 'echarts'` w `libs/feature-bar/`
+- ❌ `import { JiraClient } from 'jira-sdk-npm-package'` w `apps/dashboard/`
+- ❌ `fetch('https://api.atlassian.net/...')` poza `src/shared/http-client.ts` w MCP repo
+
+**Patterns (✅):**
+
+- ✅ `import { ButtonComponent } from '@ai-studio/ui-kit'` (Angular Material wrapper)
+- ✅ `import { LineChartComponent, type ChartSeries } from '@ai-studio/charts'` (ECharts wrapper)
+- ✅ `await jiraClient.getIssue(key)` (JiraClient zdefiniowany w `libs/jira-data/`, wraps upstream)
+- ✅ `await http.request<JiraIssueRaw>({ path: '/rest/api/3/issue/...' })` w MCP repo (jeden HttpClient cross-konektor)
+
+**Excepcje** (≤ 1 plik dotykający bibliotekę):
+
+- Owner library samego wrapper'a (`libs/ui-kit/**`, `libs/charts/**`, `src/shared/http-client.ts`) — może importować ABI biblioteki bo TO JEST adapter.
+- Stricte testowy spec dla adapter'a (`*.spec.ts` w owner library) — może referować biblioteki do mockowania.
+- One-shot eksploracyjny skrypt (`tools/scripts/spike-*.mjs`) — pomarkowany jako spike, nie merging do main.
+
+**Decyzyjny driver:** ADR-y `0011-ui-kit-wrapper-strategy` (Material), `0016-charts-abstraction-echarts` (ECharts). Wzorzec uogólniony tutaj jako principle.
+
 ## Jak agenci to stosują
 
 Każdy agent ładuje ten plik na początku swojego zadania. Gdy dwa konkurujące podejścia oba spełniają immediate spec, agent wybiera to bliższe tym zasadom i notuje trade-off w swoim hand-off bloku. Code reviewer, który spostrzega naruszenie, cytuje **id zasady** (np. _SRP_, _KISS_) — nie mgliste "to wygląda źle".

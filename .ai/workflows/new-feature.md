@@ -50,6 +50,29 @@ Done gdy `docs/adr/NNNN-<slug>.md` jest `Status: accepted` i zawiera generator p
 Orchestrator uruchamia generator plan przez serwery **nx** + **angular-cli** MCP. Żadnych hand-edits do `project.json`.
 Done gdy `nx graph` pokazuje nowe projekty z poprawnymi tagami.
 
+### 3.5. Wrap external deps (mandatory checkpoint)
+
+Orchestrator sprawdza czy task konsumuje **external UI/chart/data library** (Angular Material, ECharts, REST/SDK, MCP konektor). Reguła: `.ai/rules/principles.md` §13 + `.ai/rules/styling.md` §11/§12.
+
+**Procedura:**
+
+1. **Material primitive** (button, card, dialog, form-field, table, …) → check `.ai/rules/styling.md` §12 wrapper table.
+   - Wrapper istnieje → ✅ konsument importuje z `@ai-studio/ui-kit`.
+   - Wrapper brakuje → generate PRZED feature code:
+     ```bash
+     pnpm scaffold:wrapper --name=<kebab> --kind=ui --wraps=mat-<x>
+     ```
+     Specjalista (frontend-developer) odrzuca delegację która używa `mat-*` direct w `libs/!(ui-kit)/**`.
+
+2. **Chart** (line, bar, pie, gauge, heatmap, custom) → check `.ai/rules/styling.md` §11 wrapper table.
+   - Wrapper istnieje → ✅ konsument importuje z `@ai-studio/charts`.
+   - Wrapper brakuje → `pnpm scaffold:wrapper --name=<kebab> --kind=chart` PRZED feature code.
+
+3. **Data adapter** (REST upstream, MCP konektor) → wrapper żyje w `libs/<domain>-data/`. Konsument **NIGDY** nie robi `fetch(...)` ani `import { JiraClient } from 'jira-sdk'` w feature lib.
+   - Generic: `nx g @nx/angular:lib <domain>-data --tags=scope:<domain>,type:data` + dedykowany `*Client` wrapper.
+
+Done gdy plan markdown deklaruje: "Plan konsumuje X external deps. Wrappery dla wszystkich istnieją w `libs/<name>/` (lista po nazwach)."
+
 ### 4. Implement (parallel)
 
 Dwie delegacje w tym samym turn:
