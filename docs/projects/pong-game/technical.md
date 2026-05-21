@@ -30,7 +30,7 @@ libs/
 ## game-pong-ui
 
 - Single canvas component (`ais-pong-host`).
-- Reads keyboard via `@HostListener` placeholder → moved to `KeyboardInputController` in [the next iteration plan](../../ai-workflow/plans/2026-05-19-pong-game.md).
+- Reads keyboard via `@HostListener` placeholder → moved to `KeyboardInputController` in the next iteration plan.
 - `signal(state)` updated each `requestAnimationFrame` from `game-pong` step result.
 
 ## Build & serve

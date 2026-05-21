@@ -7,7 +7,7 @@ date: 2026-05-18
 audience: [test-engineer, qa, developer]
 links:
   spec: ../../analytical/specs/school-journal/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-school-journal.md
+  plan: null
   hub: README.md
 ---
 

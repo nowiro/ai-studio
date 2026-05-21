@@ -7,7 +7,7 @@ date: 2026-05-18
 audience: [frontend-developer, architect, devops]
 links:
   spec: ../../analytical/specs/school-journal/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-school-journal.md
+  plan: null
   adr: ../../adr/0008-journal-context.md
   hub: README.md
 ---

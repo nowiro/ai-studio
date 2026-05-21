@@ -7,7 +7,7 @@ deciders: [architect, frontend-developer]
 supersedes: null
 superseded-by: null
 links:
-  plan: ../ai-workflow/plans/2026-05-18-library-app.md
+  plan: null
   spec: ../analytical/specs/library-app/spec.md
 ---
 
@@ -75,4 +75,3 @@ directive is `aisRoleAllow="['librarian']"`.
 ## Links
 
 - Spec: [`../analytical/specs/library-app/spec.md`](../analytical/specs/library-app/spec.md)
-- Plan: [`../ai-workflow/plans/2026-05-18-library-app.md`](../ai-workflow/plans/2026-05-18-library-app.md)

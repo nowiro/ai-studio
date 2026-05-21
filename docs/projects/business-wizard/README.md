@@ -88,6 +88,6 @@ libs/business-wizard-feature/               (scope:wizard, type:feature)
 
 ## Related plan
 
-- [Consolidated roadmap](../../ai-workflow/plans/2026-05-18-portal-elements-keycloak.md)
+- Consolidated roadmap
   — Phase 1 of the roadmap is "dual-mode Web Components per app". This app
   ships the pattern landed in the previous turn (`bootstrapAsElement()`).

@@ -6,7 +6,7 @@ status: done
 date: 2026-05-18
 links:
   spec: ../../analytical/specs/tire-shop/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-tire-shop.md
+  plan: null
   adr: ../../adr/0006-tire-shop-state.md
   app: ../../../apps/tire-shop
   port: 4205
@@ -29,12 +29,12 @@ links:
 
 ## Audience routing
 
-| You are…                      | Start here                                                                                                                                                             |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product / analyst**         | [`business.md`](business.md)                                                                                                                                           |
-| **Frontend / DevOps**         | [`technical.md`](technical.md)                                                                                                                                         |
-| **Test engineer / QA**        | [`testing.md`](testing.md)                                                                                                                                             |
-| **Reviewer (SDD compliance)** | [`spec.md`](../../analytical/specs/tire-shop/spec.md) → [`plan.md`](../../ai-workflow/plans/2026-05-18-tire-shop.md) → [`ADR-0006`](../../adr/0006-tire-shop-state.md) |
+| You are…                      | Start here                                                                                                          |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Product / analyst**         | [`business.md`](business.md)                                                                                        |
+| **Frontend / DevOps**         | [`technical.md`](technical.md)                                                                                      |
+| **Test engineer / QA**        | [`testing.md`](testing.md)                                                                                          |
+| **Reviewer (SDD compliance)** | [`spec.md`](../../analytical/specs/tire-shop/spec.md) → `plan.md` → [`ADR-0006`](../../adr/0006-tire-shop-state.md) |
 
 ## Quickstart
 
@@ -97,7 +97,7 @@ for dependency edges and module-boundary rules.
 
 - [`spec.md`](../../analytical/specs/tire-shop/spec.md) — problem
   statement, personas, AC-1 … AC-12, success metrics, non-goals.
-- [`plan.md`](../../ai-workflow/plans/2026-05-18-tire-shop.md) — task
+- `plan.md` — task
   DAG (T001 … T013), validation gate, Definition of Done.
 - [`ADR-0006`](../../adr/0006-tire-shop-state.md) — state strategy
   (signals + services + localStorage; no NgRx).

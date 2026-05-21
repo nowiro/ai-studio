@@ -7,7 +7,7 @@ date: 2026-05-19
 links:
   app: ../../../apps/union-vault
   e2e: ../../../apps/union-vault-e2e
-  plan: ../../ai-workflow/plans/2026-05-19-union-vault.md
+  plan: null
 ---
 
 # Union-vault
@@ -26,7 +26,6 @@ links:
 - [`business.md`](business.md) — context until spec lands.
 - [`technical.md`](technical.md) — observed architecture from source.
 - [`testing.md`](testing.md) — coverage of what currently exists.
-- [`2026-05-19-union-vault.md`](../../ai-workflow/plans/2026-05-19-union-vault.md) — the plan that decides the future.
 
 ## Why this folder exists
 

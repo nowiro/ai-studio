@@ -4,9 +4,9 @@ audience: [developer, tester, devops, admin, analyst]
 status: stable
 last-updated: 2026-05-08
 links:
-  spec: ../analytical/specs/2026-05-08-pong-game/spec.md
-  plan: ../analytical/specs/2026-05-08-pong-game/plan.md
-  tasks: ../analytical/specs/2026-05-08-pong-game/tasks.md
+  spec: null
+  plan: null
+  tasks: null
   adr: ../adr/0004-phaser-as-default-game-library.md
 ---
 
@@ -28,7 +28,7 @@ links:
 
 ## Analyst — spec & acceptance criteria
 
-The full specification lives at [`docs/analytical/specs/2026-05-08-pong-game/spec.md`](../analytical/specs/2026-05-08-pong-game/spec.md). It contains:
+The full specification lives at (historic, see git log). It contains:
 
 - **User stories** US-1…US-4 (casual play, reference implementation, scenario traceability, configurable rollout).
 - **10 acceptance criteria** (AC-1…AC-10) in Given/When/Then form. Each maps to ≥ 1 Playwright test.
@@ -80,7 +80,7 @@ flowchart TB
 
 ### Test scenarios
 
-Source of truth: the `Given / When / Then` blocks in [`spec.md`](../analytical/specs/2026-05-08-pong-game/spec.md). Generated test files:
+Source of truth: the `Given / When / Then` blocks in `spec.md`. Generated test files:
 
 - **Unit:**
   - [`libs/game-pong/src/logic/collision.spec.ts`](../../libs/game-pong/src/logic/collision.spec.ts)
@@ -272,9 +272,9 @@ createGame(host, { winScore: 11, aiSpeed: 240 });
 
 ## Related documents
 
-- [Spec](../analytical/specs/2026-05-08-pong-game/spec.md) — Phase 1 (Specify)
-- [Plan](../analytical/specs/2026-05-08-pong-game/plan.md) — Phase 2 (Plan)
-- [Tasks](../analytical/specs/2026-05-08-pong-game/tasks.md) — Phase 3 (Tasks) DAG
+- Spec — Phase 1 (Specify)
+- Plan — Phase 2 (Plan)
+- Tasks — Phase 3 (Tasks) DAG
 - [ADR-0004](../adr/0004-phaser-as-default-game-library.md) — Phaser as default game library
 - [Games rules](../../.ai/rules/games.md) — every constraint enforced here
 - [Spec-driven workflow](../../.ai/workflows/spec-driven.md) — methodology

@@ -7,7 +7,7 @@ date: 2026-05-18
 audience: [test-engineer, qa, developer]
 links:
   spec: ../../analytical/specs/tire-shop/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-tire-shop.md
+  plan: null
   hub: README.md
 ---
 

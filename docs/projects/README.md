@@ -137,9 +137,9 @@ Keycloak auth provider, and an ESLint scale-up for the 11+-app
 workspace. The originals are kept with `status: superseded` headers
 pointing here.
 
-| Plan                                                                                                                | Status | Phases                                                                                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Portal + Web Components + Keycloak + ESLint scale-up](../ai-workflow/plans/2026-05-18-portal-elements-keycloak.md) | draft  | **P0** ESLint scale-up · **P1** dual-mode WC per app · **P2** `libs/ui-kit` wrappers · **P3** `apps/portal` + `apps/dashboard` + Native Federation · **P4** `libs/keycloak-auth` · **P5** docs + final validation gate. ADRs 0009-0013 land alongside their respective phases. |
+| Plan                                                 | Status | Phases                                                                                                                                                                                                                                                                         |
+| ---------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Portal + Web Components + Keycloak + ESLint scale-up | draft  | **P0** ESLint scale-up · **P1** dual-mode WC per app · **P2** `libs/ui-kit` wrappers · **P3** `apps/portal` + `apps/dashboard` + Native Federation · **P4** `libs/keycloak-auth` · **P5** docs + final validation gate. ADRs 0009-0013 land alongside their respective phases. |
 
 ### Dual-mode embedding contract
 

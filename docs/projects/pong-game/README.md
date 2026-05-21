@@ -8,8 +8,8 @@ links:
   app: ../../../apps/pong-game
   e2e: ../../../apps/pong-game-e2e
   port: 4202
-  plan: ../../ai-workflow/plans/2026-05-19-pong-game.md
-  runs: ../../ai-workflow/runs/2026-05-08-pong-game/
+  plan: null
+  runs: null
 ---
 
 # Pong-game
@@ -32,4 +32,4 @@ links:
 
 ## Next iteration
 
-[`2026-05-19-pong-game.md`](../../ai-workflow/plans/2026-05-19-pong-game.md) — tournament mode + leaderboard.
+(historic, see git log) — tournament mode + leaderboard.

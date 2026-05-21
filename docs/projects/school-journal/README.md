@@ -6,7 +6,7 @@ status: done
 date: 2026-05-18
 links:
   spec: ../../analytical/specs/school-journal/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-school-journal.md
+  plan: null
   adr: ../../adr/0008-journal-context.md
   app: ../../../apps/school-journal
   port: 4207
@@ -29,12 +29,12 @@ links:
 
 ## Audience routing
 
-| You are…                      | Start here                                                                                                                                                                       |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product / analyst**         | [`business.md`](business.md)                                                                                                                                                     |
-| **Frontend / DevOps**         | [`technical.md`](technical.md)                                                                                                                                                   |
-| **Test engineer / QA**        | [`testing.md`](testing.md)                                                                                                                                                       |
-| **Reviewer (SDD compliance)** | [`spec.md`](../../analytical/specs/school-journal/spec.md) → [`plan.md`](../../ai-workflow/plans/2026-05-18-school-journal.md) → [`ADR-0008`](../../adr/0008-journal-context.md) |
+| You are…                      | Start here                                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Product / analyst**         | [`business.md`](business.md)                                                                                             |
+| **Frontend / DevOps**         | [`technical.md`](technical.md)                                                                                           |
+| **Test engineer / QA**        | [`testing.md`](testing.md)                                                                                               |
+| **Reviewer (SDD compliance)** | [`spec.md`](../../analytical/specs/school-journal/spec.md) → `plan.md` → [`ADR-0008`](../../adr/0008-journal-context.md) |
 
 ## Quickstart
 
@@ -102,7 +102,7 @@ read `SessionService.role()`. See
 
 - [`spec.md`](../../analytical/specs/school-journal/spec.md) — problem,
   personas, AC-1 … AC-10.
-- [`plan.md`](../../ai-workflow/plans/2026-05-18-school-journal.md) —
+- `plan.md` —
   task DAG + DoD.
 - [`ADR-0008`](../../adr/0008-journal-context.md) — singleton
   `SessionService` as source of truth for role + term + class context.

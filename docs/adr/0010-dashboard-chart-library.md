@@ -115,7 +115,6 @@ PR-sized bullets, in Phase 3 of the consolidated roadmap.
 
 ## References
 
-- plan: docs/ai-workflow/plans/2026-05-18-portal-elements-keycloak.md
 - rules: .ai/rules/styling.md
 - upstream: <https://swimlane.gitbook.io/ngx-charts>
 - compared: <https://apexcharts.com/angular-chart-demos/>

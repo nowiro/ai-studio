@@ -34,7 +34,7 @@ libs/game-tetris-ui/src/lib/
 └── tetris-host.component.spec.ts
 
 apps/tetris-game-e2e/src/
-└── example.spec.ts             — placeholder; full suite per [next plan](../../ai-workflow/plans/2026-05-19-tetris-game.md)
+└── example.spec.ts             — placeholder; full suite per next plan
 ```
 
 ## Coverage gates

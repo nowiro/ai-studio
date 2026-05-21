@@ -31,4 +31,4 @@ links:
 ## Related
 
 - [`docs/projects/README.md`](../README.md) — index + doc conventions
-- [`docs/ai-workflow/plans/2026-05-19-nowiro.md`](../../ai-workflow/plans/2026-05-19-nowiro.md) — next iteration plan
+- (historic, see git log) — next iteration plan

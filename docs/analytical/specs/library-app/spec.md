@@ -7,7 +7,7 @@ status: accepted
 date: 2026-05-18
 author: analyst
 links:
-  plan: ../../../ai-workflow/plans/2026-05-18-library-app.md
+  plan: null
   adr: ../../../adr/0007-library-roles.md
 ---
 
@@ -166,5 +166,4 @@ all frontend-only with a ~200-book seed dataset.
 
 ## Traceability
 
-- **Plan:** [`../../../ai-workflow/plans/2026-05-18-library-app.md`](../../../ai-workflow/plans/2026-05-18-library-app.md)
 - **ADR (roles):** [`../../../adr/0007-library-roles.md`](../../../adr/0007-library-roles.md)

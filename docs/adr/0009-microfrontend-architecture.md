@@ -143,7 +143,7 @@ consolidated roadmap plan for the enforcement work.
 ## Implementation plan
 
 PR-sized bullets, mirroring Phase 3 of
-`docs/ai-workflow/plans/2026-05-18-portal-elements-keycloak.md`.
+(historic, see git log).
 
 - [ ] Install `@angular-architects/native-federation`; scaffold
       `apps/portal` (port 4200) + host config.
@@ -161,7 +161,6 @@ PR-sized bullets, mirroring Phase 3 of
 
 ## References
 
-- plan: docs/ai-workflow/plans/2026-05-18-portal-elements-keycloak.md
 - rules: .ai/rules/nx.md, .ai/rules/angular.md
 - upstream: <https://angular.dev/tools/cli/esbuild#native-federation>
 - upstream: <https://www.angulararchitects.io/en/blog/native-federation-with-angular/>

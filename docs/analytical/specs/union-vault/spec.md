@@ -7,7 +7,7 @@ date: 2026-05-19
 audience: [product, analyst, architect]
 trigger: '2026-05-19 audit — apps/union-vault exists in workspace but lacks docs/projects/ entry and acceptance criteria'
 links:
-  plan: ../../ai-workflow/plans/2026-05-19-union-vault.md
+  plan: null
   hub: ../../projects/union-vault/README.md
 ---
 

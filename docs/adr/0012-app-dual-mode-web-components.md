@@ -147,7 +147,6 @@ PR-sized bullets, mirroring Phase 1 of the consolidated roadmap.
 
 ## References
 
-- plan: docs/ai-workflow/plans/2026-05-18-portal-elements-keycloak.md
 - helper: libs/shared-app-shell/src/element-bootstrap.ts
 - rules: .ai/rules/angular.md
 - upstream: <https://angular.dev/guide/elements>

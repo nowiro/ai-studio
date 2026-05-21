@@ -7,7 +7,7 @@ status: accepted
 date: 2026-05-18
 author: analyst
 links:
-  plan: ../../../ai-workflow/plans/2026-05-18-school-journal.md
+  plan: null
   adr: ../../../adr/0008-journal-context.md
 ---
 
@@ -162,5 +162,4 @@ This spec drives an Angular 21 frontend-only demo that exercises:
 
 ## Traceability
 
-- **Plan:** [`../../../ai-workflow/plans/2026-05-18-school-journal.md`](../../../ai-workflow/plans/2026-05-18-school-journal.md)
 - **ADR (role + class context):** [`../../../adr/0008-journal-context.md`](../../../adr/0008-journal-context.md)

@@ -7,7 +7,7 @@ deciders: [architect, frontend-developer]
 supersedes: null
 superseded-by: null
 links:
-  plan: ../ai-workflow/plans/2026-05-18-school-journal.md
+  plan: null
   spec: ../analytical/specs/school-journal/spec.md
 ---
 
@@ -76,4 +76,3 @@ signals make the resulting components `computed()` chains trivial.
 ## Links
 
 - Spec: [`../analytical/specs/school-journal/spec.md`](../analytical/specs/school-journal/spec.md)
-- Plan: [`../ai-workflow/plans/2026-05-18-school-journal.md`](../ai-workflow/plans/2026-05-18-school-journal.md)

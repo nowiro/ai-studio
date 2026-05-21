@@ -43,4 +43,4 @@ The simplest reference for the "pure logic lib + thin UI lib + Nx app" split in 
 
 ## Roadmap
 
-See [`2026-05-19-pong-game.md`](../../ai-workflow/plans/2026-05-19-pong-game.md) — tournament + leaderboard.
+See (historic, see git log) — tournament + leaderboard.

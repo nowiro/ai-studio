@@ -44,4 +44,4 @@ Public-facing brand homepage for the `ai-studio` showcase. Acts as the elevator 
 
 ## Roadmap
 
-See [`2026-05-19-nowiro.md`](../../ai-workflow/plans/2026-05-19-nowiro.md) — landing refresh + GA4 + analytics gate.
+See (historic, see git log) — landing refresh + GA4 + analytics gate.

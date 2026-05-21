@@ -30,5 +30,4 @@ Once `docs/analytical/specs/union-vault/spec.md` lands with AC-1..AC-N, this fil
 
 ## References
 
-- [`2026-05-19-union-vault.md`](../../ai-workflow/plans/2026-05-19-union-vault.md) — plan owning the spec phase
 - [`docs/programming/testing-strategy.md`](../../programming/testing-strategy.md) — repo-wide pyramid

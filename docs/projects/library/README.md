@@ -6,7 +6,7 @@ status: done
 date: 2026-05-18
 links:
   spec: ../../analytical/specs/library-app/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-library-app.md
+  plan: null
   adr: ../../adr/0007-library-roles.md
   app: ../../../apps/library
   port: 4206
@@ -30,12 +30,12 @@ links:
 
 ## Audience routing
 
-| You are…                      | Start here                                                                                                                                                               |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Product / analyst**         | [`business.md`](business.md)                                                                                                                                             |
-| **Frontend / DevOps**         | [`technical.md`](technical.md)                                                                                                                                           |
-| **Test engineer / QA**        | [`testing.md`](testing.md)                                                                                                                                               |
-| **Reviewer (SDD compliance)** | [`spec.md`](../../analytical/specs/library-app/spec.md) → [`plan.md`](../../ai-workflow/plans/2026-05-18-library-app.md) → [`ADR-0007`](../../adr/0007-library-roles.md) |
+| You are…                      | Start here                                                                                                          |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Product / analyst**         | [`business.md`](business.md)                                                                                        |
+| **Frontend / DevOps**         | [`technical.md`](technical.md)                                                                                      |
+| **Test engineer / QA**        | [`testing.md`](testing.md)                                                                                          |
+| **Reviewer (SDD compliance)** | [`spec.md`](../../analytical/specs/library-app/spec.md) → `plan.md` → [`ADR-0007`](../../adr/0007-library-roles.md) |
 
 ## Quickstart
 
@@ -101,7 +101,7 @@ Role-allow directive + role guard live in
 
 - [`spec.md`](../../analytical/specs/library-app/spec.md) — problem
   statement, personas, AC-1 … AC-11.
-- [`plan.md`](../../ai-workflow/plans/2026-05-18-library-app.md) — task
+- `plan.md` — task
   DAG (T001 … T015) + DoD.
 - [`ADR-0007`](../../adr/0007-library-roles.md) — role-routing
   strategy (`CanMatchFn` guard + structural directive; both read

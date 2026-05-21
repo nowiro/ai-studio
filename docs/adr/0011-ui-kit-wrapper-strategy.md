@@ -160,7 +160,6 @@ PR-sized bullets, mirroring Phase 2 of the consolidated roadmap.
 
 ## References
 
-- plan: docs/ai-workflow/plans/2026-05-18-portal-elements-keycloak.md
 - rules: .ai/rules/angular.md, .ai/rules/styling.md
 - upstream: <https://material.angular.io>
 - inspiration: <https://github.com/spartan-ng/ui>

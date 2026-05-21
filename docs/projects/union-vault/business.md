@@ -8,7 +8,7 @@ date: 2026-05-19
 
 # Union-vault — business documentation
 
-> **Status: under review.** Definitive content lands when the analyst spec at `docs/analytical/specs/union-vault/spec.md` is accepted (per [`2026-05-19-union-vault.md`](../../ai-workflow/plans/2026-05-19-union-vault.md) plan task T001).
+> **Status: under review.** Definitive content lands when the analyst spec at `docs/analytical/specs/union-vault/spec.md` is accepted (per (historic, see git log) plan task T001).
 
 ## Observed scope (from code review on 2026-05-19)
 

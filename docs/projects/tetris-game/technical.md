@@ -30,7 +30,7 @@ libs/
 ## game-tetris-ui
 
 - Canvas-based host (`ais-tetris-host`).
-- Keyboard handlers — about to be extracted to `InputController` per [next plan](../../ai-workflow/plans/2026-05-19-tetris-game.md).
+- Keyboard handlers — about to be extracted to `InputController` per next plan.
 - Next-queue + hold + score side-panel components.
 
 ## Build & serve
@@ -38,7 +38,7 @@ libs/
 ```bash
 pnpm start:tetris-game
 pnpm nx test game-tetris --coverage
-pnpm nx e2e tetris-game-e2e   # available after T001 of 2026-05-19-tetris-game.md
+pnpm nx e2e tetris-game-e2e   # available when project tests stabilise
 ```
 
 ## References

@@ -7,7 +7,7 @@ date: 2026-05-18
 audience: [frontend-developer, architect, devops]
 links:
   spec: ../../analytical/specs/library-app/spec.md
-  plan: ../../ai-workflow/plans/2026-05-18-library-app.md
+  plan: null
   adr: ../../adr/0007-library-roles.md
   hub: README.md
 ---

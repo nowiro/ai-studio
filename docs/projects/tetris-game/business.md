@@ -31,8 +31,8 @@ Second reference (after `pong-game`) for the "pure logic lib + thin UI lib + app
 
 ## KPIs
 
-| Metric                          | Target                                                                           |
-| ------------------------------- | -------------------------------------------------------------------------------- |
-| Frame budget on mid-tier laptop | < 8 ms                                                                           |
-| Logic-lib coverage              | ≥ 90%                                                                            |
-| Smoke E2E green                 | ✅ (delivered by [next plan](../../ai-workflow/plans/2026-05-19-tetris-game.md)) |
+| Metric                          | Target                      |
+| ------------------------------- | --------------------------- |
+| Frame budget on mid-tier laptop | < 8 ms                      |
+| Logic-lib coverage              | ≥ 90%                       |
+| Smoke E2E green                 | ✅ (delivered by next plan) |

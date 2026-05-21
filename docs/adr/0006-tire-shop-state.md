@@ -7,7 +7,7 @@ deciders: [architect, frontend-developer]
 supersedes: null
 superseded-by: null
 links:
-  plan: ../ai-workflow/plans/2026-05-18-tire-shop.md
+  plan: null
   spec: ../analytical/specs/tire-shop/spec.md
 ---
 
@@ -95,5 +95,4 @@ selected sort piped into a `filteredTires = computed(...)` signal.
 ## Links
 
 - Spec: [`../analytical/specs/tire-shop/spec.md`](../analytical/specs/tire-shop/spec.md)
-- Plan: [`../ai-workflow/plans/2026-05-18-tire-shop.md`](../ai-workflow/plans/2026-05-18-tire-shop.md)
 - Pattern reference: `apps/union-vault/src/app/services/country.service.ts`

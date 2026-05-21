@@ -180,7 +180,6 @@ PR-sized bullets, mirroring Phase 4 of the consolidated roadmap.
 
 ## References
 
-- plan: docs/ai-workflow/plans/2026-05-18-portal-elements-keycloak.md
 - placeholder: libs/shared-app-shell/src/keycloak-auth.ts
 - contract: libs/shared-app-shell/src/auth-context.ts
 - rules: .ai/rules/security.md

@@ -7,7 +7,7 @@ status: accepted
 date: 2026-05-18
 author: analyst
 links:
-  plan: ../../../ai-workflow/plans/2026-05-18-tire-shop.md
+  plan: null
   adr: ../../../adr/0006-tire-shop-state.md
 ---
 
@@ -188,5 +188,4 @@ Solving the catalogue UX once gives every future e-commerce demo a template.
 
 ## Traceability
 
-- **Plan:** [`../../../ai-workflow/plans/2026-05-18-tire-shop.md`](../../../ai-workflow/plans/2026-05-18-tire-shop.md)
 - **ADR (state):** [`../../../adr/0006-tire-shop-state.md`](../../../adr/0006-tire-shop-state.md)
