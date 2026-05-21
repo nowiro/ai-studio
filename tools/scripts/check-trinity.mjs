@@ -37,6 +37,7 @@ const BASELINE = [
   '.ai/architecture.md',
   'docs/ai-workflow/plans/_template.md',
   'tools/scripts/bootstrap.mjs',
+  'tools/scripts/llm-call.mjs',
 ];
 
 // Directories where every entry in `.ai/<dir>/` must also exist (same filename) in `.claude/<dir>/`.

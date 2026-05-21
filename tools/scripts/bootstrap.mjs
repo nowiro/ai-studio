@@ -22,10 +22,11 @@
  * `config.example.json`.
  *
  * Flags:
- *   --reinstall         force `pnpm install` even if node_modules exists
- *   --skip-install      do not run `pnpm install`
- *   --skip-trinity      do not run trinity:check
- *   --skip-config       do not seed user-profile config
+ *   --reinstall            force `pnpm install` even if node_modules exists
+ *   --skip-install         do not run `pnpm install`
+ *   --skip-trinity         do not run trinity:check
+ *   --skip-config          do not seed user-profile config
+ *   --skip-gh-extensions   do not install gh-models extension (Copilot backend for llm-call.mjs)
  *
  * @see SECURITY.md — "Token storage — user-profile config"
  * @see .ai/architecture.md
@@ -131,6 +132,34 @@ try {
   }
 } catch {
   // Best-effort — never block bootstrap on this check.
+}
+
+// ─── 2.5 gh CLI + gh-models extension (optional, for llm-call.mjs Copilot backend) ──
+step('Verify gh CLI + gh-models extension');
+if (ARGS.has('--skip-gh-extensions')) {
+  log(c.dim('skipped (--skip-gh-extensions)'));
+} else {
+  const ghCheck = shell('gh', ['--version'], { silent: true });
+  if (ghCheck.status !== 0) {
+    log(c.dim('gh CLI not on PATH — Copilot provider in llm-call.mjs will be unavailable.'));
+    log(c.dim('  Install: https://cli.github.com/ then re-run bootstrap.'));
+  } else {
+    const extList = shell('gh', ['extension', 'list'], { silent: true });
+    const extOut = extList.stdout?.toString() ?? '';
+    if (extList.status === 0 && /github\/gh-models/i.test(extOut)) {
+      log(c.ok('✓ gh CLI + github/gh-models extension present'));
+    } else {
+      log(c.dim('Installing github/gh-models extension…'));
+      const install = shell('gh', ['extension', 'install', 'github/gh-models'], { silent: true });
+      if (install.status === 0) {
+        log(c.ok('✓ github/gh-models extension installed'));
+      } else {
+        log(c.warn('⚠ failed to install github/gh-models — Copilot provider in llm-call.mjs unavailable.'));
+        log(c.dim('  Manual: gh extension install github/gh-models'));
+        record('warn', 'github/gh-models extension not installed');
+      }
+    }
+  }
 }
 
 // ─── 3. Install deps ────────────────────────────────────────────────────────

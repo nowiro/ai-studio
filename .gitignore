@@ -86,3 +86,7 @@ vitest.config.*.timestamp*
 # Python cache from tools/scripts/*.py (favicon generator etc.)
 __pycache__/
 *.pyc
+
+# llm-call.mjs runtime — per-call cache + audit log (local; never committed).
+# Fixtures (.fixtures/llm-calls/) ARE committed — they back CI mock mode.
+tools/scripts/.cache/

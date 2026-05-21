@@ -104,9 +104,10 @@ search_issues({ jql: '...', fields: ['key', 'summary', 'assignee'] });
 
 **Co MUSI być skryptem (nie promptem):**
 
-- Scaffold nowego repo z konwencji → `tools/scripts/scaffold-new-project.mjs` (kopiuje 11 plików trinity baseline, generuje `package.json` z kanonicznych skryptów, podpina lint stack).
-- Trinity sync check → `tools/scripts/check-trinity.mjs` (porównuje hash 11 plików baseline cross-repo).
-- Propagacja baseline edits → `tools/scripts/propagate-baseline.mjs` (kopiuje zmienione pliki baseline z canonical do pozostałych członków trinity, raportuje drift).
+- Scaffold nowego repo z konwencji → `tools/scripts/scaffold-new-project.mjs` (kopiuje 12 plików trinity baseline, generuje `package.json` z kanonicznych skryptów, podpina lint stack).
+- Trinity sync check → `tools/scripts/check-trinity.mjs` (porównuje hash 12 plików baseline cross-repo).
+- Propagacja baseline edits → `tools/scripts/propagate-baseline.mjs` (kopiuje zmienione pliki baseline z canonical do pozostałych członków trinity, raportuje drift; `--dry-run` / `--verify`).
+- Hybrydowy LLM call (orkiestracja deterministyczna + osąd) → `tools/scripts/llm-call.mjs` (12-ty trinity baseline; dual provider Claude/Copilot, structured output, cache + audit log, mock mode dla CI; default model Haiku 4.5).
 - Audyt linków md → `pnpm docs:linkcheck` (lychee + `lychee.toml`).
 - Lint dokumentacji → `pnpm docs:lint` (markdownlint).
 - Walidacja parytetu AI (`.ai/` vs `.github/copilot-*`) → `tools/scripts/validate-ai-config.mjs`.
