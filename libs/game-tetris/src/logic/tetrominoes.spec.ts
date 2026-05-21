@@ -48,4 +48,4 @@ describe('spawnPosition', () => {
 });
 
 // Use the type imports to keep them non-elided.
-type _Kind = TetrominoKind;
+export type _Kind = TetrominoKind;

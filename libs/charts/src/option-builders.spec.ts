@@ -57,7 +57,7 @@ describe('toLineOption', () => {
       xAxis: { type: 'category', labels: ['Jan', 'Feb', 'Mar'] },
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series).toHaveLength(1);
     expect(series[0]?.type).toBe('line');
     expect(series[0]?.name).toBe('Revenue');
@@ -72,7 +72,7 @@ describe('toLineOption', () => {
       xAxis: { type: 'category', labels: ['Mon', 'Tue', 'Wed'] },
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series[0]?.areaStyle).toBeDefined();
   });
 
@@ -82,7 +82,7 @@ describe('toLineOption', () => {
       xAxis: { type: 'category', labels: ['A', 'B'], name: 'Months' },
       theme: TEST_THEME,
     });
-    const xAxis = option.xAxis as AxisProbe;
+    const xAxis = option['xAxis'] as AxisProbe;
     expect(xAxis.type).toBe('category');
     expect(xAxis.data).toEqual(['A', 'B']);
     expect(xAxis.name).toBe('Months');
@@ -98,7 +98,7 @@ describe('toLineOption', () => {
       smooth: true,
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series.every((s) => s.smooth === true)).toBe(true);
   });
 
@@ -108,7 +108,7 @@ describe('toLineOption', () => {
       xAxis: { type: 'category', labels: ['a', 'b'] },
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series[0]?.itemStyle?.color).toBe('#abcdef');
   });
 });
@@ -122,11 +122,11 @@ describe('toBarOption', () => {
       categoryAxis: { type: 'category', labels: ['A', 'B', 'C'] },
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series[0]?.type).toBe('bar');
     expect(series[0]?.data).toEqual([100, 200, 300]);
-    expect((option.xAxis as AxisProbe).type).toBe('category');
-    expect((option.yAxis as AxisProbe).type).toBe('value');
+    expect((option['xAxis'] as AxisProbe).type).toBe('category');
+    expect((option['yAxis'] as AxisProbe).type).toBe('value');
   });
 
   it('swaps axes when orientation is horizontal (top-N style)', () => {
@@ -136,9 +136,9 @@ describe('toBarOption', () => {
       orientation: 'horizontal',
       theme: TEST_THEME,
     });
-    expect((option.xAxis as AxisProbe).type).toBe('value');
-    expect((option.yAxis as AxisProbe).type).toBe('category');
-    expect((option.yAxis as AxisProbe).data).toEqual(['Shirt', 'Hat', 'Mug']);
+    expect((option['xAxis'] as AxisProbe).type).toBe('value');
+    expect((option['yAxis'] as AxisProbe).type).toBe('category');
+    expect((option['yAxis'] as AxisProbe).data).toEqual(['Shirt', 'Hat', 'Mug']);
   });
 
   it('threads stack id through to every series', () => {
@@ -151,7 +151,7 @@ describe('toBarOption', () => {
       stack: 'totals',
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series.every((s) => s.stack === 'totals')).toBe(true);
   });
 
@@ -162,7 +162,7 @@ describe('toBarOption', () => {
       legend: { position: 'top' },
       theme: TEST_THEME,
     });
-    const legend = option.legend as LegendProbe;
+    const legend = option['legend'] as LegendProbe;
     expect(legend.top).toBe(0);
     expect(legend.bottom).toBeUndefined();
   });
@@ -179,7 +179,7 @@ describe('toPieOption', () => {
       ],
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series[0]?.type).toBe('pie');
     expect(series[0]?.data).toEqual([
       { id: 'a', name: 'Apples', value: 10 },
@@ -189,7 +189,7 @@ describe('toPieOption', () => {
 
   it('renders a donut (array radius) by default', () => {
     const option = toPieOption({ slices: [{ id: 'a', label: 'A', value: 1 }], theme: TEST_THEME });
-    const series = option.series as readonly { radius?: unknown }[];
+    const series = option['series'] as readonly { radius?: unknown }[];
     expect(Array.isArray(series[0]?.radius)).toBe(true);
   });
 
@@ -199,7 +199,7 @@ describe('toPieOption', () => {
       variant: 'pie',
       theme: TEST_THEME,
     });
-    const series = option.series as readonly { radius?: unknown }[];
+    const series = option['series'] as readonly { radius?: unknown }[];
     expect(typeof series[0]?.radius).toBe('string');
   });
 
@@ -209,7 +209,7 @@ describe('toPieOption', () => {
       legend: { position: 'left' },
       theme: TEST_THEME,
     });
-    const legend = option.legend as LegendProbe;
+    const legend = option['legend'] as LegendProbe;
     expect(legend.orient).toBe('vertical');
     expect(legend.left).toBe(0);
   });
@@ -220,7 +220,7 @@ describe('toPieOption', () => {
 describe('toGaugeOption', () => {
   it('renders a single gauge series with the supplied value, label, min and max', () => {
     const option = toGaugeOption({ value: 42, label: 'SLA', min: 0, max: 100, theme: TEST_THEME });
-    const series = option.series as readonly (SeriesProbe & {
+    const series = option['series'] as readonly (SeriesProbe & {
       min?: number;
       max?: number;
       data?: readonly { value: number; name: string }[];
@@ -233,13 +233,13 @@ describe('toGaugeOption', () => {
 
   it('formats the displayed value as `${rounded}${unit}` (defaults to "%")', () => {
     const option = toGaugeOption({ value: 73.6, theme: TEST_THEME });
-    const detail = (option.series as readonly { detail?: { formatter?: (v: number) => string } }[])[0]?.detail;
+    const detail = (option['series'] as readonly { detail?: { formatter?: (v: number) => string } }[])[0]?.detail;
     expect(detail?.formatter?.(73.6)).toBe('74%');
   });
 
   it('honours an explicit unit override (e.g. "GB", "k")', () => {
     const option = toGaugeOption({ value: 12, unit: 'GB', theme: TEST_THEME });
-    const detail = (option.series as readonly { detail?: { formatter?: (v: number) => string } }[])[0]?.detail;
+    const detail = (option['series'] as readonly { detail?: { formatter?: (v: number) => string } }[])[0]?.detail;
     expect(detail?.formatter?.(12)).toBe('12GB');
   });
 });
@@ -257,7 +257,7 @@ describe('toHeatmapOption', () => {
       ],
       theme: TEST_THEME,
     });
-    const series = option.series as readonly SeriesProbe[];
+    const series = option['series'] as readonly SeriesProbe[];
     expect(series[0]?.type).toBe('heatmap');
     expect(series[0]?.data).toEqual([
       [0, 0, 1],
@@ -272,8 +272,8 @@ describe('toHeatmapOption', () => {
       cells: [],
       theme: TEST_THEME,
     });
-    expect((option.xAxis as AxisProbe).data).toEqual(['C1', 'C2', 'C3']);
-    expect((option.yAxis as AxisProbe).data).toEqual(['R1', 'R2']);
+    expect((option['xAxis'] as AxisProbe).data).toEqual(['C1', 'C2', 'C3']);
+    expect((option['yAxis'] as AxisProbe).data).toEqual(['R1', 'R2']);
   });
 
   it('configures visualMap with the supplied min/max bounds', () => {
@@ -285,7 +285,7 @@ describe('toHeatmapOption', () => {
       max: 95,
       theme: TEST_THEME,
     });
-    const visualMap = option.visualMap as { min?: number; max?: number };
+    const visualMap = option['visualMap'] as { min?: number; max?: number };
     expect(visualMap.min).toBe(5);
     expect(visualMap.max).toBe(95);
   });
@@ -298,7 +298,7 @@ describe('toHeatmapOption', () => {
       unit: ' orders',
       theme: TEST_THEME,
     });
-    const formatter = (option.tooltip as { formatter?: (p: unknown) => string }).formatter;
+    const formatter = (option['tooltip'] as { formatter?: (p: unknown) => string }).formatter;
     expect(formatter?.({ value: [0, 0, 17] })).toBe('Mon × 9h: 17 orders');
   });
 });
