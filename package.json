@@ -51,6 +51,7 @@
     "release": "nx release",
     "ai:context": "node tools/scripts/build-ai-context.mjs",
     "ai:validate": "node tools/scripts/validate-ai-config.mjs",
+    "a11y:check": "node tools/scripts/a11y-check.mjs",
     "scaffold:wrapper": "node tools/scripts/scaffold-wrapper.mjs",
     "docs:scan": "node tools/scripts/scan-docs.mjs",
     "docs:api": "node tools/scripts/scan-public-api.mjs",

@@ -496,7 +496,11 @@ Trailing-icon CTAs use `iconPositionEnd`:
 </button>
 ```
 
-## 13. Empty / loading states
+## 13. Empty / loading / error states
+
+Full pattern catalog per `.ai/rules/styling.md §13-§15`. Below — Material 3 recipes.
+
+### 13.1 Empty state (user has no data yet)
 
 Show a dashed, soft container when a list is genuinely empty (not "the user hasn't loaded yet"):
 
@@ -519,6 +523,147 @@ Show a dashed, soft container when a list is genuinely empty (not "the user hasn
   border-radius: var(--mat-sys-corner-medium);
   color: var(--mat-sys-on-surface-variant);
 }
+```
+
+**Full empty state with CTA** (preferred for primary surfaces):
+
+```html
+<div class="empty-state">
+  <mat-icon class="empty-state__icon">inbox</mat-icon>
+  <h2 class="empty-state__heading">Brak zamówień</h2>
+  <p class="empty-state__body">Twoje zamówienia pojawią się tutaj. Zacznij od pierwszego zakupu.</p>
+  <button
+    mat-flat-button
+    color="primary"
+    routerLink="/shop"
+  >
+    Przeglądaj sklep
+  </button>
+</div>
+```
+
+```scss
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+
+  &__icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+  }
+
+  &__heading {
+    margin: 0;
+    font: var(--mat-sys-title-medium);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &__body {
+    margin: 0;
+    max-width: 28rem;
+    font: var(--mat-sys-body-medium);
+  }
+}
+```
+
+### 13.2 Loading state (skeleton via `@defer`)
+
+Use Angular 21 `@defer` to gate render on data + show skeleton placeholder:
+
+```html
+@defer (when data() !== undefined) {
+<ais-data-table [rows]="data()" />
+} @placeholder {
+<ais-skeleton-table [rows]="5" />
+} @loading (after 200ms; minimum 300ms) {
+<mat-progress-bar mode="indeterminate" />
+}
+```
+
+`@loading (after 200ms; minimum 300ms)` reguły:
+
+- `after 200ms` — nie pokazuj loading bar dla bardzo szybkich operacji (instant felt native).
+- `minimum 300ms` — gdy zacznie się pokazywać, MUSI być widoczny ≥ 300ms (zapobiega flicker).
+
+Skeleton itself: Tailwind `animate-pulse` na `bg-surface-container` divach naśladujących final layout (np. `<div class="h-4 w-32 animate-pulse rounded bg-surface-container"></div>` per row).
+
+### 13.3 Error state z recovery
+
+```html
+@if (error()) {
+<mat-card class="error-card">
+  <mat-card-header>
+    <mat-icon
+      class="error-card__icon"
+      matCardAvatar
+    >
+      error
+    </mat-icon>
+    <mat-card-title>{{ error().heading }}</mat-card-title>
+    <mat-card-subtitle>ID błędu: {{ error().correlationId }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>{{ error().body }}</mat-card-content>
+  <mat-card-actions>
+    <button
+      (click)="retry()"
+      mat-button
+    >
+      Spróbuj ponownie
+    </button>
+    <button
+      (click)="reportIssue()"
+      mat-button
+    >
+      Zgłoś błąd
+    </button>
+  </mat-card-actions>
+</mat-card>
+}
+```
+
+```scss
+.error-card {
+  border-left: 4px solid var(--mat-sys-error);
+
+  &__icon {
+    color: var(--mat-sys-error);
+  }
+}
+```
+
+**Reguła:** dla transient errors (network blip, 5xx) — `<mat-snack-bar>` z "Spróbuj ponownie" action zamiast persistent error card. Dla form validation — inline `mat-error` per field (sekcja 11).
+
+### 13.4 Async data shape contract
+
+Czytelny stan w komponencie:
+
+```ts
+readonly state = signal<'loading' | 'ready' | 'empty' | 'error'>('loading');
+readonly data = signal<Item[] | undefined>(undefined);
+readonly error = signal<{ heading: string; body: string; correlationId: string } | null>(null);
+```
+
+Template branchuje na `state()` — żadnych implicit `data() == null` checks rozsianych po template'cie.
+
+```html
+@switch (state()) { @case ('loading') {
+<ais-skeleton-list />
+} @case ('ready') {
+<ais-list [items]="data()!" />
+} @case ('empty') {
+<ais-empty-state />
+} @case ('error') {
+<ais-error-state
+  [error]="error()!"
+  (retry)="retry()"
+/>
+} }
 ```
 
 ## 14. Summary / read-only views

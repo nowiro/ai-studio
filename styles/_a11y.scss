@@ -1,0 +1,172 @@
+// styles/_a11y.scss — shared accessibility utility partial.
+// Importowane przez global stylesheets per app (lub via styles/tailwind.scss).
+//
+// Pokrycie:
+//   - .sr-only         visually-hidden ale screen-reader visible (WCAG)
+//   - .skip-link       skip-to-main-content (keyboard first action)
+//   - :focus-visible   global keyboard focus ring (M3 tokens)
+//   - prefers-reduced-motion   disable animations dla users z motion sensitivity
+//   - prefers-contrast: more   stronger borders/outlines dla low vision
+//   - forced-colors (Windows High Contrast)  fallbacks
+//
+// @see .claude/skills/accessibility-a11y/SKILL.md
+// @see .ai/rules/styling.md §8 Accessibility
+
+// ── 1. Screen-reader only content ───────────────────────────────────────────
+// Use case: skip-link target, icon button hidden label, visually-hidden form
+// instructions. Element znika wizualnie ale jest accessible.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// `.sr-only-focusable` becomes visible when focused (np. skip-link)
+.sr-only-focusable:focus,
+.sr-only-focusable:focus-visible {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+// ── 2. Skip-to-content link ─────────────────────────────────────────────────
+// Pierwszy element w <body>. Niewidoczny dopóki user nie naciśnie Tab.
+// Pozwala keyboard / screen-reader users pominąć long nav i skoczyć do content.
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--mat-sys-primary, #1565c0);
+  color: var(--mat-sys-on-primary, #fff);
+  text-decoration: none;
+  font: var(--mat-sys-label-large, 600 14px/20px system-ui);
+  border-radius: 0 0 var(--mat-sys-corner-medium, 8px) 0;
+  transition: top 150ms ease-out;
+
+  &:focus,
+  &:focus-visible {
+    top: 0;
+    outline: 2px solid var(--mat-sys-primary, #1565c0);
+    outline-offset: 2px;
+  }
+}
+
+// ── 3. Global :focus-visible ring ───────────────────────────────────────────
+// Material components shipują własny focus indicator. Ten reguła jest dla
+// custom interactive elements (anchors, buttons w shop cards, custom widgets).
+// Override przez `outline-none focus-visible:ring-X` Tailwind utilities w opt-in cases.
+:focus-visible {
+  outline: 2px solid var(--mat-sys-primary, #1565c0);
+  outline-offset: 2px;
+  border-radius: var(--mat-sys-corner-extra-small, 4px);
+}
+
+// Buttons / Material handles own focus — don't double-ring:
+button:focus-visible,
+a:focus-visible,
+[role='button']:focus-visible,
+.mat-mdc-button-base:focus-visible,
+.mat-mdc-icon-button:focus-visible {
+  // Material 3 mat-button ma własny state layer — outline-offset uniknięcie overlap
+  outline-offset: 3px;
+}
+
+// ── 4. Reduced motion (vestibular disorders, attention focus) ──────────────
+// User w System Settings: "Reduce motion" → wyłączamy non-essential animations.
+// Material 3 sam respektuje tę preferencję dla swoich ripples; tutaj catch all
+// custom animations.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  // Tailwind animate-* utilities (np. animate-pulse w skeletonach)
+  .animate-spin,
+  .animate-ping,
+  .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  }
+}
+
+// ── 5. Increased contrast (low vision) ──────────────────────────────────────
+// User w System Settings: "Increase contrast" → wzmacniamy borders, outlines.
+@media (prefers-contrast: more) {
+  :focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+
+  // Borders w cards / form-fields stają się bardziej wyraźne
+  .mat-mdc-card,
+  .mat-mdc-form-field,
+  .mat-mdc-list-item {
+    border: 1px solid var(--mat-sys-outline, currentColor);
+  }
+
+  // Active state stronger background
+  [aria-current='page'],
+  .active {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+}
+
+// ── 6. Forced colors (Windows High Contrast Mode) ───────────────────────────
+// Edge / Chrome respect Windows system colors w High Contrast Mode.
+// Most styles stają się neutralized; tutaj override żeby zachować usability.
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+
+  .mat-mdc-button-base,
+  .mat-mdc-icon-button {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+  }
+
+  // Disabled elements stają się invisible bez explicit color
+  [disabled],
+  .mat-mdc-button-disabled {
+    color: GrayText !important;
+  }
+
+  // Active route / current tab
+  [aria-current='page'] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+// ── 7. Touch target minimum (mobile a11y) ──────────────────────────────────
+// WCAG 2.5.5: interactive target ≥ 44×44 CSS pixels. Material `mat-icon-button`
+// ma 40px default; bumpaujemy do 44px dla pure-touch contexts.
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a[role='button'],
+  [role='button'],
+  input[type='button'],
+  input[type='submit'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

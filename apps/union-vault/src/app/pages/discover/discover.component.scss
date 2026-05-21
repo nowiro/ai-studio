@@ -160,9 +160,11 @@
     font: inherit;
     outline: none;
 
-    &:focus {
+    &:focus-visible {
       border-color: #1565c0;
       box-shadow: 0 0 0 4px rgb(21 101 192 / 0.12);
+      outline: 2px solid transparent; // a11y: keyboard-only focus ring via box-shadow above
+      outline-offset: 2px;
     }
   }
 }

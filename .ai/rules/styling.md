@@ -257,3 +257,218 @@ pnpm scaffold:wrapper --name=dialog --kind=ui --wraps=mat-dialog
 ```
 
 Generuje: `libs/ui-kit/src/dialog/{dialog.component.ts,dialog.component.spec.ts,index.ts}` + dopisanie do `libs/ui-kit/src/index.ts` exports + linka w tej tabeli. Patrz `tools/scripts/scaffold-wrapper.mjs`.
+
+## 13. Loading states (async data)
+
+Każda powierzchnia która czeka na async data MUSI mieć loading state. Brak loading state = empty screen flash + perceived broken.
+
+**Wzorce:**
+
+- **Skeleton (preferowany)** — placeholder mimicking final layout, Tailwind `animate-pulse` na `bg-surface-container` tła. Pokazuje "co się załaduje".
+- **Progress indicator** — `<mat-progress-bar mode="indeterminate">` na top of card / route dla short waits (< 1s).
+- **Spinner z label** — `<mat-spinner [diameter]="24">` + text "Ładuję..." dla actions (button click).
+
+**Reguła:** loading > 200ms → skeleton. Loading < 200ms → bez state (instant feels native). Loading > 5s → text "Trwa dłużej niż zwykle..." + retry option.
+
+```html
+@defer (when data() !== undefined) {
+<ais-data-table [rows]="data()" />
+} @placeholder {
+<ais-skeleton-table [rows]="5" />
+} @loading (after 200ms; minimum 300ms) {
+<mat-progress-bar mode="indeterminate" />
+}
+```
+
+`@defer` placeholder + minimum animation duration eliminuje flicker przy szybkich loadach.
+
+## 14. Empty states
+
+Empty != error. Empty to "intentionally no data" (np. user nie ma jeszcze rekordów). Dobry empty state ma 4 elementy:
+
+1. **Visual cue** — Material icon `mat-icon` lub illustration. Centred, `text-on-surface-variant` color.
+2. **Heading** — `var(--mat-sys-title-medium)` — "Brak zamówień" / "Nic jeszcze nie dodałeś".
+3. **Body** — `var(--mat-sys-body-medium)` — 1-2 zdania _dlaczego_ + co user może zrobić.
+4. **CTA** — `<button mat-flat-button>` z konkretną akcją ("Dodaj pierwsze zamówienie").
+
+**Anti-pattern:** "No data." na środku ekranu bez CTA. User staje, nie wie co dalej.
+
+```html
+<div class="gap-4 p-8 flex flex-col items-center justify-center text-center">
+  <mat-icon
+    class="text-on-surface-variant"
+    style="font-size: 64px; width: 64px; height: 64px;"
+  >
+    inbox
+  </mat-icon>
+  <h2
+    class="m-0"
+    style="font: var(--mat-sys-title-medium)"
+  >
+    Brak zamówień
+  </h2>
+  <p
+    class="m-0 max-w-md text-on-surface-variant"
+    style="font: var(--mat-sys-body-medium)"
+  >
+    Twoje zamówienia pojawią się tutaj. Zacznij od pierwszego zakupu.
+  </p>
+  <button
+    mat-flat-button
+    color="primary"
+    routerLink="/shop"
+  >
+    Przeglądaj sklep
+  </button>
+</div>
+```
+
+## 15. Error states + recovery
+
+Każdy error MUSI dać user'owi recovery path. Nie wystarczy "Coś poszło nie tak."
+
+**Klasyfikacja błędów:**
+
+| Typ                               | UI                                            | Recovery                      |
+| --------------------------------- | --------------------------------------------- | ----------------------------- |
+| **Transient** (network blip, 5xx) | `<mat-snack-bar>` z "Spróbuj ponownie" action | Retry button                  |
+| **Permission denied** (403)       | Inline error card                             | Link do login / contact admin |
+| **Not found** (404)               | Page-level empty-state-ish                    | "Wróć do listy" + search      |
+| **Validation** (form 400)         | Inline `mat-error` per field                  | Auto-focus pierwszego invalid |
+| **Unexpected** (uncaught)         | Error boundary card                           | "Reload" + "Zgłoś błąd"       |
+
+**Anti-pattern:** Alert popup z stack trace. Nigdy.
+
+```html
+@if (error()) {
+<mat-card class="border-l-4 border-l-error">
+  <mat-card-header>
+    <mat-icon
+      class="text-error"
+      matCardAvatar
+    >
+      error
+    </mat-icon>
+    <mat-card-title>{{ error().heading }}</mat-card-title>
+    <mat-card-subtitle>{{ error().correlationId }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>{{ error().body }}</mat-card-content>
+  <mat-card-actions>
+    <button
+      (click)="retry()"
+      mat-button
+    >
+      Spróbuj ponownie
+    </button>
+    <button
+      (click)="reportIssue()"
+      mat-button
+    >
+      Zgłoś błąd
+    </button>
+  </mat-card-actions>
+</mat-card>
+}
+```
+
+**Correlation id** — zawsze wyświetlaj dla unexpected errors. User w bug report dostaje go z UI, dev może znaleźć w logach.
+
+## 16. Responsive breakpoints
+
+Tailwind v4 defaulty są spójne z Material 3 windowSizeClass. Mobile-first — base styles dla mobile, override w `sm:` / `md:` / `lg:` / `xl:`.
+
+| Breakpoint | Tailwind | Min width | Material window | Use case                         |
+| ---------- | -------- | --------- | --------------- | -------------------------------- |
+| Mobile     | (base)   | 0         | compact         | Phone portrait                   |
+| Small      | `sm:`    | 640px     | compact         | Phone landscape                  |
+| Medium     | `md:`    | 768px     | medium          | Tablet portrait                  |
+| Large      | `lg:`    | 1024px    | expanded        | Tablet landscape / small desktop |
+| Extra      | `xl:`    | 1280px    | expanded        | Desktop                          |
+| 2XL        | `2xl:`   | 1536px    | extra-large     | Wide desktop                     |
+
+**Reguły:**
+
+- Touch targets ≥ 44×44px na mobile (Material `mat-icon-button` ma to wbudowane).
+- Single-column layout na mobile, grid `md:grid-cols-2 lg:grid-cols-3` na większych.
+- Sidebar `hidden md:block` (drawer na mobile, persistent na desktop).
+- Sticky CTA na mobile bottom (`sticky bottom-0`), inline desktop.
+- Hide non-essential cols w tabelach: `hidden sm:table-cell`.
+
+```html
+<div class="gap-4 md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1">
+  @for (item of items(); track item.id) {
+  <ais-card>{{ item.title }}</ais-card>
+  }
+</div>
+```
+
+**Safe areas mobile** — gdy app shipuje jako PWA na iOS, dodać do app shell:
+
+```scss
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+```
+
+## 17. Navigation patterns
+
+**App shell** (default per app):
+
+- `<mat-toolbar>` top — brand + global actions (logout, profile, theme toggle).
+- `<mat-sidenav-container>` middle — sidenav na desktop, drawer na mobile.
+- `<router-outlet>` w `<mat-sidenav-content>`.
+- Optional `<mat-toolbar role="contentinfo">` bottom — credits / version.
+
+**Sidenav responsive:**
+
+```html
+<mat-sidenav-container class="h-screen">
+  <mat-sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="!isMobile()"
+    role="navigation"
+    aria-label="Główna nawigacja"
+  >
+    <mat-nav-list>
+      @for (item of navItems(); track item.path) {
+      <a
+        [routerLink]="item.path"
+        [routerLinkActiveOptions]="{exact: item.exact ?? false}"
+        mat-list-item
+        routerLinkActive="bg-primary-container"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>
+```
+
+**Active route highlight:** `routerLinkActive` z `bg-primary-container` (Material token).
+
+**Breadcrumbs** (gdy depth ≥ 2 lub user wchodzi z deep link):
+
+- ARIA `nav[aria-label="Breadcrumb"]` wokół `<ol>`.
+- Separator `›` jako CSS `::after`, nie content (śmieć dla screen readers).
+- Ostatni element `aria-current="page"` + bez linka.
+
+**Mobile drawer trigger:**
+
+```html
+<button
+  (click)="sidenav.toggle()"
+  class="md:hidden"
+  mat-icon-button
+  aria-label="Otwórz menu"
+>
+  <mat-icon>menu</mat-icon>
+</button>
+```
+
+`md:hidden` chowa trigger gdy sidenav jest `mode="side"` (desktop).

@@ -23,6 +23,10 @@
 
 @use 'tailwindcss';
 
+/* Accessibility utility classes (sr-only, skip-link, focus-visible,
+ * reduced-motion, forced-colors, touch-target). See styles/_a11y.scss. */
+@use 'a11y';
+
 /* Tell Tailwind v4 where to scan for utility classes in the monorepo.
  * Paths are relative to this file (workspace root/styles/). */
 @source '../apps/**/*.{ts,html}';
