@@ -5,7 +5,7 @@ type: rules
 scope: trinity
 priority: 2
 version: 1.0.0
-last-updated: 2026-05-09
+last-updated: 2026-05-20
 trinity-baseline: true
 ---
 
@@ -91,6 +91,40 @@ search_issues({ jql: '...', fields: ['key', 'summary', 'assignee'] });
 
 `truncate(text, maxTokens, '\n…[truncated]')` zawsze zwraca string mieszczący się w budżecie. Nigdy nie odrzucaj odpowiedzi — degraduj.
 
+### 10. Deterministyczne skrypty dla powtarzalnych operacji
+
+**Zasada:** powtarzalne, dobrze zdefiniowane operacje (code review, scaffold nowej aplikacji, propagacja konwencji, audyt linków, regen API docs) wykonuj **skryptem TypeScript / Node** o stałej kolejności kroków — nie ad-hoc promptem do LLM.
+
+**Dlaczego:**
+
+- **Powtarzalność:** ten sam input → ta sama odpowiedź (LLM nie). Krytyczne dla CI gates.
+- **Oszczędność tokenów:** skrypt nie zużywa tokenów na re-derivację procedury z natural language. Tokeny zostają na faktyczną pracę (analiza kodu, podejmowanie decyzji), nie na orkiestrację.
+- **Audytowalność:** logika jest w pliku w repo, code review widzi diff. Prompt w sesji znika.
+- **Composability:** skrypt można zawołać z hooka pre-push, CI workflow, czy slash command. LLM-prompt nie.
+
+**Co MUSI być skryptem (nie promptem):**
+
+- Scaffold nowego repo z konwencji → `tools/scripts/scaffold-new-project.mjs` (kopiuje 11 plików trinity baseline, generuje `package.json` z kanonicznych skryptów, podpina lint stack).
+- Trinity sync check → `tools/scripts/check-trinity.mjs` (porównuje hash 11 plików baseline cross-repo).
+- Propagacja baseline edits → `tools/scripts/propagate-baseline.mjs` (kopiuje zmienione pliki baseline z canonical do pozostałych członków trinity, raportuje drift).
+- Audyt linków md → `pnpm docs:linkcheck` (lychee + `lychee.toml`).
+- Lint dokumentacji → `pnpm docs:lint` (markdownlint).
+- Walidacja parytetu AI (`.ai/` vs `.github/copilot-*`) → `tools/scripts/validate-ai-config.mjs`.
+- Generacja API reference (MCP repo) → `pnpm docs:api` (typedoc).
+- Generacja tool docs z metadanych → `tools/scripts/gen-tools-docs.mjs`.
+
+**Co MOŻE pozostać promptem do LLM:**
+
+- Code review wymagający osądu domeny (nazewnictwo, semantyka, decyzje architektoniczne).
+- Spec-driven workflow (analyst → architect → engineer hand-offs gdzie kontekst per krok jest unique).
+- One-shot eksploracja kodu i odkrywanie wzorców.
+
+**Wzorzec ekstrakcji:** gdy ten sam prompt-template wykonujesz po raz drugi w tygodniu, wyekstraktuj jego deterministyczne kroki do skryptu, a LLM zostawiaj tylko do tych części, gdzie naprawdę potrzeba osądu. Skrypt może wywołać LLM dla konkretnego pod-problemu (np. `Anthropic SDK` call z `cache_control: ephemeral`), ale orchestrate'uje deterministycznie.
+
+**Anti-pattern:** `claude.md` ze 200-linijkową procedurą "jak zrobić release" — to skrypt, nie prompt. Każde uruchomienie marnuje tysiące tokenów na ponowne czytanie procedury.
+
+**Pattern:** `pnpm release` (skrypt) + jedno-zdaniowy `claude.md` "Release runbook: `pnpm release`. Jeśli wymaga decyzji, zapytaj. Logi w `tools/scripts/release.mjs`."
+
 ## Domyślne budżety per klasa zadania
 
 | Klasa                          | Budżet (tokens) | Uzasadnienie                                          |
@@ -141,6 +175,6 @@ Dashboard agreguje `tokens_estimate` per tool per dzień. Cel: średni < budżet
 
 - [`.ai/architecture.md`](../architecture.md) §6 — decision guide (kiedy co)
 - [`.ai/rules/production-readiness.md`](production-readiness.md) §3 (Monitoring) i §4 (Cost control)
-- [`.ai/rules/connectors.md`](connectors.md) — kontrakt connectora używającego ekstrakcji
 - [`.ai/rules/language.md`](language.md) — dlaczego MCP `description` po angielsku
-- `docs/architecture/extraction-strategy.md` (w `ai-mcp-alm`) — pipeline w praktyce
+- `.ai/rules/connectors.md` — kontrakt connectora używającego ekstrakcji (tylko w repo MCP multi-connector)
+- `docs/architecture/extraction-strategy.md` — pipeline w praktyce (tylko w repo MCP)

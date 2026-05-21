@@ -13,7 +13,7 @@ description: |
 
 # Reactive forms patterns (AI Studio)
 
-> Template-driven forms are forbidden ([`.ai/rules/angular.md`](../../.ai/rules/angular.md) §1).
+> Template-driven forms are forbidden ([`.ai/rules/angular.md`](../../../.ai/rules/angular.md) §1).
 > Every form in the workspace is a `FormGroup`. Reach for this skill when the form has more
 > than two fields, when you need a wizard, when a field is conditional, or when validators
 > aren't surfacing errors.
@@ -305,7 +305,7 @@ Wire into `<mat-form-field>`:
 ```
 
 See [`angular-material-design`](../angular-material-design/SKILL.md) §4 for the four
-form-field rules (always `subscriptSizing="dynamic"`, etc.) and [`.ai/rules/styling.md`](../../.ai/rules/styling.md).
+form-field rules (always `subscriptSizing="dynamic"`, etc.) and [`.ai/rules/styling.md`](../../../.ai/rules/styling.md).
 
 ## 10. RODO consents — explicit, granular, recorded
 

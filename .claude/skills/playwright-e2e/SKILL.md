@@ -13,7 +13,7 @@ description: |
 
 > Reach for this skill whenever a user flow needs an end-to-end test. Unit tests live in
 > Vitest ([`angular-testing`](../angular-testing/SKILL.md)); golden-path browser flows live
-> here. Aim for ~5 % of total tests at E2E level — see [`.ai/rules/testing.md`](../../.ai/rules/testing.md) §1
+> here. Aim for ~5 % of total tests at E2E level — see [`.ai/rules/testing.md`](../../../.ai/rules/testing.md) §1
 > for the pyramid.
 >
 > Stack: `@playwright/test@^1.60`, chromium/firefox/webkit + mobile profiles, `axe-core/playwright`
@@ -43,7 +43,7 @@ Fixtures (auth state, network) live in `src/fixtures/`.
 
 ## 2. Selector priority — `getByRole` first
 
-[`.ai/rules/testing.md`](../../.ai/rules/testing.md) §4 dictates the order:
+[`.ai/rules/testing.md`](../../../.ai/rules/testing.md) §4 dictates the order:
 
 1. `page.getByRole(...)` — preferred (exercises accessibility tree).
 2. `page.getByLabel(...)` — for form inputs where roles are ambiguous.
@@ -60,7 +60,7 @@ const banner = page.getByTestId('error-banner');
 const submit = page.locator('.btn-primary.large');
 ```
 
-`data-testid` MUST be on every interactive element ([`.ai/rules/angular.md`](../../.ai/rules/angular.md) §3).
+`data-testid` MUST be on every interactive element ([`.ai/rules/angular.md`](../../../.ai/rules/angular.md) §3).
 Use kebab-case: `data-testid="step-next"`, not `step_next` / `StepNext`.
 
 ## 3. Page-object pattern
@@ -213,7 +213,7 @@ test('catalogue has no a11y violations', async ({ page }) => {
 });
 ```
 
-CI fails on new `serious` / `critical` violations ([`.ai/rules/testing.md`](../../.ai/rules/testing.md) §7).
+CI fails on new `serious` / `critical` violations ([`.ai/rules/testing.md`](../../../.ai/rules/testing.md) §7).
 Cross-link with [`accessibility-a11y`](../accessibility-a11y/SKILL.md) for component-level rules.
 
 ## 9. Cross-browser & mobile

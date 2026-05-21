@@ -2,16 +2,19 @@
 
 /**
  * check-trinity.mjs — verify the "trinity baseline" is byte-identical across
- * `ai-studio`, `ai-mcp-alm`, and `ai-mcp-devtools`.
+ * `ai-studio`, `ai-mcp-alm`, `ai-mcp-devtools`, and `ai-workspace`.
  *
- * The canonical source is `ai-studio` (this repo). The script:
+ * The canonical source is `ai-studio`. The script:
  *   1. Hashes each baseline file in this repo.
- *   2. Looks for sibling repos at `../ai-mcp-alm` and `../ai-mcp-devtools`.
+ *   2. Looks for sibling repos at `../<name>`.
  *   3. For each found sibling, hashes the same files and compares.
  *   4. Exits 0 if all hashes match (or siblings absent — no false fails on solo dev),
  *      1 if any sibling has drift.
  *
- * Run from any of the three repos. The other two are detected as `../<sibling>`.
+ * Run from any of the four repos. The other three are detected as `../<sibling>`.
+ *
+ * NOTE: ai-workspace is a meta-repo AND trinity member. Its `.ai/rules/docs.md`
+ * documents the role; `.claude/agents/` is exempt (meta-repo, no active runs).
  */
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
@@ -37,7 +40,7 @@ const BASELINE = [
 ];
 
 // Directories where every entry in `.ai/<dir>/` must also exist (same filename) in `.claude/<dir>/`.
-// Names listed are the trinity-wide expectation for agent parity across Claude Code + Copilot wrappers.
+// ai-workspace is exempt — no .claude/ mirror (meta-repo, conventions only).
 const CLAUDE_MIRROR_DIRS = ['agents'];
 
 // Sibling repo names — the trinity (now 4 with ai-workspace), minus self.
@@ -50,7 +53,6 @@ async function hash(filePath) {
 }
 
 function selfRepoName() {
-  // Best-effort: take the last segment of the cwd as the repo name.
   return ROOT.split(/[/\\]/).filter(Boolean).pop();
 }
 
@@ -92,29 +94,31 @@ async function main() {
   }
 
   // Verify .ai/<dir>/*.md ≡ .claude/<dir>/*.md parity inside THIS repo.
-  // Mirror is required so Claude Code's Agent({subagent_type: ...}) and Copilot wrappers share the same roster.
+  // ai-workspace is exempt — meta-repo, no .claude/ mirror.
   let mirrorDrift = false;
-  for (const dir of CLAUDE_MIRROR_DIRS) {
-    const aiDir = resolve(ROOT, '.ai', dir);
-    const claudeDir = resolve(ROOT, '.claude', dir);
-    if (!existsSync(aiDir)) continue;
-    const aiNames = (await readdir(aiDir)).filter((f) => f.endsWith('.md')).sort();
-    if (!existsSync(claudeDir)) {
-      console.error(`✗ ${self}: .claude/${dir}/ missing — expected mirror of .ai/${dir}/`);
-      mirrorDrift = true;
-      continue;
-    }
-    const claudeNames = (await readdir(claudeDir)).filter((f) => f.endsWith('.md')).sort();
-    for (const name of aiNames) {
-      if (!claudeNames.includes(name)) {
-        console.error(`✗ ${self}: .claude/${dir}/${name} missing (present in .ai/${dir}/)`);
+  if (self !== 'ai-workspace') {
+    for (const dir of CLAUDE_MIRROR_DIRS) {
+      const aiDir = resolve(ROOT, '.ai', dir);
+      const claudeDir = resolve(ROOT, '.claude', dir);
+      if (!existsSync(aiDir)) continue;
+      const aiNames = (await readdir(aiDir)).filter((f) => f.endsWith('.md')).sort();
+      if (!existsSync(claudeDir)) {
+        console.error(`✗ ${self}: .claude/${dir}/ missing — expected mirror of .ai/${dir}/`);
         mirrorDrift = true;
+        continue;
       }
-    }
-    for (const name of claudeNames) {
-      if (!aiNames.includes(name)) {
-        console.error(`✗ ${self}: .ai/${dir}/${name} missing (present in .claude/${dir}/)`);
-        mirrorDrift = true;
+      const claudeNames = (await readdir(claudeDir)).filter((f) => f.endsWith('.md')).sort();
+      for (const name of aiNames) {
+        if (!claudeNames.includes(name)) {
+          console.error(`✗ ${self}: .claude/${dir}/${name} missing (present in .ai/${dir}/)`);
+          mirrorDrift = true;
+        }
+      }
+      for (const name of claudeNames) {
+        if (!aiNames.includes(name)) {
+          console.error(`✗ ${self}: .ai/${dir}/${name} missing (present in .claude/${dir}/)`);
+          mirrorDrift = true;
+        }
       }
     }
   }
@@ -131,7 +135,7 @@ async function main() {
 
   if (siblingsChecked === 0) {
     console.log(
-      `✓ ${self}: baseline OK (no siblings checked — clone ai-mcp-alm and ai-mcp-devtools next to this repo to verify trinity sync).`,
+      `✓ ${self}: baseline OK (no siblings checked — clone the others next to this repo to verify trinity sync).`,
     );
   } else {
     console.log(

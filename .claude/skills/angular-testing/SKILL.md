@@ -12,8 +12,8 @@ description: |
 # Angular 21 testing patterns (AI Studio)
 
 > Reach for this skill before you write any `*.spec.ts`. Every pattern below is exercised by
-> at least one of the 12 demo apps and aligns with [`.ai/rules/testing.md`](../../.ai/rules/testing.md)
-> (canonical) and [`.ai/rules/angular.md`](../../.ai/rules/angular.md) (componentry).
+> at least one of the 12 demo apps and aligns with [`.ai/rules/testing.md`](../../../.ai/rules/testing.md)
+> (canonical) and [`.ai/rules/angular.md`](../../../.ai/rules/angular.md) (componentry).
 >
 > Stack: `@angular/build:unit-test --runner=vitest` (Angular 21 native), Vitest 4, TestBed,
 > signals, zoneless components. **Do not** install `@analogjs/vitest-angular` — Angular 21

@@ -14,7 +14,7 @@ description: |
 # Accessibility patterns (AI Studio)
 
 > Reach for this skill whenever the work touches an interactive control, a dialog, a focus
-> handler, or a colour pair. CI already runs axe-core via Playwright ([`.ai/rules/testing.md`](../../.ai/rules/testing.md) §7);
+> handler, or a colour pair. CI already runs axe-core via Playwright ([`.ai/rules/testing.md`](../../../.ai/rules/testing.md) §7);
 > new serious or critical violations fail the gate. Component-level a11y assertions live in
 > Vitest unit tests via `@testing-library/jest-dom`.
 >

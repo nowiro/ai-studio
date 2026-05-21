@@ -14,7 +14,7 @@ description: |
 
 > Reach for this skill whenever you scaffold or restructure code. Generators are not optional —
 > every project, lib, component, service in the repo MUST be created via `nx g`. Hand-rolled
-> scaffolding is auto-flagged by `code-reviewer` ([`.ai/rules/nx.md`](../../.ai/rules/nx.md) §3).
+> scaffolding is auto-flagged by `code-reviewer` ([`.ai/rules/nx.md`](../../../.ai/rules/nx.md) §3).
 >
 > Stack: `nx@22.7.2`, `@nx/angular@22.7.2`, `pnpm` workspace, Angular 21. The **`nx` MCP
 > server** is wired in `.claude/settings.json` — prefer its `nx_generators` tool over guessing
@@ -50,7 +50,7 @@ Optional adjuncts:
 - `platform:<browser|node|ssr>` — runtime constraint.
 - `framework:<angular|node|...>` — for polyglot generators (`@nx/js`).
 
-Tags drive **module-boundary lint** ([`.ai/rules/nx.md`](../../.ai/rules/nx.md) §2):
+Tags drive **module-boundary lint** ([`.ai/rules/nx.md`](../../../.ai/rules/nx.md) §2):
 
 ```
 type:app          → type:feature, type:ui, type:data-access, type:util
@@ -114,7 +114,7 @@ pnpm nx g @nx/angular:app library \
 
 Post-scaffold:
 
-1. Edit `apps/library/src/index.html` to set `<base href="/" />` ([`.ai/rules/angular.md`](../../.ai/rules/angular.md) §5).
+1. Edit `apps/library/src/index.html` to set `<base href="/" />` ([`.ai/rules/angular.md`](../../../.ai/rules/angular.md) §5).
 2. Add the app's `mat.theme(...)` block to `apps/library/src/styles.scss` (see [`angular-material-design`](../angular-material-design/SKILL.md) §1).
 3. Add `start:<name>` script to root `package.json`.
 4. Update `docs/projects/<name>/README.md` (frontmatter + audience routing).
@@ -232,7 +232,7 @@ pnpm nx graph
 
 Before refactoring across libs, **always** look at the graph. Hidden coupling shows up here
 even when imports look fine. Architectural changes that alter the graph require an ADR
-([`.ai/rules/nx.md`](../../.ai/rules/nx.md) §6).
+([`.ai/rules/nx.md`](../../../.ai/rules/nx.md) §6).
 
 For machine-readable output: `pnpm nx graph --file=tmp/graph.json`.
 

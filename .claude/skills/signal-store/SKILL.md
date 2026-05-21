@@ -15,7 +15,7 @@ description: |
 
 > Reach for this skill whenever you need to share state across components. For pure UI state
 > inside a single component, plain `signal()` + `computed()` is enough — see
-> [`.ai/rules/angular.md`](../../.ai/rules/angular.md) §2.
+> [`.ai/rules/angular.md`](../../../.ai/rules/angular.md) §2.
 >
 > Stack: Angular 21 signals (`signal`, `computed`, `effect`, `linkedSignal`, `resource`),
 > optionally NgRx SignalStore (`@ngrx/signals`) for domain state with composable features.
@@ -248,7 +248,7 @@ constructor() {
 }
 ```
 
-Rules ([`.ai/rules/angular.md`](../../.ai/rules/angular.md) §2):
+Rules ([`.ai/rules/angular.md`](../../../.ai/rules/angular.md) §2):
 
 - Never call setters of signals inside `effect()` that re-trigger the same effect.
 - Reach for `effect()` only when **non-Angular** code (DOM, IndexedDB, WebSocket) needs to

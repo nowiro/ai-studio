@@ -84,13 +84,6 @@ Unikaj wieloblokowych mieszanek. Akceptowalne:
 - ✅ Polskie tabele + angielskie wartości w komórkach gdy są nazwami
 - ❌ Naprzemienne akapity PL/EN — zrefactoruj na jeden język
 
-## Migracja v1 → v2 (2026-05-20)
-
-- **v1 (do 2026-05-19):** README, CONTRIBUTING, SECURITY, CLAUDE.md, AGENTS.md, `.ai/rules/*` (proza), `.ai/agents/*`, `.ai/workflows/*`, `.github/copilot-*` były po EN.
-- **v2 (od 2026-05-20):** wszystkie te powierzchnie migrowane na PL prozę. Iteracja v0.2 w `ai-workspace` koordynuje retranslację cross-repo.
-- **Strategia:** reguła obowiązuje dla **nowych** plików natychmiast. Istniejące pliki migrowane partiami przy okazji refactorów per repo. Pełny rewrite EN → PL nie jest blokerem wydania v2.
-- **Trinity baseline w `.ai/rules/*` (`core.md`, `principles.md`, `security.md`, `production-readiness.md`, `llm-optimization.md`, ten plik):** pozostają **byte-identical** w 3 repo. Retranslacja musi iść w jednej iteracji we wszystkich członkach.
-
 ## Notatka dla agentów (Claude Code · GitHub Copilot)
 
 W obrębie repo `C:\github\*` (rodzina `ai-*`):

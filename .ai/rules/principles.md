@@ -4,7 +4,9 @@ title: Zasady inżynierskie — DRY, SOLID, KISS, YAGNI
 type: rules
 scope: global
 priority: 1
-version: 2.0.0
+version: 1.0.0
+last-updated: 2026-05-20
+trinity-baseline: true
 ---
 
 # Zasady inżynierskie
@@ -103,7 +105,7 @@ Rzeczy, które zmieniają się razem, żyją razem. Rzeczy, które zmieniają si
 
 - Feature library ma route container + smart komponenty + feature-local services. Zmieniają się razem.
 - UI library ma dumb presentational komponenty. Nie wiedzą o features.
-- Sprzężenie między libami wymuszane przez `@nx/enforce-module-boundaries` (patrz [`nx.md`](nx.md)).
+- Sprzężenie między libami wymuszane przez `@nx/enforce-module-boundaries` (patrz `nx.md` — repo z profilem Nx).
 
 ## 7. Boy Scout Rule
 
@@ -174,5 +176,7 @@ Każdy agent ładuje ten plik na początku swojego zadania. Gdy dwa konkurujące
 ## Zobacz też
 
 - [`core.md`](core.md) — nienegocjowalne cross-cutting reguły.
-- [`angular.md`](angular.md), [`styling.md`](styling.md), [`testing.md`](testing.md), [`nx.md`](nx.md), [`security.md`](security.md) — stack-specific.
-- [`docs/programming/coding-standards.md`](../../docs/programming/coding-standards.md) — konkretne przepisy.
+- [`security.md`](security.md) — reguły bezpieczeństwa (trinity baseline).
+- [`llm-optimization.md`](llm-optimization.md) — oszczędność tokenów + deterministyczne skrypty.
+- `angular.md`, `styling.md`, `testing.md`, `nx.md` — stack-specific (tylko w repo z profilem Nx).
+- `docs/programming/coding-standards.md` — konkretne przepisy (tylko w repo które je hostuje).
