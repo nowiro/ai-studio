@@ -3,6 +3,7 @@
 # esbuild binary, LMDB) or post-install codemods (nx, core-js shims).
 allowBuilds:
   "@parcel/watcher": true
+  "@swc/core": true
   core-js: true
   esbuild: true
   less: true
