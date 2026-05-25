@@ -1,0 +1,63 @@
+<ais-hero
+  eyebrow="AI Studio · reference"
+  title="Starter"
+  subtitle="Minimalny szkielet Angular 21 + Material 3 + Tailwind v4. Skopiuj jako template dla nowych domain apps."
+  theme="primary"
+/>
+
+<ais-section
+  eyebrow="Section 1"
+  title="Kolory — Material 3 design tokens"
+  subtitle="Każda karta poniżej używa CSS variables z @theme + mat.theme(). Te same wartości napędzają Angular Material i Tailwind utilities."
+  tone="surface"
+>
+  <div
+    class="token-grid"
+    data-testid="color-token-grid"
+  >
+    @for (item of colorRoles; track item.role) {
+      <ais-token-card
+        [name]="item.name"
+        [role]="item.role"
+      />
+    }
+  </div>
+</ais-section>
+
+<ais-section
+  eyebrow="Section 2"
+  title="Typografia — M3 type scale"
+  subtitle="Wszystkie sample renderowane przez style.font = var(--mat-sys-<scale>). Bez hardcoded font-size."
+  tone="surface-low"
+>
+  <div
+    class="typography-list"
+    data-testid="typography-list"
+  >
+    @for (item of typeScales; track item.scale) {
+      <ais-typography-row [scale]="item.scale" />
+    }
+  </div>
+</ais-section>
+
+<ais-section
+  eyebrow="Section 3"
+  title="Tailwind ↔ M3 utilities"
+  subtitle="Te same tokeny dostępne przez utility classes. bg-primary mapuje na --mat-sys-primary, text-on-surface na --mat-sys-on-surface."
+  tone="surface"
+>
+  <div
+    class="tailwind-grid"
+    data-testid="tailwind-grid"
+  >
+    @for (item of tailwindExamples; track item.classes) {
+      <div
+        [class]="'tailwind-grid__cell p-4 rounded-md ' + item.classes"
+        [attr.data-testid]="'tw-' + item.label"
+      >
+        <p class="font-medium">{{ item.label }}</p>
+        <code class="text-xs opacity-80">{{ item.classes }}</code>
+      </div>
+    }
+  </div>
+</ais-section>

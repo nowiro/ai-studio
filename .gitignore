@@ -90,3 +90,4 @@ __pycache__/
 # llm-call.mjs runtime — per-call cache + audit log (local; never committed).
 # Fixtures (.fixtures/llm-calls/) ARE committed — they back CI mock mode.
 tools/scripts/.cache/
+__screenshots__/

@@ -1,0 +1,83 @@
+{
+  "name": "starter",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "$schema_comment": "Reference / starter Angular 21 app — Material 3 + Tailwind v4 tokens showcase. Copy this app as template for new domain apps.",
+  "projectType": "application",
+  "prefix": "ais",
+  "sourceRoot": "apps/starter/src",
+  "tags": ["scope:starter", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/starter",
+        "index": "apps/starter/src/index.html",
+        "browser": "apps/starter/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/starter/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/starter/public"
+          }
+        ],
+        "styles": ["styles/tailwind.scss", "apps/starter/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            { "type": "initial", "maximumWarning": "750kb", "maximumError": "1.5mb" },
+            { "type": "anyComponentStyle", "maximumWarning": "6kb", "maximumError": "10kb" }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4221
+      },
+      "configurations": {
+        "production": { "buildTarget": "starter:build:production" },
+        "development": { "buildTarget": "starter:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
+      "options": {
+        "watch": false
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p apps/starter/tsconfig.app.json --noEmit"
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "starter:build",
+        "port": 4221,
+        "staticFilePath": "dist/apps/starter/browser",
+        "spa": true
+      }
+    }
+  }
+}

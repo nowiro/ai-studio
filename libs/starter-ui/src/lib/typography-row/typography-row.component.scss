@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+.typography-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &__token {
+    font-family: var(--font-mono);
+    font: var(--mat-sys-label-small);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &__sample {
+    margin: 0;
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+@media (min-width: 768px) {
+  .typography-row {
+    grid-template-columns: 14rem 1fr;
+    align-items: baseline;
+    gap: 2rem;
+  }
+}

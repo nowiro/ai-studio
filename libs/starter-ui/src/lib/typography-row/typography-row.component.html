@@ -1,0 +1,12 @@
+<div
+  [attr.data-testid]="'typography-row-' + scale()"
+  class="typography-row"
+>
+  <code class="typography-row__token">--mat-sys-{{ scale() }}</code>
+  <p
+    [style.font]="cssVar()"
+    class="typography-row__sample"
+  >
+    {{ sample() }}
+  </p>
+</div>

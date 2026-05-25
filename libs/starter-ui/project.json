@@ -1,0 +1,13 @@
+{
+  "name": "starter-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/starter-ui/src",
+  "prefix": "ais",
+  "projectType": "library",
+  "tags": ["scope:starter", "type:ui"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

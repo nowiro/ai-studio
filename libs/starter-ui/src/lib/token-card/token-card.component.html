@@ -1,0 +1,23 @@
+@let r = role();
+<article
+  [attr.data-role]="r"
+  [attr.data-testid]="'token-card-' + r"
+  class="token-card"
+>
+  <div
+    [class]="'token-card__swatch--' + r"
+    class="token-card__swatch"
+  >
+    <span class="token-card__role">{{ name() }}</span>
+  </div>
+  <dl class="token-card__vars">
+    <dt>Container</dt>
+    <dd>
+      <code>--mat-sys-{{ r }}-container</code>
+    </dd>
+    <dt>On-container</dt>
+    <dd>
+      <code>--mat-sys-on-{{ r }}-container</code>
+    </dd>
+  </dl>
+</article>

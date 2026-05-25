@@ -86,9 +86,9 @@
       "prefix": "ais"
     },
     "@nx/angular:library": {
-      "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "vitest-analog",
+      "style": "scss",
       "prefix": "ais"
     },
     "@nx/angular:component": {

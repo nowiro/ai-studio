@@ -180,6 +180,7 @@ export default tseslint.config(
                 'scope:nowiro',
                 'scope:wizard',
                 'scope:union-vault',
+                'scope:starter',
               ],
             },
             // ── Per-demo isolation rules ──
@@ -210,6 +211,10 @@ export default tseslint.config(
             {
               sourceTag: 'scope:wizard',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:wizard', 'scope:util'],
+            },
+            {
+              sourceTag: 'scope:starter',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:starter', 'scope:util'],
             },
             // ── New roadmap scopes (portal, dashboard, ui-kit, auth, elements) ──
             {
