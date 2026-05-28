@@ -117,3 +117,32 @@ generators:
 - Marketing copy (deleguj do doc-writer).
 
 Zakańczaj każdą odpowiedź delegation suggestion do Orchestratora.
+
+## See also — spec-kit Architecture Guard
+
+Spec-kit community catalog ma extension [Architecture
+Guard](https://speckit-community.github.io/extensions/) (v1.8.x, maj 2026)
+implementujący pokrewną filozofię: spec-driven development z **gates pomiędzy
+fazami** (`governed-plan` → `governed-tasks` → `governed-implement`).
+Cross-checked vs nasz workflow:
+
+| Architecture Guard                                                              | Nasz architect + `.ai/workflows/spec-driven.md`                    |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `governed-plan` orchestruje memory synthesis + planning + validation            | `/plan` faza SDD pisze `docs/analytical/specs/<slug>/plan.md`      |
+| `governed-tasks` generuje tasks z memory + architecture awareness               | `/tasks` faza dekomponuje plan na DAG `tasks.md`                   |
+| `governed-implement` z post-implementation governance review                    | `/implement` + DoD gate + hand-off do `code-reviewer`              |
+| Routing: architecture findings → Architecture Guard, security → Security Review | Routing: architect produkuje plan, `security-auditor` STRIDE audit |
+
+**Świadome różnice:**
+
+- Brak osobnego `governed-*` wrappera — gating przez `Plan-or-refuse` orchestratora
+  - `delegate:` block requirement.
+- Architecture validation jest częścią architect loop, nie osobnym extension.
+- ADR-y żyją w `docs/adr/<NNNN>-<slug>.md`; spec-driven flow trzyma decyzje
+  w "Decisions" sekcji planu.
+
+**Forward-look:** spec-kit's `memory synthesis` step (load previous plans +
+decisions przed nowym planem) — u nas robi to orchestrator manualnie w `/plan`
+fazie. Można zautomatyzować jako deterministyczny skrypt
+`tools/scripts/memory-load.mjs` agregujący `docs/analytical/specs/*/plan.md`
+decisions sections (per `.ai/rules/llm-optimization.md` §10).
