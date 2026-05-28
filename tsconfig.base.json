@@ -83,5 +83,5 @@
       "@ai-studio/starter-ui": ["./libs/starter-ui/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp", "dist", "coverage"]
+  "exclude": ["node_modules", "tmp", "dist", "coverage", "**/*.spec.ts", "**/*.test.ts", "**/*.e2e.ts"]
 }
