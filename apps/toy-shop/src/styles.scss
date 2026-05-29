@@ -1,12 +1,41 @@
-@use 'tailwindcss';
+@use '@angular/material' as mat;
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Toy shop — global styles.
+ *
+ * Theme: Material 3 (Magenta primary, Chartreuse tertiary) — playful, vivid
+ * identity, distinct from the other shops.
+ *
+ * This file is the **per-app** theme. Workspace-wide tokens (Tailwind ↔ M3
+ * bridge, radii, motion) live in `styles/tailwind.scss` and apply globally.
+ * ────────────────────────────────────────────────────────────────────────── */
 
 html,
 body {
-  margin: 0;
   height: 100%;
-  font-family:
-    'Roboto',
-    system-ui,
-    -apple-system,
-    sans-serif;
+  margin: 0;
+  font-family: 'Roboto', system-ui, sans-serif;
+}
+
+html {
+  /* Pin to light so Material surface tokens and the page background stay in
+   * lockstep — see `.claude/skills/angular-material-design/SKILL.md §1`. */
+  color-scheme: light;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface-container);
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$magenta-palette,
+        tertiary: mat.$chartreuse-palette,
+      ),
+      typography: Roboto,
+      density: -1,
+    )
+  );
+}
+
+body {
+  background: var(--mat-sys-surface-container);
 }

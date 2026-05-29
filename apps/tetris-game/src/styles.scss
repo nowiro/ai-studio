@@ -1,14 +1,43 @@
-@use 'tailwindcss';
+@use '@angular/material' as mat;
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Tetris — global styles.
+ *
+ * Theme: Material 3 DARK (Spring-green primary, Rose tertiary) — neon arcade
+ * look distinct from Pong. The game renders on a dark canvas; the dark M3
+ * surface tokens back the HUD and overlays. Replaces the previous hard-coded
+ * dark-navy background with `--mat-sys-surface` / `--mat-sys-on-surface`
+ * so the frame follows the theme (and passes the hard-coded-colour a11y scan).
+ *
+ * Workspace-wide tokens (Tailwind ↔ M3 bridge, radii, motion) live in
+ * `styles/tailwind.scss` and apply globally.
+ * ────────────────────────────────────────────────────────────────────────── */
 
 html,
 body {
   height: 100%;
   margin: 0;
-  font-family:
-    'Inter',
-    system-ui,
-    -apple-system,
-    sans-serif;
-  background: #0b1020;
-  color: #f5f5fa;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+html {
+  /* Pin to dark — arcade games are dark-on-light-accent by design. */
+  color-scheme: dark;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface);
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$spring-green-palette,
+        tertiary: mat.$rose-palette,
+      ),
+      typography: Roboto,
+      density: -1,
+    )
+  );
+}
+
+body {
+  background: var(--mat-sys-surface);
 }

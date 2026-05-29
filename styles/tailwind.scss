@@ -36,7 +36,15 @@
  * Tailwind preflight resets <button>/<input> styles; Material re-applies them.
  * Keep preflight ON — Material component styles load after and win. */
 
-@theme {
+/* `static` forces Tailwind v4 to emit EVERY token below to :root, not only the
+ * ones it detects as "used". Required because many tokens (brand, motion,
+ * shadow, glass, radii) are consumed via raw `var(--token)` inside component
+ * SCSS bundles that Tailwind's usage scanner never sees. Without `static`,
+ * Tailwind tree-shakes those unused-looking variables out of :root and they
+ * resolve to empty at paint time — e.g. the Nowiro hero loses its dark gradient
+ * and the gradient-clipped highlight word turns invisible. See Tailwind v4 docs
+ * "Generating all CSS variables". */
+@theme static {
   /* ── Colour — bridge to Material 3 system tokens ───────────────────────
    * CSS custom properties resolve at paint time, so these work even though
    * Material's mat.theme() is defined in a separate styles.scss bundle.     */
