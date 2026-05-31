@@ -91,3 +91,18 @@ __pycache__/
 # Fixtures (.fixtures/llm-calls/) ARE committed — they back CI mock mode.
 tools/scripts/.cache/
 __screenshots__/
+
+# AI task artifacts — real plans / specs / run reports stay LOCAL only (per
+# project decision): created locally, never committed. Scaffolding IS kept —
+# .gitkeep placeholders + _template files (docs/ai-workflow/plans/_template.md
+# is a trinity baseline: must stay committed & byte-identical across repos).
+# NOTE: plans/specs already committed in this repo stay tracked (gitignore does
+# not untrack) — only NEW artifacts become local-only here.
+docs/ai-workflow/plans/*
+docs/ai-workflow/runs/*
+docs/analytical/specs/*
+!docs/ai-workflow/plans/.gitkeep
+!docs/ai-workflow/plans/_template.md
+!docs/ai-workflow/runs/.gitkeep
+!docs/analytical/specs/.gitkeep
+!docs/analytical/specs/_template/

@@ -40,4 +40,4 @@ version: 3.0.0
 
 ## Polityka wersjonowania
 
-Pinujemy minor versions (`^21.0.0`) i pozwalamy renovate / dependabot podnosić patches. Major bumps wymagają ADR.
+Pinujemy minor versions (`^21.0.0`); patche podnosimy **manualnie** (brak bota dependabot/renovate — repo nie używa GitHub automation). Major bumps wymagają ADR.

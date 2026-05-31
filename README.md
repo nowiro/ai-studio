@@ -79,7 +79,7 @@ ai-studio/
 │   ├── context/              #   long-lived context
 │   └── mcp.json              #   rejestr serwerów MCP
 ├── .claude/                  # wrappery Claude Code (subagents, slash commands, hooks)
-├── .github/                  # templatki issue / PR, workflows CI, dependabot
+├── .github/                  # Copilot config, issue / PR templates, CODEOWNERS
 │   ├── copilot-instructions.md  # główny entrypoint Copilot
 │   ├── instructions/         #   scoped instructions (applyTo glob)
 │   ├── prompts/              #   /promptname dla Copilot Chat

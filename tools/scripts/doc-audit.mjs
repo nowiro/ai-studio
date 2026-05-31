@@ -50,7 +50,9 @@ const ANTI_HEADING_RE =
   /^(#{1,6})\s+(?:\d+\.\s+)?(?:Forbidden|Anti[- ]patterns?|Don'?t ?s?|What to avoid|Removed|Pitfalls|What this is NOT|What every agent MUST NOT do)\b/i;
 
 const NEGATION_LINE_RE =
-  /(?:\bdon'?t\b|\bnever\b|\bdo\s+not\b|\bno\s+longer\b|\bforbidden\b|\banti[- ]pattern\b|❌|\bdeprecated\b|\bremoved\b|\bsuperseded\b|\bnot\s+needed\b|→\s*not\s+needed|\bno\s+`)/i;
+  // EN + PL negation/prohibition cues. PL rule docs phrase bans as "Bez `*ngIf`",
+  // "zamiast `@Input()`", "nie używaj …"; EN rules as "instead of `X`" / "not in a JS config".
+  /(?:\bdon'?t\b|\bnever\b|\bdo\s+not\b|\bno\s+longer\b|\bforbidden\b|\banti[- ]pattern\b|❌|\bdeprecated\b|\bremoved\b|\bsuperseded\b|\bnot\s+needed\b|→\s*not\s+needed|\bno\s+`|\bbez\b|\bzamiast\b|\bnie\s+używaj\b|\binstead\s+of\b|\bnot\s+in\b|[żŻ]adn\w*|\bniepotrzebn\w*|\bnie\s+(?:potrzeb\w+|instaluj\w*|importuj\w*|stosuj\w*)|\bnie\s+`)/i;
 
 /**
  * Strip the parts of a markdown doc that legitimately mention anti-patterns:
@@ -195,6 +197,9 @@ async function main() {
   const isHistoricalDoc = (path) =>
     path.includes('docs/adr/') ||
     path.includes('docs/ai-workflow/runs/') ||
+    // Plans describe the change being made (incl. the old pattern being removed) — like
+    // run logs they legitimately name what they replace. Excluded from stale-fact drift.
+    path.includes('docs/ai-workflow/plans/') ||
     path.includes('docs/architecture/post-mortems/');
 
   for (const d of docs.docs) {

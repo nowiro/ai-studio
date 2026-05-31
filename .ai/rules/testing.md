@@ -86,8 +86,11 @@ Trzy warstwy testów dostępności (jedna nie zastępuje innej):
 
    Domyślny preset WCAG 2.1 AA (project baseline). Dla widoków high-stakes użyj `{ rules: WCAG_AAA_RULES }`.
 
-3. **E2E a11y (axe-core/playwright)** — uruchamia się na każdym E2E suite.
-   Nowe `serious`/`critical` violations fail CI. Łapie issues które pojawiają się
-   dopiero w pełnym ssr / routing / data-loaded kontekście.
+3. **E2E a11y (axe-core w Playwright)** — helper `expectNoA11yViolationsOnPage(page)`
+   z `@ai-studio/shared-test-utils` (lub `BaseE2EPage.expectNoA11yViolations()`).
+   Wstrzykuje `axe.source` do strony i uruchamia axe-core na żywym, ostylowanym DOM —
+   bez zależności-wrappera (spójne z decyzją „axe-core bezpośrednio"). Łapie violations
+   widoczne dopiero w pełnym routing / data-loaded kontekście (np. kontrast po
+   załadowaniu tokenów Material). Używają go `nowiro-e2e`, `union-vault-e2e`, `library-e2e`.
 
 Dodatkowo: component-level matchers dostępne przez `@testing-library/jest-dom` (Vitest compat).

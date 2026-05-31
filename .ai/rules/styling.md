@@ -577,13 +577,13 @@ Dictionaries: `apps/<name>/public/assets/i18n/{pl,en}.json` (HTTP-loaded lazy).
 **Template pattern:**
 
 ```html
-<!-- Tekst widoczny: pipe interpolacja -->
-<h1>{{ 'home.welcome' | t }}</h1>
+<!-- Tekst widoczny: pipe interpolacja (nazwa pipe Transloco to `transloco`) -->
+<h1>{{ 'home.welcome' | transloco }}</h1>
 
 <!-- A11y attributes: pipe też w property binding -->
-<mat-label>{{ 'form.email' | t }}</mat-label>
+<mat-label>{{ 'form.email' | transloco }}</mat-label>
 <button
-  [attr.aria-label]="'actions.save' | t"
+  [attr.aria-label]="'actions.save' | transloco"
   mat-icon-button
 >
   <mat-icon>save</mat-icon>

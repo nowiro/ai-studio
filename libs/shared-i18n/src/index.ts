@@ -26,9 +26,9 @@
  * Usage in templates:
  *
  * ```html
- * <h1>{{ 'home.welcome' | t }}</h1>
- * <mat-label>{{ 'form.email' | t }}</mat-label>
- * <button [attr.aria-label]="'actions.save' | t">{{ 'actions.save' | t }}</button>
+ * <h1>{{ 'home.welcome' | transloco }}</h1>
+ * <mat-label>{{ 'form.email' | transloco }}</mat-label>
+ * <button [attr.aria-label]="'actions.save' | transloco">{{ 'actions.save' | transloco }}</button>
  * ```
  *
  * @packageDocumentation

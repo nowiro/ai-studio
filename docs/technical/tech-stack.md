@@ -37,7 +37,7 @@ This is the human-facing, decision-rich version of [`.ai/context/tech-stack.md`]
 ## Versioning policy
 
 - Pin minor in `package.json` (`^21.0.0`).
-- Renovate / Dependabot opens grouped PRs for patches (see `.github/dependabot.yml`).
+- Dependency patches are bumped **manually** (no Dependabot/Renovate bot — repo runs no GitHub automation).
 - Major bumps **require an ADR** (`type: docs(adr)`).
 
 ## Adding a new tool
