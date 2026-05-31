@@ -34,7 +34,15 @@
 import { expect, type Page } from '@playwright/test';
 import axe from 'axe-core';
 
-import { type A11yCheckOptions, WCAG_AA_RULES } from './a11y.js';
+import { type A11yCheckOptions } from './a11y.js';
+
+/**
+ * e2e a11y gate = WCAG 2.1 A/AA conformance (the project baseline). Axe's advisory
+ * `best-practice` tag (region, heading-order, landmark structure) is intentionally
+ * NOT gated in e2e — those are UX polish tracked separately, not WCAG failures. The
+ * unit helper ({@link ./a11y.ts}) keeps best-practice for component-level checks.
+ */
+const E2E_WCAG_RULES = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] as const;
 
 /** Minimal shape of the axe-core result we consume (axe runs in-page). */
 interface AxeViolationNode {
@@ -56,7 +64,7 @@ interface AxeRunResult {
  * Prefer {@link expectNoA11yViolationsOnPage} unless you need the raw result.
  */
 export async function runAxeOnPage(page: Page, options: A11yCheckOptions = {}): Promise<AxeRunResult> {
-  const { rules = WCAG_AA_RULES, ruleOverrides } = options;
+  const { rules = E2E_WCAG_RULES, ruleOverrides } = options;
   const alreadyInjected = await page.evaluate(
     () => typeof (window as unknown as { axe?: unknown }).axe !== 'undefined',
   );

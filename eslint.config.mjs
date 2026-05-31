@@ -266,6 +266,11 @@ export default tseslint.config(
               sourceTag: 'type:util',
               onlyDependOnLibsWithTags: ['type:util'],
             },
+            {
+              // e2e suites consume shared test helpers (axe-core fixture, page-object base).
+              sourceTag: 'type:e2e',
+              onlyDependOnLibsWithTags: ['scope:shared', 'type:util'],
+            },
           ],
         },
       ],

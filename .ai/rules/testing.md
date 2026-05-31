@@ -28,7 +28,7 @@ version: 2.0.0
 
 ## 3. Vitest (unit / integration)
 
-- **Native Vitest support Angular 21.** Test runner to `@angular/build:unit-test` z `runner: "vitest"` w `project.json`. **Nie** instaluj ani importuj `@analogjs/vitest-angular` — Analog jest potrzebny tylko gdy adoptujesz Analog jako meta-framework (file routing, server endpoints).
+- **Native Vitest support Angular 21.** Test runner to `@angular/build:unit-test` z `runner: "vitest"` w `project.json`. **Nie instaluj ani importuj** `@analogjs/vitest-angular` — Analog jest potrzebny tylko gdy adoptujesz Analog jako meta-framework (file routing, server endpoints).
 - `TestBed`, signals, zoneless components działają out of the box przez runner Angulara. Testy żyją obok source jako `*.spec.ts`.
 - Wybieraj **`provideXxx()` zamiast module imports** w `TestBed.configureTestingModule`.
 - Nie mockuj tego, co posiadasz. Mockuj sieć (MSW) i zegar (`vi.useFakeTimers()`); injectuj realne services.

@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { expectNoA11yViolationsOnPage } from '@ai-studio/shared-test-utils';
+
 test.describe('library happy path', () => {
   test('catalogue → account login → reserve → librarian view', async ({ page }) => {
     await page.goto('/');
@@ -7,6 +9,10 @@ test.describe('library happy path', () => {
     // 1. Catalogue renders with the seed dataset.
     await expect(page.getByTestId('catalogue-heading')).toBeVisible();
     await expect(page.getByTestId('catalogue-table')).toBeVisible();
+
+    // a11y: structural / ARIA / landmark axe checks. color-contrast excluded —
+    // pre-existing UX debt tracked for a dedicated contrast pass.
+    await expectNoA11yViolationsOnPage(page, { ruleOverrides: { 'color-contrast': { enabled: false } } });
 
     // 2. Filter by genre — narrows results.
     await page.getByTestId('filter-genre-fantasy').click();

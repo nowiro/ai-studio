@@ -27,7 +27,7 @@ import { LocalizationApi } from '@ai-studio/shared-i18n';
       class="gap-2 flex items-center"
       role="group"
     >
-      <span class="text-sm text-on-surface-variant">{{ label() }}:</span>
+      <span class="text-sm">{{ label() }}:</span>
       @for (lang of i18n.availableLangs(); track lang) {
         <button
           [class.font-bold]="lang === i18n.currentLang()"

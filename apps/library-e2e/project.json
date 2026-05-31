@@ -4,6 +4,7 @@
   "projectType": "application",
   "sourceRoot": "apps/library-e2e/src",
   "implicitDependencies": ["library"],
+  "tags": ["type:e2e"],
   "// targets": "to see all targets run: nx show project library-e2e --web",
   "targets": {}
 }

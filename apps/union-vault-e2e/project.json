@@ -4,6 +4,7 @@
   "projectType": "application",
   "sourceRoot": "apps/union-vault-e2e/src",
   "implicitDependencies": ["union-vault"],
+  "tags": ["type:e2e"],
   "// targets": "to see all targets run: nx show project union-vault-e2e --web",
   "targets": {}
 }

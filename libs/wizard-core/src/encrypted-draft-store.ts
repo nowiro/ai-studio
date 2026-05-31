@@ -65,7 +65,7 @@ export class EncryptedDraftStore {
    * Encrypts `value` with the current key and persists it under
    * `${wizardId}::${field}` in the inner draft store.
    *
-   * @throws when {@link setPassword} has not been called.
+   * @throws {Error} when {@link setPassword} has not been called.
    */
   async saveSensitive(wizardId: string, field: string, value: string): Promise<void> {
     const key = this.#requireKey();
@@ -89,7 +89,7 @@ export class EncryptedDraftStore {
    * returns it as a UTF-8 string. Returns `null` when the field has not been
    * saved yet.
    *
-   * @throws when {@link setPassword} has not been called, or when the stored
+   * @throws {Error} when {@link setPassword} has not been called, or when the stored
    *         ciphertext fails AES-GCM authentication (wrong key / tampered).
    */
   async readSensitive(wizardId: string, field: string): Promise<string | null> {

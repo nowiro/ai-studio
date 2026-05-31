@@ -4,6 +4,7 @@
   "projectType": "application",
   "sourceRoot": "apps/nowiro-e2e/src",
   "implicitDependencies": ["nowiro"],
+  "tags": ["type:e2e"],
   "// targets": "to see all targets run: nx show project nowiro-e2e --web",
   "targets": {}
 }
