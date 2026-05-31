@@ -17,8 +17,6 @@ test.describe('Nowiro landing — smoke + a11y', () => {
     await expect(nowiro.primaryCta).toBeVisible();
 
     nowiro.expectNoConsoleErrors();
-    // color-contrast excluded — pre-existing UX debt tracked for a dedicated contrast
-    // pass; this gate still enforces structural / ARIA / landmark a11y.
-    await nowiro.expectNoA11yViolations({ ruleOverrides: { 'color-contrast': { enabled: false } } });
+    await nowiro.expectNoA11yViolations();
   });
 });

@@ -10,9 +10,8 @@ test.describe('library happy path', () => {
     await expect(page.getByTestId('catalogue-heading')).toBeVisible();
     await expect(page.getByTestId('catalogue-table')).toBeVisible();
 
-    // a11y: structural / ARIA / landmark axe checks. color-contrast excluded —
-    // pre-existing UX debt tracked for a dedicated contrast pass.
-    await expectNoA11yViolationsOnPage(page, { ruleOverrides: { 'color-contrast': { enabled: false } } });
+    // a11y: axe WCAG 2.1 A/AA (incl. color-contrast) on the rendered catalogue.
+    await expectNoA11yViolationsOnPage(page);
 
     // 2. Filter by genre — narrows results.
     await page.getByTestId('filter-genre-fantasy').click();

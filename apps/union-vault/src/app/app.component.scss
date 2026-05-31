@@ -23,10 +23,11 @@
 
   .footer-version {
     margin-left: 8px;
-    color: var(--mat-sys-tertiary);
+    // inverse-primary is the accent tone designed for legibility on inverse-surface;
+    // tertiary (a light-surface accent) failed WCAG AA contrast on the dark footer (1.88:1).
+    color: var(--mat-sys-inverse-primary);
     font: var(--mat-sys-label-small);
     font-weight: 500;
-    opacity: 0.9;
   }
 
   .footer-update {

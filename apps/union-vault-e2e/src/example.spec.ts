@@ -15,8 +15,6 @@ test.describe('Union-vault — smoke + a11y', () => {
     await unionVault.expectHeadingRendered();
 
     unionVault.expectNoConsoleErrors();
-    // color-contrast excluded — pre-existing UX debt tracked for a dedicated contrast
-    // pass; this gate still enforces structural / ARIA / landmark a11y.
-    await unionVault.expectNoA11yViolations({ ruleOverrides: { 'color-contrast': { enabled: false } } });
+    await unionVault.expectNoA11yViolations();
   });
 });

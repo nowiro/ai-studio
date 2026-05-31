@@ -79,7 +79,8 @@ section {
 
 .section-subtitle {
   font-size: 1.1rem;
-  color: #6b7280;
+  /* gray-600 — meets WCAG AA 4.5:1 on the light section surface (gray-500 #6b7280 was 4.37). */
+  color: #4b5563;
   margin-bottom: 48px;
   max-width: 600px;
 }
