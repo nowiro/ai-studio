@@ -197,6 +197,7 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
       <mat-progress-bar
         class="progress"
         mode="indeterminate"
+        aria-label="Ładowanie danych"
         data-testid="dashboard-progress"
       />
     }
