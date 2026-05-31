@@ -57,6 +57,13 @@ const PLN = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN',
         gap: 0.75rem;
         box-shadow: var(--mat-sys-level1);
       }
+      /* Button sits on the primary-tinted toolbar — force on-primary for WCAG AA contrast
+         (default button label is on-surface, ~2.67:1 on the teal toolbar). */
+      .topbar button {
+        --mdc-text-button-label-text-color: var(--mat-sys-on-primary);
+        --mat-icon-color: var(--mat-sys-on-primary);
+        color: var(--mat-sys-on-primary);
+      }
       .topbar__brand {
         display: flex;
         align-items: center;

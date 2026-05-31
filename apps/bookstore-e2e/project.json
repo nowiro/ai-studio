@@ -4,5 +4,6 @@
   "projectType": "application",
   "sourceRoot": "apps/bookstore-e2e/src",
   "implicitDependencies": ["bookstore"],
-  "targets": {}
+  "targets": {},
+  "tags": ["type:e2e"]
 }

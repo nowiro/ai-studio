@@ -175,6 +175,7 @@ type Side = 'right' | 'left';
       <div
         class="grip"
         cdkDragHandle
+        role="button"
         aria-label="Przeciągnij pionowo"
         data-testid="dev-fab-grip"
       >

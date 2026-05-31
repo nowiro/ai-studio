@@ -4,5 +4,6 @@
   "projectType": "application",
   "sourceRoot": "apps/tools-shop-e2e/src",
   "implicitDependencies": ["tools-shop"],
-  "targets": {}
+  "targets": {},
+  "tags": ["type:e2e"]
 }

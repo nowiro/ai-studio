@@ -4,5 +4,6 @@
   "projectType": "application",
   "sourceRoot": "apps/toy-shop-e2e/src",
   "implicitDependencies": ["toy-shop"],
-  "targets": {}
+  "targets": {},
+  "tags": ["type:e2e"]
 }

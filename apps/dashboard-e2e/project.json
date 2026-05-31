@@ -4,5 +4,6 @@
   "projectType": "application",
   "sourceRoot": "apps/dashboard-e2e/src",
   "implicitDependencies": ["dashboard"],
-  "targets": {}
+  "targets": {},
+  "tags": ["type:e2e"]
 }

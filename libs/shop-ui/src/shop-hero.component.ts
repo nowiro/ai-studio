@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
       <div class="px-4 py-10 gap-8 md:grid-cols-2 md:px-8 md:py-16 max-w-7xl mx-auto grid grid-cols-1 items-center">
         <div class="gap-4 flex flex-col">
           @if (eyebrow(); as ey) {
-            <span class="text-xs tracking-wider uppercase opacity-80">{{ ey }}</span>
+            <span class="text-xs tracking-wider uppercase">{{ ey }}</span>
           }
           <h1 class="text-3xl font-bold leading-tight md:text-5xl">{{ title() }}</h1>
           @if (subtitle(); as sub) {
