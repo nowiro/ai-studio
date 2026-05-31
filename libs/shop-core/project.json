@@ -1,7 +1,9 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "shop-core",
-  "$schema_comment": "Generic e-commerce primitives (Product, CartService, cart-math, sort/filter helpers) shared across every shop demo.",
+  "metadata": {
+    "description": "Generic e-commerce primitives (Product, CartService, cart-math, sort/filter helpers) shared across every shop demo."
+  },
   "projectType": "library",
   "sourceRoot": "libs/shop-core/src",
   "tags": ["scope:shared", "type:data-access", "type:util"],

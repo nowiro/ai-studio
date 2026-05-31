@@ -186,6 +186,12 @@ Solving the catalogue UX once gives every future e-commerce demo a template.
 - ✅ Image source? — **CDN placeholders** (`https://picsum.photos`) for v1.
 - ✅ Reviews? — **Mocked**, 0–10 reviews per SKU; 5-star rating.
 
+## E2E coverage
+
+| Scenario | E2E |
+| --- | --- |
+| Catalogue happy path | [`apps/tire-shop-e2e/src/catalogue.spec.ts`](../../../../apps/tire-shop-e2e/src/catalogue.spec.ts) |
+
 ## Traceability
 
 - **ADR (state):** [`../../../adr/0006-tire-shop-state.md`](../../../adr/0006-tire-shop-state.md)

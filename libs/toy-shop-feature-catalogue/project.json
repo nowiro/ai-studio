@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "toy-shop-feature-catalogue",
-  "$schema_comment": "Catalogue page + filter panel + product detail for the toy-shop demo.",
+  "metadata": { "description": "Catalogue page + filter panel + product detail for the toy-shop demo." },
   "projectType": "library",
   "sourceRoot": "libs/toy-shop-feature-catalogue/src",
   "tags": ["scope:toy-shop", "type:feature"],

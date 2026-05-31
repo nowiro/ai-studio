@@ -1,67 +1,37 @@
-import { workspaceRoot } from '@nx/devkit';
-import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices } from '@playwright/test';
-import { fileURLToPath } from 'node:url';
-
-// For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4201';
-
-// ESM-compatible replacement for the CommonJS `__filename` global. Required after
-// the Nx 22 / TypeScript 6 / Node ESM-strict migration (May 2026 trinity bump).
-const __filename = fileURLToPath(import.meta.url);
 
 /**
- * See https://playwright.dev/docs/test-configuration.
+ * Plain `defineConfig` — mirrors apps/dashboard-e2e + apps/pong-game-e2e.
+ *
+ * The previous `nxE2EPreset(__filename, …)` spread combined with
+ * `fileURLToPath(import.meta.url)` made Playwright's loader treat this config as
+ * ESM while transpiling it to CommonJS, throwing
+ * "exports is not defined in ES module scope" so the whole suite failed to load.
+ * Dropping the preset + import.meta.url is the fix the repo already applied to
+ * dashboard/pong/individual-wizard.
  */
+const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4201';
+
 export default defineConfig({
-  ...nxE2EPreset(__filename, { testDir: './src' }),
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  testDir: './src',
+  fullyParallel: true,
+  forbidOnly: !!process.env['CI'],
+  retries: process.env['CI'] ? 2 : 0,
+  workers: process.env['CI'] ? 1 : undefined,
+  reporter: [['list'], ['html', { outputFolder: '../../dist/.playwright/apps/union-vault-e2e/report', open: 'never' }]],
   use: {
     baseURL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure',
   },
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'pnpm exec nx run union-vault:serve',
-    url: 'http://localhost:4201',
-    reuseExistingServer: true,
-    cwd: workspaceRoot,
-  },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    // Uncomment for mobile browsers support
-    /* {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    }, */
-
-    // Uncomment for branded browsers
-    /* {
-      name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    },
-    {
-      name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    } */
-  ],
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  webServer: process.env['CI']
+    ? undefined
+    : {
+        command: 'pnpm exec nx serve union-vault --port 4201',
+        url: baseURL,
+        reuseExistingServer: true,
+        timeout: 180_000,
+      },
 });

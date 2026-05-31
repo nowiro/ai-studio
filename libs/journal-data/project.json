@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "journal-data",
-  "$schema_comment": "Models + signal services + pure logic + seed for the school-journal demo.",
+  "metadata": { "description": "Models + signal services + pure logic + seed for the school-journal demo." },
   "projectType": "library",
   "sourceRoot": "libs/journal-data/src",
   "tags": ["scope:school-journal", "type:data-access", "type:util"],

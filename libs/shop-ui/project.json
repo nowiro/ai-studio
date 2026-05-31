@@ -1,7 +1,9 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "shop-ui",
-  "$schema_comment": "Generic Angular components shared across every shop demo (shop-shell, product card, cart drawer, cart page, checkout, breadcrumbs, search bar, hero, skeleton, empty states, price tag, stars rating).",
+  "metadata": {
+    "description": "Generic Angular components shared across every shop demo (shop-shell, product card, cart drawer, cart page, checkout, breadcrumbs, search bar, hero, skeleton, empty states, price tag, stars rating)."
+  },
   "projectType": "library",
   "sourceRoot": "libs/shop-ui/src",
   "tags": ["scope:shared", "type:ui"],

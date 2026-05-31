@@ -1,7 +1,9 @@
 {
   "name": "starter",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "$schema_comment": "Reference / starter Angular 21 app — Material 3 + Tailwind v4 tokens showcase. Copy this app as template for new domain apps.",
+  "metadata": {
+    "description": "Reference / starter Angular 21 app — Material 3 + Tailwind v4 tokens showcase. Copy this app as template for new domain apps."
+  },
   "projectType": "application",
   "prefix": "ais",
   "sourceRoot": "apps/starter/src",

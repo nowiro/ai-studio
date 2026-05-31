@@ -4,7 +4,7 @@ title: Extract form-fill dev tools into shared wizard-form-fill lib
 type: plan
 date: 2026-05-21
 trigger: user request "zrob z niego biblioteke i zastousuj w aplikacji biznesowej"
-status: in-progress
+status: done
 owner: orchestrator
 agents:
   - frontend-developer

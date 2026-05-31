@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "tire-feature-cart",
-  "$schema_comment": "Cart drawer + cart page + 4-step checkout for tire-shop.",
+  "metadata": { "description": "Cart drawer + cart page + 4-step checkout for tire-shop." },
   "projectType": "library",
   "sourceRoot": "libs/tire-feature-cart/src",
   "tags": ["scope:tire-shop", "type:feature"],

@@ -160,6 +160,14 @@ This spec drives an Angular 21 frontend-only demo that exercises:
 - ✅ Term model? — **Three trimesters** with fixed start / end dates.
 - ✅ i18n? — **Polish only** for v1 (English code).
 
+## E2E coverage
+
+| Scenario | E2E |
+| --- | --- |
+| App boots + primary view renders (smoke) | [`apps/school-journal-e2e/src/smoke.spec.ts`](../../../../apps/school-journal-e2e/src/smoke.spec.ts) |
+
+Per-AC flows (attendance / grades / timetable) tracked for a follow-up e2e pass.
+
 ## Traceability
 
 - **ADR (role + class context):** [`../../../adr/0008-journal-context.md`](../../../adr/0008-journal-context.md)

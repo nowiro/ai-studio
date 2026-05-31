@@ -1,7 +1,9 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "charts",
-  "$schema_comment": "Library-agnostic Angular chart wrappers backed by Apache ECharts. See docs/adr/0016-charts-abstraction-echarts.md for the abstraction contract.",
+  "metadata": {
+    "description": "Library-agnostic Angular chart wrappers backed by Apache ECharts. See docs/adr/0016-charts-abstraction-echarts.md for the abstraction contract."
+  },
   "projectType": "library",
   "sourceRoot": "libs/charts/src",
   "tags": ["scope:shared", "type:ui"],

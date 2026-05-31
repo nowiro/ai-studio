@@ -7,7 +7,7 @@ status: accepted
 deciders: orchestrator, architect
 links:
   spec: null
-  plan: docs/ai-workflow/plans/2026-05-20-echarts-wrappers-dashboards-games.md
+  plan: null
   supersedes: null
 ---
 
@@ -132,6 +132,6 @@ Plan 2026-05-20's validation gate covers this ADR. Specifically: `pnpm nx test c
 
 - Apache ECharts: https://echarts.apache.org/en/index.html
 - ECharts option spec: https://echarts.apache.org/en/option.html
-- Plan: [`docs/ai-workflow/plans/2026-05-20-echarts-wrappers-dashboards-games.md`](../ai-workflow/plans/2026-05-20-echarts-wrappers-dashboards-games.md)
+- Plan: not retained as a standalone file — the decision is captured inline in this ADR.
 - Styling rule (M3 tokens contract): [`.ai/rules/styling.md`](../../.ai/rules/styling.md)
 - ADR-0004 (Phaser as default game library) — games keep their renderer; charts library does not affect them

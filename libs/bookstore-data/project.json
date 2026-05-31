@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "bookstore-data",
-  "$schema_comment": "Domain models + seed + signal services for the bookstore demo.",
+  "metadata": { "description": "Domain models + seed + signal services for the bookstore demo." },
   "projectType": "library",
   "sourceRoot": "libs/bookstore-data/src",
   "tags": ["scope:bookstore", "type:data-access", "type:util"],

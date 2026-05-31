@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "tools-shop-feature-catalogue",
-  "$schema_comment": "Catalogue page + filter panel + product detail for the tools-shop demo.",
+  "metadata": { "description": "Catalogue page + filter panel + product detail for the tools-shop demo." },
   "projectType": "library",
   "sourceRoot": "libs/tools-shop-feature-catalogue/src",
   "tags": ["scope:tools-shop", "type:feature"],

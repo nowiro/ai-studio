@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "journal-feature-attendance",
-  "$schema_comment": "Attendance calendar + roll-call for school-journal.",
+  "metadata": { "description": "Attendance calendar + roll-call for school-journal." },
   "projectType": "library",
   "sourceRoot": "libs/journal-feature-attendance/src",
   "tags": ["scope:school-journal", "type:feature"],

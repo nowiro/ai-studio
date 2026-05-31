@@ -1,9 +1,20 @@
-import type { Signal } from '@angular/core';
+import { type Signal, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
+import { LocalizationApi } from '@ai-studio/shared-i18n';
 
 import { translations } from '../../i18n/translations';
 import { LanguageService } from '../../services/language.service';
 import { FooterComponent } from './footer.component';
+
+// Footer renders <ais-language-switcher>, which injects LocalizationApi. Stub the
+// facade so the unit test needs no live Transloco wiring (provided in app.config).
+const LOCALIZATION_API_STUB = {
+  currentLang: signal('pl'),
+  availableLangs: signal(['pl', 'en']),
+  setLang: () => undefined,
+  translate: (key: string) => key,
+} as unknown as LocalizationApi;
 
 interface FooterInternals {
   currentYear: Signal<number>;
@@ -17,6 +28,7 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
+      providers: [{ provide: LocalizationApi, useValue: LOCALIZATION_API_STUB }],
     }).compileComponents();
   });
 

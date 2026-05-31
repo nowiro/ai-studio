@@ -1,26 +1,37 @@
-import { workspaceRoot } from '@nx/devkit';
-import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices } from '@playwright/test';
 
-// For CI you can override BASE_URL to point at a deployed environment.
+/**
+ * Plain `defineConfig` — mirrors apps/dashboard-e2e + apps/pong-game-e2e.
+ *
+ * The previous `nxE2EPreset(__filename, …)` spread combined with
+ * `fileURLToPath(import.meta.url)` made Playwright's loader treat this config as
+ * ESM while transpiling it to CommonJS, throwing
+ * "exports is not defined in ES module scope" so the whole suite failed to load.
+ * Dropping the preset + import.meta.url is the fix the repo already applied to
+ * dashboard/pong/individual-wizard.
+ */
 const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4221';
 
 export default defineConfig({
-  ...nxE2EPreset(__filename, { testDir: './src' }),
+  testDir: './src',
+  fullyParallel: true,
+  forbidOnly: !!process.env['CI'],
+  retries: process.env['CI'] ? 2 : 0,
+  workers: process.env['CI'] ? 1 : undefined,
+  reporter: [['list'], ['html', { outputFolder: '../../dist/.playwright/apps/starter-e2e/report', open: 'never' }]],
   use: {
     baseURL,
     trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure',
   },
-  webServer: {
-    command: 'pnpm exec nx run starter:serve',
-    url: 'http://localhost:4221',
-    reuseExistingServer: true,
-    cwd: workspaceRoot,
-  },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  webServer: process.env['CI']
+    ? undefined
+    : {
+        command: 'pnpm exec nx serve starter --port 4221',
+        url: baseURL,
+        reuseExistingServer: true,
+        timeout: 180_000,
+      },
 });

@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "game-pong",
-  "$schema_comment": "Framework-agnostic Phaser game library. Tags enforce module boundaries.",
+  "metadata": { "description": "Framework-agnostic Phaser game library. Tags enforce module boundaries." },
   "projectType": "library",
   "sourceRoot": "libs/game-pong/src",
   "tags": ["scope:game", "type:feature", "type:util"],

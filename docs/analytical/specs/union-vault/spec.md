@@ -66,6 +66,14 @@ decision:
 | AC-4 | decision is `deprecate`                  | architect issues ADR + removes from `start:all` | new ADR `Status: accepted`; `package.json` `start:all` no longer mentions union-vault |
 | AC-5 | decision is `fold`                       | architect issues ADR + migration steps          | ADR `Status: accepted`; migration tasks land in a new plan                            |
 
+## E2E coverage
+
+| Scenario | E2E |
+| --- | --- |
+| App boots + heading renders, no console errors, axe-core WCAG 2.1 AA clean (supports AC-1 — app stays reviewable while the decision is open) | [`apps/union-vault-e2e/src/example.spec.ts`](../../../../apps/union-vault-e2e/src/example.spec.ts) |
+
+Replaces the former placeholder spec; uses the shared `BaseE2EPage`.
+
 ## Non-goals
 
 - Implementing new features on `union-vault` while the decision is open.

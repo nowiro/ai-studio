@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "library-feature-account",
-  "$schema_comment": "Reader account: loans, reservations, history + mock-login.",
+  "metadata": { "description": "Reader account: loans, reservations, history + mock-login." },
   "projectType": "library",
   "sourceRoot": "libs/library-feature-account/src",
   "tags": ["scope:library", "type:feature"],

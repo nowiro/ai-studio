@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "tire-ui",
-  "$schema_comment": "Presentational components for the tire-shop demo.",
+  "metadata": { "description": "Presentational components for the tire-shop demo." },
   "projectType": "library",
   "sourceRoot": "libs/tire-ui/src",
   "tags": ["scope:tire-shop", "type:ui"],

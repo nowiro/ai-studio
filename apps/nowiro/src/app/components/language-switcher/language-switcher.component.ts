@@ -1,32 +1,33 @@
 import { UpperCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
-import { LocalizationApi, TPipe } from '@ai-studio/shared-i18n';
+import { LocalizationApi } from '@ai-studio/shared-i18n';
 
 /**
  * Transloco i18n demo (best-practices plan T008 / ADR-0017).
  *
  * Smallest end-to-end proof that runtime i18n works: a PL/EN switch wired to the
  * `LocalizationApi` facade (apps never touch `TranslocoService` directly — ADR-0017
- * §wrap-before-consume). The label is rendered through the Transloco pipe (`| transloco`,
- * async-safe during dictionary load) against `apps/nowiro/public/assets/i18n/{pl,en}.json`.
- * Switching language re-renders every `transloco` pipe in the tree (reRenderOnLangChange).
+ * §wrap-before-consume). The label is resolved through the facade's `translate()`
+ * against `apps/nowiro/public/assets/i18n/{pl,en}.json`; `label` re-computes when
+ * `currentLang()` changes, so switching language updates the UI.
  *
- * The rest of nowiro still uses the legacy in-code dictionary (`injectT()`); this is the
- * staged-migration seam called out in `apps/nowiro/src/app/app.config.ts`.
+ * Depends only on `LocalizationApi` (no `transloco` pipe), so consuming views stay
+ * trivially testable with a stubbed facade. The rest of nowiro still uses the legacy
+ * in-code dictionary (`injectT()`) — the staged-migration seam in `app.config.ts`.
  */
 @Component({
   selector: 'ais-language-switcher',
   standalone: true,
-  imports: [TPipe, UpperCasePipe],
+  imports: [UpperCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      [attr.aria-label]="'nowiro.languageSwitcher' | transloco"
+      [attr.aria-label]="label()"
       class="gap-2 flex items-center"
       role="group"
     >
-      <span class="text-sm text-on-surface-variant">{{ 'nowiro.languageSwitcher' | transloco }}:</span>
+      <span class="text-sm text-on-surface-variant">{{ label() }}:</span>
       @for (lang of i18n.availableLangs(); track lang) {
         <button
           [class.font-bold]="lang === i18n.currentLang()"
@@ -45,4 +46,10 @@ import { LocalizationApi, TPipe } from '@ai-studio/shared-i18n';
 })
 export class LanguageSwitcherComponent {
   protected readonly i18n = inject(LocalizationApi);
+
+  /** Switcher label; re-translates on language change (reads `currentLang()` for reactivity). */
+  protected readonly label = computed(() => {
+    this.i18n.currentLang();
+    return this.i18n.translate('nowiro.languageSwitcher');
+  });
 }

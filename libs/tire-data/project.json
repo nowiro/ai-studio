@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "tire-data",
-  "$schema_comment": "Domain models + signal services + pure filter/sort fns for tire-shop.",
+  "metadata": { "description": "Domain models + signal services + pure filter/sort fns for tire-shop." },
   "projectType": "library",
   "sourceRoot": "libs/tire-data/src",
   "tags": ["scope:tire-shop", "type:data-access", "type:util"],

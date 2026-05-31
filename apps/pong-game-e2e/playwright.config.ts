@@ -1,6 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4200';
+// Port 4202 matches `apps/pong-game` serve target. Previously 4200, which
+// collided with nowiro (also 4200) — parallel `nx run-many -t e2e` then reused
+// the wrong dev server via `reuseExistingServer: true`.
+const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4202';
 
 export default defineConfig({
   testDir: './src',
@@ -36,7 +39,7 @@ export default defineConfig({
   webServer: process.env['CI']
     ? undefined
     : {
-        command: 'pnpm exec nx serve pong-game --port 4200',
+        command: 'pnpm exec nx serve pong-game --port 4202',
         url: baseURL,
         reuseExistingServer: true,
         timeout: 120_000,

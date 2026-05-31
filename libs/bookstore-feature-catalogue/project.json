@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "bookstore-feature-catalogue",
-  "$schema_comment": "Catalogue page + filter panel + book detail for the bookstore demo.",
+  "metadata": { "description": "Catalogue page + filter panel + book detail for the bookstore demo." },
   "projectType": "library",
   "sourceRoot": "libs/bookstore-feature-catalogue/src",
   "tags": ["scope:bookstore", "type:feature"],

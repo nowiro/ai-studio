@@ -14,15 +14,15 @@ test.describe('library happy path', () => {
 
     // 3. Go to the account page and log in as reader-1.
     await page.getByTestId('nav-account').click();
-    await page.getByTestId('login-select').click();
+    await page.getByTestId('login-mock-select').click();
     await page.getByRole('option').first().click();
-    await expect(page.getByTestId('login-active')).toBeVisible();
+    await expect(page.getByTestId('login-mock-active')).toBeVisible();
 
     // 4. Librarian link is hidden for readers.
     await expect(page.getByTestId('nav-librarian')).toHaveCount(0);
 
     // 5. Re-login as the librarian and verify panel access.
-    await page.getByTestId('login-select').click();
+    await page.getByTestId('login-mock-select').click();
     await page.getByRole('option', { name: /Ewa Lewandowska/ }).click();
     await expect(page.getByTestId('nav-librarian')).toBeVisible();
     await page.getByTestId('nav-librarian').click();

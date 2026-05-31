@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "library-feature-librarian",
-  "$schema_comment": "Librarian view: all loans, overdue list, add book, KPI strip.",
+  "metadata": { "description": "Librarian view: all loans, overdue list, add book, KPI strip." },
   "projectType": "library",
   "sourceRoot": "libs/library-feature-librarian/src",
   "tags": ["scope:library", "type:feature"],

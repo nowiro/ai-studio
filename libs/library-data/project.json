@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "library-data",
-  "$schema_comment": "Models + signal services + pure logic for the library demo.",
+  "metadata": { "description": "Models + signal services + pure logic for the library demo." },
   "projectType": "library",
   "sourceRoot": "libs/library-data/src",
   "tags": ["scope:library", "type:data-access", "type:util"],

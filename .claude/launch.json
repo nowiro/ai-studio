@@ -85,6 +85,12 @@
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["exec", "nx", "run", "portal:serve"],
       "port": 4220
+    },
+    {
+      "name": "starter",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "nx", "run", "starter:serve"],
+      "port": 4221
     }
   ]
 }

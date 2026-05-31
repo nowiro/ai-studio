@@ -4,7 +4,7 @@ title: Best-practices rollout — dependabot parity, release-please, vitest-axe,
 type: plan
 date: 2026-05-21
 trigger: user request "co bys proponowal jeszcze dodac do tych projektow"
-status: in-progress
+status: done
 owner: orchestrator
 agents:
   - frontend-developer

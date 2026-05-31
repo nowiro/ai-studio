@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "tire-feature-catalogue",
-  "$schema_comment": "Catalogue page + product detail + facet filters for tire-shop.",
+  "metadata": { "description": "Catalogue page + product detail + facet filters for tire-shop." },
   "projectType": "library",
   "sourceRoot": "libs/tire-feature-catalogue/src",
   "tags": ["scope:tire-shop", "type:feature"],

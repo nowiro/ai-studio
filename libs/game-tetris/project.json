@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "game-tetris",
-  "$schema_comment": "Framework-agnostic Tetris logic + state lib. Tags enforce module boundaries.",
+  "metadata": { "description": "Framework-agnostic Tetris logic + state lib. Tags enforce module boundaries." },
   "projectType": "library",
   "sourceRoot": "libs/game-tetris/src",
   "tags": ["scope:game-tetris", "type:util"],

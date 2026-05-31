@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "toy-shop-data",
-  "$schema_comment": "Domain models + seed + catalogue service for the toy shop demo.",
+  "metadata": { "description": "Domain models + seed + catalogue service for the toy shop demo." },
   "projectType": "library",
   "sourceRoot": "libs/toy-shop-data/src",
   "tags": ["scope:toy-shop", "type:data-access", "type:util"],

@@ -1,8 +1,23 @@
 import { expect, test } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('/');
+/**
+ * Union-vault landing smoke. Replaces the generated `toContain('Welcome')` stub
+ * (the app's copy is Polish/localised, never "Welcome"). Asserts the app boots,
+ * renders a non-empty heading, and loads with no console errors.
+ */
+test.describe('Union-vault — smoke', () => {
+  test('boots cleanly and renders a heading', async ({ page }) => {
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') consoleErrors.push(msg.text());
+    });
 
-  // Expect h1 to contain a substring.
-  expect(await page.locator('h1').innerText()).toContain('Welcome');
+    await page.goto('/');
+
+    const heading = page.getByRole('heading').first();
+    await expect(heading).toBeVisible();
+    expect((await heading.innerText()).trim().length).toBeGreaterThan(0);
+
+    expect(consoleErrors, `unexpected console errors:\n${consoleErrors.join('\n')}`).toEqual([]);
+  });
 });

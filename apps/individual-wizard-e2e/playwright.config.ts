@@ -1,6 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4201';
+// Port 4203 matches `apps/individual-wizard` serve target. Previously 4201,
+// which collided with union-vault (also 4201) — parallel `nx run-many -t e2e`
+// then reused the wrong dev server via `reuseExistingServer: true`.
+const baseURL = process.env['BASE_URL'] ?? 'http://localhost:4203';
 
 export default defineConfig({
   testDir: './src',
@@ -22,7 +25,7 @@ export default defineConfig({
   webServer: process.env['CI']
     ? undefined
     : {
-        command: 'pnpm exec nx serve individual-wizard --port 4201',
+        command: 'pnpm exec nx serve individual-wizard --port 4203',
         url: baseURL,
         reuseExistingServer: true,
         timeout: 120_000,

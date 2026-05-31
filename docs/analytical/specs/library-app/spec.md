@@ -164,6 +164,16 @@ all frontend-only with a ~200-book seed dataset.
 - ✅ Currency for fines? — **Display only, PLN format.**
 - ✅ Loan policy? — **14-day default, 1 renewal, 0.50 zł/day overdue.**
 
+## E2E coverage
+
+Scenarios → Playwright e2e (page-object + runtime axe-core WCAG 2.1 AA):
+
+| Acceptance criteria | E2E |
+| --- | --- |
+| AC-1/2/3 catalogue + filter · AC-5/6 mock-login role guard · AC-7/8 reserve + librarian panel · AC-11 happy path | [`apps/library-e2e/src/catalogue.spec.ts`](../../../../apps/library-e2e/src/catalogue.spec.ts) |
+
+a11y: catalogue view asserted via `expectNoA11yViolationsOnPage` (`@ai-studio/shared-test-utils`).
+
 ## Traceability
 
 - **ADR (roles):** [`../../../adr/0007-library-roles.md`](../../../adr/0007-library-roles.md)

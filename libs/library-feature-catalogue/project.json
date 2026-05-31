@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "library-feature-catalogue",
-  "$schema_comment": "Catalogue page + book detail + search bar for the library demo.",
+  "metadata": { "description": "Catalogue page + book detail + search bar for the library demo." },
   "projectType": "library",
   "sourceRoot": "libs/library-feature-catalogue/src",
   "tags": ["scope:library", "type:feature"],
